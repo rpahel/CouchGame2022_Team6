@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class AutoDestroy : MonoBehaviour
 {
-    public void Destroy(float time)
+    public void DestroyObj(float time)
     {
-        Destroy(this, time);
+        Destroy(this.gameObject, time);
     }
     
     
