@@ -4,22 +4,20 @@ using UnityEngine;
 
 public class Raf_LevelDesign : MonoBehaviour
 {
-    public Texture2D image;
+    public Texture2D imageDeReference;
     public GameObject cubeMangeable;
 
-    private void Update()
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.G))
+        for (int i = 0; i < imageDeReference.height; i++)
         {
-            for (int i = 0; i < image.width; i++)
+            for (int j = 0; j < imageDeReference.width; j++)
             {
-                for (int j = 0; j < image.height; j++)
+                if (imageDeReference.GetPixel(j, i) == Color.black)
                 {
-                    if (image.GetPixel(i, j) == Color.black)
-                    {
-                        GameObject cube = Instantiate(cubeMangeable, new Vector3(i, j, 0), Quaternion.identity);
-                        cube.transform.parent = transform;
-                    }
+                    GameObject cube = Instantiate(cubeMangeable, new Vector3(j, i, 0), Quaternion.identity);
+                    cube.name = "Cube (" + j.ToString() + ", " + i.ToString() + ")";
+                    cube.transform.parent = transform;
                 }
             }
         }

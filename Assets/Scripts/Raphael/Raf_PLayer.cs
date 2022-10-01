@@ -36,11 +36,10 @@ public class Raf_PLayer : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(pointeurBase.position, playerToMouse, out hit, reach))
             {
-                print(hit.collider.gameObject.name);
-                if (hit.collider.CompareTag("CubeMangeable"))
+                if (hit.transform.parent.CompareTag("CubeMangeable"))
                 {
                     Raf_CubeMangeable cubeMangeable;
-                    if (hit.collider.TryGetComponent<Raf_CubeMangeable>(out cubeMangeable))
+                    if (hit.transform.parent.TryGetComponent<Raf_CubeMangeable>(out cubeMangeable))
                         cubeMangeable.GetManged();
                     else
                         print("Pas de Raf_CubeMangeable dans le cube visé.");
