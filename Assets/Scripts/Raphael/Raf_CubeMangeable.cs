@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Raf_CubeMangeable : MonoBehaviour
 {
-    [SerializeField] private GameObject              cube;
-    [SerializeField] private GameObject[]            restes = new GameObject[4];
-    [SerializeField] private List<Raf_CubeMangeable> cubesAutour = new List<Raf_CubeMangeable>(4);
+    [SerializeField] private GameObject              cube;                          // Le cube principal
+    [SerializeField] private GameObject[]            restes = new GameObject[4];    // Les restes du cubes (haut, droite, bas, gauche)
+    
+    private List<Raf_CubeMangeable> cubesAutour = new List<Raf_CubeMangeable>(4);
     public List<Raf_CubeMangeable> CubesAutour { get => cubesAutour; set => cubesAutour = value; }
 
     private void Start()
     {
+        // Check si y'a des cubes voisins autour de cube et les ajoute à la liste cubesAutour (haut, droite, bas, gauche)
         for(int i = 0; i < 4; i++)
         {
             cubesAutour.Add(null);
@@ -30,6 +32,8 @@ public class Raf_CubeMangeable : MonoBehaviour
 
     public void GetManged()
     {
+
+        // Signale aux cubes voisins que ce cube s'est fait mangé
         for(int i = 0; i < 4; i++)
         {
             if (cubesAutour[i])
@@ -40,6 +44,7 @@ public class Raf_CubeMangeable : MonoBehaviour
 
         cube.SetActive(false);
 
+        // Fais apparaitre les restes en fonction des cubes voisins qui sont toujours là
         for(int i = 0; i < 4; i++)
         {
             if (cubesAutour[i] && !cubesAutour[i].isManged())
@@ -49,6 +54,7 @@ public class Raf_CubeMangeable : MonoBehaviour
         }
     }
 
+    // Retire le reste collé au cube voisi qui vient de se faire manger
     public void VoisinGotManged(int indexDuVoisin)
     {
         if (!cube.activeSelf)
@@ -57,6 +63,7 @@ public class Raf_CubeMangeable : MonoBehaviour
         }
     }
 
+    // Vérifie si ce cube a été mangé ou pas
     public bool isManged()
     {
         return !cube.activeSelf;

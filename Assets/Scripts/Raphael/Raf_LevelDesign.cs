@@ -9,6 +9,7 @@ public class Raf_LevelDesign : MonoBehaviour
 
     private void Start()
     {
+        // Check la couleur de chaque pixel dans l'image et fait spawn un cube aux coordonnées correspondantes
         for (int i = 0; i < imageDeReference.height; i++)
         {
             for (int j = 0; j < imageDeReference.width; j++)
