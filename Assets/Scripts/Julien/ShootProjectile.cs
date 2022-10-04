@@ -17,7 +17,7 @@ public class ShootProjectile : MonoBehaviour
     [SerializeField] private float holdPower;
     [SerializeField] private float lifetime;
 
-    private PlayerInput _playerInput;
+    private PlayerInputAction _playerInput;
     private bool _canShoot;
     private Vector2 _direction;
     private Rigidbody2D _rb;
@@ -28,7 +28,7 @@ public class ShootProjectile : MonoBehaviour
 
     private void Awake()
     {
-        _playerInput = new PlayerInput();
+        _playerInput = new PlayerInputAction();
         _playerInput.Gameplay.ShootDirection.performed += ctx => _direction = ctx.ReadValue<Vector2>();
         _playerInput.Gameplay.ShootDirection.canceled += ctx => _direction = Vector2.zero;
         _playerInput.Gameplay.ShootPress.performed += ctx => Shoot(false);
