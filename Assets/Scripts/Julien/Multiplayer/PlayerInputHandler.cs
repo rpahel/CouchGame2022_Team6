@@ -7,17 +7,34 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerInputHandler : MonoBehaviour
 {
-    private PlayerInput _playerInput;
+    private PlayerConfiguration _playerConfig;
     private Mover _mover;
+
+    [SerializeField] private MeshRenderer playerMesh;
+
+    private PlayerControls _controls;
     private void Awake()
     {
-        _playerInput = GetComponent<PlayerInput>();
-        var movers = FindObjectsOfType<Mover>();
-        var index = _playerInput.playerIndex;
-        _mover = movers.FirstOrDefault(m => m.GetPlayerIndex() == index);
+        _mover = GetComponent<Mover>();
+        _controls = new PlayerControls();
+    }
+
+    public void InitializePlayer(PlayerConfiguration pc)
+    {
+        _playerConfig = pc;
+        playerMesh.material = pc.PlayerMaterial;
+        _playerConfig.Input.onActionTriggered += Input_OnActionTriggered;
+    }
+
+    private void Input_OnActionTriggered(CallbackContext obj)
+    {
+        if (obj.action.name == _controls.Gameplay.Move.name)
+        {
+            OnMove(obj);
+        }
     }
     
-    public void OnMove(CallbackContext context)
+    private void OnMove(CallbackContext context)
     {
         if(_mover != null)
             _mover.SetInputVector(context.ReadValue<Vector2>());
