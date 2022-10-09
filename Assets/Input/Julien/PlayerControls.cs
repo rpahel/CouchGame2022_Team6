@@ -62,6 +62,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Eat"",
+                    ""type"": ""Button"",
+                    ""id"": ""5c9fd367-f4c7-4be8-aa60-726cf229401f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -163,6 +172,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5d49ca70-55ae-4991-a0a7-116b2e3cb65a"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Eat"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -214,6 +234,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Gameplay_ShootHold = m_Gameplay.FindAction("ShootHold", throwIfNotFound: true);
         m_Gameplay_ShootPress = m_Gameplay.FindAction("ShootPress", throwIfNotFound: true);
         m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
+        m_Gameplay_Eat = m_Gameplay.FindAction("Eat", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_Select = m_Menu.FindAction("Select", throwIfNotFound: true);
@@ -280,6 +301,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_ShootHold;
     private readonly InputAction m_Gameplay_ShootPress;
     private readonly InputAction m_Gameplay_Move;
+    private readonly InputAction m_Gameplay_Eat;
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
@@ -288,6 +310,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @ShootHold => m_Wrapper.m_Gameplay_ShootHold;
         public InputAction @ShootPress => m_Wrapper.m_Gameplay_ShootPress;
         public InputAction @Move => m_Wrapper.m_Gameplay_Move;
+        public InputAction @Eat => m_Wrapper.m_Gameplay_Eat;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -309,6 +332,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Move.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMove;
+                @Eat.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnEat;
+                @Eat.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnEat;
+                @Eat.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnEat;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -325,6 +351,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @Eat.started += instance.OnEat;
+                @Eat.performed += instance.OnEat;
+                @Eat.canceled += instance.OnEat;
             }
         }
     }
@@ -368,6 +397,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnShootHold(InputAction.CallbackContext context);
         void OnShootPress(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
+        void OnEat(InputAction.CallbackContext context);
     }
     public interface IMenuActions
     {
