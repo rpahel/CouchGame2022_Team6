@@ -26,22 +26,25 @@ public class JetpackController : MonoBehaviour {
     private void Update() {
         Vector3 jump = new Vector3(Input.GetAxis("Horizontal") * 10, 0, Input.GetAxis(("Vertical")) * 10) * Time.deltaTime;
         transform.Translate(jump.x,0,jump.z);
+
+        if (IsGrounded())
+            jumpCount = 0;
     }
 
     public void OnJump(InputAction.CallbackContext e) {
-        if (e.started /*&& jumpCount < maxJumpCount*/) {
+        if (e.started /*&& */) {
             if (canWallJump) {
                 if (!IsGrounded()) {
                     Vector3 wjForceVec = normalVec * wjForce;
                     wjForceVec.y = jumpForce;
                     rb.AddForce(wjForceVec,ForceMode.Impulse);
                 }
-                else {
+                else if(jumpCount < maxJumpCount){
                     jumpCount++;
                     rb.AddForce(jumpForce * Vector3.up,ForceMode.Impulse);
                 }
             }
-            else {
+            else if(jumpCount < maxJumpCount){
                 jumpCount++;
                 rb.AddForce(jumpForce * Vector3.up,ForceMode.Impulse);
             }

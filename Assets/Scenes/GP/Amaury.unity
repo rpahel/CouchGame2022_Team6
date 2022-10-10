@@ -551,7 +551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpForce: 10
-  maxJumpCount: 3
+  maxJumpCount: 100000
   wjForce: 10
 --- !u!23 &988995225
 MeshRenderer:
@@ -836,7 +836,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1541546474}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -43.3, y: 27.9, z: -0.31}
+  m_LocalPosition: {x: -4.9, y: 27.9, z: -0.31}
   m_LocalScale: {x: 0.40522, y: 56.611492, z: 9.570198}
   m_ConstrainProportionsScale: 0
   m_Children: []
