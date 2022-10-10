@@ -18,6 +18,11 @@ public class Raf_PLayer : MonoBehaviour
     private Vector2             aimingPos;      // La position du stick droit
     private Vector2             aimingDir;      // La direction de visée
     private float               angle;          // Angle entre le vecteur joueur -> souris et le vecteur right
+
+    private bool                canEat = true;
+    private float               satiety = 0f;   // La satiété
+    private float               eatCooldown = 0.5f;
+    private Coroutine           cooldownCoroutine;
     #endregion
     #region UNITY
     private void Awake()
@@ -26,7 +31,7 @@ public class Raf_PLayer : MonoBehaviour
         pointeur.gameObject.SetActive(false);
     }
 
-    private void Update()
+    private void Update() 
     {
         aimingDir = aimingPos.normalized;
         angle = Mathf.Atan2(aimingDir.y, aimingDir.x);
@@ -51,23 +56,53 @@ public class Raf_PLayer : MonoBehaviour
         pointeur.gameObject.SetActive(aimingPos.sqrMagnitude > 0.1f ? true : false);
     }
 
-    public void Eat(InputAction.CallbackContext context)
+    public void TryEat(InputAction.CallbackContext context)
     {
-        if (context.action.IsPressed())
+        if (!canEat)
         {
-            RaycastHit hit;
-            if (Physics.Raycast(pointeurBase.position, aimingDir, out hit, reach))
+            print("I'm on eating cooldown !");
+            return;
+        }
+
+        if(satiety < 1f)
+        {
+            if (context.action.IsPressed())
             {
-                if (hit.transform.parent.CompareTag("CubeMangeable"))
+                RaycastHit hit;
+                if (Physics.Raycast(pointeurBase.position, aimingDir, out hit, reach))
                 {
-                    Raf_CubeMangeable cubeMangeable;
-                    if (hit.transform.parent.TryGetComponent<Raf_CubeMangeable>(out cubeMangeable))
-                        cubeMangeable.GetManged();
-                    else
-                        print("Pas de Raf_CubeMangeable dans le cube visé.");
+                    if (hit.transform.parent.CompareTag("CubeMangeable"))
+                    {
+                        Raf_CubeMangeable cubeMangeable;
+                        if (hit.transform.parent.TryGetComponent<Raf_CubeMangeable>(out cubeMangeable))
+                            Eat(cubeMangeable);
+                        else
+                            print("Pas de Raf_CubeMangeable dans le cube visé.");
+                    }
                 }
             }
         }
+        else
+        {
+            print("I'm full !!");
+        }
+    }
+
+    public void Eat(Raf_CubeMangeable cubeMangeable)
+    {
+        cubeMangeable.GetManged();
+        satiety += .2f;
+        satiety = Mathf.Clamp(satiety, 0f, 1f);
+        canEat = false;
+        cooldownCoroutine = StartCoroutine(CooldownCoroutine());
+        print(satiety);
+    }
+
+    IEnumerator CooldownCoroutine()
+    {
+        yield return new WaitForSeconds(eatCooldown);
+        canEat = true;
+        StopCoroutine(cooldownCoroutine);
     }
 
     #endregion
