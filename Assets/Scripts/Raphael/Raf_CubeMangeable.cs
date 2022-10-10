@@ -22,10 +22,12 @@ public class Raf_CubeMangeable : MonoBehaviour
             if (Physics.Raycast(transform.position, dir, out hit, transform.localScale.x))
             {
                 Raf_CubeMangeable cubeClone;
-                if (hit.transform.parent.TryGetComponent<Raf_CubeMangeable>(out cubeClone))
-                {
-                    cubesAutour[i] = cubeClone;
-                }
+                //if (hit.transform.parent.TryGetComponent<Raf_CubeMangeable>(out cubeClone))
+                //{
+                //    cubesAutour[i] = cubeClone;
+                //}
+
+                 //à revoir
             }
         }
     }

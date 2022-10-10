@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - CubeMangeable
+  - CubeBedrock
+  - CubePiege
   layers:
   - Default
   - TransparentFX

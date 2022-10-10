@@ -6,6 +6,8 @@ public class Raf_LevelDesign : MonoBehaviour
 {
     public Texture2D imageDeReference;
     public GameObject cubeMangeable;
+    public GameObject cubeBedrock;
+    public GameObject cubePiege;
 
     private void Start()
     {
@@ -14,10 +16,23 @@ public class Raf_LevelDesign : MonoBehaviour
         {
             for (int j = 0; j < imageDeReference.width; j++)
             {
-                if (imageDeReference.GetPixel(j, i) == Color.black)
+                Color pixColor = imageDeReference.GetPixel(j, i);
+                if (pixColor == Color.green)
                 {
                     GameObject cube = Instantiate(cubeMangeable, new Vector3(j, i, 0), Quaternion.identity);
-                    cube.name = "Cube (" + j.ToString() + ", " + i.ToString() + ")";
+                    cube.name = "Cube (" + j.ToString() + ", " + i.ToString() + ") Mangeable";
+                    cube.transform.parent = transform;
+                }
+                else if (pixColor == Color.black)
+                {
+                    GameObject cube = Instantiate(cubeBedrock, new Vector3(j, i, 0), Quaternion.identity);
+                    cube.name = "Cube (" + j.ToString() + ", " + i.ToString() + ") Bedrock";
+                    cube.transform.parent = transform;
+                }
+                else if (pixColor == Color.red)
+                {
+                    GameObject cube = Instantiate(cubePiege, new Vector3(j, i, 0), Quaternion.identity);
+                    cube.name = "Cube (" + j.ToString() + ", " + i.ToString() + ") Piege";
                     cube.transform.parent = transform;
                 }
             }
