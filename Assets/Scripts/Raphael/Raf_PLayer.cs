@@ -21,6 +21,10 @@ public class Raf_PLayer : MonoBehaviour
     
     private bool                canEat = true;
     private float               satiety = 0f;   // La satiété
+
+    [SerializeField, Range(0f, 1f)]
+    private float               filling = 0.12f;// La satiété
+    [SerializeField, Range(0f, .5f)]
     private float               eatCooldown = 0.5f;
     private Coroutine           cooldownCoroutine;
     #endregion
@@ -56,12 +60,12 @@ public class Raf_PLayer : MonoBehaviour
         pointeur.gameObject.SetActive(aimingPos.sqrMagnitude > 0.1f ? true : false);
     }
     
-    public void TryEat(InputAction.CallbackContext context)
+    public bool TryEat(InputAction.CallbackContext context)
     {
         if (!canEat)
         {
             print("I'm on eating cooldown !");
-            return;
+            return false;
         }
     
         if(satiety < 1f)
@@ -75,7 +79,10 @@ public class Raf_PLayer : MonoBehaviour
                     {
                         Cube_Edible cubeMangeable;
                         if (hit.transform.parent && hit.transform.parent.TryGetComponent<Cube_Edible>(out cubeMangeable))
+                        {
                             Eat(cubeMangeable);
+                            return true;
+                        }
                         else
                             print("Pas de Raf_CubeMangeable dans le cube visé.");
                     }
@@ -86,16 +93,17 @@ public class Raf_PLayer : MonoBehaviour
         {
             print("I'm full !!");
         }
+
+        return false;
     }
     
     public void Eat(Cube_Edible cubeMangeable)
     {
         cubeMangeable.GetManged();
-        satiety += .2f;
+        satiety += filling;
         satiety = Mathf.Clamp(satiety, 0f, 1f);
         canEat = false;
         cooldownCoroutine = StartCoroutine(CooldownCoroutine());
-        print(satiety);
     }
     
     IEnumerator CooldownCoroutine()
