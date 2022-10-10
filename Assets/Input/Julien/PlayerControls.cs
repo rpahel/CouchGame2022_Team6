@@ -28,21 +28,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
             ""id"": ""3eb6e9c6-c5e0-428f-a4b2-3c4761a9ac41"",
             ""actions"": [
                 {
-                    ""name"": ""ShootDirection"",
-                    ""type"": ""Value"",
-                    ""id"": ""a7c81585-be9c-4781-bbcf-f212de222b40"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""ShootHold"",
+                    ""name"": ""ShootRelease"",
                     ""type"": ""Button"",
                     ""id"": ""c3d6648d-0ff0-4239-9f14-7b573ac5166c"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=2)"",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -51,7 +42,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""id"": ""0dce509a-4b74-441d-83a7-2eb3952282fa"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press(pressPoint=0.5,behavior=1)"",
+                    ""interactions"": ""Press(pressPoint=0.5)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -71,35 +62,33 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""3b6806f7-fb38-4f8c-b25b-817676bd3a6b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""00162460-cd93-4ce0-a031-b3a3ab0d5e8e"",
-                    ""path"": ""<Gamepad>/rightStick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ShootDirection"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""7c2ed517-cb2b-4377-9f28-b596ce654c02"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ShootHold"",
+                    ""action"": ""ShootRelease"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""36898656-e184-47dd-970e-d77287de193d"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -183,6 +172,28 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""Eat"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8f0a3e62-9f54-48e0-8dc4-cd2b522ede90"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""64698a58-aa9a-4704-9471-59082486b6a9"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -230,11 +241,11 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
 }");
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
-        m_Gameplay_ShootDirection = m_Gameplay.FindAction("ShootDirection", throwIfNotFound: true);
-        m_Gameplay_ShootHold = m_Gameplay.FindAction("ShootHold", throwIfNotFound: true);
+        m_Gameplay_ShootRelease = m_Gameplay.FindAction("ShootRelease", throwIfNotFound: true);
         m_Gameplay_ShootPress = m_Gameplay.FindAction("ShootPress", throwIfNotFound: true);
         m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
         m_Gameplay_Eat = m_Gameplay.FindAction("Eat", throwIfNotFound: true);
+        m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_Select = m_Menu.FindAction("Select", throwIfNotFound: true);
@@ -297,20 +308,20 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     // Gameplay
     private readonly InputActionMap m_Gameplay;
     private IGameplayActions m_GameplayActionsCallbackInterface;
-    private readonly InputAction m_Gameplay_ShootDirection;
-    private readonly InputAction m_Gameplay_ShootHold;
+    private readonly InputAction m_Gameplay_ShootRelease;
     private readonly InputAction m_Gameplay_ShootPress;
     private readonly InputAction m_Gameplay_Move;
     private readonly InputAction m_Gameplay_Eat;
+    private readonly InputAction m_Gameplay_Jump;
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
         public GameplayActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ShootDirection => m_Wrapper.m_Gameplay_ShootDirection;
-        public InputAction @ShootHold => m_Wrapper.m_Gameplay_ShootHold;
+        public InputAction @ShootRelease => m_Wrapper.m_Gameplay_ShootRelease;
         public InputAction @ShootPress => m_Wrapper.m_Gameplay_ShootPress;
         public InputAction @Move => m_Wrapper.m_Gameplay_Move;
         public InputAction @Eat => m_Wrapper.m_Gameplay_Eat;
+        public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -320,12 +331,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_GameplayActionsCallbackInterface != null)
             {
-                @ShootDirection.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShootDirection;
-                @ShootDirection.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShootDirection;
-                @ShootDirection.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShootDirection;
-                @ShootHold.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShootHold;
-                @ShootHold.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShootHold;
-                @ShootHold.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShootHold;
+                @ShootRelease.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShootRelease;
+                @ShootRelease.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShootRelease;
+                @ShootRelease.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShootRelease;
                 @ShootPress.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShootPress;
                 @ShootPress.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShootPress;
                 @ShootPress.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShootPress;
@@ -335,16 +343,16 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Eat.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnEat;
                 @Eat.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnEat;
                 @Eat.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnEat;
+                @Jump.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @ShootDirection.started += instance.OnShootDirection;
-                @ShootDirection.performed += instance.OnShootDirection;
-                @ShootDirection.canceled += instance.OnShootDirection;
-                @ShootHold.started += instance.OnShootHold;
-                @ShootHold.performed += instance.OnShootHold;
-                @ShootHold.canceled += instance.OnShootHold;
+                @ShootRelease.started += instance.OnShootRelease;
+                @ShootRelease.performed += instance.OnShootRelease;
+                @ShootRelease.canceled += instance.OnShootRelease;
                 @ShootPress.started += instance.OnShootPress;
                 @ShootPress.performed += instance.OnShootPress;
                 @ShootPress.canceled += instance.OnShootPress;
@@ -354,6 +362,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Eat.started += instance.OnEat;
                 @Eat.performed += instance.OnEat;
                 @Eat.canceled += instance.OnEat;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
             }
         }
     }
@@ -393,11 +404,11 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     public MenuActions @Menu => new MenuActions(this);
     public interface IGameplayActions
     {
-        void OnShootDirection(InputAction.CallbackContext context);
-        void OnShootHold(InputAction.CallbackContext context);
+        void OnShootRelease(InputAction.CallbackContext context);
         void OnShootPress(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnEat(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
     public interface IMenuActions
     {

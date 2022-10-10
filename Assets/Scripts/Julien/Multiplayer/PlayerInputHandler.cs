@@ -32,12 +32,32 @@ public class PlayerInputHandler : MonoBehaviour
         {
             OnMove(obj);
         }
+        else if (obj.action.name == _controls.Gameplay.Jump.name)
+        {
+            OnJump(obj);
+        }
     }
     
     private void OnMove(CallbackContext context)
     {
         if(_mover != null)
             _mover.SetInputVector(context.ReadValue<Vector2>());
+    }
+
+    private void OnJump(CallbackContext context)
+    {
+        if (_mover != null)
+            _mover.Jump();
+    }
+
+    private void OnShootPress(CallbackContext context)
+    {
+        
+    }
+    
+    private void OnShootHold(CallbackContext context)
+    {
+        
     }
 
 }

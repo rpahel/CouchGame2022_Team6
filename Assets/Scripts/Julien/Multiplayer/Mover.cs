@@ -29,4 +29,9 @@ public class Mover : MonoBehaviour
     {
         _rb.velocity = new Vector2(_inputVector.x * moveSpeed, 0 );
     }
+
+    public void Jump()
+    {
+        
+    }
 }
