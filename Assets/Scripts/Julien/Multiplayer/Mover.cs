@@ -70,6 +70,7 @@ public class Mover : MonoBehaviour //Rename to playerController
     {
         _inputVector = direction;
         pointeur.gameObject.SetActive(_inputVector.sqrMagnitude > 0.1f ? true : false);
+        angle = Mathf.Atan2(_inputVector.y, _inputVector.x);
     }
 
     void Update()
