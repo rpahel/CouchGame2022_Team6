@@ -44,6 +44,11 @@ public class PlayerInputHandler : MonoBehaviour
         {
             OnAim(obj);
         }
+        else if (obj.action.name == _controls.Gameplay.Eat.name)
+        {
+            OnEat(obj);
+        }
+            
     }
     
     private void OnMove(CallbackContext context)
@@ -70,6 +75,14 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (_mover != null && context.performed)
             _mover.Aim();
+    }
+    
+    private void OnEat(InputAction.CallbackContext context)
+    {
+        if (_mover != null && context.performed)
+        {
+            _mover.TryEat();
+        }
     }
 
 }

@@ -42,6 +42,19 @@ public class Mover : MonoBehaviour //Rename to playerController
     [SerializeField] private float shootCooldown;
     [SerializeField] private float shootPower;
     [SerializeField] private float lifetime;
+    
+    [Header("Eat")]
+    public Transform pointeur;       
+    public Transform pointeurBase;   
+    public float reach = 1f;  
+    [SerializeField, Range(0f, 1f)]
+    private float filling = 0.12f;
+    private bool canEat = true;
+    private float satiety = 0f;   
+    [SerializeField, Range(0f, .5f)]
+    private float eatCooldown = 0.5f;
+    private Coroutine cooldownCoroutine;
+    private float  angle;    
 
     private void Awake()
     {
@@ -49,16 +62,20 @@ public class Mover : MonoBehaviour //Rename to playerController
         ResetShootCooldown();
         _state = PlayerState.Moving;
         _vecGravity = new Vector2(0, -Physics2D.gravity.y);
+        
+        pointeur.gameObject.SetActive(false);
     }
     
     public void SetInputVector(Vector2 direction)
     {
         _inputVector = direction;
+        pointeur.gameObject.SetActive(_inputVector.sqrMagnitude > 0.1f ? true : false);
     }
 
     void Update()
     {
         _cooldown -= Time.deltaTime;
+        pointeur.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * angle);
     }
 
     private void FixedUpdate()
@@ -150,5 +167,52 @@ public class Mover : MonoBehaviour //Rename to playerController
     {
         _state = PlayerState.Aiming;
     }
+    public void Eat(Cube_Edible cubeMangeable)
+    {
+        cubeMangeable.GetManged();
+        satiety += filling;
+        satiety = Mathf.Clamp(satiety, 0f, 1f);
+        canEat = false;
+        cooldownCoroutine = StartCoroutine(CooldownCoroutine());
+    }
+
+    public void TryEat()
+    {
+        Debug.Log("try Eat");
+        if (!canEat)
+        {
+            print("I'm on eating cooldown !");
+            return;
+        }
+
+        if (satiety > 1f)
+        {
+            print("I'm full !!");
+            return;
+        }
+        
+        RaycastHit hit;
+        if (Physics.Raycast(pointeurBase.position, _inputVector, out hit, reach))
+        {
+            if (hit.transform.parent.CompareTag("CubeEdible"))
+            {
+                Cube_Edible cubeMangeable;
+                if (hit.transform.parent && hit.transform.parent.TryGetComponent<Cube_Edible>(out cubeMangeable))
+                {
+                    Eat(cubeMangeable);
+                }
+                else
+                    print("Pas de Raf_CubeMangeable dans le cube vis�.");
+            }
+        }
+    }
+    
+    IEnumerator CooldownCoroutine()
+    {
+        yield return new WaitForSeconds(eatCooldown);
+        canEat = true;
+        StopCoroutine(cooldownCoroutine);
+    }
+    
 
 }
