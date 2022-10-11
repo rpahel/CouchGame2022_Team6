@@ -272,10 +272,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2613636963887001772}
-  - component: {fileID: 580260796143978958}
+  - component: {fileID: 5219080403393118203}
   m_Layer: 0
-  m_Name: CubeMangeable
-  m_TagString: CubeMangeable
+  m_Name: CubeEdible
+  m_TagString: CubeEdible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -300,7 +300,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &580260796143978958
+--- !u!114 &5219080403393118203
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -309,16 +309,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2613636963887001808}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c41ccc009f7c6884b8d5dbebecfdb496, type: 3}
+  m_Script: {fileID: 11500000, guid: cfb70fdb085f1e742baa76087ca17937, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cubeType: 1
   cube: {fileID: 303830590082189049}
   restes:
   - {fileID: 2531556312048333293}
   - {fileID: 3530211992881418058}
   - {fileID: 1866652284042003069}
   - {fileID: 5241827266282811671}
-  cubesAutour: []
 --- !u!1 &3530211992881418058
 GameObject:
   m_ObjectHideFlags: 0
