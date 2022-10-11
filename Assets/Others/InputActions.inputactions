@@ -6,9 +6,18 @@
             "id": "c501409d-c56a-4711-b863-41868005c94c",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "Jump",
                     "type": "Button",
                     "id": "485477e4-68f4-4b1f-ac59-f05e5f694aec",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Jetpack",
+                    "type": "Button",
+                    "id": "cd3f155d-233d-4933-9090-f70ca7efdae0",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -19,11 +28,22 @@
                 {
                     "name": "",
                     "id": "463179a2-fe41-4798-8e91-029dfa33685b",
-                    "path": "",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5e2f6193-c221-4100-8abf-c5a60f0f6be6",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jetpack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
