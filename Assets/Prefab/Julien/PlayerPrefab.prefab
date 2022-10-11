@@ -334,6 +334,9 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  jumpCount: 0
+  maxJumpCount: 2
+  wjForce: 6
   projectilePrefab: {fileID: 4601391959376553427, guid: 19c61af3207f2734f8f407759aad8a36,
     type: 3}
   canCreatePlatform: 0

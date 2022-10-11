@@ -7,8 +7,8 @@ using UnityEngine;
 
 public class Mover : MonoBehaviour //Rename to playerController
 {
-    [Header("Player State")]
-    private PlayerState _state;
+    [Header("Player State")] private PlayerState _state;
+
     enum PlayerState
     {
         Aiming,
@@ -17,9 +17,13 @@ public class Mover : MonoBehaviour //Rename to playerController
         Moving,
     }
 
-    [Header("Movements")]
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float jumpForce;
+    [Header("Movements")] [SerializeField] private float moveSpeed;
+    private Rigidbody2D _rb;
+    private Vector2 _inputVector = Vector2.zero;
+
+    [Header("Simple Jump")] [SerializeField]
+    private float jumpForce;
+
     [SerializeField] private float jumpTime;
     [SerializeField] private float fallMultiplier;
     [SerializeField] private float jumpMultiplier;
@@ -29,8 +33,14 @@ public class Mover : MonoBehaviour //Rename to playerController
     private bool _isJumping;
     private float _jumpCounter;
     private Vector2 _vecGravity;
-    private Rigidbody2D _rb;
-    private Vector2 _inputVector = Vector2.zero;
+
+    [Header("Simple Jump")] [SerializeField]
+    private float jumpCount;
+
+    [SerializeField] private float maxJumpCount;
+    [SerializeField] private float wjForce;
+    private bool _canWallJump;
+    private Vector3 _normalVec;
 
     [Header("Shoot")]
     private float _cooldown;
@@ -97,6 +107,18 @@ public class Mover : MonoBehaviour //Rename to playerController
 
     public void Jump()
     {
+        if (_canWallJump)
+        {
+            if (!_isGrounded)
+            {
+                Vector3 wjForceVec = _normalVec * wjForce;
+                wjForceVec.y = jumpForce;
+                _rb.AddForce(wjForceVec, ForceMode2D.Impulse);
+            }
+
+            return;
+        }
+        
         if (_isGrounded)
         {
             _rb.velocity = new Vector2(_rb.velocity.x, jumpForce);
@@ -213,6 +235,16 @@ public class Mover : MonoBehaviour //Rename to playerController
         canEat = true;
         StopCoroutine(cooldownCoroutine);
     }
-    
+    public void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.collider.tag.Contains("Jumpable")) {
+            _canWallJump = true;
+           _normalVec = collision.contacts[0].normal;
+        }
+    }
 
+    public void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.tag.Contains("Jumpable"))
+            _canWallJump = false;
+    }
 }
