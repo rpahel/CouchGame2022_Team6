@@ -78,7 +78,7 @@ public class ScaleEat : MonoBehaviour
                 break;
             case SwitchSizeSkin.big:
                 CurrentMesh = meshBig;
-                // dashCardinalDirection._canDash = true;
+            
                 if (NbEaten < 100)
                 {
                     switchSkin = SwitchSizeSkin.little;

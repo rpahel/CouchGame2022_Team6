@@ -16,7 +16,7 @@ public class DashCardinalDirection : MonoBehaviour
     private Vector2 _dashingDir;
     private bool _isDashing;
     //[HideInInspector]
-    public bool _canDash = true;
+    public bool _canDash = false;
 
     public Vector2 aimingDir;
     private Vector2 aimingPos;
@@ -24,18 +24,20 @@ public class DashCardinalDirection : MonoBehaviour
     public Transform pointeurBase;   // Point de départ des raycasts
     private float angle;
 
+    private ScaleEat _scaleEat;
 
     private void Awake()
     {
         pointeur.gameObject.SetActive(false);
+        rafPlayer = GetComponent<Raf_PLayer>();
+       _scaleEat = GetComponent<ScaleEat>();
+        rb = GetComponent<Rigidbody2D>();
+        _trailRenderer = GetComponent<TrailRenderer>();
     }
     // Start is called before the first frame update
     void Start()
     {
-        rafPlayer = GetComponent<Raf_PLayer>();
-        // chacC = GetComponent<CharacterController>();
-        rb = GetComponent<Rigidbody2D>();
-        _trailRenderer = GetComponent<TrailRenderer>();
+  
     }
 
     // Update is called once per frame
@@ -97,7 +99,19 @@ public class DashCardinalDirection : MonoBehaviour
     public void GetAiming(InputAction.CallbackContext context)
     {
         aimingPos = context.ReadValue<Vector2>();
-        pointeur.gameObject.SetActive(aimingPos.sqrMagnitude > 0.1f ? true : false);
+        pointeur.gameObject.SetActive(aimingPos.sqrMagnitude > 0.1f ? true : false );
+        if(pointeur.gameObject.activeSelf == true && _scaleEat.NbEaten >= 200)
+        {
+            _canDash = true;
+        }
+        else
+        {
+            _canDash = false;
+        }
+
+
+
+
     }
 
    
