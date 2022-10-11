@@ -48,6 +48,11 @@ public class PlayerInputHandler : MonoBehaviour
         {
             OnEat(obj);
         }
+        else if (obj.action.name == _controls.Gameplay.Dash.name)
+        {
+            OnDash(obj);
+        }
+        
             
     }
     
@@ -82,6 +87,14 @@ public class PlayerInputHandler : MonoBehaviour
         if (_mover != null && context.performed)
         {
             _mover.TryEat();
+        }
+    }
+
+    private void OnDash(CallbackContext context)
+    {
+        if (_mover != null && context.performed)
+        {
+            _mover.Dash();
         }
     }
 

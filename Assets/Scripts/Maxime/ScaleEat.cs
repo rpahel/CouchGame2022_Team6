@@ -12,12 +12,13 @@ public class ScaleEat : MonoBehaviour
     }  
 
     public SwitchSizeSkin switchSkin;
-    public float NbEaten = 1f;
+    public float NbEaten = 200f;
     public Vector3 scaler = new Vector3(1,1,1);
     public Mesh meshLittle;
     public Mesh meshAverage;
     public Mesh meshBig;
     public Mesh CurrentMesh;
+    private Mesh _meshFilterGo;
 
     private DashCardinalDirection dashCardinalDirection;
     // public bool squashed;
@@ -29,15 +30,15 @@ public class ScaleEat : MonoBehaviour
     }
     private void Start()
     {
-         GetComponent<MeshFilter>().mesh = CurrentMesh;
-       
+        _meshFilterGo = this.transform.GetChild(0).GetComponent<MeshFilter>().mesh;
+        Debug.Log(_meshFilterGo);
+        CurrentMesh = _meshFilterGo;
+
     }
     // Update is called once per frame
     void Update()
     {
        scaleEat();
-
-     
     }
 
     void scaleEat()
@@ -46,9 +47,9 @@ public class ScaleEat : MonoBehaviour
         NbEaten = Mathf.Clamp(NbEaten, 1, 300);
 
         //juste pour sa soit smooth
-        scaler.y = Mathf.Lerp(scaler.y, NbEaten * 1f, .03f);
-        scaler.x = Mathf.Lerp(scaler.x, NbEaten * 1f, .03f);
-        scaler.z = Mathf.Lerp(scaler.z, NbEaten * 1f, .03f);
+        scaler.y = Mathf.Lerp(scaler.y, NbEaten * 0.005f, .03f);
+        scaler.x = Mathf.Lerp(scaler.x, NbEaten * 0.005f, .03f);
+        scaler.z = Mathf.Lerp(scaler.z, NbEaten * 0.005f, .03f);
 
 
         //les different etat du player
@@ -60,7 +61,7 @@ public class ScaleEat : MonoBehaviour
                 if (NbEaten >= 100)
                 {
                     switchSkin = SwitchSizeSkin.average;
-                    GetComponent<MeshFilter>().mesh = meshAverage;
+                    _meshFilterGo = meshAverage;
                 }
                 break;
             case SwitchSizeSkin.average:
@@ -68,12 +69,12 @@ public class ScaleEat : MonoBehaviour
                 if (NbEaten < 100)
                 {
                     switchSkin = SwitchSizeSkin.little;
-                    GetComponent<MeshFilter>().mesh = meshLittle;
+                    _meshFilterGo = meshLittle;
                 }
                 else if (NbEaten >= 200)
                 {
                     switchSkin = SwitchSizeSkin.big;
-                    GetComponent<MeshFilter>().mesh = meshBig;
+                    _meshFilterGo = meshBig;
                 }
                 break;
             case SwitchSizeSkin.big:
@@ -82,12 +83,12 @@ public class ScaleEat : MonoBehaviour
                 if (NbEaten < 100)
                 {
                     switchSkin = SwitchSizeSkin.little;
-                    GetComponent<MeshFilter>().mesh = meshLittle;
+                    _meshFilterGo = meshLittle;
                 }
                 else if (NbEaten < 200)
                 {
                     switchSkin = SwitchSizeSkin.average;
-                    GetComponent<MeshFilter>().mesh = meshAverage;
+                    _meshFilterGo = meshAverage;
                 }
                 break;
         }
