@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InitializeLevel : MonoBehaviour
 {
-    [SerializeField] private CameraController camera;
+    [SerializeField] private CameraController cameraC;
     
     [SerializeField] private Transform[] playerSpawns;
     [SerializeField] private GameObject playerPrefab;
@@ -18,9 +18,9 @@ public class InitializeLevel : MonoBehaviour
         {
             var player = Instantiate(playerPrefab, playerSpawns[i].position, playerSpawns[i].rotation, gameObject.transform);
             player.GetComponent<PlayerInputHandler>().InitializePlayer(playerConfigs[i]); 
-            camera.Initialize(player.transform);
+            cameraC.Initialize(player.transform);
         }
-        camera.EndOfInit();
+        cameraC.EndOfInit();
         
     }
 }

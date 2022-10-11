@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 274186302}
   - component: {fileID: 274186301}
   - component: {fileID: 274186303}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: down_platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -281,7 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7663d832135153c44a4e0fcf5e19ec34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 2146728520}
+  cameraC: {fileID: 2146728520}
   playerSpawns:
   - {fileID: 1263758858}
   - {fileID: 505362604}
@@ -366,7 +366,7 @@ GameObject:
   - component: {fileID: 487370555}
   - component: {fileID: 487370554}
   - component: {fileID: 487370556}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: down_platform 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -622,7 +622,7 @@ GameObject:
   - component: {fileID: 684023643}
   - component: {fileID: 684023642}
   - component: {fileID: 684023644}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: up_platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}

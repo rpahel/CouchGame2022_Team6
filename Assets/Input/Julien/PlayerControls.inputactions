@@ -6,21 +6,21 @@
             "id": "3eb6e9c6-c5e0-428f-a4b2-3c4761a9ac41",
             "actions": [
                 {
-                    "name": "ShootRelease",
+                    "name": "Shoot",
                     "type": "Button",
                     "id": "c3d6648d-0ff0-4239-9f14-7b573ac5166c",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press",
+                    "interactions": "Press(behavior=1)",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ShootPress",
+                    "name": "Aim",
                     "type": "Button",
                     "id": "0dce509a-4b74-441d-83a7-2eb3952282fa",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press(pressPoint=0.5)",
+                    "interactions": "Press",
                     "initialStateCheck": false
                 },
                 {
@@ -47,7 +47,7 @@
                     "id": "3b6806f7-fb38-4f8c-b25b-817676bd3a6b",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press",
                     "initialStateCheck": false
                 }
             ],
@@ -59,7 +59,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ShootRelease",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -70,7 +70,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ShootPress",
+                    "action": "Aim",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

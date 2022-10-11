@@ -36,6 +36,14 @@ public class PlayerInputHandler : MonoBehaviour
         {
             OnJump(obj);
         }
+        else if (obj.action.name == _controls.Gameplay.Shoot.name)
+        {
+            OnShoot(obj);
+        }
+        else if (obj.action.name == _controls.Gameplay.Aim.name)
+        {
+            OnAim(obj);
+        }
     }
     
     private void OnMove(CallbackContext context)
@@ -46,18 +54,22 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnJump(CallbackContext context)
     {
-        if (_mover != null)
+        if (_mover != null && context.performed)
             _mover.Jump();
+        else if (_mover != null && context.canceled)
+            _mover.StopJump();
     }
 
-    private void OnShootPress(CallbackContext context)
+    private void OnShoot(CallbackContext context)
     {
-        
+        if (_mover != null && context.performed)
+            _mover.Shoot();
     }
     
-    private void OnShootHold(CallbackContext context)
+    private void OnAim(CallbackContext context)
     {
-        
+        if (_mover != null && context.performed)
+            _mover.Aim();
     }
 
 }

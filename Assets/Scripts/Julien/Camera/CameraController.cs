@@ -41,19 +41,13 @@ public class CameraController : MonoBehaviour
 
             if(_playersTransforms.Any(r => CheckIfPlayerIsOnScreen(r) == false &&  gameObject.transform.position.z > maxZ))
             {
-                Debug.Log("not visible");
                 var position = transform.position;
                 gameObject.transform.position = new Vector3(position.x, position.y, position.z - 0.003f);
             }
             else if (_playersTransforms.All(r => CheckIfPlayerIsOnScreen(r) == true) && gameObject.transform.position.z < _minZ)
             {
-                Debug.Log("visible");
                 var position = gameObject.transform.position;
                 gameObject.transform.position = new Vector3(position.x, position.y, position.z + 0.003f);
-            }
-            else
-            {
-                Debug.Log("visible");
             }
         }
     }
