@@ -1,19 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Data;
 
-public class Raf_CubeMangeable : MonoBehaviour
+public class Cube_Edible : Cube
 {
-    [SerializeField] private GameObject              cube;                          // Le cube principal
-    [SerializeField] private GameObject[]            restes = new GameObject[4];    // Les restes du cubes (haut, droite, bas, gauche)
-    
-    private List<Raf_CubeMangeable> cubesAutour = new List<Raf_CubeMangeable>(4);
-    public List<Raf_CubeMangeable> CubesAutour { get => cubesAutour; set => cubesAutour = value; }
+    [SerializeField] private GameObject[] restes = new GameObject[4];
+
+    private List<Cube> cubesAutour = new List<Cube>(4);
+    public List<Cube> CubesAutour { get => cubesAutour; set => cubesAutour = value; }
 
     private void Start()
     {
-        // Check si y'a des cubes voisins autour de cube et les ajoute à la liste cubesAutour (haut, droite, bas, gauche)
-        for(int i = 0; i < 4; i++)
+        InitCubes();
+    }
+
+    protected void InitCubes()
+    {
+        for (int i = 0; i < 4; i++)
         {
             cubesAutour.Add(null);
 
@@ -21,8 +25,8 @@ public class Raf_CubeMangeable : MonoBehaviour
             Vector3 dir = Quaternion.Euler(0, 0, -90 * i) * Vector3.up;
             if (Physics.Raycast(transform.position, dir, out hit, transform.localScale.x))
             {
-                Raf_CubeMangeable cubeClone;
-                if (hit.transform.parent.TryGetComponent<Raf_CubeMangeable>(out cubeClone))
+                Cube cubeClone;
+                if (hit.transform.parent && hit.transform.parent.TryGetComponent<Cube>(out cubeClone))
                 {
                     cubesAutour[i] = cubeClone;
                 }
@@ -32,20 +36,19 @@ public class Raf_CubeMangeable : MonoBehaviour
 
     public void GetManged()
     {
-
         // Signale aux cubes voisins que ce cube s'est fait mangé
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
-            if (cubesAutour[i])
+            if (cubesAutour[i] && cubesAutour[i].CubeType == CUBETYPE.EDIBLE)
             {
-                cubesAutour[i].VoisinGotManged((i + 2) % 4);
+                (cubesAutour[i] as Cube_Edible).VoisinGotManged((i + 2) % 4);
             }
         }
 
         cube.SetActive(false);
 
         // Fais apparaitre les restes en fonction des cubes voisins qui sont toujours là
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             if (cubesAutour[i] && !cubesAutour[i].isManged())
             {
@@ -63,9 +66,5 @@ public class Raf_CubeMangeable : MonoBehaviour
         }
     }
 
-    // Vérifie si ce cube a été mangé ou pas
-    public bool isManged()
-    {
-        return !cube.activeSelf;
-    }
+
 }

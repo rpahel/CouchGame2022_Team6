@@ -6,30 +6,21 @@
             "id": "3eb6e9c6-c5e0-428f-a4b2-3c4761a9ac41",
             "actions": [
                 {
-                    "name": "ShootDirection",
-                    "type": "Value",
-                    "id": "a7c81585-be9c-4781-bbcf-f212de222b40",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "ShootHold",
+                    "name": "Shoot",
                     "type": "Button",
                     "id": "c3d6648d-0ff0-4239-9f14-7b573ac5166c",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Hold(duration=2)",
+                    "interactions": "Press(behavior=1)",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ShootPress",
+                    "name": "Aim",
                     "type": "Button",
                     "id": "0dce509a-4b74-441d-83a7-2eb3952282fa",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press(pressPoint=0.5,behavior=1)",
+                    "interactions": "Press",
                     "initialStateCheck": false
                 },
                 {
@@ -49,39 +40,37 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "3b6806f7-fb38-4f8c-b25b-817676bd3a6b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "",
-                    "id": "00162460-cd93-4ce0-a031-b3a3ab0d5e8e",
-                    "path": "<Gamepad>/rightStick",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ShootDirection",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "7c2ed517-cb2b-4377-9f28-b596ce654c02",
-                    "path": "<Gamepad>/rightTrigger",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ShootHold",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "36898656-e184-47dd-970e-d77287de193d",
-                    "path": "<Gamepad>/rightTrigger",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ShootPress",
+                    "action": "Aim",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -155,10 +144,32 @@
                     "name": "",
                     "id": "5d49ca70-55ae-4991-a0a7-116b2e3cb65a",
                     "path": "<Gamepad>/rightShoulder",
-                    "interactions": "",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "",
                     "action": "Eat",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8f0a3e62-9f54-48e0-8dc4-cd2b522ede90",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "64698a58-aa9a-4704-9471-59082486b6a9",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -39,7 +39,7 @@ public class ShootProjectile : MonoBehaviour
 
     void Shoot(bool wasHolding)
     {
-        if (_cooldown < 0 && slider.value > 0)
+        if (_cooldown < 0) //&& slider.value > 0
         {
             var projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
             _rb = projectile.GetComponent<Rigidbody2D>();
