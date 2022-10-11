@@ -4,7 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - CubeMangeable
+  - CubeBedrock
+  - CubeEdible
+  - CubeTrap
   layers:
   - Default
   - TransparentFX

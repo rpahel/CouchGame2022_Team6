@@ -468,8 +468,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fbff18e3e5fa3947ab3dd67c6620a75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imageDeReference: {fileID: 2800000, guid: f4d3769811e6c694f88bc2f4cf3c1d19, type: 3}
+  imageDeReference: {fileID: 2800000, guid: 68784f147b3df554db4e33a8398cf6dc, type: 3}
   cubeMangeable: {fileID: 2613636963887001808, guid: 74a185477bf05c94796ad895b5c85abe,
+    type: 3}
+  cubeBedrock: {fileID: 2613636963887001808, guid: c7f75a0a01a2fd944b4e35a457f711f5,
+    type: 3}
+  cubePiege: {fileID: 2613636963887001808, guid: fd8e6153315a70a4c9d48f9614a0b90d,
     type: 3}
 --- !u!4 &611988393
 Transform:
@@ -559,7 +563,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: ef49e2cc21cbdfb4389931fc4bf014a0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -597,7 +601,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 910809207}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.44, y: 2.36, z: 0}
+  m_LocalPosition: {x: 4.13, y: 7.54, z: 0}
   m_LocalScale: {x: 0.85, y: 0.85, z: 0.85}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -639,6 +643,8 @@ MonoBehaviour:
   pointeur: {fileID: 640611615}
   pointeurBase: {fileID: 1822937799}
   reach: 1
+  filling: 0.12
+  eatCooldown: 0.5
 --- !u!114 &910809214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -666,19 +672,7 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 910809213}
-        m_TargetAssemblyTypeName: Raf_PLayer, Assembly-CSharp
-        m_MethodName: GetAiming
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: a7c81585-be9c-4781-bbcf-f212de222b40
     m_ActionName: Gameplay/ShootDirection[/DualShock4GamepadHID/rightStick]
   - m_PersistentCalls:
@@ -703,6 +697,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 910809213}
+        m_TargetAssemblyTypeName: Raf_PLayer, Assembly-CSharp
+        m_MethodName: GetAiming
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: b6230cbb-e2bb-463c-b926-c01d219c1bec
     m_ActionName: Gameplay/Move[/DualShock4GamepadHID/leftStick,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
@@ -713,7 +719,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 910809213}
         m_TargetAssemblyTypeName: Raf_PLayer, Assembly-CSharp
-        m_MethodName: Eat
+        m_MethodName: TryEat
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
