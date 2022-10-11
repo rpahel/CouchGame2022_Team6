@@ -1,14 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class Raf_LevelDesign : MonoBehaviour
+public class LevelGenerator : MonoBehaviour
 {
-    public Texture2D    imageDeReference;
-    public GameObject   cubeMangeable;
-    public GameObject   cubeBedrock;
-    public GameObject   cubePiege;
+    public Texture2D imageDeReference;
+    public GameObject cubeEdible;
+    public GameObject cubeBedrock;
+    public GameObject cubeTrap;
 
     private void Awake()
     {
@@ -34,7 +31,7 @@ public class Raf_LevelDesign : MonoBehaviour
                 Color pixColor = imageDeReference.GetPixel(j, i);
                 if (pixColor == Color.green)
                 {
-                    CreateCubeOnPlay(cubeMangeable, parentObj.transform, i, j);
+                    CreateCubeOnPlay(cubeEdible, parentObj.transform, i, j);
                 }
                 else if (pixColor == Color.black)
                 {
@@ -42,7 +39,7 @@ public class Raf_LevelDesign : MonoBehaviour
                 }
                 else if (pixColor == Color.red)
                 {
-                    CreateCubeOnPlay(cubePiege, parentObj.transform, i, j);
+                    CreateCubeOnPlay(cubeTrap, parentObj.transform, i, j);
                 }
             }
         }
