@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Data;
 
+[ExecuteInEditMode]
 public abstract class Cube : MonoBehaviour
 {
     [SerializeField] private CUBETYPE cubeType;
