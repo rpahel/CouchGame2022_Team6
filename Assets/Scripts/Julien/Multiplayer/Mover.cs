@@ -37,7 +37,6 @@ public class Mover : MonoBehaviour //Rename to playerController
 
     [Header("Wall Jump")] 
     [SerializeField] private float jumpCount;
-    private bool _isWallJumping;
     [SerializeField] private float maxJumpCount;
     [SerializeField] private float wjForce;
     private bool _canWallJump;
@@ -117,13 +116,6 @@ public class Mover : MonoBehaviour //Rename to playerController
             Debug.Log(_scaleEat.NbEaten);
             _rb.AddForce(_inputVector * dashForce, ForceMode2D.Impulse);
         }
-
-        if (_isWallJumping)
-        {
-            /*Vector3 wjForceVec = _normalVec * wjForce;
-            wjForceVec.y = jumpForce;
-            _rb.AddForce(wjForceVec, ForceMode2D.Impulse);*/
-        }
     }
 
     private bool IsGrounded()
@@ -132,7 +124,11 @@ public class Mover : MonoBehaviour //Rename to playerController
     }
     private void Move()
     {
-        _rb.velocity = new Vector2(_inputVector.x * moveSpeed, _rb.velocity.y);
+        float Vx = _inputVector.x * moveSpeed + _rb.velocity.x;
+        Vx = Mathf.Clamp(Vx, -moveSpeed, moveSpeed);
+        _rb.velocity = new Vector2(Vx, _rb.velocity.y);
+        
+        //if(_inputVector == Vector2.zero)
     }
 
     public void Jump()
@@ -143,7 +139,10 @@ public class Mover : MonoBehaviour //Rename to playerController
             {
                 if (!_isGrounded)
                 {
-
+                    Vector3 wjForceVec = _normalVec * wjForce;
+                    wjForceVec.y = jumpForce;
+                    _rb.velocity = Vector2.zero;
+                    _rb.AddForce(wjForceVec, ForceMode2D.Impulse);
                 }
 
                 return;
