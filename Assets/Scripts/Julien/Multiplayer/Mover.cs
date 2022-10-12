@@ -244,8 +244,8 @@ public class Mover : MonoBehaviour //Rename to playerController
             return;
         }
         
-        RaycastHit hit;
-        if (Physics.Raycast(pointeurBase.position, _inputVector, out hit, reach))
+        RaycastHit2D hit = Physics2D.Raycast(pointeurBase.position, _inputVector, reach);
+        if (hit)
         {
             if (hit.transform.parent.CompareTag("CubeEdible"))
             {
