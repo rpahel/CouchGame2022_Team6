@@ -2,26 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Data;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class Mover : MonoBehaviour //Rename to playerController
+public class Movement : MonoBehaviour
 {
-    [Header("Player State")] private PlayerState _state;
-
-    enum PlayerState
-    {
-        //Idle,
-        Aiming,
-        Shooting,
-        Dashing,
-        WallJumping,
-        Moving,
-    }
-
-    [Header("Movements")] [SerializeField] private float moveSpeed;
+    private PlayerManager _playerManager;
+    
+    
+    [Header("Movements")] 
+    [SerializeField] private float moveSpeed;
     private Rigidbody2D _rb;
-    private Vector2 _inputVector = Vector2.zero;
     public float _brakeForce;
 
     [Header("Simple Jump")] [SerializeField]
@@ -44,7 +36,7 @@ public class Mover : MonoBehaviour //Rename to playerController
     private bool _canWallJump;
     private Vector3 _normalVec;
 
-    [Header("Shoot")]
+    /*[Header("Shoot")]
     private float _cooldown;
     [Header("Options Projectile")]
     [SerializeField] private GameObject projectilePrefab;
@@ -53,21 +45,8 @@ public class Mover : MonoBehaviour //Rename to playerController
     [SerializeField, Range(0, 1)] private float gravityScale;
     [SerializeField] private float shootCooldown;
     [SerializeField] private float shootPower;
-    [SerializeField] private float lifetime;
-    
-    [Header("Eat")]
-    public Transform pointeur;       
-    public Transform pointeurBase;   
-    public float reach = 1f;  
-    [SerializeField, Range(0f, 1f)]
-    private float filling = 0.12f;
-    private bool canEat = true;
-    private float satiety = 0f;   
-    [SerializeField, Range(0f, .5f)]
-    private float eatCooldown = 0.5f;
-    private Coroutine cooldownCoroutine;
-    private float  angle;    
-    
+    [SerializeField] private float lifetime;*/
+
     [Header("Dash")]
     private TrailRenderer _trailRenderer;
     private ScaleEat _scaleEat;
@@ -81,44 +60,32 @@ public class Mover : MonoBehaviour //Rename to playerController
 
     private void Awake()
     {
+        _playerManager = gameObject.GetComponent<PlayerManager>();
         _rb = gameObject.GetComponent<Rigidbody2D>();
-        ResetShootCooldown();
-        _state = PlayerState.Moving;
+        //ResetShootCooldown();
+        _playerManager.SetPlayerState(PlayerState.Moving);
         _vecGravity = new Vector2(0, -Physics2D.gravity.y);
-        
-        pointeur.gameObject.SetActive(false);
         _scaleEat = GetComponent<ScaleEat>();
         _trailRenderer = GetComponent<TrailRenderer>();
     }
-    
-    public void SetInputVector(Vector2 direction)
-    {
-        _inputVector = direction;
-        pointeur.gameObject.SetActive(_inputVector.sqrMagnitude > 0.1f ? true : false);
-        angle = Mathf.Atan2(_inputVector.y, _inputVector.x);
-    }
-
     void Update()
     {
-        _cooldown -= Time.deltaTime;
-        pointeur.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * angle);
+        //_cooldown -= Time.deltaTime; cooldown shoot
     }
 
     private void FixedUpdate()
     {
         _isGrounded = IsGrounded();
 
-        if (_state == PlayerState.Moving)
+        if (_playerManager.State == PlayerState.Moving)
             Move();
         else
             Brake();
         
         if (_isDashing) 
         {
-            //Perdre de la matière selon time.deltatime
             _scaleEat.NbEaten -= Time.deltaTime;
-            Debug.Log(_scaleEat.NbEaten);
-            _rb.AddForce(_inputVector * dashForce, ForceMode2D.Impulse);
+            _rb.AddForce(-_playerManager.InputVector * dashForce, ForceMode2D.Impulse);
         }
     }
 
@@ -128,10 +95,10 @@ public class Mover : MonoBehaviour //Rename to playerController
     }
     private void Move()
     {
-        if (_inputVector == Vector2.zero)
+        if (_playerManager.InputVector == Vector2.zero)
             Brake();
 
-        float Vx = _inputVector.x * moveSpeed + _rb.velocity.x;
+        float Vx = _playerManager.InputVector.x * moveSpeed + _rb.velocity.x;
         Vx = Mathf.Clamp(Vx, -moveSpeed, moveSpeed);
         _rb.velocity = new Vector2(Vx, _rb.velocity.y);
         
@@ -149,7 +116,7 @@ public class Mover : MonoBehaviour //Rename to playerController
 
     public void Jump()
     {
-        if (_state == PlayerState.Moving)
+        if (_playerManager.State == PlayerState.Moving)
         {
             if (_canWallJump)
             {
@@ -202,7 +169,7 @@ public class Mover : MonoBehaviour //Rename to playerController
             _rb.velocity = new Vector2(_rb.velocity.x, _rb.velocity.y * 0.6f);
     }
     
-    private void ResetShootCooldown()
+    /*private void ResetShootCooldown()
     {
         _cooldown = shootCooldown;
     }
@@ -211,7 +178,7 @@ public class Mover : MonoBehaviour //Rename to playerController
     {
         if (_cooldown < 0) //&& slider.value > 0
         {
-            _state = PlayerState.Shooting;
+            PlayerManager.Instance.SetPlayerState(PlayerState.Shooting);
             var projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
             _rbProjectile = projectile.GetComponent<Rigidbody2D>();
             //slider.value -= 0.1f;
@@ -221,66 +188,15 @@ public class Mover : MonoBehaviour //Rename to playerController
             projectile.GetComponent<AutoDestroy>().DestroyObj((lifetime));
             ResetShootCooldown();
         }
-        _state = PlayerState.Moving;
+        PlayerManager.Instance.SetPlayerState(PlayerState.Moving);
     }
     
-    void OnDrawGizmos()
-    {
-        if (_state != PlayerState.Aiming) return;
-        var position = transform.position;
-        Gizmos.DrawLine(position, (_inputVector - (Vector2)position).normalized);
-    }
 
     public void Aim()
     {
-        _state = PlayerState.Aiming;
-    }
-    private void Eat(Cube_Edible cubeMangeable)
-    {
-        cubeMangeable.GetManged();
-        satiety += filling;
-        satiety = Mathf.Clamp(satiety, 0f, 1f);
-        canEat = false;
-        cooldownCoroutine = StartCoroutine(CooldownCoroutine());
-    }
+        PlayerManager.Instance.SetPlayerState(PlayerState.Aiming);
+    }*/
 
-    public void TryEat()
-    {
-        Debug.Log("try Eat");
-        if (!canEat)
-        {
-            print("I'm on eating cooldown !");
-            return;
-        }
-
-        if (satiety > 1f)
-        {
-            print("I'm full !!");
-            return;
-        }
-        
-        RaycastHit2D hit = Physics2D.Raycast(pointeurBase.position, _inputVector, reach);
-        if (hit)
-        {
-            if (hit.transform.parent.CompareTag("CubeEdible"))
-            {
-                Cube_Edible cubeMangeable;
-                if (hit.transform.parent && hit.transform.parent.TryGetComponent<Cube_Edible>(out cubeMangeable))
-                {
-                    Eat(cubeMangeable);
-                }
-                else
-                    print("Pas de Raf_CubeMangeable dans le cube vis�.");
-            }
-        }
-    }
-    
-    IEnumerator CooldownCoroutine()
-    {
-        yield return new WaitForSeconds(eatCooldown);
-        canEat = true;
-        StopCoroutine(cooldownCoroutine);
-    }
     public void OnCollisionEnter2D(Collision2D collision) {
         if (collision.collider.tag.Contains("Jumpable")) {
             _canWallJump = true;
@@ -303,7 +219,7 @@ public class Mover : MonoBehaviour //Rename to playerController
                 StopCoroutine(_dashCoroutine);
             }
 
-            _state = PlayerState.Dashing;
+            _playerManager.SetPlayerState(PlayerState.Dashing);
             _dashCoroutine = Dash(dashTime, dashCooldown);
             StartCoroutine(_dashCoroutine);
         }
@@ -323,7 +239,7 @@ public class Mover : MonoBehaviour //Rename to playerController
         _rb.gravityScale = _normalGravity;
         _rb.velocity = originalVelocity;
         _rb.gravityScale = originalGravityScale;
-        _state = PlayerState.Moving;
+        _playerManager.SetPlayerState(PlayerState.Moving);
         _trailRenderer.emitting = false;
         yield return new WaitForSeconds(dashCooldown);
         _canDash = true;
