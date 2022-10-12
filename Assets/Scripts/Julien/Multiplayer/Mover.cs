@@ -11,6 +11,7 @@ public class Mover : MonoBehaviour //Rename to playerController
 
     enum PlayerState
     {
+        //Idle,
         Aiming,
         Shooting,
         Dashing,
@@ -21,6 +22,7 @@ public class Mover : MonoBehaviour //Rename to playerController
     [Header("Movements")] [SerializeField] private float moveSpeed;
     private Rigidbody2D _rb;
     private Vector2 _inputVector = Vector2.zero;
+    public float _brakeForce;
 
     [Header("Simple Jump")] [SerializeField]
     private float jumpForce;
@@ -105,9 +107,11 @@ public class Mover : MonoBehaviour //Rename to playerController
     private void FixedUpdate()
     {
         _isGrounded = IsGrounded();
-            
-        if(_state == PlayerState.Moving)
+
+        if (_state == PlayerState.Moving)
             Move();
+        else
+            Brake();
         
         if (_isDashing) 
         {
@@ -124,11 +128,23 @@ public class Mover : MonoBehaviour //Rename to playerController
     }
     private void Move()
     {
+        if (_inputVector == Vector2.zero)
+            Brake();
+
         float Vx = _inputVector.x * moveSpeed + _rb.velocity.x;
         Vx = Mathf.Clamp(Vx, -moveSpeed, moveSpeed);
         _rb.velocity = new Vector2(Vx, _rb.velocity.y);
         
-        //if(_inputVector == Vector2.zero)
+    }
+
+    private void Brake()
+    {
+        print("Braking");
+        if (Mathf.Abs(_rb.velocity.x) >= 0.1f && _isGrounded)
+            _rb.velocity += new Vector2(-(_rb.velocity.x / Mathf.Abs(_rb.velocity.x)) * _brakeForce, 0);
+        //_rb.AddForce(new Vector2(-(_rb.velocity.x / Mathf.Abs(_rb.velocity.x)) * _brakeForce, 0));
+        else if (Mathf.Abs(_rb.velocity.x) < 0.1f && _isGrounded)
+            _rb.velocity = new Vector2(0, _rb.velocity.y);
     }
 
     public void Jump()
