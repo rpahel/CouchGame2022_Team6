@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 3403455012174948811}
   - component: {fileID: 2188657776110532954}
   - component: {fileID: 5529363717152140524}
-  - component: {fileID: 2418646920032736206}
-  m_Layer: 0
+  - component: {fileID: 6589894302321259123}
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,19 +84,32 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2418646920032736206
-BoxCollider:
+--- !u!61 &6589894302321259123
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 303830590082189049}
+  m_Enabled: 1
+  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &1866652284042003069
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,7 +121,7 @@ GameObject:
   - component: {fileID: 1460309601168355340}
   - component: {fileID: 8866075740233591007}
   - component: {fileID: 8996526031102091333}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Reste_Bas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +204,7 @@ GameObject:
   - component: {fileID: 6896064948621227398}
   - component: {fileID: 482628792333839350}
   - component: {fileID: 2263790181465367619}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Reste_Haut
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -273,7 +286,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2613636963887001772}
   - component: {fileID: 5219080403393118203}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CubeEdible
   m_TagString: CubeEdible
   m_Icon: {fileID: 0}
@@ -330,7 +343,7 @@ GameObject:
   - component: {fileID: 1581720263494540170}
   - component: {fileID: 6425030700435943441}
   - component: {fileID: 8411179919233039300}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rest_Droite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -413,7 +426,7 @@ GameObject:
   - component: {fileID: 6234655102424722794}
   - component: {fileID: 5235604301496810644}
   - component: {fileID: 1642629733757670852}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rest_Gauche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
