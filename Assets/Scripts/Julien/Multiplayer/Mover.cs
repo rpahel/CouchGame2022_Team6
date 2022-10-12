@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Mover : MonoBehaviour //Rename to playerController
 {
@@ -11,6 +12,7 @@ public class Mover : MonoBehaviour //Rename to playerController
 
     enum PlayerState
     {
+        //Idle,
         Aiming,
         Shooting,
         Dashing,
@@ -19,8 +21,9 @@ public class Mover : MonoBehaviour //Rename to playerController
     }
 
     [Header("Movements")] [SerializeField] private float moveSpeed;
-    private Rigidbody2D _rb;
+    public Rigidbody2D _rb;
     private Vector2 _inputVector = Vector2.zero;
+    public float _brakeForce;
 
     [Header("Simple Jump")] [SerializeField]
     private float jumpForce;
@@ -53,6 +56,13 @@ public class Mover : MonoBehaviour //Rename to playerController
     [SerializeField] private float shootPower;
     [SerializeField] private float lifetime;
     
+    [Range(0,100)]
+     public float shootCostSatietyPercent;
+     [Range(0,100)]
+     public float shootImpactSatietyPercent;
+
+     public float shootForce;
+    
     [Header("Eat")]
     public Transform pointeur;       
     public Transform pointeurBase;   
@@ -60,11 +70,14 @@ public class Mover : MonoBehaviour //Rename to playerController
     [SerializeField, Range(0f, 1f)]
     private float filling = 0.12f;
     private bool canEat = true;
-    private float satiety = 0f;   
+    public float satiety = 0f;   
     [SerializeField, Range(0f, .5f)]
     private float eatCooldown = 0.5f;
     private Coroutine cooldownCoroutine;
-    private float  angle;    
+    private float  angle;   
+    
+    public Vector2 aimingPos; 
+    private Vector2 aimingDir;
     
     [Header("Dash")]
     private TrailRenderer _trailRenderer;
@@ -76,6 +89,12 @@ public class Mover : MonoBehaviour //Rename to playerController
     [SerializeField] private float dashTime;
     [SerializeField] private float dashCooldown;
     private float _normalGravity;
+
+    private float curveDeltaTime;
+    private Vector3 startPointeurPosition;
+
+    public bool isAiming;
+    
 
     private void Awake()
     {
@@ -96,18 +115,29 @@ public class Mover : MonoBehaviour //Rename to playerController
         angle = Mathf.Atan2(_inputVector.y, _inputVector.x);
     }
 
+    void Start() {
+        startPointeurPosition = pointeur.transform.position;
+    }
+
     void Update()
     {
         _cooldown -= Time.deltaTime;
+
+        aimingDir = _inputVector;
+        angle = Mathf.Atan2(aimingDir.y, aimingDir.x);
+        
         pointeur.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * angle);
+        
     }
 
     private void FixedUpdate()
     {
         _isGrounded = IsGrounded();
-            
-        if(_state == PlayerState.Moving)
+
+        if (_state == PlayerState.Moving)
             Move();
+        else
+            Brake();
         
         if (_isDashing) 
         {
@@ -124,11 +154,23 @@ public class Mover : MonoBehaviour //Rename to playerController
     }
     private void Move()
     {
+        if (_inputVector == Vector2.zero)
+            Brake();
+
         float Vx = _inputVector.x * moveSpeed + _rb.velocity.x;
         Vx = Mathf.Clamp(Vx, -moveSpeed, moveSpeed);
         _rb.velocity = new Vector2(Vx, _rb.velocity.y);
         
-        //if(_inputVector == Vector2.zero)
+    }
+
+    private void Brake()
+    {
+        print("Braking");
+        if (Mathf.Abs(_rb.velocity.x) >= 0.1f && _isGrounded)
+            _rb.velocity += new Vector2(-(_rb.velocity.x / Mathf.Abs(_rb.velocity.x)) * _brakeForce, 0);
+        //_rb.AddForce(new Vector2(-(_rb.velocity.x / Mathf.Abs(_rb.velocity.x)) * _brakeForce, 0));
+        else if (Mathf.Abs(_rb.velocity.x) < 0.1f && _isGrounded)
+            _rb.velocity = new Vector2(0, _rb.velocity.y);
     }
 
     public void Jump()
@@ -196,13 +238,14 @@ public class Mover : MonoBehaviour //Rename to playerController
         if (_cooldown < 0) //&& slider.value > 0
         {
             _state = PlayerState.Shooting;
-            var projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-            _rbProjectile = projectile.GetComponent<Rigidbody2D>();
-            //slider.value -= 0.1f;
-            _rbProjectile.gravityScale = gravityScale; 
-            _rbProjectile.AddForce(_inputVector * shootPower, ForceMode2D.Impulse);
+            var projectile = Instantiate(projectilePrefab, pointeur.GetChild(0).GetChild(0).GetChild(0).position, Quaternion.identity);
 
-            projectile.GetComponent<AutoDestroy>().DestroyObj((lifetime));
+            _rbProjectile = projectile.GetComponent<Rigidbody2D>();
+            _rbProjectile.velocity = pointeur.transform.right * shootPower;
+            isAiming = false;
+            satiety -= satiety * (shootCostSatietyPercent / 100);
+            Mathf.Clamp(satiety, 0f, 1f);
+         //   projectile.GetComponent<AutoDestroy>().DestroyObj((lifetime));
             ResetShootCooldown();
         }
         _state = PlayerState.Moving;
@@ -215,9 +258,10 @@ public class Mover : MonoBehaviour //Rename to playerController
         Gizmos.DrawLine(position, (_inputVector - (Vector2)position).normalized);
     }
 
-    public void Aim()
-    {
+    public void Aim() {
         _state = PlayerState.Aiming;
+
+        isAiming = true;
     }
     private void Eat(Cube_Edible cubeMangeable)
     {
