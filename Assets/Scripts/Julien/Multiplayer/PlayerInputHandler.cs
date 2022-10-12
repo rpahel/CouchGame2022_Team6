@@ -75,6 +75,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (_mover != null && context.performed)
             _mover.Aim();
+        
     }
     
     private void OnEat(InputAction.CallbackContext context)

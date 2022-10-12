@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Mover : MonoBehaviour //Rename to playerController
 {
@@ -64,7 +65,17 @@ public class Mover : MonoBehaviour //Rename to playerController
     [SerializeField, Range(0f, .5f)]
     private float eatCooldown = 0.5f;
     private Coroutine cooldownCoroutine;
-    private float  angle;    
+    private float  angle;   
+    
+    
+    public Vector2 aimingPos; 
+    private Vector2 aimingDir;
+
+    private float curveDeltaTime;
+    private Vector3 startPointeurPosition;
+
+    public bool isAiming;
+    
 
     private void Awake()
     {
@@ -82,10 +93,19 @@ public class Mover : MonoBehaviour //Rename to playerController
         pointeur.gameObject.SetActive(_inputVector.sqrMagnitude > 0.1f ? true : false);
     }
 
+    void Start() {
+        startPointeurPosition = pointeur.transform.position;
+    }
+
     void Update()
     {
         _cooldown -= Time.deltaTime;
+
+        aimingDir = _inputVector;
+        angle = Mathf.Atan2(aimingDir.y, aimingDir.x);
+        
         pointeur.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * angle);
+        
     }
 
     private void FixedUpdate()
@@ -94,6 +114,7 @@ public class Mover : MonoBehaviour //Rename to playerController
             
         if(_state == PlayerState.Moving)
             Move();
+        
     }
 
     private bool IsGrounded()
@@ -102,7 +123,8 @@ public class Mover : MonoBehaviour //Rename to playerController
     }
     private void Move()
     {
-        _rb.velocity = new Vector2(_inputVector.x * moveSpeed, _rb.velocity.y);
+        if(!isAiming)
+            _rb.velocity = new Vector2(_inputVector.x * moveSpeed, _rb.velocity.y);
     }
 
     public void Jump()
@@ -166,13 +188,12 @@ public class Mover : MonoBehaviour //Rename to playerController
         if (_cooldown < 0) //&& slider.value > 0
         {
             _state = PlayerState.Shooting;
-            var projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-            _rbProjectile = projectile.GetComponent<Rigidbody2D>();
-            //slider.value -= 0.1f;
-            _rbProjectile.gravityScale = gravityScale; 
-            _rbProjectile.AddForce(_inputVector * shootPower, ForceMode2D.Impulse);
+            var projectile = Instantiate(projectilePrefab, pointeur.GetChild(0).GetChild(0).GetChild(0).position, Quaternion.identity);
 
-            projectile.GetComponent<AutoDestroy>().DestroyObj((lifetime));
+            _rbProjectile = projectile.GetComponent<Rigidbody2D>();
+            _rbProjectile.velocity = pointeur.transform.right * shootPower;
+            isAiming = false;
+         //   projectile.GetComponent<AutoDestroy>().DestroyObj((lifetime));
             ResetShootCooldown();
         }
         _state = PlayerState.Moving;
@@ -185,9 +206,10 @@ public class Mover : MonoBehaviour //Rename to playerController
         Gizmos.DrawLine(position, (_inputVector - (Vector2)position).normalized);
     }
 
-    public void Aim()
-    {
+    public void Aim() {
         _state = PlayerState.Aiming;
+
+        isAiming = true;
     }
     public void Eat(Cube_Edible cubeMangeable)
     {
