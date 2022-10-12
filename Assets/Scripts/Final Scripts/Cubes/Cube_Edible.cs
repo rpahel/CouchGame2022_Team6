@@ -21,9 +21,9 @@ public class Cube_Edible : Cube
         {
             cubesAutour.Add(null);
 
-            RaycastHit hit;
             Vector3 dir = Quaternion.Euler(0, 0, -90 * i) * Vector3.up;
-            if (Physics.Raycast(transform.position, dir, out hit, transform.localScale.x))
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, transform.localScale.x);
+            if (hit)
             {
                 Cube cubeClone;
                 if (hit.transform.parent && hit.transform.parent.TryGetComponent<Cube>(out cubeClone))

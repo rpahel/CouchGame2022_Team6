@@ -15,6 +15,7 @@ public class Mover : MonoBehaviour //Rename to playerController
         Aiming,
         Shooting,
         Dashing,
+        WallJumping,
         Moving,
     }
 
@@ -35,9 +36,8 @@ public class Mover : MonoBehaviour //Rename to playerController
     private float _jumpCounter;
     private Vector2 _vecGravity;
 
-    [Header("Simple Jump")] [SerializeField]
-    private float jumpCount;
-
+    [Header("Wall Jump")] 
+    [SerializeField] private float jumpCount;
     [SerializeField] private float maxJumpCount;
     [SerializeField] private float wjForce;
     private bool _canWallJump;
@@ -70,6 +70,18 @@ public class Mover : MonoBehaviour //Rename to playerController
     
     public Vector2 aimingPos; 
     private Vector2 aimingDir;
+    private float  angle;    
+    
+    [Header("Dash")]
+    private TrailRenderer _trailRenderer;
+    private ScaleEat _scaleEat;
+    IEnumerator _dashCoroutine;
+    private bool _isDashing;
+    private bool _canDash = true;
+    [SerializeField] private float dashForce;
+    [SerializeField] private float dashTime;
+    [SerializeField] private float dashCooldown;
+    private float _normalGravity;
 
     private float curveDeltaTime;
     private Vector3 startPointeurPosition;
@@ -85,12 +97,15 @@ public class Mover : MonoBehaviour //Rename to playerController
         _vecGravity = new Vector2(0, -Physics2D.gravity.y);
         
         pointeur.gameObject.SetActive(false);
+        _scaleEat = GetComponent<ScaleEat>();
+        _trailRenderer = GetComponent<TrailRenderer>();
     }
     
     public void SetInputVector(Vector2 direction)
     {
         _inputVector = direction;
         pointeur.gameObject.SetActive(_inputVector.sqrMagnitude > 0.1f ? true : false);
+        angle = Mathf.Atan2(_inputVector.y, _inputVector.x);
     }
 
     void Start() {
@@ -115,6 +130,13 @@ public class Mover : MonoBehaviour //Rename to playerController
         if(_state == PlayerState.Moving)
             Move();
         
+        if (_isDashing) 
+        {
+            //Perdre de la matière selon time.deltatime
+            _scaleEat.NbEaten -= Time.deltaTime;
+            Debug.Log(_scaleEat.NbEaten);
+            _rb.AddForce(_inputVector * dashForce, ForceMode2D.Impulse);
+        }
     }
 
     private bool IsGrounded()
@@ -123,49 +145,56 @@ public class Mover : MonoBehaviour //Rename to playerController
     }
     private void Move()
     {
-        if(!isAiming)
-            _rb.velocity = new Vector2(_inputVector.x * moveSpeed, _rb.velocity.y);
+        float Vx = _inputVector.x * moveSpeed + _rb.velocity.x;
+        Vx = Mathf.Clamp(Vx, -moveSpeed, moveSpeed);
+        _rb.velocity = new Vector2(Vx, _rb.velocity.y);
+        
+        //if(_inputVector == Vector2.zero)
     }
 
     public void Jump()
     {
-        if (_canWallJump)
+        if (_state == PlayerState.Moving)
         {
-            if (!_isGrounded)
+            if (_canWallJump)
             {
-                Vector3 wjForceVec = _normalVec * wjForce;
-                wjForceVec.y = jumpForce;
-                _rb.AddForce(wjForceVec, ForceMode2D.Impulse);
+                if (!_isGrounded)
+                {
+                    Vector3 wjForceVec = _normalVec * wjForce;
+                    wjForceVec.y = jumpForce;
+                    _rb.velocity = Vector2.zero;
+                    _rb.AddForce(wjForceVec, ForceMode2D.Impulse);
+                }
+
+                return;
+            }
+        
+            if (_isGrounded)
+            {
+                _rb.velocity = new Vector2(_rb.velocity.x, jumpForce);
+                _isJumping = true;
+                _jumpCounter = 0;
             }
 
-            return;
-        }
-        
-        if (_isGrounded)
-        {
-            _rb.velocity = new Vector2(_rb.velocity.x, jumpForce);
-            _isJumping = true;
-            _jumpCounter = 0;
-        }
-
-        if (_rb.velocity.y > 0 && _isJumping)
-        {
-            _jumpCounter += Time.deltaTime;
+            if (_rb.velocity.y > 0 && _isJumping)
+            {
+                _jumpCounter += Time.deltaTime;
             
-            if (_jumpCounter > jumpTime) _isJumping = false;
+                if (_jumpCounter > jumpTime) _isJumping = false;
 
-            var t = _jumpCounter / jumpTime;
-            var currentJumpM = jumpMultiplier;
+                var t = _jumpCounter / jumpTime;
+                var currentJumpM = jumpMultiplier;
 
-            if (t > 0.5f)
-                currentJumpM = jumpMultiplier * (1 - t);
+                if (t > 0.5f)
+                    currentJumpM = jumpMultiplier * (1 - t);
 
-            //_rb.velocity += _vecGravity * currentJumpM * Time.deltaTime;
-        }
+                //_rb.velocity += _vecGravity * currentJumpM * Time.deltaTime;
+            }
         
-        if (_rb.velocity.y < 0)
-        {
-            _rb.velocity -= _vecGravity * (fallMultiplier * Time.deltaTime); 
+            if (_rb.velocity.y < 0)
+            {
+                _rb.velocity -= _vecGravity * (fallMultiplier * Time.deltaTime); 
+            }
         }
     }
 
@@ -211,7 +240,7 @@ public class Mover : MonoBehaviour //Rename to playerController
 
         isAiming = true;
     }
-    public void Eat(Cube_Edible cubeMangeable)
+    private void Eat(Cube_Edible cubeMangeable)
     {
         cubeMangeable.GetManged();
         satiety += filling;
@@ -235,8 +264,8 @@ public class Mover : MonoBehaviour //Rename to playerController
             return;
         }
         
-        RaycastHit hit;
-        if (Physics.Raycast(pointeurBase.position, _inputVector, out hit, reach))
+        RaycastHit2D hit = Physics2D.Raycast(pointeurBase.position, _inputVector, reach);
+        if (hit)
         {
             if (hit.transform.parent.CompareTag("CubeEdible"))
             {
@@ -268,5 +297,41 @@ public class Mover : MonoBehaviour //Rename to playerController
     {
         if (collision.collider.tag.Contains("Jumpable"))
             _canWallJump = false;
+    }
+    
+    public void Dash()
+    {
+        if (_canDash) //&& _scaleEat.NbEaten >= 200f
+        {
+            if (_dashCoroutine != null) 
+            {
+                StopCoroutine(_dashCoroutine);
+            }
+
+            _state = PlayerState.Dashing;
+            _dashCoroutine = Dash(dashTime, dashCooldown);
+            StartCoroutine(_dashCoroutine);
+        }
+    }
+    
+    private IEnumerator Dash(float dashDuration, float dashCooldown)
+    {
+        var originalVelocity = _rb.velocity;
+        var originalGravityScale = _rb.gravityScale;
+        _isDashing = true;
+        _trailRenderer.emitting = true;
+        _canDash = false;
+        _rb.gravityScale = 0;
+        _rb.velocity = Vector2.zero;
+        yield return new WaitForSeconds(dashDuration);
+        _isDashing = false;
+        _rb.gravityScale = _normalGravity;
+        _rb.velocity = originalVelocity;
+        _rb.gravityScale = originalGravityScale;
+        _state = PlayerState.Moving;
+        _trailRenderer.emitting = false;
+        yield return new WaitForSeconds(dashCooldown);
+        _canDash = true;
+
     }
 }
