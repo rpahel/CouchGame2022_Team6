@@ -11,4 +11,14 @@ namespace Data
         TRAP,
         BEDROCK
     }
+    
+    public enum PlayerState
+    {
+        Aiming,
+        Shooting,
+        Dashing,
+        WallJumping,
+        Moving,
+    }
+
 }
