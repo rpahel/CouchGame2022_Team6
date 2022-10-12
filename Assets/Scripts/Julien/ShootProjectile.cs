@@ -96,6 +96,7 @@ public class ShootProjectile : MonoBehaviour
         _cooldown = shootCooldown;
     }
 
+    /*
     private void OnCollisionEnter2D(Collision2D col)
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position,explosionRadius);
@@ -123,7 +124,7 @@ public class ShootProjectile : MonoBehaviour
         }
         
         Destroy(transform.gameObject);
-    }
+    }*/
 
     private void OnEnable()
     {
