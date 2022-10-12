@@ -155,7 +155,7 @@ MonoBehaviour:
   pressPower: 0
   holdPower: 0
   lifetime: 0
-  explosionRadius: 10
+  explosionRadius: 2
   slider: {fileID: 0}
   shootDirection:
     serializedVersion: 2

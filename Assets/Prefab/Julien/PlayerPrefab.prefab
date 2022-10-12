@@ -360,6 +360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
+  _rb: {fileID: 0}
   jumpForce: 6
   jumpTime: 0
   fallMultiplier: 1
@@ -378,14 +379,20 @@ MonoBehaviour:
   shootCooldown: 1
   shootPower: 10
   lifetime: 6
+  shootCostSatietyPercent: 0
+  shootImpactSatietyPercent: 0
+  shootForce: 10
   pointeur: {fileID: 4116864722756101584}
   pointeurBase: {fileID: 8364908142819372181}
   reach: 1
   filling: 0.12
+  satiety: 0
   eatCooldown: 0.5
+  aimingPos: {x: 0, y: 0}
   dashForce: 10
   dashTime: 0.1
   dashCooldown: 1
+  isAiming: 0
 --- !u!61 &7366054978402329227
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -20,7 +20,7 @@ public class Mover : MonoBehaviour //Rename to playerController
     }
 
     [Header("Movements")] [SerializeField] private float moveSpeed;
-    private Rigidbody2D _rb;
+    public Rigidbody2D _rb;
     private Vector2 _inputVector = Vector2.zero;
 
     [Header("Simple Jump")] [SerializeField]
@@ -54,6 +54,13 @@ public class Mover : MonoBehaviour //Rename to playerController
     [SerializeField] private float shootPower;
     [SerializeField] private float lifetime;
     
+    [Range(0,100)]
+     public float shootCostSatietyPercent;
+     [Range(0,100)]
+     public float shootImpactSatietyPercent;
+
+     public float shootForce;
+    
     [Header("Eat")]
     public Transform pointeur;       
     public Transform pointeurBase;   
@@ -61,16 +68,14 @@ public class Mover : MonoBehaviour //Rename to playerController
     [SerializeField, Range(0f, 1f)]
     private float filling = 0.12f;
     private bool canEat = true;
-    private float satiety = 0f;   
+    public float satiety = 0f;   
     [SerializeField, Range(0f, .5f)]
     private float eatCooldown = 0.5f;
     private Coroutine cooldownCoroutine;
     private float  angle;   
     
-    
     public Vector2 aimingPos; 
     private Vector2 aimingDir;
-    private float  angle;    
     
     [Header("Dash")]
     private TrailRenderer _trailRenderer;
@@ -222,6 +227,8 @@ public class Mover : MonoBehaviour //Rename to playerController
             _rbProjectile = projectile.GetComponent<Rigidbody2D>();
             _rbProjectile.velocity = pointeur.transform.right * shootPower;
             isAiming = false;
+            satiety -= satiety * (shootCostSatietyPercent / 100);
+            Mathf.Clamp(satiety, 0f, 1f);
          //   projectile.GetComponent<AutoDestroy>().DestroyObj((lifetime));
             ResetShootCooldown();
         }

@@ -36,7 +36,7 @@ public class Cube_Edible : Cube
 
     public void GetManged()
     {
-        // Signale aux cubes voisins que ce cube s'est fait mangé
+        // Signale aux cubes voisins que ce cube s'est fait mangÃ©
         for (int i = 0; i < 4; i++)
         {
             if (cubesAutour[i] && cubesAutour[i].CubeType == CUBETYPE.EDIBLE)
@@ -47,7 +47,7 @@ public class Cube_Edible : Cube
 
         cube.SetActive(false);
 
-        // Fais apparaitre les restes en fonction des cubes voisins qui sont toujours là
+        // Fais apparaitre les restes en fonction des cubes voisins qui sont toujours lÃ 
         for (int i = 0; i < 4; i++)
         {
             if (cubesAutour[i] && !cubesAutour[i].isManged())
@@ -57,7 +57,7 @@ public class Cube_Edible : Cube
         }
     }
 
-    // Retire le reste collé au cube voisi qui vient de se faire manger
+    // Retire le reste collÃ© au cube voisi qui vient de se faire manger
     public void VoisinGotManged(int indexDuVoisin)
     {
         if (!cube.activeSelf)

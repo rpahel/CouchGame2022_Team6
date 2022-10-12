@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
@@ -74,22 +75,7 @@ public class ShootProjectile : MonoBehaviour
     {
         _cooldown -= Time.deltaTime;
 
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position,explosionRadius);
         
-        Debug.Log("size " + hits.Length);
-
-        foreach (Collider2D collider in hits) {
-            Debug.Log("tag " + collider.tag);
-            if (collider.tag.Equals("CubeEdible")) {
-                Cube_Edible cube;
-                if (collider.gameObject.TryGetComponent<Cube_Edible>(out cube)) {
-                    Debug.Log("enter");
-                    cube.GetManged();
-                    Destroy(transform.gameObject);
-                    //GetComponent<AutoDestroy>().DestroyObj(0f);
-                }
-            }
-        }
 
     }
 
@@ -108,6 +94,35 @@ public class ShootProjectile : MonoBehaviour
     private void ResetCooldown()
     {
         _cooldown = shootCooldown;
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position,explosionRadius);
+
+        foreach (Collider2D collider in hits) {
+            switch (collider.tag) {
+                case "CubeEdible":
+                    Cube_Edible cube;
+                    if (collider.gameObject.TryGetComponent<Cube_Edible>(out cube)) {
+                        if (!cube.isManged()) {
+                            cube.GetManged();
+                        }
+                    }
+                    break;
+                
+                case "Player":
+                    Mover mover;
+                    if (collider.gameObject.TryGetComponent<Mover>(out mover)) {
+                        mover.satiety -= mover.satiety * (mover.shootImpactSatietyPercent / 100);
+                        Mathf.Clamp(mover.satiety, 0f, 1f);
+                        mover._rb.AddForce(-col.contacts[0].normal * mover.shootForce,ForceMode2D.Impulse);
+                    }
+                    break;
+            }
+        }
+        
+        Destroy(transform.gameObject);
     }
 
     private void OnEnable()
