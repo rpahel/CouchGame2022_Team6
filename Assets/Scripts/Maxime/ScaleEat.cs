@@ -1,33 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Data;
+using UnityEngine.PlayerLoop;
 
 public class ScaleEat : MonoBehaviour
 {
-    public enum SwitchSizeSkin
-    {
-        Little,
-        Medium,
-        Big
-    }  
-
+    private PlayerManager _playerManager;
+    
     public SwitchSizeSkin switchSkin;
-    public float NbEaten = 1;
+    
     public Vector3 scaler = new Vector3(1,1,1);
     public Mesh meshLittle;
     public Mesh meshAverage;
     public Mesh meshBig;
-    public Mesh CurrentMesh;
+    public Mesh currentMesh;
     private MeshFilter _meshFilterGo;
 
     private void InitializedSize()
     {
         switchSkin = SwitchSizeSkin.Little;
     }
-    private void Start()
+    private void Awake()
     {
+        _playerManager = gameObject.GetComponent<PlayerManager>();
         _meshFilterGo = this.transform.GetChild(0).GetComponent<MeshFilter>();
-        CurrentMesh = _meshFilterGo.mesh;
+        currentMesh = _meshFilterGo.mesh;
 
     }
     void Update()
@@ -38,20 +36,20 @@ public class ScaleEat : MonoBehaviour
     void scaleEat()
     {
         transform.localScale = scaler;
-        NbEaten = Mathf.Clamp(NbEaten, 0.2f, 1f);
+        _playerManager.eatAmount = Mathf.Clamp(_playerManager.eatAmount, 1f, 2.857143f);
 
         //juste pour sa soit smooth
-        scaler.y = Mathf.Lerp(scaler.y, NbEaten, .03f); 
-        scaler.x = Mathf.Lerp(scaler.x, NbEaten, .03f);
-        scaler.z = Mathf.Lerp(scaler.z, NbEaten, .03f);
+        scaler.y = Mathf.Lerp(scaler.y, _playerManager.eatAmount, .03f); 
+        scaler.x = Mathf.Lerp(scaler.x, _playerManager.eatAmount, .03f);
+        scaler.z = Mathf.Lerp(scaler.z, _playerManager.eatAmount, .03f);
 
-        if (NbEaten >= 0.7f)
+        if (_playerManager.eatAmount >=  2.15f)
         {
             switchSkin = SwitchSizeSkin.Big;
             _meshFilterGo.mesh = meshBig;
             
         }
-        else if (NbEaten <= 0.3f)
+        else if (_playerManager.eatAmount <= 1.64f)
         {
             switchSkin = SwitchSizeSkin.Little;
             _meshFilterGo.mesh = meshLittle;

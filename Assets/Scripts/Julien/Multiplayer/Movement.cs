@@ -49,6 +49,7 @@ public class Movement : MonoBehaviour
 
     [Header("Dash")]
     private TrailRenderer _trailRenderer;
+    [SerializeField] private float looseEatForce = 1f;
     private ScaleEat _scaleEat;
     IEnumerator _dashCoroutine;
     private bool _isDashing;
@@ -84,7 +85,7 @@ public class Movement : MonoBehaviour
         
         if (_isDashing) 
         {
-            _scaleEat.NbEaten -= Time.deltaTime;
+             _playerManager.eatAmount -= Time.fixedDeltaTime * looseEatForce;
             _rb.AddForce(_playerManager.InputVector * dashForce, ForceMode2D.Impulse);
         }
     }
@@ -106,7 +107,6 @@ public class Movement : MonoBehaviour
 
     private void Brake()
     {
-        print("Braking");
         if (Mathf.Abs(_rb.velocity.x) >= 0.1f && _isGrounded)
             _rb.velocity += new Vector2(-(_rb.velocity.x / Mathf.Abs(_rb.velocity.x)) * _brakeForce, 0);
         //_rb.AddForce(new Vector2(-(_rb.velocity.x / Mathf.Abs(_rb.velocity.x)) * _brakeForce, 0));
