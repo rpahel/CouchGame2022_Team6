@@ -55,7 +55,7 @@ public class ScaleEat : MonoBehaviour
             _meshFilterGo.mesh = meshBig;
             _playerManager.ImageUI.sprite = listSprite[2];
             _movement._canDash = true;
-            _playerManager.eatAmount -= Time.deltaTime * timeToLooseEat;
+           // _playerManager.eatAmount -= Time.deltaTime * timeToLooseEat;
         }
         else if (_playerManager.eatAmount <= 1.64f)
         {
