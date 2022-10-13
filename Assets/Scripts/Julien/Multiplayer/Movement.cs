@@ -87,14 +87,10 @@ public class Movement : MonoBehaviour
             Brake();
         
         if (_isDashing) 
-        {
-            if (playerInputHandler._holdCooldown >= 1f && playerInputHandler._canHoldCooldown)
-            {
-                _playerManager.eatAmount -= 2;
-            }
-              
-            
-           
+        {        
+
+             _playerManager.eatAmount -= Time.deltaTime * looseEatForce;
+
             _rb.AddForce(_playerManager.InputVector * dashForce, ForceMode2D.Impulse);
         }
     }
