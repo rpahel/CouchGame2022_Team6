@@ -32,37 +32,6 @@ Transform:
   m_Father: {fileID: 7366054978402329231}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &3581404285293891771
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 928748887528729629}
-  m_Layer: 0
-  m_Name: BallBase
-  m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &928748887528729629
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3581404285293891771}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -1.31, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 295283536283052829}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4103649407449710990
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,8 +124,7 @@ Transform:
   m_LocalPosition: {x: 0.5, y: 0, z: 0}
   m_LocalScale: {x: 0.19999999, y: 0.49999997, z: 0.19999999}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 928748887528729629}
+  m_Children: []
   m_Father: {fileID: 8364908142819372181}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
@@ -322,6 +290,8 @@ GameObject:
   - component: {fileID: 7366054978402329200}
   - component: {fileID: 8852710062912591228}
   - component: {fileID: 6404831158282792958}
+  - component: {fileID: -4706397259788855995}
+  - component: {fileID: 7973215681648496309}
   m_Layer: 0
   m_Name: PlayerPrefab
   m_TagString: Player
@@ -377,22 +347,11 @@ MonoBehaviour:
   canCreatePlatform: 0
   gravityScale: 0.5
   shootCooldown: 1
-  shootPower: 10
+  shootPower: 0
   lifetime: 6
-  shootCostSatietyPercent: 0
-  shootImpactSatietyPercent: 0
-  shootForce: 10
-  pointeur: {fileID: 4116864722756101584}
-  pointeurBase: {fileID: 8364908142819372181}
-  reach: 1
-  filling: 0.12
-  satiety: 0
-  eatCooldown: 0.5
-  aimingPos: {x: 0, y: 0}
   dashForce: 10
   dashTime: 0.1
   dashCooldown: 1
-  isAiming: 0
 --- !u!61 &7366054978402329227
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -580,3 +539,32 @@ TrailRenderer:
   m_MinVertexDistance: 0
   m_Autodestruct: 0
   m_Emitting: 0
+--- !u!114 &-4706397259788855995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7366054978402329224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b1c376fa222864d94a29bb48c07f36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointeur: {fileID: 4116864722756101584}
+  pointeurBase: {fileID: 8364908142819372181}
+  reach: 1
+  filling: 0.12
+  eatCooldown: 0.5
+--- !u!114 &7973215681648496309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7366054978402329224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 687c6dec1c97c4246ab6d41cfcd20630, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

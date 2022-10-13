@@ -8,14 +8,21 @@ using static UnityEngine.InputSystem.InputAction;
 public class PlayerInputHandler : MonoBehaviour
 {
     private PlayerConfiguration _playerConfig;
-    private Mover _mover;
-
     [SerializeField] private MeshRenderer playerMesh;
 
+    public float _holdCooldown;
+    private bool _canHoldCooldown;
+
+    [Header("Scripts")]
+    private Movement _movement;
+    private PlayerManager _playerManager;
+    private Eat _eat;
     private PlayerControls _controls;
     private void Awake()
     {
-        _mover = GetComponent<Mover>();
+        _playerManager = gameObject.GetComponent<PlayerManager>();
+        _movement = GetComponent<Movement>();
+        _eat = GetComponent<Eat>();
         _controls = new PlayerControls();
     }
 
@@ -52,51 +59,88 @@ public class PlayerInputHandler : MonoBehaviour
         {
             OnDash(obj);
         }
-        
-            
     }
     
     private void OnMove(CallbackContext context)
     {
-        if(_mover != null)
-            _mover.SetInputVector(context.ReadValue<Vector2>());
+        if(_playerManager != null)
+            _playerManager.SetInputVector(context.ReadValue<Vector2>());
     }
 
     private void OnJump(CallbackContext context)
     {
-        if (_mover != null && context.performed)
-            _mover.Jump();
-        else if (_mover != null && context.canceled)
-            _mover.StopJump();
+        if (_movement != null && context.performed)
+            _movement.Jump();
+        else if (_movement != null && context.canceled)
+            _movement.StopJump();
     }
 
     private void OnShoot(CallbackContext context)
     {
-        if (_mover != null && context.performed)
-            _mover.Shoot();
+        if (_movement != null && context.performed) {}
+            //_movement.Shoot();
     }
     
     private void OnAim(CallbackContext context)
     {
-        if (_mover != null && context.performed)
-            _mover.Aim();
-        
+        if (_movement != null && context.performed) {}
+            //_movement.Aim();
     }
     
     private void OnEat(InputAction.CallbackContext context)
     {
-        if (_mover != null && context.performed)
-        {
-            _mover.TryEat();
-        }
+        if (_eat != null && context.performed)
+            _eat.TryEat();
+        
     }
 
     private void OnDash(CallbackContext context)
     {
-        if (_mover != null && context.performed)
+   
+
+        if (_movement != null && context.started)
         {
-            _mover.Dash();
+            Debug.Log("Start");
+            _canHoldCooldown = true;
+
+
         }
+         
+        else if (_movement != null && context.canceled)
+        {
+            if (_holdCooldown >= 1f && _canHoldCooldown)
+            {
+                dashAfterHold();
+            }
+
+            _canHoldCooldown = false;
+            _holdCooldown = 0f;
+        }
+    }
+
+    private void Update()
+    {
+        if (_canHoldCooldown)
+            _holdCooldown += Time.deltaTime;
+        Debug.Log(_holdCooldown);
+
+        if (_holdCooldown >= 2f)
+        {
+           
+            dashAfterHold();
+
+        }
+
+    }
+
+    private void dashAfterHold()
+    {
+        _canHoldCooldown = false;
+        Debug.Log("hold");
+        _movement.Dash();
+        //On appelle la fonction avec la valeu
+        _movement.SetHoldValue(_holdCooldown);
+        _holdCooldown = 0f;
     }
 
 }

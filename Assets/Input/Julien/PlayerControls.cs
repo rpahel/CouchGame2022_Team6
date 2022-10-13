@@ -78,8 +78,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""id"": ""5cbb4378-eb1b-4423-968a-cbdcca78f134"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
