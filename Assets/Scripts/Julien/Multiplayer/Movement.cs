@@ -53,14 +53,17 @@ public class Movement : MonoBehaviour
     private ScaleEat _scaleEat;
     IEnumerator _dashCoroutine;
     private bool _isDashing;
-    private bool _canDash = true;
+    //[HideInInspector]
+    public bool _canDash = false;
     [SerializeField] private float dashForce;
     [SerializeField] private float dashTime;
     [SerializeField] private float dashCooldown;
     private float _normalGravity;
-    private float _holdCooldown;
+    private float _holdCool;
+    private PlayerInputHandler playerInputHandler;
     private void Awake()
     {
+        playerInputHandler = GetComponent<PlayerInputHandler>();
         _playerManager = gameObject.GetComponent<PlayerManager>();
         _rb = gameObject.GetComponent<Rigidbody2D>();
         //ResetShootCooldown();
@@ -85,14 +88,20 @@ public class Movement : MonoBehaviour
         
         if (_isDashing) 
         {
-             _playerManager.eatAmount -= Time.fixedDeltaTime * looseEatForce;
+            if (playerInputHandler._holdCooldown >= 1f && playerInputHandler._canHoldCooldown)
+            {
+                _playerManager.eatAmount -= 2;
+            }
+              
+            
+           
             _rb.AddForce(_playerManager.InputVector * dashForce, ForceMode2D.Impulse);
         }
     }
 
     public void SetHoldValue(float f)
     {
-        _holdCooldown = f;
+        _holdCool = f;
     }
     private bool IsGrounded()
     {
@@ -216,7 +225,7 @@ public class Movement : MonoBehaviour
     
     public void Dash()
     {
-        if (_canDash) //&& _scaleEat.NbEaten >= 200f
+        if (_canDash)
         {
             if (_dashCoroutine != null) 
             {

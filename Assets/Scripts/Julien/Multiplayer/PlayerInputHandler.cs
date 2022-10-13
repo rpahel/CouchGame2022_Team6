@@ -11,7 +11,7 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private MeshRenderer playerMesh;
 
     public float _holdCooldown;
-    private bool _canHoldCooldown;
+    public bool _canHoldCooldown;
 
     [Header("Scripts")]
     private Movement _movement;
