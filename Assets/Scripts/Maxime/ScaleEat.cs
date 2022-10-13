@@ -17,6 +17,8 @@ public class ScaleEat : MonoBehaviour
     public Mesh currentMesh;
     private MeshFilter _meshFilterGo;
 
+    public List<Sprite> listSprite = new List<Sprite>();
+
     private void InitializedSize()
     {
         switchSkin = SwitchSizeSkin.Little;
@@ -48,17 +50,20 @@ public class ScaleEat : MonoBehaviour
         {
             switchSkin = SwitchSizeSkin.Big;
             _meshFilterGo.mesh = meshBig;
-            
+            _playerManager.ImageUI.sprite = listSprite[2];
+
         }
         else if (_playerManager.eatAmount <= 1.64f)
         {
             switchSkin = SwitchSizeSkin.Little;
             _meshFilterGo.mesh = meshLittle;
+            _playerManager.ImageUI.sprite = listSprite[1];
         }
         else
         {
             switchSkin = SwitchSizeSkin.Medium;
             _meshFilterGo.mesh = meshAverage;
+            _playerManager.ImageUI.sprite = listSprite[0];
         }
     }
 }
