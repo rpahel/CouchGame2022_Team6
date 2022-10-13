@@ -20,5 +20,11 @@ namespace Data
         WallJumping,
         Moving,
     }
-
+        
+    public enum SwitchSizeSkin
+    {
+        Little,
+        Medium,
+        Big
+    }  
 }

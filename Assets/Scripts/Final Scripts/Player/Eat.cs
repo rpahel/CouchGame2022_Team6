@@ -13,7 +13,6 @@ public class Eat : MonoBehaviour
     [SerializeField, Range(0f, 1f)]
     private float filling = 0.12f;
     private bool canEat = true;
-    private float satiety = 0f;   
     [SerializeField, Range(0f, .5f)]
     private float eatCooldown = 0.5f;
     private Coroutine cooldownCoroutine;
@@ -37,8 +36,8 @@ public class Eat : MonoBehaviour
     private void EatCube(Cube_Edible cubeMangeable)
     {
         cubeMangeable.GetManged();
-        satiety += filling;
-        satiety = Mathf.Clamp(satiety, 0f, 1f);
+        _playerManager.eatAmount += filling;
+        _playerManager.eatAmount = Mathf.Clamp(_playerManager.eatAmount, 0f, 1f);
         canEat = false;
         cooldownCoroutine = StartCoroutine(CooldownCoroutine());
     }
@@ -52,7 +51,7 @@ public class Eat : MonoBehaviour
             return;
         }
 
-        if (satiety > 1f)
+        if (_playerManager.eatAmount >= 1f)
         {
             print("I'm full !!");
             return;
