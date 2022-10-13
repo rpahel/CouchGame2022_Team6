@@ -677,7 +677,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dashingVelocity: 14.63
   _dashingTime: 4.1
-  _canDash: 1
+  _canDash: 0
+  aimingDir: {x: 0, y: 0}
+  pointeur: {fileID: 202321308}
+  pointeurBase: {fileID: 1074917776}
 --- !u!114 &1034827697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -693,7 +696,8 @@ MonoBehaviour:
   pointeur: {fileID: 202321308}
   pointeurBase: {fileID: 1074917776}
   reach: 1
-  aimingDir: {x: 0, y: 0}
+  filling: 0.12
+  eatCooldown: 0.5
 --- !u!114 &1034827699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -720,22 +724,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1034827697}
-        m_TargetAssemblyTypeName: Raf_PLayer, Assembly-CSharp
-        m_MethodName: GetAiming
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: a7c81585-be9c-4781-bbcf-f212de222b40
-    m_ActionName: Gameplay/ShootDirection[/XInputControllerWindows/rightStick]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1034827697}
@@ -804,6 +792,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 4f193996-6a26-4383-b83a-4167e3698a3d
     m_ActionName: Menu/Select[/XInputControllerWindows/buttonSouth,/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3b6806f7-fb38-4f8c-b25b-817676bd3a6b
+    m_ActionName: Gameplay/Jump[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
