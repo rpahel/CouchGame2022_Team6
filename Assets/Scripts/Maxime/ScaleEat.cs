@@ -18,13 +18,16 @@ public class ScaleEat : MonoBehaviour
     private MeshFilter _meshFilterGo;
 
     public List<Sprite> listSprite = new List<Sprite>();
-
+    
+    private Movement _movement;
+    public float timeToLooseEat;
     private void InitializedSize()
     {
         switchSkin = SwitchSizeSkin.Little;
     }
     private void Awake()
     {
+        _movement = gameObject.GetComponent<Movement>();
         _playerManager = gameObject.GetComponent<PlayerManager>();
         _meshFilterGo = this.transform.GetChild(0).GetComponent<MeshFilter>();
         currentMesh = _meshFilterGo.mesh;
@@ -51,19 +54,22 @@ public class ScaleEat : MonoBehaviour
             switchSkin = SwitchSizeSkin.Big;
             _meshFilterGo.mesh = meshBig;
             _playerManager.ImageUI.sprite = listSprite[2];
-
+            _movement._canDash = true;
+            _playerManager.eatAmount -= Time.deltaTime * timeToLooseEat;
         }
         else if (_playerManager.eatAmount <= 1.64f)
         {
             switchSkin = SwitchSizeSkin.Little;
             _meshFilterGo.mesh = meshLittle;
             _playerManager.ImageUI.sprite = listSprite[1];
+            _movement._canDash = false;
         }
         else
         {
             switchSkin = SwitchSizeSkin.Medium;
             _meshFilterGo.mesh = meshAverage;
             _playerManager.ImageUI.sprite = listSprite[0];
+            _movement._canDash = false;
         }
     }
 }
