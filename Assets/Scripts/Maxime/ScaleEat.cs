@@ -41,8 +41,8 @@ public class ScaleEat : MonoBehaviour
     void scaleEat()
     {
         transform.localScale = scaler;
-        _playerManager.eatAmount = Mathf.Clamp(_playerManager.eatAmount, 1f, 2.857143f);
-        _playerManager.TextUI.text = (_playerManager.eatAmount * 100).ToString() + "%";
+        _playerManager.eatAmount = Mathf.Clamp(_playerManager.eatAmount, 1f, _playerManager.maxEatValue);
+        _playerManager.textUI.text = (((_playerManager.eatAmount-1) * 100)/(_playerManager.maxEatValue-1)).ToString() + "%";
 
         //juste pour sa soit smooth
         scaler.y = Mathf.Lerp(scaler.y, _playerManager.eatAmount, .03f); 
@@ -53,7 +53,7 @@ public class ScaleEat : MonoBehaviour
         {
             switchSkin = SwitchSizeSkin.Big;
             _meshFilterGo.mesh = meshBig;
-            _playerManager.ImageUI.sprite = listSprite[2];
+            _playerManager.imageUI.sprite = listSprite[2];
             _movement._canDash = true;
            // _playerManager.eatAmount -= Time.deltaTime * timeToLooseEat;
         }
@@ -61,14 +61,14 @@ public class ScaleEat : MonoBehaviour
         {
             switchSkin = SwitchSizeSkin.Little;
             _meshFilterGo.mesh = meshLittle;
-            _playerManager.ImageUI.sprite = listSprite[1];
+            _playerManager.imageUI.sprite = listSprite[1];
             _movement._canDash = false;
         }
         else
         {
             switchSkin = SwitchSizeSkin.Medium;
             _meshFilterGo.mesh = meshAverage;
-            _playerManager.ImageUI.sprite = listSprite[0];
+            _playerManager.imageUI.sprite = listSprite[0];
             _movement._canDash = false;
         }
     }

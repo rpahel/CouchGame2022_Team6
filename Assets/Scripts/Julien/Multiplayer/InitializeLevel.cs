@@ -24,15 +24,15 @@ public class InitializeLevel : MonoBehaviour
 
         for (int i = 0; i < playerConfigs.Length; i++)
         {
-            var player = Instantiate(playerPrefab, playerSpawns[i].position, playerSpawns[i].rotation, gameObject.transform);
+            var player = Instantiate(playerPrefab, playerSpawns[i].position, playerSpawns[i].rotation,
+                gameObject.transform);
+            playersUI[i].SetActive(true);
+            player.GetComponent<PlayerManager>().imageUI = playersUI[i].transform.GetChild(0).GetComponent<Image>();
+            player.GetComponent<PlayerManager>().textUI =
+                playersUI[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>();
             player.GetComponent<PlayerInputHandler>().InitializePlayer(playerConfigs[i]);
             cinemachine.m_Targets[i].target = player.transform;
             cinemachine.m_Targets[i].weight = 1;
-            playersUI[i].SetActive(true);
-            player.GetComponent<PlayerManager>().ImageUI = playersUI[i].transform.GetChild(0).GetComponent<Image>();
-            player.GetComponent<PlayerManager>().TextUI =  playersUI[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-                    
         }
-
     }
 }
