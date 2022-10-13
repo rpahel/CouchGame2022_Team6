@@ -9,7 +9,10 @@ public class PlayerInputHandler : MonoBehaviour
 {
     private PlayerConfiguration _playerConfig;
     [SerializeField] private MeshRenderer playerMesh;
-    
+
+    public float _holdCooldown;
+    private bool _canHoldCooldown;
+
     [Header("Scripts")]
     private Movement _movement;
     private PlayerManager _playerManager;
@@ -93,9 +96,51 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnDash(CallbackContext context)
     {
-        if (_movement != null && context.performed)
-            _movement.Dash();
-        
+   
+
+        if (_movement != null && context.started)
+        {
+            Debug.Log("Start");
+            _canHoldCooldown = true;
+
+
+        }
+         
+        else if (_movement != null && context.canceled)
+        {
+            if (_holdCooldown >= 1f && _canHoldCooldown)
+            {
+                dashAfterHold();
+            }
+
+            _canHoldCooldown = false;
+            _holdCooldown = 0f;
+        }
+    }
+
+    private void Update()
+    {
+        if (_canHoldCooldown)
+            _holdCooldown += Time.deltaTime;
+        Debug.Log(_holdCooldown);
+
+        if (_holdCooldown >= 2f)
+        {
+           
+            dashAfterHold();
+
+        }
+
+    }
+
+    private void dashAfterHold()
+    {
+        _canHoldCooldown = false;
+        Debug.Log("hold");
+        _movement.Dash();
+        //On appelle la fonction avec la valeu
+        _movement.SetHoldValue(_holdCooldown);
+        _holdCooldown = 0f;
     }
 
 }

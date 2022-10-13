@@ -58,7 +58,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private float dashTime;
     [SerializeField] private float dashCooldown;
     private float _normalGravity;
-
+    private float _holdCooldown;
     private void Awake()
     {
         _playerManager = gameObject.GetComponent<PlayerManager>();
@@ -90,6 +90,10 @@ public class Movement : MonoBehaviour
         }
     }
 
+    public void SetHoldValue(float f)
+    {
+        _holdCooldown = f;
+    }
     private bool IsGrounded()
     {
         return Physics2D.OverlapCapsule(groundCheck.position, new Vector2(1f, 0.2f), CapsuleDirection2D.Horizontal, 0,groundLayer);

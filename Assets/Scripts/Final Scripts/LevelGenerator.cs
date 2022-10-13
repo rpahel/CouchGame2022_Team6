@@ -56,7 +56,7 @@ public class LevelGenerator : MonoBehaviour
                     }
 
                     iniSpawns[n] = new GameObject($"Spawn {n + 1}").transform;
-                    iniSpawns[n].position = new Vector3(j, i, 0);
+                    iniSpawns[n].position = new Vector3(j * cubeEdible.transform.localScale.x, i * cubeEdible.transform.localScale.y, 0);
                     iniSpawns[n].localScale = Vector3.one;
                     iniSpawns[n].rotation = Quaternion.identity;
                     iniSpawns[n].transform.parent = parentObjSpawns.transform;
@@ -69,7 +69,7 @@ public class LevelGenerator : MonoBehaviour
 
     void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width)
     {
-        GameObject cube = Instantiate(cubeToCreate, new Vector3(width, height, 0), Quaternion.identity);
+        GameObject cube = Instantiate(cubeToCreate, new Vector3(width * cubeToCreate.transform.localScale.x, height * cubeToCreate.transform.localScale.y, 0), Quaternion.identity);
         cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString() + ", " + height.ToString() + ")";
         cube.transform.parent = parentObj;
     }
