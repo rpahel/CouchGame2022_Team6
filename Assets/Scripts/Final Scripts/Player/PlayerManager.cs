@@ -5,6 +5,7 @@ using Data;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -14,12 +15,10 @@ public class PlayerManager : MonoBehaviour
     public Vector2 InputVector { get; private set; }
 
     public float eatAmount;
-
-    public struct PlayerUI
-    {
-        public SpriteRenderer Sprite;
-        public TextMeshPro Text;
-    }
+    
+    public Image ImageUI;
+    public TextMeshProUGUI TextUI;
+    
 
     private void Awake()
     {

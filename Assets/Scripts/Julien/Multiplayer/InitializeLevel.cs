@@ -2,14 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InitializeLevel : MonoBehaviour
 {
     [SerializeField] private CinemachineTargetGroup cinemachine;
     [SerializeField] private LevelGenerator levelGen;
     [SerializeField] private Transform[] playerSpawns;
+    [SerializeField] private GameObject[] playersUI;
     [SerializeField] private GameObject playerPrefab;
 
     private void Start()
@@ -25,6 +28,10 @@ public class InitializeLevel : MonoBehaviour
             player.GetComponent<PlayerInputHandler>().InitializePlayer(playerConfigs[i]);
             cinemachine.m_Targets[i].target = player.transform;
             cinemachine.m_Targets[i].weight = 1;
+            playersUI[i].SetActive(true);
+            player.GetComponent<PlayerManager>().ImageUI = playersUI[i].transform.GetChild(0).GetComponent<Image>();
+            player.GetComponent<PlayerManager>().TextUI =  playersUI[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+                    
         }
 
     }

@@ -85,7 +85,7 @@ public class Movement : MonoBehaviour
         
         if (_isDashing) 
         {
-             _playerManager.eatAmount -= Time.fixedDeltaTime * looseEatForce;
+             _playerManager.eatAmount -= Time.deltaTime * looseEatForce;
             _rb.AddForce(_playerManager.InputVector * dashForce, ForceMode2D.Impulse);
         }
     }

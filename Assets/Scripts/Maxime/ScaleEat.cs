@@ -37,6 +37,7 @@ public class ScaleEat : MonoBehaviour
     {
         transform.localScale = scaler;
         _playerManager.eatAmount = Mathf.Clamp(_playerManager.eatAmount, 1f, 2.857143f);
+        _playerManager.TextUI.text = (_playerManager.eatAmount * 100).ToString() + "%";
 
         //juste pour sa soit smooth
         scaler.y = Mathf.Lerp(scaler.y, _playerManager.eatAmount, .03f); 
