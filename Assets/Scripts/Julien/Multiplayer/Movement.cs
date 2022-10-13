@@ -79,13 +79,13 @@ public class Movement : MonoBehaviour
 
         if (_playerManager.State == PlayerState.Moving)
             Move();
-        else
+        else 
             Brake();
         
         if (_isDashing) 
         {
             _scaleEat.NbEaten -= Time.deltaTime;
-            _rb.AddForce(-_playerManager.InputVector * dashForce, ForceMode2D.Impulse);
+            _rb.AddForce(_playerManager.InputVector * dashForce, ForceMode2D.Impulse);
         }
     }
 
@@ -95,7 +95,7 @@ public class Movement : MonoBehaviour
     }
     private void Move()
     {
-        if (_playerManager.InputVector == Vector2.zero)
+        if (_playerManager.InputVector == Vector2.zero ) 
             Brake();
 
         float Vx = _playerManager.InputVector.x * moveSpeed + _rb.velocity.x;

@@ -14,7 +14,7 @@ public class PlayerSetupMenuController : MonoBehaviour
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private Button readyButton;
 
-    private float ignoreInputTime = 1.5f;
+    private float ignoreInputTime = 0.1f;
     private bool inputEnabled;
 
     public void SetPlayerIndex(int pi)
