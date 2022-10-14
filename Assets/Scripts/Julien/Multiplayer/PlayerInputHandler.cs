@@ -20,6 +20,9 @@ public class PlayerInputHandler : MonoBehaviour
     private ShootProjectile _shootProjectile;
     private Eat _eat;
     private PlayerControls _controls;
+    private PlacePlateform placer;
+    
+    
     private void Awake()
     {
         _playerManager = gameObject.GetComponent<PlayerManager>();
@@ -27,6 +30,7 @@ public class PlayerInputHandler : MonoBehaviour
         _shootProjectile = gameObject.GetComponent<ShootProjectile>();
         _eat = GetComponent<Eat>();
         _controls = new PlayerControls();
+        placer = GetComponent<PlacePlateform>();
     }
 
     public void InitializePlayer(PlayerConfiguration pc)
@@ -63,10 +67,15 @@ public class PlayerInputHandler : MonoBehaviour
         {
             OnDash(obj);
         }
+        else if (obj.action.name == _controls.Gameplay.Place.name)
+        {
+            OnPlace(obj);
+        }
     }
     
     private void OnMove(CallbackContext context)
     {
+        
         if(_playerManager != null)
             _playerManager.SetInputVector(context.ReadValue<Vector2>());
     }
@@ -125,11 +134,17 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
 
+    private void OnPlace(CallbackContext context)
+    {
+        if(placer != null && context.performed)
+            placer.OnPlace();
+    }
+
     private void Update()
     {
         if (_canHoldCooldown)
             _holdCooldown += Time.deltaTime;
-        Debug.Log(_holdCooldown);
+//        Debug.Log(_holdCooldown);
 
         if (_holdCooldown >= 2f)
         {

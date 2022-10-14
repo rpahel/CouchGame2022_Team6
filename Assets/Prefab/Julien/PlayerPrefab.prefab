@@ -325,6 +325,7 @@ GameObject:
   - component: {fileID: -4706397259788855995}
   - component: {fileID: 7973215681648496309}
   - component: {fileID: -7049740124717223735}
+  - component: {fileID: 4957029068808383571}
   m_Layer: 0
   m_Name: PlayerPrefab
   m_TagString: Player
@@ -626,3 +627,18 @@ MonoBehaviour:
   shootImpactSatietyPercent: 15
   shootLooseEat: 0.08
   endOfAim: {fileID: 8995548306197928054}
+--- !u!114 &4957029068808383571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7366054978402329224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cd1b7307bfff5d40ba02dd6fb334fe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockToPlace: {fileID: 2613636963887001808, guid: 74a185477bf05c94796ad895b5c85abe,
+    type: 3}
+  range: 10

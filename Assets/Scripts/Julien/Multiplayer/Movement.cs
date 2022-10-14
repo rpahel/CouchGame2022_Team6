@@ -25,7 +25,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     private bool _isGrounded;
-    private bool _isJumping;
+    public bool _isJumping;
     private float _jumpCounter;
     private Vector2 _vecGravity;
 
