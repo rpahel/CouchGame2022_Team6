@@ -364,7 +364,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   _brakeForce: 1
-  jumpForce: 6
+  jumpForce: 20
   jumpTime: 0
   fallMultiplier: 1
   jumpMultiplier: 0
@@ -378,7 +378,7 @@ MonoBehaviour:
   looseEatForce: 1
   _canDash: 0
   dashForce: 10
-  dashTime: 0.1
+  dashTime: 0.4
   dashCooldown: 1
 --- !u!61 &7366054978402329227
 BoxCollider2D:
@@ -421,7 +421,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 6
   m_Material: {fileID: 6200000, guid: 0bbe0a4095b05bc49abda2d661eadaab, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -621,7 +621,7 @@ MonoBehaviour:
     type: 3}
   gravityScale: 0.3
   shootCooldown: 1
-  Power: 8
+  Power: 16
   explosionRadius: 4
   shootImpactSatietyPercent: 15
   shootLooseEat: 0.08
