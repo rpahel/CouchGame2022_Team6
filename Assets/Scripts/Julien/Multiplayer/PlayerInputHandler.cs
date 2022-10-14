@@ -100,7 +100,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnDash(CallbackContext context)
     {
-        if (_movement != null && context.started && _playerManager.eatAmount == 2.15f)
+        if (_movement != null && context.started && _playerManager.eatAmount >= 0.70f && _movement._canDash == true)
 
         {
             Debug.Log("Start");
@@ -112,12 +112,12 @@ public class PlayerInputHandler : MonoBehaviour
             if (_holdCooldown >= 0.01f && _canHoldCooldown && _holdCooldown <= 0.99f)
             {
                 dashAfterHold();
-                _playerManager.eatAmount -= 2f;
+                _playerManager.eatAmount -= 0.90f;
             }
             else if (_holdCooldown >= 1f && _canHoldCooldown)
             {
                 dashAfterHold();
-                 _playerManager.eatAmount -= 1f;
+                 _playerManager.eatAmount -= 0.30f;
             }
 
             _canHoldCooldown = false;

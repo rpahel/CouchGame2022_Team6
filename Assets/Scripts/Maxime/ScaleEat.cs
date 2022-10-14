@@ -50,7 +50,7 @@ public class ScaleEat : MonoBehaviour
         scaler.x = Mathf.Lerp(1,  maxScale, _playerManager.eatAmount);
         scaler.z = Mathf.Lerp(1, maxScale, _playerManager.eatAmount);
 
-        if (_playerManager.eatAmount >=  0.9f)
+        if (_playerManager.eatAmount >=  0.71f)
         {
             switchSkin = SwitchSizeSkin.Big;
             _meshFilterGo.mesh = meshBig;
@@ -58,7 +58,7 @@ public class ScaleEat : MonoBehaviour
             _movement._canDash = true;
            // _playerManager.eatAmount -= Time.deltaTime * timeToLooseEat;
         }
-        else if (_playerManager.eatAmount <= 0.33f)
+        else if (_playerManager.eatAmount <= 0.35f)
         {
             switchSkin = SwitchSizeSkin.Little;
             _meshFilterGo.mesh = meshLittle;
