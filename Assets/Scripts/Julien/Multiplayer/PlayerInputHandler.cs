@@ -126,7 +126,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (_canHoldCooldown)
             _holdCooldown += Time.deltaTime;
-        Debug.Log(_holdCooldown);
+        //Debug.Log(_holdCooldown);
 
         if (_holdCooldown >= 2f)
         {

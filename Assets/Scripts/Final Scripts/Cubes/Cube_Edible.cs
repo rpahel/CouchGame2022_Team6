@@ -69,7 +69,13 @@ public class Cube_Edible : Cube
 
     public void OnExploded()
     {
-        Instantiate(loot, transform.position, Quaternion.identity);
+        float rand = Random.Range(0f, 1f);
+        if (rand >= 0.60f)
+        {
+            Debug.Log($"{gameObject.name}, {rand}.");
+            Instantiate(loot, transform.position, Quaternion.identity);
+        }
+
         GetManged();
     }
 }

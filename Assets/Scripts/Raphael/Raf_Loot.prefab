@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8913226969172518833}
   - component: {fileID: 8913226969172518836}
   - component: {fileID: 8913226969172518837}
+  - component: {fileID: 2513473596131519625}
   m_Layer: 0
   m_Name: Raf_Loot
   m_TagString: CubeLoot
@@ -122,3 +123,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &2513473596131519625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8913226969172518835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e17119b8b02f83d47976e76c4ca47871, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TestEat: 0.04

@@ -1851,7 +1851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7bed8b178ffee44a860348c49002fe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imageDeReference: {fileID: 2800000, guid: dc6f12004ceb0ff4fa1c83b7318778ad, type: 3}
+  imageDeReference: {fileID: 2800000, guid: 49929b079128a4e4cab5ada558d62913, type: 3}
   cubeEdible: {fileID: 2613636963887001808, guid: 74a185477bf05c94796ad895b5c85abe,
     type: 3}
   cubeBedrock: {fileID: 2613636963887001808, guid: c7f75a0a01a2fd944b4e35a457f711f5,
