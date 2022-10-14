@@ -342,13 +342,7 @@ MonoBehaviour:
   jumpCount: 0
   maxJumpCount: 2
   wjForce: 6
-  projectilePrefab: {fileID: 4601391959376553427, guid: 19c61af3207f2734f8f407759aad8a36,
-    type: 3}
-  canCreatePlatform: 0
-  gravityScale: 0.5
-  shootCooldown: 1
-  shootPower: 0
-  lifetime: 6
+  looseEatForce: 1
   dashForce: 10
   dashTime: 0.1
   dashCooldown: 1
@@ -412,6 +406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMesh: {fileID: 7366054977546968797}
+  _holdCooldown: 0
 --- !u!114 &8852710062912591228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,12 +420,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   switchSkin: 0
-  NbEaten: 200
   scaler: {x: 1, y: 1, z: 1}
   meshLittle: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
   meshAverage: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   meshBig: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
-  CurrentMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  currentMesh: {fileID: 0}
+  listSprite:
+  - {fileID: 21300000, guid: 4ce3af07e6c82b94d8d1aa011bbd08ac, type: 3}
+  - {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 21300000, guid: 07a23c90581b1f543954a1e5abf4d34f, type: 3}
 --- !u!96 &6404831158282792958
 TrailRenderer:
   serializedVersion: 2
@@ -568,3 +566,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 687c6dec1c97c4246ab6d41cfcd20630, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eatAmount: 0
+  ImageUI: {fileID: 0}
+  TextUI: {fileID: 0}

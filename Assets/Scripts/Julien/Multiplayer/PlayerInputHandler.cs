@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerInputHandler : MonoBehaviour
@@ -11,7 +12,7 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private MeshRenderer playerMesh;
 
     public float _holdCooldown;
-    private bool _canHoldCooldown;
+    public bool _canHoldCooldown;
 
     [Header("Scripts")]
     private Movement _movement;
@@ -20,6 +21,7 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerControls _controls;
     private void Awake()
     {
+        Debug.Log("Awake");
         _playerManager = gameObject.GetComponent<PlayerManager>();
         _movement = GetComponent<Movement>();
         _eat = GetComponent<Eat>();
@@ -28,8 +30,10 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void InitializePlayer(PlayerConfiguration pc)
     {
+        Debug.Log("nit");
         _playerConfig = pc;
         playerMesh.material = pc.PlayerMaterial;
+        _playerManager.imageUI.color = pc.PlayerMaterial.color;
         _playerConfig.Input.onActionTriggered += Input_OnActionTriggered;
     }
 
