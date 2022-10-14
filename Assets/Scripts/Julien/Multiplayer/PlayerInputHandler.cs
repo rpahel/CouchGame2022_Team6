@@ -17,20 +17,20 @@ public class PlayerInputHandler : MonoBehaviour
     [Header("Scripts")]
     private Movement _movement;
     private PlayerManager _playerManager;
+    private ShootProjectile _shootProjectile;
     private Eat _eat;
     private PlayerControls _controls;
     private void Awake()
     {
-        Debug.Log("Awake");
         _playerManager = gameObject.GetComponent<PlayerManager>();
         _movement = GetComponent<Movement>();
+        _shootProjectile = gameObject.GetComponent<ShootProjectile>();
         _eat = GetComponent<Eat>();
         _controls = new PlayerControls();
     }
 
     public void InitializePlayer(PlayerConfiguration pc)
     {
-        Debug.Log("nit");
         _playerConfig = pc;
         playerMesh.material = pc.PlayerMaterial;
         _playerManager.imageUI.color = pc.PlayerMaterial.color;
@@ -81,14 +81,14 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnShoot(CallbackContext context)
     {
-        if (_movement != null && context.performed) {}
-            //_movement.Shoot();
+        if (_shootProjectile != null && context.canceled) 
+            _shootProjectile.Shoot();
     }
     
     private void OnAim(CallbackContext context)
     {
-        if (_movement != null && context.performed) {}
-            //_movement.Aim();
+        if (_shootProjectile != null && context.performed) 
+            _shootProjectile.Aim();
     }
     
     private void OnEat(InputAction.CallbackContext context)
@@ -100,21 +100,24 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnDash(CallbackContext context)
     {
-   
+        if (_movement != null && context.started && _playerManager.eatAmount >= 0.70f && _movement._canDash == true)
 
-        if (_movement != null && context.started)
         {
             Debug.Log("Start");
             _canHoldCooldown = true;
-
-
         }
          
-        else if (_movement != null && context.canceled)
+        else if (_movement != null && context.canceled && _movement._canDash == true)
         {
-            if (_holdCooldown >= 1f && _canHoldCooldown)
+            if (_holdCooldown >= 0.01f && _canHoldCooldown && _holdCooldown <= 0.99f)
             {
                 dashAfterHold();
+                _playerManager.eatAmount -= 0.90f;
+            }
+            else if (_holdCooldown >= 1f && _canHoldCooldown)
+            {
+                dashAfterHold();
+                 _playerManager.eatAmount -= 0.30f;
             }
 
             _canHoldCooldown = false;
@@ -132,6 +135,7 @@ public class PlayerInputHandler : MonoBehaviour
         {
            
             dashAfterHold();
+           
 
         }
 

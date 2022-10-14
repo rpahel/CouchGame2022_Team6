@@ -16,6 +16,7 @@ public class ScaleEat : MonoBehaviour
     public Mesh meshBig;
     public Mesh currentMesh;
     private MeshFilter _meshFilterGo;
+    private float maxScale = 2.857143f;
 
     public List<Sprite> listSprite = new List<Sprite>();
     
@@ -41,15 +42,15 @@ public class ScaleEat : MonoBehaviour
     void scaleEat()
     {
         transform.localScale = scaler;
-        _playerManager.eatAmount = Mathf.Clamp(_playerManager.eatAmount, 1f, _playerManager.maxEatValue);
-        _playerManager.textUI.text = (((_playerManager.eatAmount-1) * 100)/(_playerManager.maxEatValue-1)).ToString() + "%";
+        _playerManager.eatAmount = Mathf.Clamp(_playerManager.eatAmount, 0f, _playerManager.maxEatValue);
+        _playerManager.textUI.text = (_playerManager.eatAmount * 100).ToString() + "%";
 
         //juste pour sa soit smooth
-        scaler.y = Mathf.Lerp(scaler.y, _playerManager.eatAmount, .03f); 
-        scaler.x = Mathf.Lerp(scaler.x, _playerManager.eatAmount, .03f);
-        scaler.z = Mathf.Lerp(scaler.z, _playerManager.eatAmount, .03f);
+        scaler.y = Mathf.Lerp(1, maxScale, _playerManager.eatAmount); 
+        scaler.x = Mathf.Lerp(1,  maxScale, _playerManager.eatAmount);
+        scaler.z = Mathf.Lerp(1, maxScale, _playerManager.eatAmount);
 
-        if (_playerManager.eatAmount >=  2.15f)
+        if (_playerManager.eatAmount >=  0.71f)
         {
             switchSkin = SwitchSizeSkin.Big;
             _meshFilterGo.mesh = meshBig;
@@ -57,7 +58,7 @@ public class ScaleEat : MonoBehaviour
             _movement._canDash = true;
            // _playerManager.eatAmount -= Time.deltaTime * timeToLooseEat;
         }
-        else if (_playerManager.eatAmount <= 1.64f)
+        else if (_playerManager.eatAmount <= 0.35f)
         {
             switchSkin = SwitchSizeSkin.Little;
             _meshFilterGo.mesh = meshLittle;
