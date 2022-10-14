@@ -16,7 +16,7 @@ public class PlayerManager : MonoBehaviour
 
     public float eatAmount;
 
-    private float _maxEatValue = 2.857143f;
+    private float _maxEatValue = 1;
     public float maxEatValue => _maxEatValue;
     
     public Image imageUI;
@@ -25,7 +25,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
-        eatAmount = (maxEatValue+1)/2;
+        eatAmount = maxEatValue/2;
     }
 
     public void SetInputVector(Vector2 direction)

@@ -28,8 +28,7 @@ public class InitializeLevel : MonoBehaviour
                 gameObject.transform);
             playersUI[i].SetActive(true);
             player.GetComponent<PlayerManager>().imageUI = playersUI[i].transform.GetChild(0).GetComponent<Image>();
-            player.GetComponent<PlayerManager>().textUI =
-                playersUI[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+            player.GetComponent<PlayerManager>().textUI = playersUI[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>();
             player.GetComponent<PlayerInputHandler>().InitializePlayer(playerConfigs[i]);
             cinemachine.m_Targets[i].target = player.transform;
             cinemachine.m_Targets[i].weight = 1;
