@@ -71,6 +71,5 @@ public class Cube_Edible : Cube
     {
         Instantiate(loot, transform.position, Quaternion.identity);
         GetManged();
-        Destroy(gameObject);
     }
 }
