@@ -6,6 +6,7 @@ using Data;
 public class Cube_Edible : Cube
 {
     [SerializeField] private GameObject[] restes = new GameObject[4];
+    [SerializeField] private GameObject loot;
 
     private List<Cube> cubesAutour = new List<Cube>(4);
     public List<Cube> CubesAutour { get => cubesAutour; set => cubesAutour = value; }
@@ -57,7 +58,7 @@ public class Cube_Edible : Cube
         }
     }
 
-    // Retire le reste collé au cube voisi qui vient de se faire manger
+    // Retire le reste collé au cube voisin qui vient de se faire manger
     public void VoisinGotManged(int indexDuVoisin)
     {
         if (!cube.activeSelf)
@@ -66,5 +67,9 @@ public class Cube_Edible : Cube
         }
     }
 
-
+    public void OnExploded()
+    {
+        Instantiate(loot, transform.position, Quaternion.identity);
+        GetManged();
+    }
 }

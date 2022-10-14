@@ -8,6 +8,7 @@ TagManager:
   - CubeEdible
   - CubeTrap
   - Jumpable
+  - CubeLoot
   layers:
   - Default
   - TransparentFX
