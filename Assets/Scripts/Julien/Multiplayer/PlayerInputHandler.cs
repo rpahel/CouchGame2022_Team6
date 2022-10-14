@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerInputHandler : MonoBehaviour
@@ -11,17 +12,19 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private MeshRenderer playerMesh;
 
     public float _holdCooldown;
-    private bool _canHoldCooldown;
+    public bool _canHoldCooldown;
 
     [Header("Scripts")]
     private Movement _movement;
     private PlayerManager _playerManager;
+    private ShootProjectile _shootProjectile;
     private Eat _eat;
     private PlayerControls _controls;
     private void Awake()
     {
         _playerManager = gameObject.GetComponent<PlayerManager>();
         _movement = GetComponent<Movement>();
+        _shootProjectile = gameObject.GetComponent<ShootProjectile>();
         _eat = GetComponent<Eat>();
         _controls = new PlayerControls();
     }
@@ -30,6 +33,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
         _playerConfig = pc;
         playerMesh.material = pc.PlayerMaterial;
+        _playerManager.imageUI.color = pc.PlayerMaterial.color;
         _playerConfig.Input.onActionTriggered += Input_OnActionTriggered;
     }
 
@@ -77,14 +81,14 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnShoot(CallbackContext context)
     {
-        if (_movement != null && context.performed) {}
-            //_movement.Shoot();
+        if (_shootProjectile != null && context.canceled) 
+            _shootProjectile.Shoot();
     }
     
     private void OnAim(CallbackContext context)
     {
-        if (_movement != null && context.performed) {}
-            //_movement.Aim();
+        if (_shootProjectile != null && context.performed) 
+            _shootProjectile.Aim();
     }
     
     private void OnEat(InputAction.CallbackContext context)
@@ -96,21 +100,24 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnDash(CallbackContext context)
     {
-   
+        if (_movement != null && context.started && _playerManager.eatAmount == 2.15f)
 
-        if (_movement != null && context.started)
         {
             Debug.Log("Start");
             _canHoldCooldown = true;
-
-
         }
          
-        else if (_movement != null && context.canceled)
+        else if (_movement != null && context.canceled && _movement._canDash == true)
         {
-            if (_holdCooldown >= 1f && _canHoldCooldown)
+            if (_holdCooldown >= 0.01f && _canHoldCooldown && _holdCooldown <= 0.99f)
             {
                 dashAfterHold();
+                _playerManager.eatAmount -= 2f;
+            }
+            else if (_holdCooldown >= 1f && _canHoldCooldown)
+            {
+                dashAfterHold();
+                 _playerManager.eatAmount -= 1f;
             }
 
             _canHoldCooldown = false;
@@ -128,6 +135,7 @@ public class PlayerInputHandler : MonoBehaviour
         {
            
             dashAfterHold();
+           
 
         }
 

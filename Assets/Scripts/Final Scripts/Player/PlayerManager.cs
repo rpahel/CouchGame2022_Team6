@@ -5,6 +5,7 @@ using Data;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -15,15 +16,16 @@ public class PlayerManager : MonoBehaviour
 
     public float eatAmount;
 
-    public struct PlayerUI
-    {
-        public SpriteRenderer Sprite;
-        public TextMeshPro Text;
-    }
+    private float _maxEatValue = 1;
+    public float maxEatValue => _maxEatValue;
+    
+    public Image imageUI;
+    public TextMeshProUGUI textUI;
+    
 
     private void Awake()
     {
-        eatAmount = 0.5f;
+        eatAmount = maxEatValue/2;
     }
 
     public void SetInputVector(Vector2 direction)

@@ -53,17 +53,19 @@ public class Movement : MonoBehaviour
     private ScaleEat _scaleEat;
     IEnumerator _dashCoroutine;
     private bool _isDashing;
-    private bool _canDash = true;
+    //[HideInInspector]
+    public bool _canDash = false;
     [SerializeField] private float dashForce;
     [SerializeField] private float dashTime;
     [SerializeField] private float dashCooldown;
     private float _normalGravity;
-    private float _holdCooldown;
+    private float _holdCool;
+    private PlayerInputHandler _playerInputHandler;
     private void Awake()
     {
+        _playerInputHandler = GetComponent<PlayerInputHandler>();
         _playerManager = gameObject.GetComponent<PlayerManager>();
         _rb = gameObject.GetComponent<Rigidbody2D>();
-        //ResetShootCooldown();
         _playerManager.SetPlayerState(PlayerState.Moving);
         _vecGravity = new Vector2(0, -Physics2D.gravity.y);
         _scaleEat = GetComponent<ScaleEat>();
@@ -85,14 +87,15 @@ public class Movement : MonoBehaviour
         
         if (_isDashing) 
         {
-             _playerManager.eatAmount -= Time.fixedDeltaTime * looseEatForce;
+            _playerManager.eatAmount -= Time.deltaTime * looseEatForce;
+
             _rb.AddForce(_playerManager.InputVector * dashForce, ForceMode2D.Impulse);
         }
     }
 
     public void SetHoldValue(float f)
     {
-        _holdCooldown = f;
+        _holdCool = f;
     }
     private bool IsGrounded()
     {
@@ -106,7 +109,6 @@ public class Movement : MonoBehaviour
         float Vx = _playerManager.InputVector.x * moveSpeed + _rb.velocity.x;
         Vx = Mathf.Clamp(Vx, -moveSpeed, moveSpeed);
         _rb.velocity = new Vector2(Vx, _rb.velocity.y);
-        
     }
 
     private void Brake()
@@ -172,35 +174,6 @@ public class Movement : MonoBehaviour
         if (_rb.velocity.y > 0)
             _rb.velocity = new Vector2(_rb.velocity.x, _rb.velocity.y * 0.6f);
     }
-    
-    /*private void ResetShootCooldown()
-    {
-        _cooldown = shootCooldown;
-    }
-    
-    public void Shoot()
-    {
-        if (_cooldown < 0) //&& slider.value > 0
-        {
-            PlayerManager.Instance.SetPlayerState(PlayerState.Shooting);
-            var projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-            _rbProjectile = projectile.GetComponent<Rigidbody2D>();
-            //slider.value -= 0.1f;
-            _rbProjectile.gravityScale = gravityScale; 
-            _rbProjectile.AddForce(_inputVector * shootPower, ForceMode2D.Impulse);
-
-            projectile.GetComponent<AutoDestroy>().DestroyObj((lifetime));
-            ResetShootCooldown();
-        }
-        PlayerManager.Instance.SetPlayerState(PlayerState.Moving);
-    }
-    
-
-    public void Aim()
-    {
-        PlayerManager.Instance.SetPlayerState(PlayerState.Aiming);
-    }*/
-
     public void OnCollisionEnter2D(Collision2D collision) {
         if (collision.collider.tag.Contains("Jumpable")) {
             _canWallJump = true;
@@ -216,7 +189,7 @@ public class Movement : MonoBehaviour
     
     public void Dash()
     {
-        if (_canDash) //&& _scaleEat.NbEaten >= 200f
+        if (_canDash)
         {
             if (_dashCoroutine != null) 
             {
