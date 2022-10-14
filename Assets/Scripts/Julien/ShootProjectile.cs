@@ -115,7 +115,8 @@ public class ShootProjectile : MonoBehaviour
         }
         
         Destroy(transform.gameObject);
-    }*/
+    }
+    */
     
     private void OnEnable()
     {
