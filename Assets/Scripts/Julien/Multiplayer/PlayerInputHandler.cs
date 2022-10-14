@@ -110,11 +110,12 @@ public class PlayerInputHandler : MonoBehaviour
 
         }
          
-        else if (_movement != null && context.canceled)
+        else if (_movement != null && context.canceled && _movement._canDash == true)
         {
             if (_holdCooldown >= 1f && _canHoldCooldown)
             {
                 dashAfterHold();
+                _playerManager.eatAmount -= 1f;
             }
 
             _canHoldCooldown = false;
@@ -132,6 +133,7 @@ public class PlayerInputHandler : MonoBehaviour
         {
            
             dashAfterHold();
+           
 
         }
 
