@@ -345,7 +345,7 @@ MonoBehaviour:
   m_MinimumDistance: 1
   m_MaximumDistance: 5000
   m_MinimumFOV: 60
-  m_MaximumFOV: 80
+  m_MaximumFOV: 120
   m_MinimumOrthoSize: 1
   m_MaximumOrthoSize: 5000
 --- !u!1 &218493360

@@ -8,8 +8,6 @@ public class ScaleEat : MonoBehaviour
 {
     private PlayerManager _playerManager;
     
-    public SwitchSizeSkin switchSkin;
-    
     public Vector3 scaler = new Vector3(1,1,1);
     public Mesh meshLittle;
     public Mesh meshAverage;
@@ -17,6 +15,7 @@ public class ScaleEat : MonoBehaviour
     public Mesh currentMesh;
     private MeshFilter _meshFilterGo;
     private float maxScale = 2.857143f;
+    [SerializeField] private float scaleSmooth;
 
     public List<Sprite> listSprite = new List<Sprite>();
     
@@ -24,7 +23,7 @@ public class ScaleEat : MonoBehaviour
     public float timeToLooseEat;
     private void InitializedSize()
     {
-        switchSkin = SwitchSizeSkin.Little;
+        _playerManager.SetSkin(SwitchSizeSkin.Little);
     }
     private void Awake()
     {
@@ -32,7 +31,6 @@ public class ScaleEat : MonoBehaviour
         _playerManager = gameObject.GetComponent<PlayerManager>();
         _meshFilterGo = this.transform.GetChild(0).GetComponent<MeshFilter>();
         currentMesh = _meshFilterGo.mesh;
-
     }
     void Update()
     {
@@ -41,18 +39,21 @@ public class ScaleEat : MonoBehaviour
 
     void scaleEat()
     {
-        transform.localScale = scaler;
         _playerManager.eatAmount = Mathf.Clamp(_playerManager.eatAmount, 0f, _playerManager.maxEatValue);
         _playerManager.textUI.text = (_playerManager.eatAmount * 100).ToString() + "%";
 
         //juste pour sa soit smooth
-        scaler.y = Mathf.Lerp(1, maxScale, _playerManager.eatAmount); 
-        scaler.x = Mathf.Lerp(1,  maxScale, _playerManager.eatAmount);
-        scaler.z = Mathf.Lerp(1, maxScale, _playerManager.eatAmount);
+        float scaleTarget = Mathf.Lerp(1, maxScale, _playerManager.eatAmount); 
+        //scaler.x = Mathf.Lerp(1,  maxScale, _playerManager.eatAmount);
+
+        scaler.y = Mathf.Lerp(scaler.y, scaleTarget, scaleSmooth); 
+        scaler.x = Mathf.Lerp(scaler.x,  scaleTarget, scaleSmooth);
+        scaler.z = Mathf.Lerp(scaler.z, scaleTarget, scaleSmooth);
+        transform.localScale = scaler;
 
         if (_playerManager.eatAmount >=  0.71f)
         {
-            switchSkin = SwitchSizeSkin.Big;
+            _playerManager.SetSkin(SwitchSizeSkin.Big);
             _meshFilterGo.mesh = meshBig;
             _playerManager.imageUI.sprite = listSprite[2];
             _movement._canDash = true;
@@ -60,14 +61,14 @@ public class ScaleEat : MonoBehaviour
         }
         else if (_playerManager.eatAmount <= 0.35f)
         {
-            switchSkin = SwitchSizeSkin.Little;
+            _playerManager.SetSkin(SwitchSizeSkin.Little);
             _meshFilterGo.mesh = meshLittle;
             _playerManager.imageUI.sprite = listSprite[1];
             _movement._canDash = false;
         }
         else
         {
-            switchSkin = SwitchSizeSkin.Medium;
+            _playerManager.SetSkin(SwitchSizeSkin.Medium);
             _meshFilterGo.mesh = meshAverage;
             _playerManager.imageUI.sprite = listSprite[0];
             _movement._canDash = false;

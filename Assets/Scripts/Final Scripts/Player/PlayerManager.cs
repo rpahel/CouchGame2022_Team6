@@ -19,6 +19,8 @@ public class PlayerManager : MonoBehaviour
     private float _maxEatValue = 1;
     public float maxEatValue => _maxEatValue;
     
+    public SwitchSizeSkin SwitchSkin  { get; private set; }
+    
     public Image imageUI;
     public TextMeshProUGUI textUI;
     
@@ -36,5 +38,10 @@ public class PlayerManager : MonoBehaviour
     public void SetPlayerState(PlayerState state)
     {
         State = state;
+    }
+
+    public void SetSkin(SwitchSizeSkin skin)
+    {
+        SwitchSkin = skin;
     }
 }

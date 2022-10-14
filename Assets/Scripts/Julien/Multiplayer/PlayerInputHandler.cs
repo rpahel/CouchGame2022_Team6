@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
@@ -100,54 +101,50 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnDash(CallbackContext context)
     {
-        if (_movement != null && context.started && _playerManager.eatAmount >= 0.70f && _movement._canDash == true)
-
+        if (_movement != null && context.started && _movement._canDash == true)
         {
-            Debug.Log("Start");
             _canHoldCooldown = true;
+            _shootProjectile.Aim();
         }
          
-        else if (_movement != null && context.canceled && _movement._canDash == true)
+        else if (_movement != null && context.canceled)
         {
-            if (_holdCooldown >= 0.01f && _canHoldCooldown && _holdCooldown <= 0.99f)
+            if (_movement._canDash == true)
             {
-                dashAfterHold();
-                _playerManager.eatAmount -= 0.90f;
+                if (_canHoldCooldown && _holdCooldown <= 0.99f)
+                {
+                    _movement.Dash();
+                    _playerManager.eatAmount -= 0.90f;
+                }
+                else if (_holdCooldown >= 1f && _canHoldCooldown)
+                {
+                    _movement.Dash();
+                    _playerManager.eatAmount -= 0.30f;
+                } 
             }
-            else if (_holdCooldown >= 1f && _canHoldCooldown)
-            {
-                dashAfterHold();
-                 _playerManager.eatAmount -= 0.30f;
-            }
-
-            _canHoldCooldown = false;
-            _holdCooldown = 0f;
+            
+            ResetCooldown();
+            _playerManager.SetPlayerState(PlayerState.Moving);
         }
+        
     }
 
     private void Update()
     {
         if (_canHoldCooldown)
             _holdCooldown += Time.deltaTime;
-        //Debug.Log(_holdCooldown);
 
         if (_holdCooldown >= 2f)
         {
-           
-            dashAfterHold();
-           
-
+            _movement.Dash();
+            ResetCooldown();
         }
 
     }
 
-    private void dashAfterHold()
+    private void ResetCooldown()
     {
         _canHoldCooldown = false;
-        Debug.Log("hold");
-        _movement.Dash();
-        //On appelle la fonction avec la valeu
-        _movement.SetHoldValue(_holdCooldown);
         _holdCooldown = 0f;
     }
 
