@@ -15,9 +15,9 @@ public class Projectile : MonoBehaviour
             switch (collider.tag) {
                 case "CubeEdible":
                     Cube_Edible cube;
-                    if (collider.gameObject.TryGetComponent<Cube_Edible>(out cube)) {
+                    if (collider.transform.parent.TryGetComponent<Cube_Edible>(out cube)) {
                         if (!cube.isManged()) {
-                            cube.GetManged();
+                            cube.OnExploded();
                         }
                     }
                     break;
