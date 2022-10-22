@@ -9,6 +9,7 @@ TagManager:
   - CubeTrap
   - Jumpable
   - CubeLoot
+  - Canva
   layers:
   - Default
   - TransparentFX

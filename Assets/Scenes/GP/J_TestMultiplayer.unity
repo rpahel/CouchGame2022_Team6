@@ -2587,6 +2587,131 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1001 &1188266085652591686
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1188266086756993696, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_Name
+      value: CheatCanva
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 53757fce4936e0543811be53550b2ce1, type: 3}
+--- !u!1 &1188266085652591687 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1188266086756993696, guid: 53757fce4936e0543811be53550b2ce1,
+    type: 3}
+  m_PrefabInstance: {fileID: 1188266085652591686}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2523024917746093764
 GameObject:
   m_ObjectHideFlags: 0
@@ -2598,6 +2723,7 @@ GameObject:
   - component: {fileID: 2523024917746093766}
   - component: {fileID: 2523024917746093767}
   - component: {fileID: 8457282819450154593}
+  - component: {fileID: 8457282819450154594}
   m_Layer: 0
   m_Name: PlayerInput
   m_TagString: Untagged
@@ -2648,10 +2774,6 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: a7c81585-be9c-4781-bbcf-f212de222b40
-    m_ActionName: Gameplay/ShootDirection[/XInputControllerWindows/rightStick]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: c3d6648d-0ff0-4239-9f14-7b573ac5166c
     m_ActionName: Gameplay/ShootHold[/XInputControllerWindows/rightTrigger]
   - m_PersistentCalls:
@@ -2678,6 +2800,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 4f193996-6a26-4383-b83a-4167e3698a3d
     m_ActionName: Menu/Select[/XInputControllerWindows/buttonSouth,/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5c9fd367-f4c7-4be8-aa60-726cf229401f
+    m_ActionName: Gameplay/Eat
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3b6806f7-fb38-4f8c-b25b-817676bd3a6b
+    m_ActionName: Gameplay/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5cbb4378-eb1b-4423-968a-cbdcca78f134
+    m_ActionName: Gameplay/Dash
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 30755abc-fe09-409e-94ea-0dbf08f81551
+    m_ActionName: Gameplay/CheatMenu[/Keyboard/k]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
@@ -2698,3 +2836,16 @@ MonoBehaviour:
   playerMesh: {fileID: 0}
   _holdCooldown: 0
   _canHoldCooldown: 0
+--- !u!114 &8457282819450154594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2523024917746093764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43e85708a4902d24eba63713aac40827, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvaGang: {fileID: 1188266085652591687}

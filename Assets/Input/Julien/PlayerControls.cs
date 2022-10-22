@@ -80,6 +80,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CheatMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""30755abc-fe09-409e-94ea-0dbf08f81551"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -214,6 +223,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c7bb5c6b-f5bb-467e-9d7a-6d333e797708"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CheatMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -267,6 +287,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Gameplay_Eat = m_Gameplay.FindAction("Eat", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
         m_Gameplay_Dash = m_Gameplay.FindAction("Dash", throwIfNotFound: true);
+        m_Gameplay_CheatMenu = m_Gameplay.FindAction("CheatMenu", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_Select = m_Menu.FindAction("Select", throwIfNotFound: true);
@@ -335,6 +356,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Eat;
     private readonly InputAction m_Gameplay_Jump;
     private readonly InputAction m_Gameplay_Dash;
+    private readonly InputAction m_Gameplay_CheatMenu;
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
@@ -345,6 +367,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @Eat => m_Wrapper.m_Gameplay_Eat;
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         public InputAction @Dash => m_Wrapper.m_Gameplay_Dash;
+        public InputAction @CheatMenu => m_Wrapper.m_Gameplay_CheatMenu;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -372,6 +395,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Dash.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
                 @Dash.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
                 @Dash.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
+                @CheatMenu.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCheatMenu;
+                @CheatMenu.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCheatMenu;
+                @CheatMenu.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCheatMenu;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -394,6 +420,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Dash.started += instance.OnDash;
                 @Dash.performed += instance.OnDash;
                 @Dash.canceled += instance.OnDash;
+                @CheatMenu.started += instance.OnCheatMenu;
+                @CheatMenu.performed += instance.OnCheatMenu;
+                @CheatMenu.canceled += instance.OnCheatMenu;
             }
         }
     }
@@ -439,6 +468,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnEat(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnCheatMenu(InputAction.CallbackContext context);
     }
     public interface IMenuActions
     {
