@@ -2599,6 +2599,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CheatCanva
       objectReference: {fileID: 0}
+    - target: {fileID: 1188266086756993696, guid: 53757fce4936e0543811be53550b2ce1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1188266086756993708, guid: 53757fce4936e0543811be53550b2ce1,
         type: 3}
       propertyPath: m_Pivot.x
