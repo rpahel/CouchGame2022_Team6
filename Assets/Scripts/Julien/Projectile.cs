@@ -26,7 +26,7 @@ public class Projectile : MonoBehaviour
                     Movement mov;
                     if (collider.gameObject.TryGetComponent<Movement>(out mov))
                     {
-                        PlayerManager playerManager = mov.GetComponent<PlayerManager>();
+                        PlayerManager_JULIEN playerManager = mov.GetComponent<PlayerManager_JULIEN>();
                         Rigidbody2D rb = mov.GetComponent<Rigidbody2D>();
                         playerManager.eatAmount -= playerManager.eatAmount * (shootImpactSatietyPercent / 100);
                         rb.AddForce(-col.contacts[0].normal * shootForce,ForceMode2D.Impulse);

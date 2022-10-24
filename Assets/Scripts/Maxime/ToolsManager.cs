@@ -7,7 +7,7 @@ using Data;
 public class ToolsManager : MonoBehaviour
 {
     private Movement _movement;
-    private PlayerManager _playerManager;
+    private PlayerManager_JULIEN _playerManager;
     private ShootProjectile _shootProjectile;
     private Eat _eat;
     private PlayerControls _controls;
@@ -16,7 +16,7 @@ public class ToolsManager : MonoBehaviour
     private void Awake()
     {
        
-        _playerManager = gameObject.GetComponent<PlayerManager>();
+        _playerManager = gameObject.GetComponent<PlayerManager_JULIEN>();
         _movement = GetComponent<Movement>();
         _shootProjectile = gameObject.GetComponent<ShootProjectile>();
         _eat = GetComponent<Eat>();

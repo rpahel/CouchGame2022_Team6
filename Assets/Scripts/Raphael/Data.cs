@@ -1,6 +1,6 @@
 namespace Data
 {
-    public enum CUBETYPE
+    public enum CUBE_TYPE
     {
         NONE,
         EDIBLE,
@@ -16,8 +16,15 @@ namespace Data
         WallJumping,
         Moving,
     }
+
+    public enum PLAYER_STATE
+    {
+        WALKING,
+        FALLING,
+        DASHING,
+    }
         
-    public enum SwitchSizeSkin
+    public enum SKIN_SIZE
     {
         Little,
         Medium,

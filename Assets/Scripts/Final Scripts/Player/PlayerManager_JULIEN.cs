@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager_JULIEN : MonoBehaviour
 {
     [field: Header("Player State")]
     public PlayerState State { get; private set; }
@@ -19,7 +19,7 @@ public class PlayerManager : MonoBehaviour
     private float _maxEatValue = 1;
     public float maxEatValue => _maxEatValue;
     
-    public SwitchSizeSkin SwitchSkin  { get; private set; }
+    public SKIN_SIZE SwitchSkin  { get; private set; }
     
     public Image imageUI;
     public TextMeshProUGUI textUI;
@@ -40,7 +40,7 @@ public class PlayerManager : MonoBehaviour
         State = state;
     }
 
-    public void SetSkin(SwitchSizeSkin skin)
+    public void SetSkin(SKIN_SIZE skin)
     {
         SwitchSkin = skin;
     }

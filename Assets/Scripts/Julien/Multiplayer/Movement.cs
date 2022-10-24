@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    private PlayerManager _playerManager;
+    private PlayerManager_JULIEN _playerManager;
 
 
     [Header("Movements")] [SerializeField] private float moveSpeed;
@@ -59,7 +59,7 @@ public class Movement : MonoBehaviour
     private bool _canHit = false;
     private void Awake()
     {
-        _playerManager = gameObject.GetComponent<PlayerManager>();
+        _playerManager = gameObject.GetComponent<PlayerManager_JULIEN>();
         _rb = gameObject.GetComponent<Rigidbody2D>();
         _playerManager.SetPlayerState(PlayerState.Moving);
         _vecGravity = new Vector2(0, -Physics2D.gravity.y);
@@ -180,16 +180,16 @@ public class Movement : MonoBehaviour
             }
             else if (other.GetComponent<Collider2D>().CompareTag("Player") && _canHit)
             {
-                PlayerManager pj = other.gameObject.GetComponent<PlayerManager>();
+                PlayerManager_JULIEN pj = other.gameObject.GetComponent<PlayerManager_JULIEN>();
                 switch (pj.SwitchSkin)
                 {
-                    case SwitchSizeSkin.Big:
+                    case SKIN_SIZE.Big:
                         pj.eatAmount -= 0.4f;
                         break;
-                    case SwitchSizeSkin.Medium:
+                    case SKIN_SIZE.Medium:
                         pj.eatAmount -= 0.2f;
                         break;
-                    case SwitchSizeSkin.Little:
+                    case SKIN_SIZE.Little:
                         Debug.Log("Dead");
                         break;
                 }

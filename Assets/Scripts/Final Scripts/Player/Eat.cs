@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Eat : MonoBehaviour
 {
-    private PlayerManager _playerManager;
+    private PlayerManager_JULIEN _playerManager;
     
     [Header("Eat")]
     public Transform pointeur;       
@@ -21,7 +21,7 @@ public class Eat : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        _playerManager = gameObject.GetComponent<PlayerManager>();
+        _playerManager = gameObject.GetComponent<PlayerManager_JULIEN>();
         pointeur.gameObject.SetActive(false);
     }
 

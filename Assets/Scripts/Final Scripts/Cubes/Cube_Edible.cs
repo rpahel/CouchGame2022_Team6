@@ -40,7 +40,7 @@ public class Cube_Edible : Cube
         // Signale aux cubes voisins que ce cube s'est fait mangé
         for (int i = 0; i < 4; i++)
         {
-            if (cubesAutour[i] && cubesAutour[i].CubeType == CUBETYPE.EDIBLE)
+            if (cubesAutour[i] && cubesAutour[i].CubeType == CUBE_TYPE.EDIBLE)
             {
                 (cubesAutour[i] as Cube_Edible).VoisinGotManged((i + 2) % 4);
             }

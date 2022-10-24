@@ -10,7 +10,7 @@ public class Cube_Loot : MonoBehaviour
     {
         if (collision.collider.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<PlayerManager>().eatAmount += TestEat;
+            collision.gameObject.GetComponent<PlayerManager_JULIEN>().eatAmount += TestEat;
             Destroy(gameObject);
         }
     }

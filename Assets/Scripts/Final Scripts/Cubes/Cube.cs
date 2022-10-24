@@ -6,8 +6,8 @@ using Data;
 [ExecuteInEditMode]
 public abstract class Cube : MonoBehaviour
 {
-    [SerializeField] private CUBETYPE cubeType;
-    public CUBETYPE CubeType => cubeType;
+    [SerializeField] private CUBE_TYPE cubeType;
+    public CUBE_TYPE CubeType => cubeType;
 
     [SerializeField] protected GameObject cube;
 

@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public class ShootProjectile : MonoBehaviour
 {
-    private PlayerManager _playerManager;
+    private PlayerManager_JULIEN _playerManager;
     
     [Header("Options Projectile")]
     [SerializeField] private GameObject projectilePrefab;
@@ -32,7 +32,7 @@ public class ShootProjectile : MonoBehaviour
 
     private void Awake()
     {
-        _playerManager = gameObject.GetComponent<PlayerManager>();
+        _playerManager = gameObject.GetComponent<PlayerManager_JULIEN>();
         ResetCooldown();
     }
 
