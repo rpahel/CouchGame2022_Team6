@@ -366,7 +366,6 @@ GameObject:
   m_Component:
   - component: {fileID: 611988393}
   - component: {fileID: 611988394}
-  - component: {fileID: 611988395}
   m_Layer: 0
   m_Name: LD
   m_TagString: Untagged
@@ -408,23 +407,12 @@ MonoBehaviour:
     type: 3}
   cubeTrap: {fileID: 2613636963887001808, guid: fd8e6153315a70a4c9d48f9614a0b90d,
     type: 3}
-  spawnAnim: 1
+  spawnAnim: 5
+  smoothType: 27
   attenteAvantAnim: 1
-  anim: 0.2
-  entreCubesAnim: 0
-  entreLignesAnim: 0.025
---- !u!114 &611988395
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 611988391}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c40c9b86226c17e4aa35489c9509750f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  anim: 0.3
+  entreCubesAnim: 0.001
+  entreLignesAnim: 0
 --- !u!1 &910809207
 GameObject:
   m_ObjectHideFlags: 0

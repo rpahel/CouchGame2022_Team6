@@ -19,6 +19,7 @@ public class LevelGenerator : MonoBehaviour
     //============================
     [Header("Animation de spawn des cubes.")]
     [SerializeField] private SPAWN_ANIMATION spawnAnim;
+    [SerializeField] private Ease smoothType;
 
     [Header("Durées")]
     [SerializeField, Range(0.1f, 2f)] private float attenteAvantAnim;
@@ -34,7 +35,6 @@ public class LevelGenerator : MonoBehaviour
     public Transform[] IniSpawns => iniSpawns;
 
     private Transform[,] cubesArray;
-
     private int coroutinesRunning = 0;
     #endregion
 
@@ -43,7 +43,6 @@ public class LevelGenerator : MonoBehaviour
     private void Awake()
     {
         cubesArray = new Transform[image.height, image.width];
-        //Debug.Log($"{image.height}, {image.width} | cubes.Rows = {cubes.Length / image.width}");
         GenerateLevel();
         StartCoroutine(PlayAnimation());
     }
@@ -113,9 +112,72 @@ public class LevelGenerator : MonoBehaviour
         cube.transform.parent = parentObj;
         cubesArray[height, width] = cube.transform;
     }
+
+    //============================
+    bool isOOB(XY pos, out XY outPos)
+    {
+        outPos = new XY();
+
+        if((pos.y >= image.height || pos.y < 0) || (pos.x >= image.width || pos.x < 0))
+        {
+            if (pos.y >= image.height) { outPos.y = image.height - 1; }
+            if (pos.x >= image.width) { outPos.x = image.width - 1; }
+            if (pos.y < 0) { outPos.y = 0; }
+            if (pos.x < 0) { outPos.x = 0; }
+            return true;
+        }
+        else
+        {
+            outPos.x = pos.x;
+            outPos.y = pos.y;
+            return false;
+        }
+    }
+
+    //============================
+    ARRAY_MOVE NextMove(ARRAY_MOVE currentMove)
+    {
+        if (spawnAnim == SPAWN_ANIMATION.SPIRAL_CLOCKWISE)
+        {
+            switch (currentMove)
+            {
+                case ARRAY_MOVE.UP:
+                    return ARRAY_MOVE.RIGHT;
+
+                case ARRAY_MOVE.RIGHT:
+                    return ARRAY_MOVE.DOWN;
+
+                case ARRAY_MOVE.DOWN:
+                    return ARRAY_MOVE.LEFT;
+
+                case ARRAY_MOVE.LEFT:
+                    return ARRAY_MOVE.UP;
+            }
+        }
+        else if (spawnAnim == SPAWN_ANIMATION.SPIRAL_COUNTERCLOCKWISE)
+        {
+            switch (currentMove)
+            {
+                case ARRAY_MOVE.UP:
+                    return ARRAY_MOVE.LEFT;
+
+                case ARRAY_MOVE.RIGHT:
+                    return ARRAY_MOVE.UP;
+
+                case ARRAY_MOVE.DOWN:
+                    return ARRAY_MOVE.RIGHT;
+
+                case ARRAY_MOVE.LEFT:
+                    return ARRAY_MOVE.DOWN;
+            }
+        }
+
+        return ARRAY_MOVE.UP;
+    }
     #endregion
 
     #region Animations
+    //============================
     IEnumerator PlayAnimation()
     {
         coroutinesRunning++;
@@ -135,7 +197,7 @@ public class LevelGenerator : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(attenteAvantAnim);
         levelState = LEVEL_STATE.LOADING;
-    
+
         switch(spawnAnim)
         {
             case SPAWN_ANIMATION.LEFT_TO_RIGHT:
@@ -174,6 +236,103 @@ public class LevelGenerator : MonoBehaviour
                 }
                 break;
 
+            case SPAWN_ANIMATION.TOP_TO_BOTTOM:
+                for (int i = image.height - 1; i >= 0; --i)
+                {
+                    for (int j = image.width - 1; j >= 0; --j)
+                    {
+                        if (cubesArray[i, j] != null)
+                        {
+                            StartCoroutine(ScaleCubeAnimation(cubesArray[i, j], endScale));
+                            if (entreCubesAnim != 0)
+                                yield return new WaitForSecondsRealtime(entreCubesAnim);
+                        }
+                    }
+
+                    if (entreLignesAnim != 0)
+                        yield return new WaitForSecondsRealtime(entreLignesAnim);
+                }
+                break;
+
+            case SPAWN_ANIMATION.BOTTOM_TO_TOP:
+                for (int i = 0; i < image.height; ++i)
+                {
+                    for (int j = image.width - 1; j >= 0; --j)
+                    {
+                        if (cubesArray[i, j] != null)
+                        {
+                            StartCoroutine(ScaleCubeAnimation(cubesArray[i, j], endScale));
+                            if (entreCubesAnim != 0)
+                                yield return new WaitForSecondsRealtime(entreCubesAnim);
+                        }
+                    }
+
+                    if (entreLignesAnim != 0)
+                        yield return new WaitForSecondsRealtime(entreLignesAnim);
+                }
+                break;
+
+            //case SPAWN_ANIMATION.SPIRAL_CLOCKWISE:
+            //
+            //    if (entreCubesAnim == 0)
+            //        entreCubesAnim = 0.05f;
+            //
+            //    XY currentPos = new XY();
+            //    currentPos.x = (image.width % 2 == 0) ? (int)(image.width * 0.5f) : (int)((image.width + 1) * 0.5f);
+            //    currentPos.y = (image.height % 2 == 0) ? (int)(image.height * 0.5f) : (int)((image.height + 1) * 0.5f);
+            //
+            //    ARRAY_MOVE nextMove = ARRAY_MOVE.UP;
+            //    bool isLooping = true;
+            //    int max_iterations = 1;
+            //
+            //    yield return new WaitForSecondsRealtime(attenteAvantAnim);
+            //
+            //    StartCoroutine(ScaleCubeAnimation(cubesArray[currentPos.y, currentPos.x], endScale));
+            //    while (isLooping)
+            //    {
+            //        for(int i = 0; i < 2; i++)
+            //        {
+            //            for(int j = 0; j < max_iterations; j++)
+            //            {
+            //                yield return new WaitForSecondsRealtime(entreCubesAnim);
+            //
+            //                switch (nextMove)
+            //                {
+            //                    case ARRAY_MOVE.UP:
+            //                        currentPos.y++;
+            //                        break;
+            //                    case ARRAY_MOVE.RIGHT:
+            //                        currentPos.x++;
+            //                        break;
+            //                    case ARRAY_MOVE.DOWN:
+            //                        currentPos.y--;
+            //                        break;
+            //                    case ARRAY_MOVE.LEFT:
+            //                        currentPos.x--;
+            //                        break;
+            //                }
+            //
+            //                if (isOOB(currentPos, out currentPos))
+            //                {
+            //                    isLooping = false;
+            //                    break;
+            //                }
+            //
+            //                StartCoroutine(ScaleCubeAnimation(cubesArray[currentPos.y, currentPos.x], endScale));
+            //            }
+            //            if (!isLooping)
+            //                break;
+            //
+            //            nextMove = NextMove(nextMove);
+            //        }
+            //        if (!isLooping)
+            //            break;
+            //        
+            //        max_iterations++;
+            //    }
+            //
+            //    break;
+
             default:
                 break;
         }
@@ -192,7 +351,7 @@ public class LevelGenerator : MonoBehaviour
         float alpha;
         while(t < 1)
         {
-            alpha = DOVirtual.EasedValue(0, 1, t, Ease.OutBounce);
+            alpha = DOVirtual.EasedValue(0, 1, t, smoothType);
             cube.localScale = endScale * alpha;
             yield return new WaitForFixedUpdate();
             t += Time.fixedDeltaTime / anim;
@@ -214,4 +373,24 @@ enum SPAWN_ANIMATION
     BOTTOM_TO_TOP,
     //SPIRAL_CLOCKWISE,
     //SPIRAL_COUNTERCLOCKWISE,
+}
+
+enum ARRAY_MOVE
+{
+    UP,
+    RIGHT,
+    DOWN,
+    LEFT,
+}
+
+struct XY
+{
+    public int x;
+    public int y;
+
+    public XY(int col = 0, int row = 0)
+    {
+        x = col;
+        y = row;
+    }
 }
