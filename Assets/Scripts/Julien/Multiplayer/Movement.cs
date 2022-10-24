@@ -14,6 +14,8 @@ public class Movement : MonoBehaviour
     [Header("Movements")] [SerializeField] private float moveSpeed;
     private Rigidbody2D _rb;
     public float _brakeForce;
+    public bool lookAtRight;
+    [SerializeField] private Transform pointeurTransform;
 
     [Header("Simple Jump")] [SerializeField]
     private float jumpForce;
@@ -33,17 +35,6 @@ public class Movement : MonoBehaviour
     [SerializeField] private float wjForce;
     private bool _canWallJump;
     private Vector3 _normalVec;
-
-    /*[Header("Shoot")]
-    private float _cooldown;
-    [Header("Options Projectile")]
-    [SerializeField] private GameObject projectilePrefab;
-    private Rigidbody2D _rbProjectile;
-    [SerializeField] private bool canCreatePlatform;
-    [SerializeField, Range(0, 1)] private float gravityScale;
-    [SerializeField] private float shootCooldown;
-    [SerializeField] private float shootPower;
-    [SerializeField] private float lifetime;*/
 
     [Header("Dash")] private TrailRenderer _trailRenderer;
     [SerializeField] private Collider2D playerCollider2D;
@@ -70,6 +61,18 @@ public class Movement : MonoBehaviour
     {
         _isGrounded = IsGrounded();
 
+        if (_playerManager.InputVector.x < 0)
+        {
+            lookAtRight = false;
+            pointeurTransform.rotation = Quaternion.Euler(0, 0, 180);
+        }
+            
+        else if (_playerManager.InputVector.x > 0)
+        {
+            lookAtRight = true;
+            pointeurTransform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+        
         if (_playerManager.State == PlayerState.Moving)
             Move();
         else 

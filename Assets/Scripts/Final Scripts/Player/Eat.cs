@@ -16,7 +16,7 @@ public class Eat : MonoBehaviour
     [SerializeField, Range(0f, .5f)]
     private float eatCooldown = 0.5f;
     private Coroutine cooldownCoroutine;
-    private float  angle;   
+    private float angle;   
     
     // Start is called before the first frame update
     void Awake()
@@ -29,13 +29,16 @@ public class Eat : MonoBehaviour
     void Update()
     {
         pointeur.gameObject.SetActive(_playerManager.InputVector.sqrMagnitude > 0.1f ? true : false);
-        angle = Mathf.Atan2(_playerManager.InputVector.y, _playerManager.InputVector.x);
-        pointeur.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * angle);
+        if (pointeur.gameObject.activeSelf)
+        {
+            angle = Mathf.Atan2(_playerManager.InputVector.y, _playerManager.InputVector.x);
+            pointeur.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * angle);
+        }
     }
     
     private void EatCube(Cube_Edible cubeMangeable)
     {
-        cubeMangeable.GetManged();
+        cubeMangeable.GetManged(this);
         _playerManager.eatAmount += filling;
         _playerManager.eatAmount = Mathf.Clamp(_playerManager.eatAmount, 0f, 1f);
         canEat = false;
