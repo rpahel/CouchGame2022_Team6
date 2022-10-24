@@ -193,6 +193,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""3a8b2293-ae79-4b76-b833-2f7c50a95b70"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Eat"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""8f0a3e62-9f54-48e0-8dc4-cd2b522ede90"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",

@@ -140,14 +140,12 @@ public class PlayerInputHandler : MonoBehaviour
             placer.OnPlace();
     }
 
-    private void Update()
-    {
+    private void Update() {
         if (_canHoldCooldown)
             _holdCooldown += Time.deltaTime;
 //        Debug.Log(_holdCooldown);
 
-        if (_holdCooldown >= 2f)
-        {
+        if (_holdCooldown >= 2f) {
            
             dashAfterHold();
            

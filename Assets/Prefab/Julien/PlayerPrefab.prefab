@@ -365,7 +365,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   _brakeForce: 1
-  jumpForce: 6
+  jumpForce: 20
   jumpTime: 0
   fallMultiplier: 1
   jumpMultiplier: 0
@@ -373,6 +373,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  _isJumping: 0
   jumpCount: 0
   maxJumpCount: 2
   wjForce: 6
@@ -641,4 +642,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockToPlace: {fileID: 2613636963887001808, guid: 74a185477bf05c94796ad895b5c85abe,
     type: 3}
-  range: 10
+  direction: {x: 0, y: 0, z: 0}
+  percentageEat: 0.2
