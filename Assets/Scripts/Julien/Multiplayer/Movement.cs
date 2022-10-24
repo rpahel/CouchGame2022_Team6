@@ -1,8 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
 using Data;
 using UnityEngine;
 
@@ -25,18 +22,21 @@ public class Movement : MonoBehaviour
     [SerializeField] private float jumpMultiplier;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private LayerMask groundLayer2;
     private bool _isGrounded;
     private bool _isJumping;
     private float _jumpCounter;
     private Vector2 _vecGravity;
 
-    [Header("Wall Jump")] [SerializeField] private float jumpCount;
+    [Header("Wall Jump")] 
+    [SerializeField] private float jumpCount;
     [SerializeField] private float maxJumpCount;
     [SerializeField] private float wjForce;
     private bool _canWallJump;
     private Vector3 _normalVec;
 
-    [Header("Dash")] private TrailRenderer _trailRenderer;
+    [Header("Dash")]
+    private TrailRenderer _trailRenderer;
     [SerializeField] private Collider2D playerCollider2D;
     [SerializeField] private float looseEatForce = 1f;
     private ScaleEat _scaleEat;
@@ -47,7 +47,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private float dashTime;
     [SerializeField] private float dashCooldown;
     private float _normalGravity;
-    private bool _canHit = false;
+    public bool _canHit = false;
     private void Awake()
     {
         _playerManager = gameObject.GetComponent<PlayerManager>();
@@ -85,7 +85,7 @@ public class Movement : MonoBehaviour
     }
     private bool IsGrounded()
     {
-        return Physics2D.OverlapCapsule(groundCheck.position, new Vector2(1f, 0.2f), CapsuleDirection2D.Horizontal, 0,groundLayer);
+        return Physics2D.OverlapCapsule(groundCheck.position, new Vector2(1f, 0.2f), CapsuleDirection2D.Horizontal, 0,groundLayer | groundLayer2);
     }
     private void Move()
     {
@@ -173,39 +173,6 @@ public class Movement : MonoBehaviour
             _canWallJump = false;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (_playerManager.State == PlayerState.Dashing)
-        {
-            if (other.GetComponent<Collider2D>().CompareTag("CubeEdible"))
-            {
-                other.gameObject.GetComponentInParent<Cube_Edible>().OnExploded();
-            }
-            else if (other.GetComponent<Collider2D>().CompareTag("Player") && _canHit)
-            {
-                PlayerManager pj = other.gameObject.GetComponent<PlayerManager>();
-                switch (pj.SwitchSkin)
-                {
-                    case SwitchSizeSkin.Big:
-                        pj.eatAmount -= 0.4f;
-                        break;
-                    case SwitchSizeSkin.Medium:
-                        pj.eatAmount -= 0.2f;
-                        break;
-                    case SwitchSizeSkin.Little:
-                        Debug.Log("Dead");
-                        break;
-                }
-
-                _canHit = false;
-            }
-            else if (other.GetComponent<Collider2D>().CompareTag("CubeBedrock"))
-            {
-                playerCollider2D.enabled = true;
-            }
-        }
-    }
-
     public void Dash()
     {
         if (_canDash)
@@ -224,7 +191,7 @@ public class Movement : MonoBehaviour
     private IEnumerator Dash(float dashDuration, float dashCooldown)
     {
         _canHit = true;
-        playerCollider2D.enabled = false;
+        gameObject.layer = LayerMask.NameToLayer("Dash");
         var originalVelocity = _rb.velocity;
         var originalGravityScale = _rb.gravityScale;
         _isDashing = true;
@@ -238,7 +205,7 @@ public class Movement : MonoBehaviour
         _rb.velocity = originalVelocity;
         _rb.gravityScale = originalGravityScale;
         _canHit = false;
-        playerCollider2D.enabled = true;
+        gameObject.layer = LayerMask.NameToLayer("Player");
         _playerManager.SetPlayerState(PlayerState.Moving);
         _trailRenderer.emitting = false;
         yield return new WaitForSeconds(dashCooldown);
