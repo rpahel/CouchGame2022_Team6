@@ -6,6 +6,9 @@ public class DashTrigger : MonoBehaviour
     private ScaleEat _scaleEat;
     private PlayerManager _playerManager;
     private Movement _movement;
+
+    [SerializeField] private float DamageBigEat = 0.4f;
+    [SerializeField] private float DamageMediumEat = 0.4f;
     private void Awake()
     {
         _scaleEat = GetComponentInParent<ScaleEat>();
@@ -27,13 +30,13 @@ public class DashTrigger : MonoBehaviour
                 switch (pj.SwitchSkin)
                 {
                     case SwitchSizeSkin.Big:
-                        pj.eatAmount -= 0.4f;
+                        pj.eatAmount -= DamageBigEat;
                         break;
                     case SwitchSizeSkin.Medium:
-                        pj.eatAmount -= 0.2f;
+                        pj.eatAmount -= DamageMediumEat;
                         break;
                     case SwitchSizeSkin.Little:
-                        Debug.Log("Dead");
+                        Debug.LogError("Dead");
                         break;
                 }
 

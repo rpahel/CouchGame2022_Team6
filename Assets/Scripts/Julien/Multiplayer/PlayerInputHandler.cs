@@ -21,6 +21,11 @@ public class PlayerInputHandler : MonoBehaviour
     private ShootProjectile _shootProjectile;
     private Eat _eat;
     private PlayerControls _controls;
+
+    [Header("VariablesEat")]
+    [SerializeField] private float MaxHoldLooseEat = 0.7f;
+    [SerializeField] private float MediumHoldLooseEat = 0.7f;
+    [SerializeField] private float MinHoldLooseEat = 0.7f;
     private void Awake()
     {
         _playerManager = gameObject.GetComponent<PlayerManager>();
@@ -114,17 +119,20 @@ public class PlayerInputHandler : MonoBehaviour
                 if (_canHoldCooldown && _holdCooldown <= 0.99f)
                 {
                     _movement.Dash();
-                    _playerManager.eatAmount -= 0.90f;
+                    _playerManager.eatAmount -= MinHoldLooseEat;
+                    ResetCooldown();
                 }
                 else if (_holdCooldown >= 1f && _canHoldCooldown)
                 {
                     _movement.Dash();
-                    _playerManager.eatAmount -= 0.30f;
+                    _playerManager.eatAmount -= MediumHoldLooseEat;
+                    ResetCooldown();
                 } 
             }
-            
-            ResetCooldown();
-            _playerManager.SetPlayerState(PlayerState.Moving);
+            else
+            {
+                _playerManager.SetPlayerState(PlayerState.Moving);
+            }      
         }
         
     }
@@ -136,6 +144,7 @@ public class PlayerInputHandler : MonoBehaviour
 
         if (_holdCooldown >= 2f)
         {
+            _playerManager.eatAmount -= MaxHoldLooseEat;
             _movement.Dash();
             ResetCooldown();
         }
