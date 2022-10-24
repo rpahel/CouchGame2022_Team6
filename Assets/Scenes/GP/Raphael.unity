@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -407,12 +407,12 @@ MonoBehaviour:
     type: 3}
   cubeTrap: {fileID: 2613636963887001808, guid: fd8e6153315a70a4c9d48f9614a0b90d,
     type: 3}
-  spawnAnim: 5
+  spawnAnim: 1
   smoothType: 27
   attenteAvantAnim: 1
   anim: 0.3
-  entreCubesAnim: 0.001
-  entreLignesAnim: 0
+  entreCubesAnim: 0
+  entreLignesAnim: 0.049
 --- !u!1 &910809207
 GameObject:
   m_ObjectHideFlags: 0
