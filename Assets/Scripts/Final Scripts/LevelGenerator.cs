@@ -1,27 +1,65 @@
 using UnityEngine;
+using Data;
+using System.Collections;
+using DG.Tweening;
 
 public class LevelGenerator : MonoBehaviour
 {
-    public Texture2D imageDeReference;
-    public GameObject cubeEdible;
-    public GameObject cubeBedrock;
-    public GameObject cubeTrap;
+    #region Variables
+    //============================
+    [Header("Image de référence.")]
+    [SerializeField] private Texture2D image;
+
+    //============================
+    [Header("Cubes à utiliser.")]
+    [SerializeField] private GameObject cubeEdible;
+    [SerializeField] private GameObject cubeBedrock;
+    [SerializeField] private GameObject cubeTrap;
+
+    //============================
+    [Header("Animation de spawn des cubes.")]
+    [SerializeField] private SPAWN_ANIMATION spawnAnim;
+
+    [Header("Durées")]
+    [SerializeField, Range(0.1f, 2f)] private float attenteAvantAnim;
+    [SerializeField, Range(.1f, .3f)] private float anim;
+    [SerializeField, Range(0f, .1f)] private float entreCubesAnim;
+    [SerializeField, Range(0f, .5f)] private float entreLignesAnim;
+
+    //============================
+    private LEVEL_STATE levelState = LEVEL_STATE.NONE;
+    public LEVEL_STATE LevelState => levelState;
 
     private Transform[] iniSpawns = new Transform[4];
     public Transform[] IniSpawns => iniSpawns;
 
+    private Transform[,] cubesArray;
+
+    private int coroutinesRunning = 0;
+    #endregion
+
+    #region Unity_Functions
+    //============================
     private void Awake()
     {
+        cubesArray = new Transform[image.height, image.width];
+        //Debug.Log($"{image.height}, {image.width} | cubes.Rows = {cubes.Length / image.width}");
         GenerateLevel();
+        StartCoroutine(PlayAnimation());
     }
+    #endregion
 
+    #region Custom_Functions
+    //============================
     [ContextMenu("Generate level")]
     public void GenerateLevel()
     {
-        if (!imageDeReference)
+        if (!image)
         {
             throw new System.NullReferenceException();
         }
+
+        levelState = LEVEL_STATE.INITIALISING;
 
         GameObject parentObjCubes = new GameObject("Cubes");
         parentObjCubes.transform.parent = transform;
@@ -31,11 +69,11 @@ public class LevelGenerator : MonoBehaviour
 
         // Check la couleur de chaque pixel dans l'image et fait spawn un cube aux coordonnées correspondantes
         int n = 0;
-        for (int i = 0; i < imageDeReference.height; i++)
+        for (int i = 0; i < image.height; i++)
         {
-            for (int j = 0; j < imageDeReference.width; j++)
+            for (int j = 0; j < image.width; j++)
             {
-                Color pixColor = imageDeReference.GetPixel(j, i);
+                Color pixColor = image.GetPixel(j, i);
                 if (pixColor == Color.green)
                 {
                     CreateCubeOnPlay(cubeEdible, parentObjCubes.transform, i, j);
@@ -52,7 +90,7 @@ public class LevelGenerator : MonoBehaviour
                 {
                     if(n >= 4)
                     {
-                        throw new System.Exception("Plus de pixel bleu dans l'image de LD que le max de spawns autorisés (4).");
+                        throw new System.Exception("Plus de pixel bleu dans l'image de référence que le max de spawns autorisés (4).");
                     }
 
                     iniSpawns[n] = new GameObject($"Spawn {n + 1}").transform;
@@ -67,10 +105,113 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
+    //============================
     void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width)
     {
         GameObject cube = Instantiate(cubeToCreate, new Vector3(width * cubeToCreate.transform.localScale.x, height * cubeToCreate.transform.localScale.y, 0), Quaternion.identity);
         cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString() + ", " + height.ToString() + ")";
         cube.transform.parent = parentObj;
+        cubesArray[height, width] = cube.transform;
     }
+    #endregion
+
+    #region Animations
+    IEnumerator PlayAnimation()
+    {
+        coroutinesRunning++;
+
+        Vector3 endScale = cubeEdible.transform.localScale;
+
+        for (int i = 0; i < image.height; ++i)
+        {
+            for (int j = 0; j < image.width; ++j)
+            {
+                if (cubesArray[i,j] != null)
+                {
+                    cubesArray[i, j].localScale = Vector3.zero;
+                }
+            }
+        }
+
+        yield return new WaitForSecondsRealtime(attenteAvantAnim);
+        levelState = LEVEL_STATE.LOADING;
+    
+        switch(spawnAnim)
+        {
+            case SPAWN_ANIMATION.LEFT_TO_RIGHT:
+                for(int i = 0; i < image.width; ++i)
+                {
+                    for(int j = image.height - 1; j >= 0; --j)
+                    {
+                        if(cubesArray[j, i] != null)
+                        {
+                            StartCoroutine(ScaleCubeAnimation(cubesArray[j, i], endScale));
+                            if(entreCubesAnim != 0)
+                                yield return new WaitForSecondsRealtime(entreCubesAnim);
+                        }
+                    }
+
+                    if(entreLignesAnim != 0)
+                        yield return new WaitForSecondsRealtime(entreLignesAnim);
+                }
+                break;
+
+            case SPAWN_ANIMATION.RIGHT_TO_LEFT:
+                for (int i = image.width - 1; i >= 0; --i)
+                {
+                    for (int j = image.height - 1; j >= 0; --j)
+                    {
+                        if (cubesArray[j, i] != null)
+                        {
+                            StartCoroutine(ScaleCubeAnimation(cubesArray[j, i], endScale));
+                            if (entreCubesAnim != 0)
+                                yield return new WaitForSecondsRealtime(entreCubesAnim);
+                        }
+                    }
+
+                    if (entreLignesAnim != 0)
+                        yield return new WaitForSecondsRealtime(entreLignesAnim);
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        yield return new WaitUntil(() => coroutinesRunning == 1);
+        levelState = LEVEL_STATE.LOADED;
+
+        coroutinesRunning--;
+    }
+
+    IEnumerator ScaleCubeAnimation(Transform cube, Vector3 endScale)
+    {
+        coroutinesRunning++;
+
+        float t = 0f;
+        float alpha;
+        while(t < 1)
+        {
+            alpha = DOVirtual.EasedValue(0, 1, t, Ease.OutBounce);
+            cube.localScale = endScale * alpha;
+            yield return new WaitForFixedUpdate();
+            t += Time.fixedDeltaTime / anim;
+        }
+
+        cube.localScale = endScale;
+
+        coroutinesRunning--;
+    }
+    #endregion
+}
+
+enum SPAWN_ANIMATION
+{
+    NONE,
+    LEFT_TO_RIGHT,
+    RIGHT_TO_LEFT,
+    TOP_TO_BOTTOM,
+    BOTTOM_TO_TOP,
+    //SPIRAL_CLOCKWISE,
+    //SPIRAL_COUNTERCLOCKWISE,
 }
