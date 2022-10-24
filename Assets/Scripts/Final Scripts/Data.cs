@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace Data
 {
     public enum CUBETYPE
@@ -26,5 +22,13 @@ namespace Data
         Little,
         Medium,
         Big
-    }  
+    }
+
+    public enum LEVEL_STATE
+    {
+        NONE,
+        INITIALISING,
+        LOADING,
+        LOADED
+    }
 }
