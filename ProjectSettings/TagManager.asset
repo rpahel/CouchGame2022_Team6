@@ -17,8 +17,8 @@ TagManager:
   - Player
   - Water
   - UI
-  - Ground
-  - Destroyable
+  - Destructible
+  - Indestructible
   - 
   - 
   - 

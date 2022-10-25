@@ -38,7 +38,6 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Unity_Functions
-    //============================
     private void Awake()
     {
         if(Instance == null)
@@ -75,13 +74,11 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Custom_Functions
-    //============================
     public void ChangeGameState(GAME_STATE newState)
     {
         gameState = newState;
     }
 
-    //============================
     public void OnPlayerJoin()
     {
         if (spawnPositions[nbOfPlayers] == null)

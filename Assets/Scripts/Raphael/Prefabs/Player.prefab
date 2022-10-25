@@ -136,7 +136,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 0.97, y: 1.94}
   m_Direction: 0
 --- !u!50 &3784764394035868595
 Rigidbody2D:
@@ -288,6 +288,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vitesseMax: 25
   dureeAvantArret: 0.5
+  forceDeSaut: 70
+  "echelleDeGravit\xE9": 30
 --- !u!114 &1293963572987568439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,3 +304,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eatCooldown: 0
   eatTickrate: 1
+  eatDistance: 0

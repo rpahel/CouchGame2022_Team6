@@ -21,6 +21,7 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private SPAWN_ANIMATION spawnAnim;
     [SerializeField] private Ease smoothType;
 
+    //============================
     [Header("Durées")]
     [SerializeField, Range(0.1f, 2f)] private float attenteAvantAnim;
     [SerializeField, Range(.1f, .3f)] private new float animation;
@@ -39,7 +40,6 @@ public class LevelGenerator : MonoBehaviour
     #endregion
 
     #region Unity_Functions
-    //============================
     private void Awake()
     {
         cubesArray = new Transform[image.height, image.width];
@@ -53,7 +53,6 @@ public class LevelGenerator : MonoBehaviour
     #endregion
 
     #region Custom_Functions
-    //============================
     [ContextMenu("Generate level")]
     public void GenerateLevel()
     {
@@ -111,7 +110,6 @@ public class LevelGenerator : MonoBehaviour
         GameManager.Instance.SpawnPositions = iniSpawns;
     }
 
-    //============================
     void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width)
     {
         GameObject cube = Instantiate(cubeToCreate, new Vector3(width * cubeToCreate.transform.localScale.x, height * cubeToCreate.transform.localScale.y, 0), Quaternion.identity);
