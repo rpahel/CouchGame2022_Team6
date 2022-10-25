@@ -54,12 +54,21 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (inputVector == Vector2.zero)
+        if(playerManager.PlayerState == PLAYER_STATE.WALKING)
         {
-            if (freinage == null && rb2d.velocity.x != 0)
+            if (inputVector == Vector2.zero)
             {
-                freinage = StartCoroutine(Freinage());
+                if (freinage == null && rb2d.velocity.x != 0)
+                {
+                    freinage = StartCoroutine(Freinage());
+                }
             }
+
+            if ((inputVector.x / Mathf.Abs(inputVector.x)) + (rb2d.velocity.x / Mathf.Abs(rb2d.velocity.x)) == 0)
+                rb2d.velocity = new Vector2(-rb2d.velocity.x, rb2d.velocity.y);
+
+            rb2d.velocity += new Vector2(inputVector.x, 0) * Time.fixedDeltaTime * 100f;
+            rb2d.velocity = new Vector2(Mathf.Clamp(rb2d.velocity.x, -vitesseMax, vitesseMax), rb2d.velocity.y);
         }
     }
     #endregion
@@ -80,13 +89,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         playerManager.PlayerState = PLAYER_STATE.WALKING;
-
-
-        if((inputVector.x / Mathf.Abs(inputVector.x)) + (rb2d.velocity.x / Mathf.Abs(rb2d.velocity.x)) == 0)
-            rb2d.velocity = new Vector2(-rb2d.velocity.x, rb2d.velocity.y);
-
-        rb2d.velocity += new Vector2(inputVector.x, 0) * Time.fixedDeltaTime * 100f;
-        rb2d.velocity = new Vector2(Mathf.Clamp(rb2d.velocity.x, -vitesseMax, vitesseMax), rb2d.velocity.y);
     }
 
     //============================
