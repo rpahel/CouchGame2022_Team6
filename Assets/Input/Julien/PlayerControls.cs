@@ -60,8 +60,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""id"": ""5c9fd367-f4c7-4be8-aa60-726cf229401f"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Jump"",
@@ -175,7 +175,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""5d49ca70-55ae-4991-a0a7-116b2e3cb65a"",
                     ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Eat"",

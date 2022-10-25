@@ -23,7 +23,10 @@ public class PlayerManager : MonoBehaviour
     
     public Image imageUI;
     public TextMeshProUGUI textUI;
-    
+
+    private bool _canEat;
+
+    public bool CanEat => _canEat;
 
     private void Awake()
     {
@@ -43,5 +46,10 @@ public class PlayerManager : MonoBehaviour
     public void SetSkin(SwitchSizeSkin skin)
     {
         SwitchSkin = skin;
+    }
+
+    public void SetCanEat(bool result)
+    {
+        _canEat = result;
     }
 }

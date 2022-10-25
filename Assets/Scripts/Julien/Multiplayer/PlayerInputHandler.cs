@@ -99,9 +99,12 @@ public class PlayerInputHandler : MonoBehaviour
     
     private void OnEat(InputAction.CallbackContext context)
     {
-        if (_eat != null && context.performed)
-            _eat.TryEat();
-        
+        /*if (_eat != null && context.performed)
+            _eat.TryEat();*/
+        if (_eat != null && context.started)
+            _playerManager.SetCanEat(true);
+        if (_eat != null && context.canceled)
+            _playerManager.SetCanEat(false);
     }
 
     private void OnDash(CallbackContext context)
