@@ -597,7 +597,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 280540221}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 663.8893, y: 216.77068, z: -2.4236972}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1852,7 +1852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   imageDeReference: {fileID: 2800000, guid: 49929b079128a4e4cab5ada558d62913, type: 3}
-  cubeEdible: {fileID: 2613636963887001808, guid: 74a185477bf05c94796ad895b5c85abe,
+  cubeEdible: {fileID: 8285069557062406365, guid: 22250a75237cf084c880653b13ce293d,
     type: 3}
   cubeBedrock: {fileID: 2613636963887001808, guid: c7f75a0a01a2fd944b4e35a457f711f5,
     type: 3}
@@ -2698,3 +2698,6 @@ MonoBehaviour:
   playerMesh: {fileID: 0}
   _holdCooldown: 0
   _canHoldCooldown: 0
+  MaxHoldLooseEat: 0.7
+  MediumHoldLooseEat: 0.7
+  MinHoldLooseEat: 0.7

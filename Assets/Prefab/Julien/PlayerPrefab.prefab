@@ -103,6 +103,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fbe1acdd386b3a4db5dd1d1d80248ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DamageBigEat: 0.4
+  DamageMediumEat: 0.4
 --- !u!1 &3574984811577751984
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,7 +294,6 @@ GameObject:
   - component: {fileID: 7366054977546968795}
   - component: {fileID: 7366054977546968798}
   - component: {fileID: 7366054977546968797}
-  - component: {fileID: 7366054977546968796}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
@@ -365,19 +366,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7366054977546968796
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7366054977546968794}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7366054978402329224
 GameObject:
   m_ObjectHideFlags: 0
@@ -522,6 +510,9 @@ MonoBehaviour:
   playerMesh: {fileID: 7366054977546968797}
   _holdCooldown: 0
   _canHoldCooldown: 0
+  MaxHoldLooseEat: 0.7
+  MediumHoldLooseEat: 0.7
+  MinHoldLooseEat: 0.7
 --- !u!114 &8852710062912591228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -668,7 +659,7 @@ MonoBehaviour:
   pointeur: {fileID: 4116864722756101584}
   pointeurBase: {fileID: 8364908142819372181}
   reach: 1
-  filling: 0.12
+  filling: 0.04
   eatCooldown: 0.5
 --- !u!114 &7973215681648496309
 MonoBehaviour:

@@ -147,7 +147,6 @@ public class PlayerInputHandler : MonoBehaviour
 
         if (_holdCooldown >= 2f)
         {
-            _playerManager.eatAmount -= MaxHoldLooseEat;
             _movement.Dash();
             ResetCooldown();
         }
