@@ -183,13 +183,13 @@ public class Movement : MonoBehaviour
                 PlayerManager_JULIEN pj = other.gameObject.GetComponent<PlayerManager_JULIEN>();
                 switch (pj.SwitchSkin)
                 {
-                    case SKIN_SIZE.Big:
+                    case SKIN_SIZE.BIG:
                         pj.eatAmount -= 0.4f;
                         break;
-                    case SKIN_SIZE.Medium:
+                    case SKIN_SIZE.MEDIUM:
                         pj.eatAmount -= 0.2f;
                         break;
-                    case SKIN_SIZE.Little:
+                    case SKIN_SIZE.LITTLE:
                         Debug.Log("Dead");
                         break;
                 }

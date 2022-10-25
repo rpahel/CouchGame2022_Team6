@@ -23,7 +23,7 @@ public class LevelGenerator : MonoBehaviour
 
     [Header("Durées")]
     [SerializeField, Range(0.1f, 2f)] private float attenteAvantAnim;
-    [SerializeField, Range(.1f, .3f)] private float anim;
+    [SerializeField, Range(.1f, .3f)] private new float animation;
     [SerializeField, Range(0f, .1f)] private float entreCubesAnim;
     [SerializeField, Range(0f, .1f)] private float entreLignesAnim;
 
@@ -43,6 +43,10 @@ public class LevelGenerator : MonoBehaviour
     private void Awake()
     {
         cubesArray = new Transform[image.height, image.width];
+    }
+
+    private void Start()
+    {
         GenerateLevel();
         StartCoroutine(PlayAnimation());
     }
@@ -59,6 +63,7 @@ public class LevelGenerator : MonoBehaviour
         }
 
         levelState = LEVEL_STATE.INITIALISING;
+        GameManager.Instance.ChangeGameState(GAME_STATE.LOADING);
 
         GameObject parentObjCubes = new GameObject("Cubes");
         parentObjCubes.transform.parent = transform;
@@ -102,6 +107,8 @@ public class LevelGenerator : MonoBehaviour
                 }
             }
         }
+
+        GameManager.Instance.SpawnPositions = iniSpawns;
     }
 
     //============================
@@ -226,6 +233,7 @@ public class LevelGenerator : MonoBehaviour
 
         yield return new WaitUntil(() => coroutinesRunning == 1);
         levelState = LEVEL_STATE.LOADED;
+        GameManager.Instance.ChangeGameState(GAME_STATE.PLAYING);
 
         coroutinesRunning--;
     }
@@ -241,7 +249,7 @@ public class LevelGenerator : MonoBehaviour
             alpha = DOVirtual.EasedValue(0, 1, t, smoothType);
             cube.localScale = endScale * alpha;
             yield return new WaitForFixedUpdate();
-            t += Time.fixedDeltaTime / anim;
+            t += Time.fixedDeltaTime / animation;
         }
 
         cube.localScale = endScale;

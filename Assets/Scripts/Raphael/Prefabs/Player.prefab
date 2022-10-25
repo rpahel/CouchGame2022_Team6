@@ -228,8 +228,8 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: c9659d90-7aa4-4c87-9d63-1f935b63daf9
     m_ActionName: Menu/OnCancel
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_NeverAutoSwitchControlSchemes: 1
+  m_DefaultControlScheme: PlayerCS
   m_DefaultActionMap: Game
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}

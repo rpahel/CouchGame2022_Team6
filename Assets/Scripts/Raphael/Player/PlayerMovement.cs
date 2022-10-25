@@ -7,16 +7,24 @@ using DG.Tweening;
 
 public class PlayerMovement : MonoBehaviour
 {
+    #region Variables
+    //============================
     private PlayerManager playerManager;
 
-    [SerializeField, Range(0, 30f)] private float vitesseMax;
-    [SerializeField, Range(.1f, 1f)] private float dureeAvantArret;
-    [SerializeField, Range(0, 100f)] private float forceDeSaut;
+    //============================
+    [Header("Données")]
+    [SerializeField, Range(0, 40f)] private float vitesseMax;
+    [SerializeField, Range(.1f, 2f)] private float dureeAvantArret;
+    //[SerializeField, Range(0, 100f)] private float forceDeSaut;
 
+    //============================
     private Rigidbody2D rb2d;
     private Vector2 inputVector = Vector2.zero;
     private Coroutine freinage;
+    #endregion
 
+    #region Unity_Functions
+    //============================
     private void Awake()
     {
         dureeAvantArret = dureeAvantArret < 0.1f ? 0.1f : dureeAvantArret;
@@ -38,6 +46,26 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if(dureeAvantArret < 0.1f)
+            dureeAvantArret = 0.1f;
+    }
+
+    private void FixedUpdate()
+    {
+        if (inputVector == Vector2.zero)
+        {
+            if (freinage == null && rb2d.velocity.x != 0)
+            {
+                freinage = StartCoroutine(Freinage());
+            }
+        }
+    }
+    #endregion
+
+    #region Custom_Functions
+    //============================
     public void OnMove(Vector2 input)
     {
         inputVector = input;
@@ -61,6 +89,7 @@ public class PlayerMovement : MonoBehaviour
         rb2d.velocity = new Vector2(Mathf.Clamp(rb2d.velocity.x, -vitesseMax, vitesseMax), rb2d.velocity.y);
     }
 
+    //============================
     IEnumerator Freinage()
     {
         float iniVelocityX = rb2d.velocity.x;
@@ -74,20 +103,5 @@ public class PlayerMovement : MonoBehaviour
         rb2d.velocity = new Vector2(0, rb2d.velocity.y);
         freinage = null;
     }
-
-    private void Update()
-    {
-        dureeAvantArret = dureeAvantArret < 0.1f ? 0.1f : dureeAvantArret;
-    }
-
-    private void FixedUpdate()
-    {
-        if (inputVector == Vector2.zero)
-        {
-            if (freinage == null && rb2d.velocity.x != 0)
-            {
-                freinage = StartCoroutine(Freinage());
-            }
-        }
-    }
+    #endregion
 }

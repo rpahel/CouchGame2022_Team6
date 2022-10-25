@@ -23,7 +23,7 @@ public class ScaleEat : MonoBehaviour
     public float timeToLooseEat;
     private void InitializedSize()
     {
-        _playerManager.SetSkin(SKIN_SIZE.Little);
+        _playerManager.SetSkin(SKIN_SIZE.LITTLE);
     }
     private void Awake()
     {
@@ -53,7 +53,7 @@ public class ScaleEat : MonoBehaviour
 
         if (_playerManager.eatAmount >=  0.71f)
         {
-            _playerManager.SetSkin(SKIN_SIZE.Big);
+            _playerManager.SetSkin(SKIN_SIZE.BIG);
             _meshFilterGo.mesh = meshBig;
             _playerManager.imageUI.sprite = listSprite[2];
             _movement._canDash = true;
@@ -61,14 +61,14 @@ public class ScaleEat : MonoBehaviour
         }
         else if (_playerManager.eatAmount <= 0.35f)
         {
-            _playerManager.SetSkin(SKIN_SIZE.Little);
+            _playerManager.SetSkin(SKIN_SIZE.LITTLE);
             _meshFilterGo.mesh = meshLittle;
             _playerManager.imageUI.sprite = listSprite[1];
             _movement._canDash = false;
         }
         else
         {
-            _playerManager.SetSkin(SKIN_SIZE.Medium);
+            _playerManager.SetSkin(SKIN_SIZE.MEDIUM);
             _meshFilterGo.mesh = meshAverage;
             _playerManager.imageUI.sprite = listSprite[0];
             _movement._canDash = false;

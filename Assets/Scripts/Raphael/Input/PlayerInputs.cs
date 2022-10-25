@@ -2,10 +2,15 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInputsManager : MonoBehaviour
+public class PlayerInputs : MonoBehaviour
 {
+    #region Variables
+    //============================
     private PlayerMovement playerMovement;
+    #endregion
 
+    #region Unity_Functions
+    //============================
     private void Awake()
     {
         if (!TryGetComponent<PlayerMovement>(out playerMovement))
@@ -16,12 +21,16 @@ public class PlayerInputsManager : MonoBehaviour
             throw new Exception("No PlayerMovement component found in Player game object !");
         }
     }
+    #endregion
 
+    #region Customs_Functions
+    //============================
     public void OnMove(InputAction.CallbackContext input)
     {
         playerMovement.OnMove(input.ReadValue<Vector2>());
     }
 
+    //============================
     public void OnJump(InputAction.CallbackContext input)
     {
         //if (input.started)
@@ -31,5 +40,5 @@ public class PlayerInputsManager : MonoBehaviour
         //if (input.canceled)
         //    Debug.Log("Jump button released.");
     }
-
+    #endregion
 }

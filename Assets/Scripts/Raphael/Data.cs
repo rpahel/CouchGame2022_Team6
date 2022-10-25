@@ -1,5 +1,6 @@
 namespace Data
 {
+    #region CUBE_TYPE
     public enum CUBE_TYPE
     {
         NONE,
@@ -7,7 +8,8 @@ namespace Data
         TRAP,
         BEDROCK
     }
-    
+    #endregion
+    #region PlayerState
     public enum PlayerState
     {
         Aiming,
@@ -16,21 +18,24 @@ namespace Data
         WallJumping,
         Moving,
     }
-
+    #endregion
+    #region PLAYER_STATE
     public enum PLAYER_STATE
     {
         WALKING,
         FALLING,
         DASHING,
     }
-        
+    #endregion
+    #region SKIN_SIZE
     public enum SKIN_SIZE
     {
-        Little,
-        Medium,
-        Big
+        LITTLE,
+        MEDIUM,
+        BIG
     }
-
+    #endregion
+    #region LEVEL_STATE
     public enum LEVEL_STATE
     {
         NONE,
@@ -38,4 +43,14 @@ namespace Data
         LOADING,
         LOADED
     }
+    #endregion
+    #region GAME_STATE
+    public enum GAME_STATE
+    {
+        NONE,
+        LOADING,
+        PLAYING,
+        END
+    }
+    #endregion
 }
