@@ -18,8 +18,11 @@ public class PlayerMovement : MonoBehaviour
     //[SerializeField, Range(0, 100f)] private float forceDeSaut;
 
     //============================
-    private Rigidbody2D rb2d;
     private Vector2 inputVector = Vector2.zero;
+    public Vector2 InputVector => inputVector;
+
+    //============================
+    private Rigidbody2D rb2d;
     private Coroutine freinage;
     #endregion
 
@@ -54,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(playerManager.PlayerState == PLAYER_STATE.WALKING)
+        if(playerManager.PlayerState == PLAYER_STATE.WALKING) // Le player est en walking lorsqu'il est au sol
         {
             if (inputVector == Vector2.zero)
             {

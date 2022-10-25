@@ -7,6 +7,7 @@ public class PlayerInputs : MonoBehaviour
     #region Variables
     //============================
     private PlayerMovement playerMovement;
+    private PlayerEat playerEat;
     #endregion
 
     #region Unity_Functions
@@ -20,6 +21,14 @@ public class PlayerInputs : MonoBehaviour
             #endif
             throw new Exception("No PlayerMovement component found in Player game object !");
         }
+
+        if (!TryGetComponent<PlayerEat>(out playerEat))
+        {
+            #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+            #endif
+            throw new Exception("No PlayerEat component found in Player game object !");
+        }
     }
     #endregion
 
@@ -27,7 +36,6 @@ public class PlayerInputs : MonoBehaviour
     //============================
     public void OnMove(InputAction.CallbackContext input)
     {
-        Debug.Log(input.ReadValue<Vector2>());
         playerMovement.OnMove(input.ReadValue<Vector2>());
     }
 
@@ -40,6 +48,22 @@ public class PlayerInputs : MonoBehaviour
         //    Debug.Log("Jump button held.");
         //if (input.canceled)
         //    Debug.Log("Jump button released.");
+    }
+
+    //============================
+    public void OnEat(InputAction.CallbackContext input)
+    {
+        if (input.started)
+        {
+            Debug.Log("Eat pressed.");
+            playerEat.OnEat(playerMovement.InputVector);
+        }
+
+        if (input.performed)
+            Debug.Log("Eat button held.");
+
+        if (input.canceled)
+            Debug.Log("Eat button released.");
     }
     #endregion
 }

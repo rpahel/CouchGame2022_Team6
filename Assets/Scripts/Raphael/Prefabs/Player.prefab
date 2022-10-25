@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 4953746572511138207}
   - component: {fileID: 3784764394035868593}
   - component: {fileID: 6906842354963131351}
+  - component: {fileID: 1293963572987568439}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -228,8 +229,24 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: c9659d90-7aa4-4c87-9d63-1f935b63daf9
     m_ActionName: Menu/OnCancel
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3784764394035868593}
+        m_TargetAssemblyTypeName: PlayerInputs, Assembly-CSharp
+        m_MethodName: OnEat
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: afb9720c-4654-4b17-a906-c0606f61c8a6
+    m_ActionName: Game/Eat[/DualShock4GamepadHID/rightShoulder,/Mouse/rightButton]
   m_NeverAutoSwitchControlSchemes: 1
-  m_DefaultControlScheme: PlayerCS
+  m_DefaultControlScheme: 
   m_DefaultActionMap: Game
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -271,3 +288,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vitesseMax: 25
   dureeAvantArret: 0.5
+--- !u!114 &1293963572987568439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3784764394035868596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f73e76a7818c88142abe5ba9d37e9246, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eatCooldown: 0
+  eatTickrate: 1
