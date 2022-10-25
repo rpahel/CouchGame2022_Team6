@@ -1,9 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Mathematics;
+using static Unity.Mathematics.math;
+
 
 public class PlacePlateform : MonoBehaviour {
 
@@ -20,6 +24,8 @@ public class PlacePlateform : MonoBehaviour {
     public float percentageEat;
 
     private int colorIndex;
+    
+    
     void Start() {
         rb = GetComponent<Rigidbody2D>();
         playerManager = GetComponent<PlayerManager>();
@@ -29,6 +35,8 @@ public class PlacePlateform : MonoBehaviour {
         
         if(rb.velocity != Vector2.zero)
             direction = rb.velocity.normalized;
+        
+        Debug.DrawLine(transform.position,direction,Color.red);
 
     }
 
@@ -53,57 +61,43 @@ public class PlacePlateform : MonoBehaviour {
 
             GameObject instance = Instantiate(blockToPlace, transform.position - direction * (maxDistance), Quaternion.identity);
 
-           // Collider2D[] colliders = Physics2D.OverlapCircleAll(instance.transform.position, (instance.transform.localScale / 2).magnitude);
- 
-           // A Partir de la et a partir de la position du joueur il faut check le dernier pris 
+            List<GameObject> cubesList = GameObject.FindGameObjectsWithTag("CubeEdible").ToList();
+            cubesList.Remove(instance);
 
-           RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, 5, 1 >> 6);
-           float distance = 5;
-           
-           while (hit.collider != null && hit.collider.gameObject.tag.Equals("CubeEdible"))
-           {
-               distance++;
-               hit = Physics2D.Raycast(transform.position, direction, distance, 1 >> 6);
-           }
-    
-            if(hit.collider != null)
-                Debug.Log("finalhit " + hit.collider.gameObject + " " + hit.collider.gameObject.transform.position);
+            if (cubesList.Count > 0) {
 
-           //Debug.Log("length " + colliders.Length);
-           /*if (colliders.Length >= 2) {
-               Transform farest = null;
-               foreach (Collider2D col in colliders) {
-                   if (col.gameObject.tag.Equals("CubeEdible")) {
 
-                       if (farest == null)
-                           farest = col.gameObject.transform;
-                       else {
-                           if (Vector2.Distance(transform.position, farest.position) <
-                               Vector2.Distance(transform.position, col.gameObject.transform.position)) {
-                               farest = col.gameObject.transform;
-                               farest.GetComponent<MeshRenderer>().material.color = colorIndex % 2 == 0 ? Color.red : Color.blue;
-                               colorIndex++;
-                           }
-                       }
-                   }
-               }
-               
-               Vector3 sign = new Vector3(direction.x > 0 ? 1 : direction.x < 0 ? -1 : 0,direction.y > 0 ? 1 : direction.y < 0 ? -1 : 0,0f);
-               Vector3 scaleOffset = farest.parent.localScale;
-               scaleOffset.x *= sign.x;
-               scaleOffset.y *= sign.y;
+                GameObject next = cubesList[0];
+                
+                BoxCollider2D cubeCollider = next.GetComponentInChildren<BoxCollider2D>();
+                BoxCollider2D instanceCollider = instance.GetComponentInChildren<BoxCollider2D>();
+                int i = 1;
 
-               scaleOffset.z = 0;
-               
 
-               Vector3 posOffset = farest.position - scaleOffset;
-               Debug.Log("posOffset " + posOffset);
-               
-               instance.transform.position = posOffset;
-           }
-*/
-           //playerManager.eatAmount -= playerManager.eatAmount * percentageEat;
-           //Mathf.Clamp(playerManager.eatAmount, 0, playerManager.maxEatValue);
+                while (i < cubesList.Count && cubeCollider.bounds.Intersects(instanceCollider.bounds)) {
+                    next = cubesList[i];
+                    cubeCollider = cubesList[i].GetComponentInChildren<BoxCollider2D>();
+                    i++;
+                }
+
+                Debug.Log("next " + next);
+
+
+                //     next.GetComponentInChildren<MeshRenderer>().material.color = colorIndex % 2 == 0 ? Color.blue : Color.red;
+
+                if (next != null) {
+                    float3 scaleVec = instance.transform.localScale;
+                    float3 signDir = sign(direction);
+
+                    scaleVec.xyz *= signDir.xyz;
+                    instance.transform.position = next.transform.position - (Vector3)scaleVec;
+                }
+                
+            }
+
+
+            //playerManager.eatAmount -= playerManager.eatAmount * percentageEat;
+            //Mathf.Clamp(playerManager.eatAmount, 0, playerManager.maxEatValue);
         }
     }
 
