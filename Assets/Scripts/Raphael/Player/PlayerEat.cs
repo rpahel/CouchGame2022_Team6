@@ -5,40 +5,55 @@ using UnityEngine;
 
 public class PlayerEat : MonoBehaviour
 {
-    #region Variables
+    #region Autres Scripts
     //============================
-    private PlayerManager playerManager;
+    public PlayerManager PManager { get; set; }
+    #endregion
 
+    #region Variables
     //============================
     [SerializeField, Tooltip("La durée d'attente entre deux inputs de manger."), Range(0f, 1f)]
     private float eatCooldown;
-    [SerializeField, Tooltip("Le nombre de cubes mangés par seconde."), Range(1, 5)]
+    [SerializeField, Tooltip("Le nombre de cubes mangés par seconde."), Range(2, 10)]
     private int eatTickrate;
     [SerializeField, Tooltip("Distance max pour pouvoir manger le cube qu'on vise."), Range(1f, 5f)]
     private float eatDistance;
-    //============================
 
+    //============================
     private float cooldown;
+    private float tickHoldEat;
+
+    //============================
+    private bool holdEat;
+    public bool HoldEat { set => holdEat = value; }
     #endregion
 
     #region Unity_Function
     private void Awake()
     {
         cooldown = eatCooldown;
-
-        if (!TryGetComponent<PlayerManager>(out playerManager)) // ça c'est obligé pcq sinon playerManager == null;
-        {
-            #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-            #endif
-            throw new Exception("No PlayerManager component found in Player game object !");
-        }
+        tickHoldEat = 1f;
     }
 
     private void Update()
     {
         cooldown += Time.deltaTime;
         cooldown = Mathf.Clamp(cooldown, 0, eatCooldown);
+
+        if (holdEat)
+        {
+            //if (il est pas rassasié)
+
+            if(tickHoldEat >= 1f)
+            {
+                OnEat(PManager.AimDirection);
+                tickHoldEat = 0f;
+            }
+            else
+            {
+                tickHoldEat += Time.deltaTime * eatTickrate;
+            }
+        }
     }
     #endregion
 
@@ -46,7 +61,14 @@ public class PlayerEat : MonoBehaviour
     public void OnEat(Vector2 direction)
     {
         if (direction == Vector2.zero)
-            direction = playerManager.SensDuRegard;
+        {
+            if(!(PManager.PMovement.GroundCheck))
+                direction = Vector2.up;
+            else
+                direction = PManager.PMovement.SensDuRegard;
+        }
+        
+            
 
         if (cooldown < eatCooldown)
         {
@@ -63,9 +85,6 @@ public class PlayerEat : MonoBehaviour
         {
             hit.transform.parent.GetComponent<Cube_Edible>().GetManged(transform);
         }
-        else
-            Debug.Log("Rien n'a été touché");
-
 
         cooldown = 0;
     }

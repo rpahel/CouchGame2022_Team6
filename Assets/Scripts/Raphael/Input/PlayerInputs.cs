@@ -4,58 +4,47 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputs : MonoBehaviour
 {
-    #region Variables
+    #region Autres Scripts
     //============================
-    private PlayerManager playerManager;
-    private PlayerMovement playerMovement;
-    private PlayerEat playerEat;
+    public PlayerManager PManager { get; set; }
     #endregion
 
     #region Unity_Functions
-    private void Awake()
-    {
-        if (!TryGetComponent<PlayerManager>(out playerManager)) // ça c'est obligé pcq sinon playerManager == null;
-        {
-            #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-            #endif
-            throw new Exception("No PlayerManager component found in Player game object !");
-        }
-
-        playerManager.TryGetPlayerComponent<PlayerMovement>(out playerMovement);
-        playerManager.TryGetPlayerComponent<PlayerEat>(out playerEat);
-    }
     #endregion
 
     #region Customs_Functions
     public void OnMove(InputAction.CallbackContext input)
     {
-        playerMovement.OnMove(input.ReadValue<Vector2>());
+        PManager.PMovement.OnMove(input.ReadValue<Vector2>());
     }
 
     public void OnJump(InputAction.CallbackContext input)
     {
         if (input.started)
-            playerMovement.OnJump();
+            PManager.PMovement.OnJump();
 
-        if (input.performed)
-            playerMovement.HoldJump = true;
+        else if (input.performed)
+            PManager.PMovement.HoldJump = true;
 
-        if (input.canceled)
-            playerMovement.HoldJump = false;
+        else if (input.canceled)
+            PManager.PMovement.HoldJump = false;
     }
 
     public void OnEat(InputAction.CallbackContext input)
     {
         if (input.started)
-        {
-            playerEat.OnEat(playerManager.AimDirection);
-        }
+            PManager.PEat.OnEat(PManager.AimDirection);
+
+        else if (input.performed)
+            PManager.PEat.HoldEat = true;
+
+        else if (input.canceled)
+            PManager.PEat.HoldEat = false;
     }
 
     public void Aim(InputAction.CallbackContext input)
     {
-        playerManager.AimDirection = input.ReadValue<Vector2>();
+        PManager.AimDirection = input.ReadValue<Vector2>();
     }
     #endregion
 }

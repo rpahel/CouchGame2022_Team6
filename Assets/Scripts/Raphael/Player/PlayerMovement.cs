@@ -1,18 +1,17 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Data;
 using System;
 using DG.Tweening;
-using UnityEditor.Timeline;
-using Unity.VisualScripting;
 
 public class PlayerMovement : MonoBehaviour
-{   
-    #region Variables
+{
+    #region Autres Scripts
     //============================
-    private PlayerManager playerManager;
+    public PlayerManager PManager { get; set; }
+    #endregion
 
+    #region Variables
     //============================
     [Header("Données publiques")]
     [SerializeField, Range(0, 40f)] private float vitesseMax;
@@ -24,22 +23,24 @@ public class PlayerMovement : MonoBehaviour
     private float deadZone;
 
     //============================
-    private Vector2 inputVector_move = Vector2.zero;
-    public Vector2 InputVector_move => inputVector_move;
-
-    //============================
-    private Rigidbody2D rb2d;
-    private Collider2D coll;
     private Coroutine freinage;
 
     //============================ POUR LE SAUT (DETECTION DE SOL)
     private RaycastHit2D groundCheck;
+    public RaycastHit2D GroundCheck => groundCheck;
     private float castRadius;
     private float castDistance;
 
     //============================
+    private Vector2 inputVector_move = Vector2.zero;
+    public Vector2 InputVector_move => inputVector_move;
+
+    //============================
     private bool holdJump;
     public bool HoldJump { set => holdJump = value; }
+
+    //============================
+    public Vector2 SensDuRegard { get; set; } // à ne pas confondre avec aimDirection
     #endregion
 
     #region Unity_Functions
@@ -47,21 +48,21 @@ public class PlayerMovement : MonoBehaviour
     {
         dureeAvantArret = dureeAvantArret < 0.01f ? 0.01f : dureeAvantArret;
 
-        if (!TryGetComponent<PlayerManager>(out playerManager)) // ça c'est obligé pcq sinon playerManager == null;
-        {
-            #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-            #endif
-            throw new Exception("No PlayerManager component found in Player game object !");
-        }
-
-        playerManager.TryGetPlayerComponent<Rigidbody2D>(out rb2d);
-        playerManager.TryGetPlayerComponent<Collider2D>(out coll);
+        //if (!TryGetComponent<PlayerManager>(out PManager)) // ça c'est obligé pcq sinon playerManager == null;
+        //{
+        //    #if UNITY_EDITOR
+        //        UnityEditor.EditorApplication.isPlaying = false;
+        //    #endif
+        //    throw new Exception("No PlayerManager component found in Player game object !");
+        //}
+        //
+        //playerManager.TryGetPlayerComponent<Rigidbody2D>(out rb2d);
+        //playerManager.TryGetPlayerComponent<Collider2D>(out coll);
         
-        echelleDeGravité = echelleDeGravité != 0 ? echelleDeGravité : rb2d.gravityScale;
+        echelleDeGravité = echelleDeGravité != 0 ? echelleDeGravité : PManager.Rb2D.gravityScale;
 
         castRadius = transform.localScale.x * .5f - .05f;
-        castDistance = (coll as CapsuleCollider2D).size.y * transform.localScale.y * .25f + .3f;
+        castDistance = (PManager.PCollider as CapsuleCollider2D).size.y * transform.localScale.y * .25f + .3f;
     }
 
     private void Update()
@@ -72,14 +73,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb2d.gravityScale = echelleDeGravité;
+        PManager.Rb2D.gravityScale = echelleDeGravité;
 
         groundCheck = Physics2D.CircleCast(transform.position, castRadius, Vector2.down, castDistance);
 
         if (groundCheck)
-            playerManager.PlayerState = PLAYER_STATE.WALKING;
+            PManager.PlayerState = PLAYER_STATE.WALKING;
         else
-            playerManager.PlayerState = PLAYER_STATE.FALLING;
+            PManager.PlayerState = PLAYER_STATE.FALLING;
 
         Deplacement();
 
@@ -110,7 +111,7 @@ public class PlayerMovement : MonoBehaviour
         
         inputVector_move = input;
 
-        playerManager.SensDuRegard = inputVector_move.x > 0 ? Vector2.right : Vector2.left;
+        SensDuRegard = inputVector_move.x > 0 ? Vector2.right : Vector2.left;
 
         if(freinage != null)
         {
@@ -137,15 +138,15 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator Freinage()
     {
-        float iniVelocityX = rb2d.velocity.x;
+        float iniVelocityX = PManager.Rb2D.velocity.x;
         float t = 0;
         while(t < 1f)
         {
-            rb2d.velocity = new Vector2(DOVirtual.EasedValue(iniVelocityX, 0, t, Ease.OutCubic), rb2d.velocity.y);
+            PManager.Rb2D.velocity = new Vector2(DOVirtual.EasedValue(iniVelocityX, 0, t, Ease.OutCubic), PManager.Rb2D.velocity.y);
             t += Time.fixedDeltaTime / dureeAvantArret;
             yield return new WaitForFixedUpdate();
         }
-        rb2d.velocity = new Vector2(0, rb2d.velocity.y);
+        PManager.Rb2D.velocity = new Vector2(0, PManager.Rb2D.velocity.y);
         freinage = null;
     }
 
@@ -153,23 +154,23 @@ public class PlayerMovement : MonoBehaviour
     {
         if (inputVector_move == Vector2.zero)
         {
-            if (freinage == null && rb2d.velocity.x != 0)
+            if (freinage == null && PManager.Rb2D.velocity.x != 0)
             {
                 freinage = StartCoroutine(Freinage());
             }
         }
 
-        if ((inputVector_move.x / Mathf.Abs(inputVector_move.x)) + (rb2d.velocity.x / Mathf.Abs(rb2d.velocity.x)) == 0)
-            rb2d.velocity = new Vector2(-rb2d.velocity.x, rb2d.velocity.y);
+        if ((inputVector_move.x / Mathf.Abs(inputVector_move.x)) + (PManager.Rb2D.velocity.x / Mathf.Abs(PManager.Rb2D.velocity.x)) == 0)
+            PManager.Rb2D.velocity = new Vector2(-PManager.Rb2D.velocity.x, PManager.Rb2D.velocity.y);
 
-        rb2d.velocity += new Vector2(inputVector_move.x, 0) * Time.fixedDeltaTime * 100f;
-        rb2d.velocity = new Vector2(Mathf.Clamp(rb2d.velocity.x, -vitesseMax, vitesseMax), rb2d.velocity.y);
+        PManager.Rb2D.velocity += new Vector2(inputVector_move.x, 0) * Time.fixedDeltaTime * 100f;
+        PManager.Rb2D.velocity = new Vector2(Mathf.Clamp(PManager.Rb2D.velocity.x, -vitesseMax, vitesseMax), PManager.Rb2D.velocity.y);
     }
 
     private void Jump()
     {
-        rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
-        rb2d.velocity += new Vector2(0, forceDeSaut);
+        PManager.Rb2D.velocity = new Vector2(PManager.Rb2D.velocity.x, 0);
+        PManager.Rb2D.velocity += new Vector2(0, forceDeSaut);
     }
     #endregion
 }

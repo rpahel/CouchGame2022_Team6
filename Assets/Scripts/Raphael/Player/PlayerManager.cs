@@ -1,32 +1,44 @@
 using Data;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
+    #region Autres Scripts
+    //============================
+    private Rigidbody2D rb2D;
+    private Collider2D coll;
+    private PlayerMovement pMovement;
+    private PlayerEat pEat;
+    private PlayerInputs pInputs;
+
+    // Getter
+    public Rigidbody2D Rb2D => rb2D;
+    public Collider2D PCollider => coll;
+    public PlayerMovement PMovement => pMovement;
+    public PlayerEat PEat => pEat;
+    public PlayerInputs PInputs => pInputs;
+    #endregion
+
     #region Variables
     //============================
-    private PLAYER_STATE playerState;
     public PLAYER_STATE PlayerState { get; set; }
 
     //============================
-    private Vector2 sensDuRegard; // à ne pas confondre avec aimDirection
-    public Vector2 SensDuRegard { get; set; }
-
-    //============================
-    private Vector2 aimDirection;
-    public Vector2 AimDirection { get => aimDirection; set => aimDirection = value; }
-
+    public Vector2 AimDirection { get; set; }
     #endregion
 
     #region Unity_Functions
+    private void Awake()
+    {
+        TryGetAllComponents();
+        SetManagerInComponents();
+    }
+
     private void Update()
     {
         #if UNITY_EDITOR
-            Debug.DrawRay(transform.position - Vector3.forward, aimDirection * 5f, Color.cyan, Time.deltaTime);
+            Debug.DrawRay(transform.position - Vector3.forward, AimDirection * 5f, Color.cyan, Time.deltaTime);
         #endif
     }
     #endregion
@@ -38,7 +50,7 @@ public class PlayerManager : MonoBehaviour
     /// <typeparam name="T"></typeparam>
     /// <param name="component">Le component à récupérer.</param>
     /// <exception cref="Exception">Le component n'a pas été trouvé</exception>
-    public void TryGetPlayerComponent<T>(out T component)
+    private void TryGetPlayerComponent<T>(out T component)
     {
         //Debug.Log($"Trying to get {typeof(T)} from the player game object...");
 
@@ -49,6 +61,22 @@ public class PlayerManager : MonoBehaviour
             #endif
             throw new Exception($"No {typeof(T)} component found in Player game object !");
         }
+    }
+
+    private void TryGetAllComponents()
+    {
+        TryGetPlayerComponent(out rb2D);
+        TryGetPlayerComponent(out coll);
+        TryGetPlayerComponent(out pMovement);
+        TryGetPlayerComponent(out pEat);
+        TryGetPlayerComponent(out pInputs);
+    }
+
+    private void SetManagerInComponents()
+    {
+        pMovement.PManager = this;
+        pEat.PManager = this;
+        pInputs.PManager = this;
     }
     #endregion
 }

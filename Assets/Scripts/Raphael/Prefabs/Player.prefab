@@ -439,5 +439,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eatCooldown: 0
-  eatTickrate: 1
+  eatTickrate: 5
   eatDistance: 5
