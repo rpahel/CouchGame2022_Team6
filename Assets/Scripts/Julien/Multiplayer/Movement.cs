@@ -61,18 +61,16 @@ public class Movement : MonoBehaviour
     {
         _isGrounded = IsGrounded();
 
-        if (_playerManager.InputVector.x < 0)
+        lookAtRight = _playerManager.InputVector.x switch
         {
-            lookAtRight = false;
-            pointeurTransform.rotation = Quaternion.Euler(0, 0, 180);
-        }
-            
-        else if (_playerManager.InputVector.x > 0)
-        {
-            lookAtRight = true;
-            pointeurTransform.rotation = Quaternion.Euler(0, 0, 0);
-        }
-        
+            < 0 => false,
+            > 0 => true,
+            _ => lookAtRight
+        };
+
+        if (_playerManager.InputVector == Vector2.zero)
+            pointeurTransform.rotation = Quaternion.Euler(0, 0, lookAtRight ? 0 : 180);
+
         if (_playerManager.State == PlayerState.Moving)
             Move();
         else 

@@ -19,7 +19,8 @@ public class PlayerInputHandler : MonoBehaviour
     private Movement _movement;
     private PlayerManager _playerManager;
     private ShootProjectile _shootProjectile;
-    private Eat _eat;
+    //private Eat _eat;
+    [SerializeField] private eatTest _eat;
     private PlayerControls _controls;
 
     [Header("VariablesEat")]
@@ -31,7 +32,7 @@ public class PlayerInputHandler : MonoBehaviour
         _playerManager = gameObject.GetComponent<PlayerManager>();
         _movement = GetComponent<Movement>();
         _shootProjectile = gameObject.GetComponent<ShootProjectile>();
-        _eat = GetComponent<Eat>();
+        //_eat = GetComponent<eatTest>();
         _controls = new PlayerControls();
     }
 

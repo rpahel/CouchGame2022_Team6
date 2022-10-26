@@ -45,7 +45,7 @@ public class Eat : MonoBehaviour
 
     private void EatCube(Cube_Edible cubeMangeable)
     {
-        cubeMangeable.GetManged(this);
+        //CubeMangeable.GetManged(this);
         _playerManager.eatAmount += filling;
         _playerManager.eatAmount = Mathf.Clamp(_playerManager.eatAmount, 0f, 1f);
         canEat = false;

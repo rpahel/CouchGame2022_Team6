@@ -43,7 +43,7 @@ public class Cube_Edible : Cube
         }
     }
 
-    public void GetManged(Eat eat)
+    public void GetManged(eatTest eat)
     {
         // Signale aux cubes voisins que ce cube s'est fait mangé
         for (int i = 0; i < 4; i++)
@@ -58,7 +58,7 @@ public class Cube_Edible : Cube
 
     }
 
-    private IEnumerator EatEffect(Eat eat)
+    private IEnumerator EatEffect(eatTest eat)
     {
         transform.GetChild(0).GetComponent<BoxCollider2D>().enabled = false;
         transform.DOMove(eat.gameObject.transform.position, doMoveEatTiming).SetEase((Ease.OutBounce));
