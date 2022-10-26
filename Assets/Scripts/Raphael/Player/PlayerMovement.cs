@@ -36,6 +36,10 @@ public class PlayerMovement : MonoBehaviour
     private RaycastHit2D groundCheck;
     private float castRadius;
     private float castDistance;
+
+    //============================
+    private bool holdJump;
+    public bool HoldJump { set => holdJump = value; }
     #endregion
 
     #region Unity_Functions
@@ -78,6 +82,9 @@ public class PlayerMovement : MonoBehaviour
             playerManager.PlayerState = PLAYER_STATE.FALLING;
 
         Deplacement();
+
+        if (holdJump && groundCheck)
+            OnJump();
     }
 
     #if UNITY_EDITOR
@@ -114,7 +121,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnJump()
     {
-        if(groundCheck && (groundCheck.collider.gameObject.layer == 6 || groundCheck.collider.gameObject.layer == 7))
+        int testlayer = 0;
+        if (groundCheck)
+            testlayer = groundCheck.collider.gameObject.layer;
+
+        if (groundCheck && (testlayer == 6 || testlayer == 7))
         {
             Jump();
         }

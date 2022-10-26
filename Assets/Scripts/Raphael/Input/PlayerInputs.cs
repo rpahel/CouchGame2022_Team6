@@ -37,6 +37,12 @@ public class PlayerInputs : MonoBehaviour
     {
         if (input.started)
             playerMovement.OnJump();
+
+        if (input.performed)
+            playerMovement.HoldJump = true;
+
+        if (input.canceled)
+            playerMovement.HoldJump = false;
     }
 
     public void OnEat(InputAction.CallbackContext input)
