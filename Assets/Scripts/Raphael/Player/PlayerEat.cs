@@ -67,8 +67,6 @@ public class PlayerEat : MonoBehaviour
             else
                 direction = PManager.PMovement.SensDuRegard;
         }
-        
-            
 
         if (cooldown < eatCooldown)
         {

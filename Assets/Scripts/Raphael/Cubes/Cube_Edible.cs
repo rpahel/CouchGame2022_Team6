@@ -12,8 +12,8 @@ public class Cube_Edible : Cube
     [SerializeField] private GameObject[] restes = new GameObject[4];
     [SerializeField] private GameObject loot;
     [SerializeField, Range(0, 100)] private int lootChance;
-    [SerializeField] private ANIMATION_TYPE typeAnimation;
-    [SerializeField, Range(1, 50)] private float vitessDeDeplacement;
+    //[SerializeField, Range(1, 50)] private float vitesseDeDeplacement;
+    [SerializeField, Range(0.01f, .5f)] private float dureeDeDeplacement;
 
     //======================================================================
     private List<Cube> cubesAutour = new List<Cube>(4);
@@ -82,13 +82,7 @@ public class Cube_Edible : Cube
             cube.transform.parent = null;
             cube.GetComponent<Collider2D>().enabled = false;
 
-            switch (typeAnimation)
-            {
-                case ANIMATION_TYPE.VERS_CAMERA:
-                    StartCoroutine(Aspiration(cube, playerTransform));
-                    break;
-            }
-
+            StartCoroutine(Aspiration(cube, playerTransform));
         }
     }
 
@@ -97,21 +91,26 @@ public class Cube_Edible : Cube
         Vector3 cubeStartPos = cube.transform.position;
         cube.transform.position -= Vector3.forward * 0.05f;
         float scaleFactor;
-        float distanceCubeStart_Player;
-        float distanceCubeCurrent_Player;
-        float alpha;
-        Vector2 direction;
+        float t = 0;
+        //float distanceCubeStart_Player;
+        //float distanceCubeCurrent_Player;
+        //Vector2 direction;
 
-        while (!isInRadius(cube.transform.position, player.transform.position, .5f))
+        //while (!isInRadius(cube.transform.position, player.transform.position, .5f))
+        while(t < 1f)
         {
-            direction = (player.transform.position - cube.transform.position).normalized;
-            cube.transform.position += (Vector3)direction * (Time.deltaTime * vitessDeDeplacement);
+            //direction = (player.transform.position - cube.transform.position).normalized;
+            //cube.transform.position += (Vector3)direction * (Time.deltaTime * vitessDeDeplacement);
 
-            distanceCubeStart_Player = (player.transform.position - cubeStartPos).magnitude;
-            distanceCubeCurrent_Player = (player.transform.position - cube.transform.position).magnitude;
-            alpha = distanceCubeCurrent_Player / distanceCubeStart_Player;
-            scaleFactor = DOVirtual.EasedValue(0, 2.857143f, alpha, Ease.OutBack, 2f);
+            //distanceCubeStart_Player = (player.transform.position - cubeStartPos).magnitude;
+            //distanceCubeCurrent_Player = (player.transform.position - cube.transform.position).magnitude;
+            //alpha = distanceCubeCurrent_Player / distanceCubeStart_Player;
+
+            cube.transform.position = Vector3.Lerp(cubeStartPos, player.position, t);
+            cube.transform.position = DOVirtual.EasedValue(cubeStartPos, player.position, t, Ease.InBack, 3f);
+            scaleFactor = DOVirtual.EasedValue(2.857143f, 0, t, Ease.InBack, 2f);
             cube.transform.localScale = Vector3.one * scaleFactor;
+            t += Time.deltaTime / dureeDeDeplacement;
             yield return new WaitForFixedUpdate();
         }
 
@@ -154,9 +153,4 @@ public class Cube_Edible : Cube
         float distanceSqr = (targetPosition - position).sqrMagnitude;
         return distanceSqr <= (radius * radius);
     }
-}
-
-enum ANIMATION_TYPE
-{
-    VERS_CAMERA,
 }
