@@ -27,6 +27,7 @@ public class eatTest : MonoBehaviour
         if (_cubeEated >= maxCubeMangeable)
         {
             canEat = false;
+            StopAllCoroutines();
             cooldownCoroutine = StartCoroutine(CooldownCoroutine());
         }
         _playerManager.eatAmount += filling;
