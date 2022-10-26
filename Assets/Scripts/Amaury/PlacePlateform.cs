@@ -13,23 +13,29 @@ public class PlacePlateform : MonoBehaviour {
 
     private Rigidbody2D rb;
     private PlayerManager playerManager;
+    private BoxCollider2D collider;
     public GameObject blockToPlace;
 
     public Vector3 direction;
 
     [Range(0,1)]
     public float percentageEat;
-    
+
+    private GameObject instance;
+
+    public bool canOverpassPlacement;
     
     void Start() {
         rb = GetComponent<Rigidbody2D>();
         playerManager = GetComponent<PlayerManager>();
+        collider = GetComponent<BoxCollider2D>();
     }
 
     void Update() {
         
         if(rb.velocity != Vector2.zero)
             direction = rb.velocity.normalized;
+        
     }
 
     public void OnPlace() {
@@ -37,10 +43,12 @@ public class PlacePlateform : MonoBehaviour {
             float maxDistance = 0.2f;
 
             if (direction.x != 0 && direction.y != 0) {
-                direction = new Vector3(direction.x, 0f, 0f);
-                maxDistance = 1.5f;
+                direction = new Vector3(0f, direction.y, 0f);
+                maxDistance = 3f;
+                Debug.Log("jump and move");
             }
-            
+
+        
             direction.y = Mathf.Abs(direction.y);
 
             Vector3 end = transform.position - (Vector3)(direction * (transform.GetComponent<BoxCollider2D>().size / 2));
@@ -52,7 +60,7 @@ public class PlacePlateform : MonoBehaviour {
                 spawnPosition = transform.position - direction * maxDistance;
             }
 
-            GameObject instance = Instantiate(blockToPlace, transform.position - direction * (maxDistance), Quaternion.identity);
+            instance = Instantiate(blockToPlace, transform.position - direction * (maxDistance), Quaternion.identity);
 
             List<GameObject> cubes = GameObject.FindGameObjectsWithTag("CubeEdible").ToList();
             cubes.Remove(instance);
@@ -62,16 +70,19 @@ public class PlacePlateform : MonoBehaviour {
                 BoxCollider2D cubeCollider = cube.GetComponentInChildren<BoxCollider2D>();
                 
                 if (cubeCollider != null &&cubeCollider.bounds.Intersects(instance.GetComponentInChildren<BoxCollider2D>().bounds)) {
-                    instance.transform.position = cube.transform.position - ((Vector3) (instance.transform.localScale * -sign(direction)));
+                    if(canOverpassPlacement)
+                        instance.transform.position = cube.transform.position - ((Vector3) (instance.transform.localScale * -sign(direction)));
+                    else
+                        Destroy(instance);
+
                     break;
                 }
             }
-
+            
+            Debug.Log("direction " + (Vector3)sign(direction));
+            
             playerManager.eatAmount -= playerManager.eatAmount * percentageEat;
             Mathf.Clamp(playerManager.eatAmount, 0, playerManager.maxEatValue);
         }
     }
-
- 
-
 }

@@ -97,7 +97,7 @@ public class Movement : MonoBehaviour
     {
         _holdCool = f;
     }
-    private bool IsGrounded()
+    public bool IsGrounded()
     {
         return Physics2D.OverlapCapsule(groundCheck.position, new Vector2(1f, 0.2f), CapsuleDirection2D.Horizontal, 0,groundLayer);
     }
