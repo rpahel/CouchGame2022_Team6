@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
@@ -28,6 +29,9 @@ public class LevelGenerator : MonoBehaviour
 
         GameObject parentObjSpawns = new GameObject("Initial Spawns");
         parentObjSpawns.transform.parent = transform;
+        
+        
+        
 
         // Check la couleur de chaque pixel dans l'image et fait spawn un cube aux coordonnées correspondantes
         int n = 0;
@@ -66,6 +70,7 @@ public class LevelGenerator : MonoBehaviour
             }
         }
     }
+
 
     void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width)
     {
