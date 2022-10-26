@@ -14,9 +14,12 @@ public class PlayerMovement : MonoBehaviour
     #region Variables
     //============================
     [Header("Données publiques")]
-    [SerializeField, Range(0, 40f)] private float vitesseMax;
-    [SerializeField, Range(.01f, .2f)] private float dureeAvantArret;
-    [SerializeField, Range(0, 70)] private int forceDeSaut;
+    [SerializeField, Range(0, 40f)]
+    private float vitesseMax;
+    [SerializeField, Range(.01f, .2f), Tooltip("Durée de freinage en seconde.")]
+    private float dureeAvantArret;
+    [SerializeField, Range(0, 70)]
+    private int forceDeSaut;
     [SerializeField, Range(0, 30), Tooltip("Multiplicateur de la gravité, 1 = gravité de base d'Unity.")]
     private float echelleDeGravité;
     [SerializeField, Range(0.01f, 1), Tooltip("Valeur à dépasser avec le joystick pour initier le déplacement.")]

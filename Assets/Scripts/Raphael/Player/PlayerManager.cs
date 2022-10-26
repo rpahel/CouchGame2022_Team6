@@ -1,6 +1,7 @@
 using Data;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -26,6 +27,11 @@ public class PlayerManager : MonoBehaviour
 
     //============================
     public Vector2 AimDirection { get; set; }
+
+    //============================
+    [SerializeField, Range(0, 100)] private int remplissage;
+    public int Remplissage { get => remplissage; set => remplissage = value; }
+
     #endregion
 
     #region Unity_Functions
@@ -33,6 +39,7 @@ public class PlayerManager : MonoBehaviour
     {
         TryGetAllComponents();
         SetManagerInComponents();
+        remplissage = 50;
     }
 
     private void Update()

@@ -2,18 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Data;
-using Unity.VisualScripting;
 using DG.Tweening;
 
 public class Cube_Edible : Cube
 {
     #region Variables
     //======================================================================
-    [SerializeField] private GameObject[] restes = new GameObject[4];
-    [SerializeField] private GameObject loot;
-    [SerializeField, Range(0, 100)] private int lootChance;
+    [SerializeField, Tooltip("Les restes en enfant ce gameObject.")]
+    private GameObject[] restes = new GameObject[4];
+    [SerializeField, Tooltip("Le prefab de l'item que ce cube droppera lors de sa destruction.")]
+    private GameObject loot;
+    [SerializeField, Range(0, 100), Tooltip("La chance en pourcentage que ce cube drop un loot lors de sa destruction.")]
+    private int lootChance;
     //[SerializeField, Range(1, 50)] private float vitesseDeDeplacement;
-    [SerializeField, Range(0.01f, .5f)] private float dureeDeDeplacement;
+    [SerializeField, Range(0.01f, .5f), Tooltip("Le temps que met le cube a parcourir la distance départ -> joueur")]
+    private float dureeDeDeplacement;
 
     //======================================================================
     private List<Cube> cubesAutour = new List<Cube>(4);

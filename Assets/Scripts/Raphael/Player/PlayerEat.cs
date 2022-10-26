@@ -18,6 +18,8 @@ public class PlayerEat : MonoBehaviour
     private int eatTickrate;
     [SerializeField, Tooltip("Distance max pour pouvoir manger le cube qu'on vise."), Range(1f, 5f)]
     private float eatDistance;
+    [SerializeField, Tooltip("Combien de nourriture tu reçois en mangeant un cube. 100 = Un cube suffit à te remplir."), Range(0f, 100f)]
+    private int tauxRemplissage;
 
     //============================
     private float cooldown;
@@ -42,16 +44,17 @@ public class PlayerEat : MonoBehaviour
 
         if (holdEat)
         {
-            //if (il est pas rassasié)
-
-            if(tickHoldEat >= 1f)
+            if (PManager.Remplissage <= 100)
             {
-                OnEat(PManager.AimDirection);
-                tickHoldEat = 0f;
-            }
-            else
-            {
-                tickHoldEat += Time.deltaTime * eatTickrate;
+                if (tickHoldEat >= 1f)
+                {
+                    OnEat(PManager.AimDirection);
+                    tickHoldEat = 0f;
+                }
+                else
+                {
+                    tickHoldEat += Time.deltaTime * eatTickrate;
+                }
             }
         }
     }
@@ -60,18 +63,24 @@ public class PlayerEat : MonoBehaviour
     #region Custom_Functions
     public void OnEat(Vector2 direction)
     {
+        if (cooldown < eatCooldown)
+        {
+            Debug.Log($"Attendez un peu avant de manger ({cooldown.ToString("0.00")} / {eatCooldown.ToString("0.00")})");
+            return;
+        }
+
+        if(PManager.Remplissage >= 100)
+        {
+            Debug.Log("Tu es plein et ne peut donc plus manger! Vomis.");
+            return;
+        }
+
         if (direction == Vector2.zero)
         {
             if(!(PManager.PMovement.GroundCheck))
                 direction = Vector2.up;
             else
                 direction = PManager.PMovement.SensDuRegard;
-        }
-
-        if (cooldown < eatCooldown)
-        {
-            Debug.Log($"Attendez un peu avant de manger ({cooldown.ToString("0.00")} / {eatCooldown.ToString("0.00")})");
-            return;
         }
 
         #if UNITY_EDITOR
@@ -82,6 +91,8 @@ public class PlayerEat : MonoBehaviour
         if (hit)
         {
             hit.transform.parent.GetComponent<Cube_Edible>().GetManged(transform);
+            PManager.Remplissage += tauxRemplissage;
+            PManager.Remplissage = Mathf.Clamp(PManager.Remplissage, 0, 100);
         }
 
         cooldown = 0;
