@@ -43,15 +43,13 @@ public class PlayerInputs : MonoBehaviour
     {
         if (input.started)
         {
-            Debug.Log("Eat pressed.");
-            playerEat.OnEat(playerMovement.InputVector);
+            playerEat.OnEat(playerManager.AimDirection);
         }
+    }
 
-        if (input.performed)
-            Debug.Log("Eat button held.");
-
-        if (input.canceled)
-            Debug.Log("Eat button released.");
+    public void Aim(InputAction.CallbackContext input)
+    {
+        playerManager.AimDirection = input.ReadValue<Vector2>();
     }
     #endregion
 }

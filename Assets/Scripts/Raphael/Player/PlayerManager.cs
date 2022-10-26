@@ -11,9 +11,24 @@ public class PlayerManager : MonoBehaviour
     //============================
     private PLAYER_STATE playerState;
     public PLAYER_STATE PlayerState { get; set; }
+
+    //============================
+    private Vector2 sensDuRegard; // à ne pas confondre avec aimDirection
+    public Vector2 SensDuRegard { get; set; }
+
+    //============================
+    private Vector2 aimDirection;
+    public Vector2 AimDirection { get => aimDirection; set => aimDirection = value; }
+
     #endregion
 
     #region Unity_Functions
+    private void Update()
+    {
+        #if UNITY_EDITOR
+            Debug.DrawRay(transform.position - Vector3.forward, aimDirection * 5f, Color.cyan, Time.deltaTime);
+        #endif
+    }
     #endregion
 
     #region Custom_Functions

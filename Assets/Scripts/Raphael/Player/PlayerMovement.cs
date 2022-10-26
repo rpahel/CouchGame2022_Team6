@@ -8,7 +8,7 @@ using UnityEditor.Timeline;
 using Unity.VisualScripting;
 
 public class PlayerMovement : MonoBehaviour
-{
+{   
     #region Variables
     //============================
     private PlayerManager playerManager;
@@ -16,14 +16,16 @@ public class PlayerMovement : MonoBehaviour
     //============================
     [Header("Données publiques")]
     [SerializeField, Range(0, 40f)] private float vitesseMax;
-    [SerializeField, Range(.1f, 2f)] private float dureeAvantArret;
+    [SerializeField, Range(.01f, .2f)] private float dureeAvantArret;
     [SerializeField, Range(0, 70)] private int forceDeSaut;
     [SerializeField, Range(0, 30), Tooltip("Multiplicateur de la gravité, 1 = gravité de base d'Unity.")]
     private float echelleDeGravité;
+    [SerializeField, Range(0.01f, 1), Tooltip("Valeur à dépasser avec le joystick pour initier le déplacement.")]
+    private float deadZone;
 
     //============================
-    private Vector2 inputVector = Vector2.zero;
-    public Vector2 InputVector => inputVector;
+    private Vector2 inputVector_move = Vector2.zero;
+    public Vector2 InputVector_move => inputVector_move;
 
     //============================
     private Rigidbody2D rb2d;
@@ -39,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
     #region Unity_Functions
     private void Awake()
     {
-        dureeAvantArret = dureeAvantArret < 0.1f ? 0.1f : dureeAvantArret;
+        dureeAvantArret = dureeAvantArret < 0.01f ? 0.01f : dureeAvantArret;
 
         if (!TryGetComponent<PlayerManager>(out playerManager)) // ça c'est obligé pcq sinon playerManager == null;
         {
@@ -60,8 +62,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if(dureeAvantArret < 0.1f)
-            dureeAvantArret = 0.1f;
+        if(dureeAvantArret < 0.01f)
+            dureeAvantArret = 0.01f;
     }
 
     private void FixedUpdate()
@@ -75,10 +77,7 @@ public class PlayerMovement : MonoBehaviour
         else
             playerManager.PlayerState = PLAYER_STATE.FALLING;
 
-        if (playerManager.PlayerState == PLAYER_STATE.WALKING) // Le player est en walking lorsqu'il est sur quelquechose
-        {
-            Deplacement();
-        }
+        Deplacement();
     }
 
     #if UNITY_EDITOR
@@ -96,18 +95,21 @@ public class PlayerMovement : MonoBehaviour
     #region Custom_Functions
     public void OnMove(Vector2 input)
     {
-        inputVector = input;
-
-        if (inputVector == Vector2.zero)
+        if (Mathf.Abs(input.x) <= deadZone)
+        {
+            inputVector_move = Vector2.zero;
             return;
+        }
+        
+        inputVector_move = input;
+
+        playerManager.SensDuRegard = inputVector_move.x > 0 ? Vector2.right : Vector2.left;
 
         if(freinage != null)
         {
             StopCoroutine(freinage);
             freinage = null;
         }
-
-        playerManager.PlayerState = PLAYER_STATE.WALKING;
     }
 
     public void OnJump()
@@ -138,7 +140,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Deplacement()
     {
-        if (inputVector == Vector2.zero)
+        if (inputVector_move == Vector2.zero)
         {
             if (freinage == null && rb2d.velocity.x != 0)
             {
@@ -146,10 +148,10 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if ((inputVector.x / Mathf.Abs(inputVector.x)) + (rb2d.velocity.x / Mathf.Abs(rb2d.velocity.x)) == 0)
+        if ((inputVector_move.x / Mathf.Abs(inputVector_move.x)) + (rb2d.velocity.x / Mathf.Abs(rb2d.velocity.x)) == 0)
             rb2d.velocity = new Vector2(-rb2d.velocity.x, rb2d.velocity.y);
 
-        rb2d.velocity += new Vector2(inputVector.x, 0) * Time.fixedDeltaTime * 100f;
+        rb2d.velocity += new Vector2(inputVector_move.x, 0) * Time.fixedDeltaTime * 100f;
         rb2d.velocity = new Vector2(Mathf.Clamp(rb2d.velocity.x, -vitesseMax, vitesseMax), rb2d.velocity.y);
     }
 

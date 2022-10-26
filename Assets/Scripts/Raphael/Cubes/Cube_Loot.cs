@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class Cube_Loot : MonoBehaviour
 {
+    #region Variables
+    //========================================================
     public float TestEat = .1f;
+    #endregion
 
+    #region Unity_Functions
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag("Player"))
@@ -14,4 +18,5 @@ public class Cube_Loot : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    #endregion
 }

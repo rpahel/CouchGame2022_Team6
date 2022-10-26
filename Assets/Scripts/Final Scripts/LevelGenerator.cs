@@ -6,35 +6,36 @@ using DG.Tweening;
 public class LevelGenerator : MonoBehaviour
 {
     #region Variables
-    //============================
+    //========================================================
     [Header("Image de référence.")]
     [SerializeField] private Texture2D image;
 
-    //============================
+    //========================================================
     [Header("Cubes à utiliser.")]
     [SerializeField] private GameObject cubeEdible;
     [SerializeField] private GameObject cubeBedrock;
     [SerializeField] private GameObject cubeTrap;
 
-    //============================
+    //========================================================
     [Header("Animation de spawn des cubes.")]
     [SerializeField] private SPAWN_ANIMATION spawnAnim;
     [SerializeField] private Ease smoothType;
 
-    //============================
+    //========================================================
     [Header("Durées")]
     [SerializeField, Range(0.1f, 2f)] private float attenteAvantAnim;
     [SerializeField, Range(.1f, .3f)] private new float animation;
     [SerializeField, Range(0f, .1f)] private float entreCubesAnim;
     [SerializeField, Range(0f, .1f)] private float entreLignesAnim;
 
-    //============================
+    //========================================================
     private LEVEL_STATE levelState = LEVEL_STATE.NONE;
     public LEVEL_STATE LevelState => levelState;
 
     private Transform[] iniSpawns = new Transform[4];
     public Transform[] IniSpawns => iniSpawns;
 
+    //========================================================
     private Transform[,] cubesArray;
     private int coroutinesRunning = 0;
     #endregion
