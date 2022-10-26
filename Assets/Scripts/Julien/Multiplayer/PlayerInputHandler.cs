@@ -12,19 +12,15 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerConfiguration _playerConfig;
     [SerializeField] private MeshRenderer playerMesh;
 
-    [Header("Cooldowns")]
     public float _holdCooldown;
     public bool _canHoldCooldown;
-    public float eatCooldowwn = 1f;
-    private float _currentEatCooldown;
-    private bool _canEat = true;
 
     [Header("Scripts")]
     private Movement _movement;
     private PlayerManager _playerManager;
     private ShootProjectile _shootProjectile;
     //private Eat _eat;
-    [SerializeField] private eatTest1 _eat;
+    [SerializeField] private eatTest _eat;
     private PlayerControls _controls;
 
     [Header("VariablesEat")]
@@ -104,18 +100,12 @@ public class PlayerInputHandler : MonoBehaviour
     
     private void OnEat(InputAction.CallbackContext context)
     {
-        if (_eat != null && context.performed && _canEat)
-        {
-            _eat.TryEat();
-            _canEat = false;
-            _currentEatCooldown = eatCooldowwn;
-        }
-        else
-            Debug.Log("Eat cooldown");
-        /*if (_eat != null && context.started)
+        /*if (_eat != null && context.performed)
+            _eat.TryEat();*/
+        if (_eat != null && context.started)
             _playerManager.SetCanEat(true);
         if (_eat != null && context.canceled)
-            _playerManager.SetCanEat(false);*/
+            _playerManager.SetCanEat(false);
     }
 
     private void OnDash(CallbackContext context)
@@ -162,10 +152,6 @@ public class PlayerInputHandler : MonoBehaviour
             ResetCooldown();
         }
 
-        _currentEatCooldown -= Time.deltaTime;
-        
-        if (_currentEatCooldown <= 0)
-            _canEat = true;
     }
 
     private void ResetCooldown()

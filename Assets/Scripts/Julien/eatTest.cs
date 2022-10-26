@@ -22,7 +22,7 @@ public class eatTest : MonoBehaviour
     {
         //canEat = false;
         //Debug.Log("eat");
-        //cubeMangeable.GetManged(this);
+        cubeMangeable.GetManged(this);
         ++_cubeEated;
         if (_cubeEated >= maxCubeMangeable)
         {
