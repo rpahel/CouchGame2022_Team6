@@ -30,8 +30,56 @@ Transform:
   m_Children:
   - {fileID: 8364908142819372181}
   m_Father: {fileID: 7366054978402329231}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2408005481315598437
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5379933585731648047}
+  - component: {fileID: 3725391769850130967}
+  m_Layer: 0
+  m_Name: eatScript
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5379933585731648047
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2408005481315598437}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.3460906, y: 0.1437215, z: 0.4031819}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7366054978402329231}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3725391769850130967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2408005481315598437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d77a56daa2f813245af0cf0fe0a7ed48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerManager: {fileID: 7973215681648496309}
+  filling: 0.04
+  eatCooldown: 1
+  maxCubeMangeable: 6
 --- !u!1 &2752124107975094795
 GameObject:
   m_ObjectHideFlags: 0
@@ -63,7 +111,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7366054978402329231}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &8657660670936110400
 BoxCollider2D:
@@ -212,7 +260,7 @@ GameObject:
   - component: {fileID: 5774980263735320966}
   - component: {fileID: 3940742340974141218}
   m_Layer: 9
-  m_Name: eat
+  m_Name: eatCustomTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -276,9 +324,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerManager: {fileID: 7973215681648496309}
-  reach: 1
   filling: 0.04
-  eatCooldown: 0.5
+  eatCooldown: 1.5
+  maxCubeMangeable: 6
+  eatScript: {fileID: 3725391769850130967}
 --- !u!1 &6876165635357209188
 GameObject:
   m_ObjectHideFlags: 0
@@ -486,6 +535,7 @@ Transform:
   m_Children:
   - {fileID: 7366054977546968795}
   - {fileID: 9147457375935212414}
+  - {fileID: 5379933585731648047}
   - {fileID: 4116864722756101584}
   - {fileID: 7521417846732805089}
   m_Father: {fileID: 0}
