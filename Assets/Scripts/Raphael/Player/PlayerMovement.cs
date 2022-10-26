@@ -1,8 +1,8 @@
+using System;
 using System.Collections;
 using UnityEngine;
-using Data;
-using System;
 using DG.Tweening;
+using Data;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -76,7 +76,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        PManager.Rb2D.gravityScale = echelleDeGravité;
+        #if UNITY_EDITOR
+            PManager.Rb2D.gravityScale = echelleDeGravité;
+        #endif
+
+        castRadius = transform.localScale.x * .5f - .05f;
+        castDistance = (PManager.PCollider as CapsuleCollider2D).size.y * transform.localScale.y * .25f + .3f;
 
         groundCheck = Physics2D.CircleCast(transform.position, castRadius, Vector2.down, castDistance);
 

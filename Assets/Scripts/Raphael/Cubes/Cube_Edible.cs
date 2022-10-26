@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Data;
 using DG.Tweening;
+using Data;
 
 public class Cube_Edible : Cube
 {

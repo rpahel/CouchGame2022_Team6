@@ -1,7 +1,6 @@
-using Data;
 using System;
 using UnityEngine;
-using UnityEngine.UI;
+using Data;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -29,8 +28,13 @@ public class PlayerManager : MonoBehaviour
     public Vector2 AimDirection { get; set; }
 
     //============================
-    [SerializeField, Range(0, 100)] private int remplissage;
+    [SerializeField, Range(0, 100), Tooltip("La quantité de nourriture dans le corps.")]
+    private int remplissage;
     public int Remplissage { get => remplissage; set => remplissage = value; }
+
+    //============================
+    [SerializeField] private float tailleMax = 2.857f;
+    [SerializeField] private float tailleMin = 1f;
 
     #endregion
 
@@ -47,6 +51,11 @@ public class PlayerManager : MonoBehaviour
         #if UNITY_EDITOR
             Debug.DrawRay(transform.position - Vector3.forward, AimDirection * 5f, Color.cyan, Time.deltaTime);
         #endif
+    }
+
+    private void FixedUpdate()
+    {
+        transform.localScale = Vector3.one * Mathf.Lerp(tailleMin, tailleMax, remplissage * .01f);
     }
     #endregion
 
