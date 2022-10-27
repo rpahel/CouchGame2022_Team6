@@ -424,7 +424,7 @@ MonoBehaviour:
   eatCooldown: 0
   eatTickrate: 5
   eatDistance: 5
-  tauxRemplissage: 10
+  tauxRemplissage: 0
 --- !u!1 &8273371953776669671
 GameObject:
   m_ObjectHideFlags: 0

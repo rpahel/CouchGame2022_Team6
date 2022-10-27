@@ -8,16 +8,12 @@ public class GameManager : MonoBehaviour
     #region Autres_Scripts
     //============================
     private PlayerInputManager playerInputManager;
+    [SerializeField] private CameraManager cameraManager;
     #endregion
 
     #region Variables
     //============================
     public static GameManager Instance { get; private set; }
-
-    //============================
-    //[Header("DEBUGGING")]
-    //public bool DEBUGGING;
-    //[Range(1, 4)] public int DEBUG_playersToSpawn;
 
     //============================
     [Header("Données")]
@@ -89,6 +85,8 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Player {pi.playerIndex} joined!");
 
         pi.transform.position = spawnPositions[pi.playerIndex].position;
+        playerTransforms[pi.playerIndex] = pi.transform;
+        cameraManager.PTransforms.Add(pi.transform);
     }
     #endregion
 }
