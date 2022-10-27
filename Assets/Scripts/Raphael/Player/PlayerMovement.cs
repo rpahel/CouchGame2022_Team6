@@ -47,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Unity_Functions
-    private void Awake()
+    private void Start()
     {
         dureeAvantArret = dureeAvantArret < 0.01f ? 0.01f : dureeAvantArret;
 

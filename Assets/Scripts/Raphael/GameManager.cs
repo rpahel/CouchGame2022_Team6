@@ -1,32 +1,31 @@
-using Data;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Data;
 
 public class GameManager : MonoBehaviour
 {
+    #region Autres_Scripts
+    //============================
+    private PlayerInputManager playerInputManager;
+    #endregion
+
     #region Variables
     //============================
     public static GameManager Instance { get; private set; }
 
     //============================
-    [Header("DEBUGGING")]
-    public bool DEBUGGING;
-    [Range(1, 4)] public int DEBUG_playersToSpawn;
+    //[Header("DEBUGGING")]
+    //public bool DEBUGGING;
+    //[Range(1, 4)] public int DEBUG_playersToSpawn;
 
     //============================
     [Header("Données")]
     public int minimumNbOfPlayers = 1;
-    private int nbOfPlayers;
     public GameObject playerPrefab;
-    private PlayerInputManager playerInputManager;
-    private bool allPlayerHaveSpawned;
 
     //============================
-    private GAME_STATE  gameState;
-    public  GAME_STATE GameState { get; }
+    public  GAME_STATE GameState { get; private set; }
 
     //============================
     private Transform[] playerTransforms = new Transform[4];
@@ -46,46 +45,50 @@ public class GameManager : MonoBehaviour
             //DontDestroyOnLoad(Instance);
         }
 
-        gameState = GAME_STATE.NONE;
+        GameState = GAME_STATE.NONE;
 
-        //if (!TryGetComponent<PlayerInputManager>(out playerInputManager))
-        //{
-        //    #if UNITY_EDITOR
-        //        UnityEditor.EditorApplication.isPlaying = false;
-        //    #endif
-        //    throw new Exception("No PlayerInputManager component found in GameManager game object !");
-        //}
+        if (!TryGetComponent(out playerInputManager))
+        {
+            #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+            #endif
+            throw new Exception("No PlayerInputManager component found in GameManager game object !");
+        }
 
         //playerPrefab = playerInputManager.playerPrefab;
     }
 
     private void Update()
     {
-        if (DEBUGGING && !allPlayerHaveSpawned && gameState == GAME_STATE.PLAYING)
-        {
-            for(int i = 0; i < DEBUG_playersToSpawn; i++)
-            {
-                OnPlayerJoin();
-            }
-
-            allPlayerHaveSpawned = true;
-        }
+        //if (DEBUGGING && !allPlayerHaveSpawned && gameState == GAME_STATE.PLAYING)
+        //{
+        //    for(int i = 0; i < DEBUG_playersToSpawn; i++)
+        //    {
+        //        OnPlayerJoined();
+        //    }
+        //
+        //    allPlayerHaveSpawned = true;
+        //}
     }
     #endregion
 
     #region Custom_Functions
     public void ChangeGameState(GAME_STATE newState)
     {
-        gameState = newState;
+        GameState = newState;
     }
 
-    public void OnPlayerJoin()
+    public void OnPlayerJoined(PlayerInput pi)
     {
-        if (spawnPositions[nbOfPlayers] == null)
+        if (pi.playerIndex >= 3)
+            return;
+
+        if (spawnPositions[pi.playerIndex] == null)
             throw new System.Exception("Not enough Spawn positions in level for all players.");
 
-        playerTransforms[nbOfPlayers] = Instantiate(playerPrefab, spawnPositions[nbOfPlayers].position, Quaternion.identity).transform;
-        nbOfPlayers++;
+        Debug.Log($"Player {pi.playerIndex} joined!");
+
+        pi.transform.position = spawnPositions[pi.playerIndex].position;
     }
     #endregion
 }
