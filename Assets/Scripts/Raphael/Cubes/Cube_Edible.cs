@@ -17,6 +17,8 @@ public class Cube_Edible : Cube
     //[SerializeField, Range(1, 50)] private float vitesseDeDeplacement;
     [SerializeField, Range(0.01f, .5f), Tooltip("Le temps que met le cube a parcourir la distance départ -> joueur")]
     private float dureeDeDeplacement;
+    [SerializeField, Range(-180, 180), Tooltip("Le degré de rotation du cube lors de l'animation quand tu le manges.")]
+    private float degresDeRotation;
 
     //======================================================================
     private List<Cube> cubesAutour = new List<Cube>(4);
@@ -92,6 +94,8 @@ public class Cube_Edible : Cube
     IEnumerator Aspiration(GameObject cube, Transform player)
     {
         Vector3 cubeStartPos = cube.transform.position;
+        Vector3 cubeStartRot = cube.transform.rotation.eulerAngles;
+        Vector3 cubeEndRot = cubeStartRot + new Vector3(0, 0, degresDeRotation);
         cube.transform.position -= Vector3.forward * 0.05f;
         float scaleFactor;
         float t = 0;
@@ -109,6 +113,7 @@ public class Cube_Edible : Cube
             //distanceCubeCurrent_Player = (player.transform.position - cube.transform.position).magnitude;
             //alpha = distanceCubeCurrent_Player / distanceCubeStart_Player;
 
+            cube.transform.rotation = Quaternion.Euler(Vector3.Lerp(cubeStartRot, cubeEndRot, t));
             cube.transform.position = Vector3.Lerp(cubeStartPos, player.position, t);
             cube.transform.position = DOVirtual.EasedValue(cubeStartPos, player.position, t, Ease.InBack, 3f);
             scaleFactor = DOVirtual.EasedValue(2.857143f, 0, t, Ease.InBack, 2f);

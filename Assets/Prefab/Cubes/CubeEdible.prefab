@@ -335,6 +335,7 @@ MonoBehaviour:
   loot: {fileID: 8913226969172518835, guid: 181e62fe249a31f449c192aacdd6800e, type: 3}
   lootChance: 0
   dureeDeDeplacement: 0.375
+  degresDeRotation: 180
 --- !u!1 &3530211992881418058
 GameObject:
   m_ObjectHideFlags: 0
