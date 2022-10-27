@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -322,9 +322,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f453f694addf4275988fac205bc91968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BoundingShape2D: {fileID: 0}
+  m_BoundingShape2D: {fileID: 892707929}
   m_Damping: 0.5
-  m_MaxWindowSize: -1
+  m_MaxWindowSize: 0
 --- !u!1 &351283781
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,7 +404,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 351283781}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 58.57143, y: 30.000002, z: -10}
+  m_LocalPosition: {x: 0, y: 0.24888039, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -488,9 +488,8 @@ GameObject:
   m_Component:
   - component: {fileID: 611988393}
   - component: {fileID: 611988394}
-  - component: {fileID: 611988395}
   m_Layer: 0
-  m_Name: LD
+  m_Name: LevelGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -523,62 +522,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7bed8b178ffee44a860348c49002fe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 2800000, guid: 49929b079128a4e4cab5ada558d62913, type: 3}
+  image: {fileID: 2800000, guid: 82087433bad76e849a15ac95db0378a0, type: 3}
+  echelle: 2.857143
   cubeEdible: {fileID: 2613636963887001808, guid: 74a185477bf05c94796ad895b5c85abe,
     type: 3}
   cubeBedrock: {fileID: 2613636963887001808, guid: c7f75a0a01a2fd944b4e35a457f711f5,
     type: 3}
   cubeTrap: {fileID: 2613636963887001808, guid: fd8e6153315a70a4c9d48f9614a0b90d,
     type: 3}
-  spawnAnim: 3
+  spawnAnim: 1
   smoothType: 27
   attenteAvantAnim: 1
   animation: 0.3
   entreCubesAnim: 0
   entreLignesAnim: 0.05
---- !u!114 &611988395
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 611988391}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c40c9b86226c17e4aa35489c9509750f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &617858168
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 617858169}
-  m_Layer: 0
-  m_Name: Camera Confiner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &617858169
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 617858168}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.368894, y: -43877.824, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &892707926
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,6 +546,7 @@ GameObject:
   m_Component:
   - component: {fileID: 892707927}
   - component: {fileID: 892707928}
+  - component: {fileID: 892707929}
   m_Layer: 0
   m_Name: Camera Manager
   m_TagString: Untagged
@@ -626,6 +584,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   VCam: {fileID: 350287564}
+  minLensSize: 8
+--- !u!60 &892707929
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892707926}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0, y: 1}
+      - {x: -0.95105654, y: 0.30901697}
+      - {x: -0.5877852, y: -0.80901706}
+      - {x: 0.58778536, y: -0.80901694}
+      - {x: 0.9510565, y: 0.30901712}
 --- !u!1 &1662084559
 GameObject:
   m_ObjectHideFlags: 3
@@ -759,7 +748,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f22c62a799a81ab499bc754df98fee8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraManager: {fileID: 892707928}
+  cManager: {fileID: 892707928}
+  lGenerator: {fileID: 611988394}
   minimumNbOfPlayers: 1
   playerPrefab: {fileID: 3784764394035868596, guid: 1ff77a9718b295944ab709c4a143fd62,
     type: 3}
@@ -777,7 +767,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NotificationBehavior: 2
   m_MaxPlayerCount: 4
-  m_AllowJoining: 1
+  m_AllowJoining: 0
   m_JoinBehavior: 0
   m_PlayerJoinedEvent:
     m_PersistentCalls:

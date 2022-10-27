@@ -9,6 +9,11 @@ public class LevelGenerator : MonoBehaviour
     //========================================================
     [Header("Image de référence.")]
     [SerializeField] private Texture2D image;
+    public Texture2D ImageRef => image;
+
+    [SerializeField, Header("Scale des cubes."), Range(1f, 3f)]
+    private float echelle = 2.857143f;
+    public float Echelle => echelle;
 
     //========================================================
     [Header("Cubes à utiliser.")]
@@ -113,8 +118,10 @@ public class LevelGenerator : MonoBehaviour
 
     void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width)
     {
-        GameObject cube = Instantiate(cubeToCreate, new Vector3(width * cubeToCreate.transform.localScale.x, height * cubeToCreate.transform.localScale.y, 0), Quaternion.identity);
+        //GameObject cube = Instantiate(cubeToCreate, new Vector3(width * cubeToCreate.transform.localScale.x, height * cubeToCreate.transform.localScale.y, 0), Quaternion.identity);
+        GameObject cube = Instantiate(cubeToCreate, new Vector3(width, height, 0) * echelle, Quaternion.identity);
         cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString() + ", " + height.ToString() + ")";
+        cube.transform.localScale = Vector3.one * echelle;
         cube.transform.parent = parentObj;
         cubesArray[height, width] = cube.transform;
     }
@@ -126,7 +133,7 @@ public class LevelGenerator : MonoBehaviour
     {
         coroutinesRunning++;
 
-        Vector3 endScale = cubeEdible.transform.localScale;
+        Vector3 endScale = Vector3.one * echelle;
 
         for (int i = 0; i < image.height; ++i)
         {

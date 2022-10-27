@@ -7,8 +7,10 @@ public class GameManager : MonoBehaviour
 {
     #region Autres_Scripts
     //============================
-    private PlayerInputManager playerInputManager;
-    [SerializeField] private CameraManager cameraManager;
+    private PlayerInputManager pInputManager;
+    [SerializeField] private CameraManager cManager;
+    [SerializeField] private LevelGenerator lGenerator;
+    public LevelGenerator LGenerator => lGenerator;
     #endregion
 
     #region Variables
@@ -38,33 +40,17 @@ public class GameManager : MonoBehaviour
         if(Instance == null)
         {
             Instance = this;
-            //DontDestroyOnLoad(Instance);
         }
 
         GameState = GAME_STATE.NONE;
 
-        if (!TryGetComponent(out playerInputManager))
+        if (!TryGetComponent(out pInputManager))
         {
             #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
             #endif
             throw new Exception("No PlayerInputManager component found in GameManager game object !");
         }
-
-        //playerPrefab = playerInputManager.playerPrefab;
-    }
-
-    private void Update()
-    {
-        //if (DEBUGGING && !allPlayerHaveSpawned && gameState == GAME_STATE.PLAYING)
-        //{
-        //    for(int i = 0; i < DEBUG_playersToSpawn; i++)
-        //    {
-        //        OnPlayerJoined();
-        //    }
-        //
-        //    allPlayerHaveSpawned = true;
-        //}
     }
     #endregion
 
@@ -72,6 +58,12 @@ public class GameManager : MonoBehaviour
     public void ChangeGameState(GAME_STATE newState)
     {
         GameState = newState;
+        switch (GameState)
+        {
+            case GAME_STATE.PLAYING:
+                pInputManager.EnableJoining();
+                break;
+        }
     }
 
     public void OnPlayerJoined(PlayerInput pi)
@@ -86,7 +78,7 @@ public class GameManager : MonoBehaviour
 
         pi.transform.position = spawnPositions[pi.playerIndex].position;
         playerTransforms[pi.playerIndex] = pi.transform;
-        cameraManager.PTransforms.Add(pi.transform);
+        cManager.PTransforms.Add(pi.transform);
     }
     #endregion
 }
