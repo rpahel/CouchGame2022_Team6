@@ -92,6 +92,18 @@ public class PlayerEat : MonoBehaviour
             PManager.Remplissage += tauxRemplissage;
             PManager.Remplissage = Mathf.Clamp(PManager.Remplissage, 0, 100);
         }
+        else if(!(PManager.PMovement.GroundCheck))
+        {
+            direction = PManager.PMovement.SensDuRegard;
+            hit = Physics2D.Raycast(transform.position, direction.normalized, eatDistance, 1 << LayerMask.NameToLayer("Destructible"));
+
+            if (hit)
+            {
+                hit.transform.parent.GetComponent<Cube_Edible>().GetManged(transform);
+                PManager.Remplissage += tauxRemplissage;
+                PManager.Remplissage = Mathf.Clamp(PManager.Remplissage, 0, 100);
+            }
+        }
 
         cooldown = 0;
     }
