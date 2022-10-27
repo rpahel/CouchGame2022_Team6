@@ -77,7 +77,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerManager: {fileID: 7973215681648496309}
-  _col: {fileID: 5774980263735320966}
   filling: 0.04
   eatCooldown: 1
   maxCubeMangeable: 6

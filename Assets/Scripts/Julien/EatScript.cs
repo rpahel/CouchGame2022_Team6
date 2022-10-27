@@ -45,7 +45,6 @@ public class EatScript : MonoBehaviour
             }
             else
             {
-                ++cubeEated;
                 Debug.Log("eat");
                 EatCube(cubeMangeable);
             }
