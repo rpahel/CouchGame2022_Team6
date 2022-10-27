@@ -26,17 +26,13 @@ public class Cube_Edible : Cube
     #endregion
 
     #region Unity_Functions
-    private void Start()
-    {
-        InitCubes();
-    }
     #endregion
 
     #region Custom_Functions
     /// <summary>
     /// Regarde les cubes qu'il y a autour et les ajoute à la liste cubesAutour
     /// </summary>
-    private void InitCubes()
+    public void InitCubes()
     {
         for (int i = 0; i < 4; i++)
         {
@@ -47,7 +43,7 @@ public class Cube_Edible : Cube
             if (hit)
             {
                 Cube cubeClone;
-                if (hit.transform.parent && hit.transform.parent.TryGetComponent<Cube>(out cubeClone))
+                if (hit.transform.parent && hit.transform.parent.TryGetComponent(out cubeClone))
                 {
                     cubesAutour[i] = cubeClone;
                 }

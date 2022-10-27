@@ -231,6 +231,19 @@ public class LevelGenerator : MonoBehaviour
         }
 
         yield return new WaitUntil(() => coroutinesRunning == 1);
+
+        for (int i = 0; i < image.height; ++i)
+        {
+            for (int j = 0; j < image.width; ++j)
+            {
+                Cube_Edible tempCube;
+                if (cubesArray[i, j] != null && cubesArray[i, j].TryGetComponent(out tempCube))
+                {
+                    tempCube.InitCubes();
+                }
+            }
+        }
+
         levelState = LEVEL_STATE.LOADED;
         GameManager.Instance.ChangeGameState(GAME_STATE.PLAYING);
 
