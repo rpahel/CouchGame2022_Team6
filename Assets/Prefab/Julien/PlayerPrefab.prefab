@@ -77,6 +77,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerManager: {fileID: 7973215681648496309}
+  _col: {fileID: 5774980263735320966}
   filling: 0.04
   eatCooldown: 1
   maxCubeMangeable: 6
@@ -258,7 +259,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5971191915136733738}
   - component: {fileID: 5774980263735320966}
-  - component: {fileID: 3940742340974141218}
+  - component: {fileID: 8671994728895652211}
   m_Layer: 9
   m_Name: eatCustomTrigger
   m_TagString: Untagged
@@ -311,7 +312,7 @@ PolygonCollider2D:
       - {x: -0.7451398, y: -0.14403856}
       - {x: 0.64003766, y: -0.09462345}
       - {x: 0.81744164, y: 0.37818462}
---- !u!114 &3940742340974141218
+--- !u!114 &8671994728895652211
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -323,10 +324,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4cb5094b9a4a604fab5cc3e37558ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerManager: {fileID: 7973215681648496309}
-  filling: 0.04
-  eatCooldown: 1.5
-  maxCubeMangeable: 6
   eatScript: {fileID: 3725391769850130967}
 --- !u!1 &6876165635357209188
 GameObject:
@@ -640,7 +637,7 @@ MonoBehaviour:
   playerMesh: {fileID: 7366054977546968797}
   _holdCooldown: 0
   _canHoldCooldown: 0
-  _eat: {fileID: 3940742340974141218}
+  _eat: {fileID: 3725391769850130967}
   MaxHoldLooseEat: 0.7
   MediumHoldLooseEat: 0.7
   MinHoldLooseEat: 0.7

@@ -20,7 +20,7 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerManager _playerManager;
     private ShootProjectile _shootProjectile;
     //private Eat _eat;
-    [SerializeField] private eatTest _eat;
+    [SerializeField] private EatScript _eat;
     private PlayerControls _controls;
 
     [Header("VariablesEat")]
