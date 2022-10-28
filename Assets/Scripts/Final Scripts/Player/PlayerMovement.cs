@@ -77,9 +77,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        _playerManager.SetPlayerState(PlayerState.Moving);
         dureeAvantArret = dureeAvantArret < 0.01f ? 0.01f : dureeAvantArret;
-
         echelleDeGravité = echelleDeGravité != 0 ? echelleDeGravité : _rb.gravityScale;
     }
  
@@ -95,6 +93,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         #if UNITY_EDITOR
+        if(_playerManager.State == PlayerState.Moving)
             _rb.gravityScale = echelleDeGravité;
         #endif
 
@@ -106,13 +105,14 @@ public class PlayerMovement : MonoBehaviour
         //_playerManager.SetPlayerState(groundCheck ? PlayerState.Moving : PlayerState.Falling);
 
         _isGrounded = IsGrounded();
- 
+
         if (_playerManager.State == PlayerState.Moving)
+        {
             Deplacement();
+            OnMove();
+        }
         
-        OnMove();
- 
-        if (holdJump && groundCheck)
+        if (holdJump && groundCheck && _playerManager.State == PlayerState.Moving)
             OnJump();
     }
     
@@ -126,8 +126,8 @@ public class PlayerMovement : MonoBehaviour
             _inputVectorWithDeadZone = Vector2.zero;
             return;
         }
-        else
-            _inputVectorWithDeadZone = _playerManager.InputVector;
+
+        _inputVectorWithDeadZone = _playerManager.InputVector;
 
         lookAtRight = _playerManager.InputVector.x switch
         {
@@ -135,24 +135,21 @@ public class PlayerMovement : MonoBehaviour
             > 0 => true,
             _ => lookAtRight
         };
- 
-        if(freinage != null)
-        {
-            StopCoroutine(freinage);
-            freinage = null;
-        }
+
+        if (freinage == null) return;
+        
+        StopCoroutine(freinage);
+        freinage = null;
     }
  
     public void OnJump()
     {
-        if (IsGrounded())
-        {
+        if (_isGrounded)
             Jump();
-        }
+        
         else
-        {
             Debug.Log("You can't jump, you're not on solid ground.");
-        }
+        
     }
     
     private bool IsGrounded()
@@ -166,7 +163,7 @@ public class PlayerMovement : MonoBehaviour
         float t = 0;
         while(t < 1f)
         {
-            _rb.velocity = new Vector2(DOVirtual.EasedValue(iniVelocityX, 0, t, Ease.OutCubic), _rb.velocity.x);
+            _rb.velocity = new Vector2(DOVirtual.EasedValue(iniVelocityX, 0, t, Ease.OutCubic), _rb.velocity.y);
             t += Time.fixedDeltaTime / dureeAvantArret;
             yield return new WaitForFixedUpdate();
         }
@@ -185,13 +182,11 @@ public class PlayerMovement : MonoBehaviour
         }
  
         if ((_inputVectorWithDeadZone.x / Mathf.Abs(_inputVectorWithDeadZone.x)) + (_rb.velocity.x / Mathf.Abs(_rb.velocity.x)) == 0)
-            _rb.velocity = new Vector2(_rb.velocity.x, _rb.velocity.y);
-
-        var velocity = _rb.velocity;
-        velocity += new Vector2(_inputVectorWithDeadZone.x, 0) * Time.fixedDeltaTime * 100f;
+            _rb.velocity = new Vector2(-_rb.velocity.x, _rb.velocity.y);
         
-        _rb.velocity = velocity;
-        _rb.velocity = new Vector2(Mathf.Clamp(velocity.x, -vitesseMax, vitesseMax), _rb.velocity.y);
+        _rb.velocity += new Vector2(_inputVectorWithDeadZone.x, 0) * (Time.fixedDeltaTime * 100f);
+        
+        _rb.velocity = new Vector2(Mathf.Clamp(_rb.velocity.x, -vitesseMax, vitesseMax), _rb.velocity.y);
     }
  
     private void Jump()

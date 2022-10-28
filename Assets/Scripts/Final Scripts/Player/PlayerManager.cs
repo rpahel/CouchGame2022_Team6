@@ -33,6 +33,11 @@ public class PlayerManager : MonoBehaviour
         eatAmount = maxEatValue/2;
     }
 
+    private void Start()
+    {
+        State = PlayerState.Moving;
+    }
+
     public void SetInputVector(Vector2 direction)
     {
         InputVector = direction;

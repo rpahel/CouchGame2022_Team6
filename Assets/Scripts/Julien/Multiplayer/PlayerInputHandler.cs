@@ -85,8 +85,14 @@ public class PlayerInputHandler : MonoBehaviour
         else if (_movement != null && context.canceled)
             _movement.StopJump();*/
         
-        if (_movement != null && context.performed)
+        if (_movement != null && context.started)
             _movement.OnJump();
+ 
+        else if (_movement != null && context.performed)
+            _movement.HoldJump = true;
+ 
+        else if (_movement != null && context.canceled)
+            _movement.HoldJump = false;
 }
 
     private void OnShoot(CallbackContext context)
