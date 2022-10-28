@@ -50,17 +50,6 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         dureeAvantArret = dureeAvantArret < 0.01f ? 0.01f : dureeAvantArret;
-
-        //if (!TryGetComponent<PlayerManager>(out PManager)) // ça c'est obligé pcq sinon playerManager == null;
-        //{
-        //    #if UNITY_EDITOR
-        //        UnityEditor.EditorApplication.isPlaying = false;
-        //    #endif
-        //    throw new Exception("No PlayerManager component found in Player game object !");
-        //}
-        //
-        //playerManager.TryGetPlayerComponent<Rigidbody2D>(out rb2d);
-        //playerManager.TryGetPlayerComponent<Collider2D>(out coll);
         
         echelleDeGravité = echelleDeGravité != 0 ? echelleDeGravité : PManager.Rb2D.gravityScale;
 

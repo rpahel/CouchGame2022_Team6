@@ -103,7 +103,7 @@ public class LevelGenerator : MonoBehaviour
                     }
 
                     iniSpawns[n] = new GameObject($"Spawn {n + 1}").transform;
-                    iniSpawns[n].position = new Vector3(j * cubeEdible.transform.localScale.x, i * cubeEdible.transform.localScale.y, 0);
+                    iniSpawns[n].position = new Vector3(j * echelle, i * echelle, 0);
                     iniSpawns[n].localScale = Vector3.one;
                     iniSpawns[n].rotation = Quaternion.identity;
                     iniSpawns[n].transform.parent = parentObjSpawns.transform;

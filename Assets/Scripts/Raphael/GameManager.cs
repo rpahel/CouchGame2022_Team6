@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
 
         pi.transform.position = spawnPositions[pi.playerIndex].position;
         playerTransforms[pi.playerIndex] = pi.transform;
-        cManager.PTransforms.Add(pi.transform);
+        cManager.UpdatePlayers(pi.transform);
     }
     #endregion
 }

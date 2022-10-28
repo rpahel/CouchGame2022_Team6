@@ -377,7 +377,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bc8062102733594883874ee604fef44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  remplissage: 50
   tailleMax: 2.857
   tailleMin: 1
 --- !u!114 &3784764394035868593
@@ -421,10 +420,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f73e76a7818c88142abe5ba9d37e9246, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  remplissage: 50
   eatCooldown: 0
   eatTickrate: 5
   eatDistance: 5
-  tauxRemplissage: 0
+  tauxRemplissage: 5
 --- !u!1 &8273371953776669671
 GameObject:
   m_ObjectHideFlags: 0

@@ -28,11 +28,6 @@ public class PlayerManager : MonoBehaviour
     public Vector2 AimDirection { get; set; }
 
     //============================
-    [SerializeField, Range(0, 100), Tooltip("La quantité de nourriture dans le corps.")]
-    private int remplissage;
-    public int Remplissage { get => remplissage; set => remplissage = value; }
-
-    //============================
     [SerializeField] private float tailleMax = 2.857f;
     [SerializeField] private float tailleMin = 1f;
 
@@ -43,7 +38,6 @@ public class PlayerManager : MonoBehaviour
     {
         TryGetAllComponents();
         SetManagerInComponents();
-        remplissage = 50;
     }
 
     private void Update()
@@ -55,7 +49,7 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.localScale = Vector3.one * Mathf.Lerp(tailleMin, tailleMax, remplissage * .01f);
+        transform.localScale = Vector3.one * Mathf.Lerp(tailleMin, tailleMax, pEat.Remplissage * .01f);
     }
     #endregion
 
@@ -68,8 +62,6 @@ public class PlayerManager : MonoBehaviour
     /// <exception cref="Exception">Le component n'a pas été trouvé</exception>
     private void TryGetPlayerComponent<T>(out T component)
     {
-        //Debug.Log($"Trying to get {typeof(T)} from the player game object...");
-
         if (!TryGetComponent<T>(out component))
         {
             #if UNITY_EDITOR

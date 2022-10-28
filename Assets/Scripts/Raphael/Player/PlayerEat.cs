@@ -10,6 +10,11 @@ public class PlayerEat : MonoBehaviour
 
     #region Variables
     //============================
+    [SerializeField, Range(0, 100), Tooltip("La quantité de nourriture dans le corps.")]
+    private int remplissage;
+    public int Remplissage { get => remplissage; set => remplissage = value; }
+
+    //============================
     [SerializeField, Tooltip("La durée d'attente entre deux inputs de manger."), Range(0f, 1f)]
     private float eatCooldown;
     [SerializeField, Tooltip("Le nombre de cubes mangés par seconde."), Range(2, 10)]
@@ -42,7 +47,7 @@ public class PlayerEat : MonoBehaviour
 
         if (holdEat)
         {
-            if (PManager.Remplissage <= 100)
+            if (remplissage <= 100)
             {
                 if (tickHoldEat >= 1f)
                 {
@@ -67,7 +72,7 @@ public class PlayerEat : MonoBehaviour
             return;
         }
 
-        if(PManager.Remplissage >= 100)
+        if(remplissage >= 100)
         {
             Debug.Log("Tu es plein et ne peut donc plus manger! Vomis.");
             return;
@@ -89,8 +94,8 @@ public class PlayerEat : MonoBehaviour
         if (hit)
         {
             hit.transform.parent.GetComponent<Cube_Edible>().GetManged(transform);
-            PManager.Remplissage += tauxRemplissage;
-            PManager.Remplissage = Mathf.Clamp(PManager.Remplissage, 0, 100);
+            remplissage += tauxRemplissage;
+            remplissage = Mathf.Clamp(remplissage, 0, 100);
         }
         else if(!(PManager.PMovement.GroundCheck))
         {
@@ -100,8 +105,8 @@ public class PlayerEat : MonoBehaviour
             if (hit)
             {
                 hit.transform.parent.GetComponent<Cube_Edible>().GetManged(transform);
-                PManager.Remplissage += tauxRemplissage;
-                PManager.Remplissage = Mathf.Clamp(PManager.Remplissage, 0, 100);
+                remplissage += tauxRemplissage;
+                remplissage = Mathf.Clamp(remplissage, 0, 100);
             }
         }
 
