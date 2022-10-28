@@ -77,9 +77,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerManager: {fileID: 7973215681648496309}
-  filling: 0.04
-  eatCooldown: 1
-  maxCubeMangeable: 6
+  filling: 0.02
+  eatCooldown: 0.1
+  maxCubeMangeable: 2
 --- !u!1 &2752124107975094795
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,11 +306,11 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.019447029, y: 2.099339}
-      - {x: -0.95105654, y: 0.30901697}
-      - {x: -0.7451398, y: -0.14403856}
-      - {x: 0.64003766, y: -0.09462345}
-      - {x: 0.81744164, y: 0.37818462}
+    - - {x: 0.15171777, y: 0.36734438}
+      - {x: -0.7491995, y: 0.34390232}
+      - {x: -0.74517936, y: -0.11345862}
+      - {x: 0.7230874, y: -0.102128185}
+      - {x: 0.724455, y: 0.37603554}
 --- !u!114 &8671994728895652211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,7 +505,6 @@ GameObject:
   - component: {fileID: 7366054978402329200}
   - component: {fileID: 8852710062912591228}
   - component: {fileID: 6404831158282792958}
-  - component: {fileID: -4706397259788855995}
   - component: {fileID: 7973215681648496309}
   - component: {fileID: -7049740124717223735}
   - component: {fileID: 1103561136773747212}
@@ -744,23 +743,6 @@ TrailRenderer:
   m_MinVertexDistance: 0
   m_Autodestruct: 0
   m_Emitting: 0
---- !u!114 &-4706397259788855995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7366054978402329224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8b1c376fa222864d94a29bb48c07f36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pointeur: {fileID: 4116864722756101584}
-  pointeurBase: {fileID: 8364908142819372181}
-  reach: 1
-  filling: 0.04
-  eatCooldown: 0.5
 --- !u!114 &7973215681648496309
 MonoBehaviour:
   m_ObjectHideFlags: 0
