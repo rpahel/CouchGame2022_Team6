@@ -34,7 +34,6 @@ public class PlayerInputHandler : MonoBehaviour
         _shootProjectile = gameObject.GetComponent<ShootProjectile>();
         //_eat = GetComponent<eatTest>();
         _controls = new PlayerControls();
-        placer = GetComponent<PlacePlateform>();
     }
 
     public void InitializePlayer(PlayerConfiguration pc)
@@ -70,10 +69,6 @@ public class PlayerInputHandler : MonoBehaviour
         else if (obj.action.name == _controls.Gameplay.Dash.name)
         {
             OnDash(obj);
-        }
-        else if (obj.action.name == _controls.Gameplay.Place.name)
-        {
-            OnPlace(obj);
         }
     }
     
@@ -148,12 +143,6 @@ public class PlayerInputHandler : MonoBehaviour
             }      
         }
         
-    }
-
-    private void OnPlace(CallbackContext context)
-    {
-        if(placer != null && context.performed)
-            placer.OnPlace();
     }
 
     private void Update() {

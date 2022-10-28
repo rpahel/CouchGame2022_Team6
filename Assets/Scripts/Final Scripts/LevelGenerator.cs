@@ -11,8 +11,10 @@ public class LevelGenerator : MonoBehaviour
     private Transform[] iniSpawns = new Transform[4];
     public Transform[] IniSpawns => iniSpawns;
 
-    private void Awake()
-    {
+    public static LevelGenerator Instance { get; private set; }
+    
+    private void Awake() {
+        Instance = this;
         GenerateLevel();
     }
 

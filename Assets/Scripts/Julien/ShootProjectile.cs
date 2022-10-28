@@ -12,6 +12,7 @@ public class ShootProjectile : MonoBehaviour
     [SerializeField, Range(0, 1)] private float gravityScale;
     [SerializeField] private float shootCooldown;
     [SerializeField] private float Power;
+    [SerializeField] private float cubeBounce;
     [SerializeField] private float explosionRadius;
     [Range(0, 100)] public float shootImpactSatietyPercent;
     [Range(0, 100)] public float shootLooseEat;
@@ -37,7 +38,7 @@ public class ShootProjectile : MonoBehaviour
             var projectile = Instantiate(projectilePrefab, endOfAim.position, Quaternion.identity);
             _rb = projectile.GetComponent<Rigidbody2D>();
             var pr = projectile.GetComponent<Projectile>();
-            pr.InitializeValue(explosionRadius, shootImpactSatietyPercent, Power, this.gameObject);
+            pr.InitializeValue( shootImpactSatietyPercent, Power, cubeBounce,this.gameObject);
             _playerManager.eatAmount -= shootLooseEat / 100;
             _rb.gravityScale = gravityScale;
             var dir = _playerManager.InputVector;

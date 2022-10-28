@@ -793,6 +793,7 @@ MonoBehaviour:
   gravityScale: 0.3
   shootCooldown: 1
   Power: 16
+  cubeBounce: 5
   explosionRadius: 4
   shootImpactSatietyPercent: 15
   shootLooseEat: 8
