@@ -8,8 +8,6 @@ public class ScaleEat : MonoBehaviour
 {
     private PlayerManager _playerManager;
     
-    public SwitchSizeSkin switchSkin;
-    
     public Vector3 scaler = new Vector3(1,1,1);
     public Mesh meshLittle;
     public Mesh meshAverage;
@@ -17,22 +15,22 @@ public class ScaleEat : MonoBehaviour
     public Mesh currentMesh;
     private MeshFilter _meshFilterGo;
     private float maxScale = 2.857143f;
+    [SerializeField] private float scaleSmooth;
 
     public List<Sprite> listSprite = new List<Sprite>();
     
-    private Movement _movement;
+    private PlayerMovement _movement;
     public float timeToLooseEat;
     private void InitializedSize()
     {
-        switchSkin = SwitchSizeSkin.Little;
+        _playerManager.SetSkin(SwitchSizeSkin.Little);
     }
     private void Awake()
     {
-        _movement = gameObject.GetComponent<Movement>();
+        _movement = gameObject.GetComponent<PlayerMovement>();
         _playerManager = gameObject.GetComponent<PlayerManager>();
         _meshFilterGo = this.transform.GetChild(0).GetComponent<MeshFilter>();
         currentMesh = _meshFilterGo.mesh;
-
     }
     void Update()
     {
@@ -41,36 +39,54 @@ public class ScaleEat : MonoBehaviour
 
     void scaleEat()
     {
-        transform.localScale = scaler;
         _playerManager.eatAmount = Mathf.Clamp(_playerManager.eatAmount, 0f, _playerManager.maxEatValue);
-        _playerManager.textUI.text = (_playerManager.eatAmount * 100).ToString() + "%";
+        UpdateTextUI();
 
-        //juste pour sa soit smooth
-        scaler.y = Mathf.Lerp(1, maxScale, _playerManager.eatAmount); 
-        scaler.x = Mathf.Lerp(1,  maxScale, _playerManager.eatAmount);
-        scaler.z = Mathf.Lerp(1, maxScale, _playerManager.eatAmount);
 
-        if (_playerManager.eatAmount >=  0.9f)
+            //juste pour sa soit smooth
+        float scaleTarget = Mathf.Lerp(1, maxScale, _playerManager.eatAmount); 
+        //scaler.x = Mathf.Lerp(1,  maxScale, _playerManager.eatAmount);
+
+        scaler.y = Mathf.Lerp(scaler.y, scaleTarget, scaleSmooth); 
+        scaler.x = Mathf.Lerp(scaler.x,  scaleTarget, scaleSmooth);
+        scaler.z = Mathf.Lerp(scaler.z, scaleTarget, scaleSmooth);
+        transform.localScale = scaler;
+
+        if (_playerManager.eatAmount >=  0.71f)
         {
-            switchSkin = SwitchSizeSkin.Big;
+            _playerManager.SetSkin(SwitchSizeSkin.Big);
             _meshFilterGo.mesh = meshBig;
             _playerManager.imageUI.sprite = listSprite[2];
             _movement._canDash = true;
            // _playerManager.eatAmount -= Time.deltaTime * timeToLooseEat;
         }
-        else if (_playerManager.eatAmount <= 0.33f)
+        else if (_playerManager.eatAmount <= 0.35f)
         {
-            switchSkin = SwitchSizeSkin.Little;
+            _playerManager.SetSkin(SwitchSizeSkin.Little);
             _meshFilterGo.mesh = meshLittle;
             _playerManager.imageUI.sprite = listSprite[1];
             _movement._canDash = false;
         }
         else
         {
-            switchSkin = SwitchSizeSkin.Medium;
+            _playerManager.SetSkin(SwitchSizeSkin.Medium);
             _meshFilterGo.mesh = meshAverage;
             _playerManager.imageUI.sprite = listSprite[0];
             _movement._canDash = false;
         }
+    }
+
+    private void UpdateTextUI()
+    {
+        var text = _playerManager.eatAmount * 100;
+        
+        if(text == 100)
+            _playerManager.textUI.text = text.ToString() + "%";
+        
+        else if(text >0 && text < 10 || text < 1)
+            _playerManager.textUI.text = (text.ToString()).Substring(0, 1) + "%";
+        else
+            _playerManager.textUI.text = (text.ToString()).Substring(0, 2) + "%";
+
     }
 }

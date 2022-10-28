@@ -1,20 +1,18 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Data;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
     private PlayerManager _playerManager;
-    
-    
-    [Header("Movements")] 
-    [SerializeField] private float moveSpeed;
+
+
+    [Header("Movements")] [SerializeField] private float moveSpeed;
     private Rigidbody2D _rb;
     public float _brakeForce;
+    public bool lookAtRight;
+    [SerializeField] private Transform pointeurTransform;
 
     [Header("Simple Jump")] [SerializeField]
     private float jumpForce;
@@ -24,6 +22,8 @@ public class Movement : MonoBehaviour
     [SerializeField] private float jumpMultiplier;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private LayerMask groundLayer2;
+    [SerializeField] private LayerMask groundLayer3;
     private bool _isGrounded;
     public bool _isJumping;
     private float _jumpCounter;
@@ -36,49 +36,39 @@ public class Movement : MonoBehaviour
     private bool _canWallJump;
     private Vector3 _normalVec;
 
-    /*[Header("Shoot")]
-    private float _cooldown;
-    [Header("Options Projectile")]
-    [SerializeField] private GameObject projectilePrefab;
-    private Rigidbody2D _rbProjectile;
-    [SerializeField] private bool canCreatePlatform;
-    [SerializeField, Range(0, 1)] private float gravityScale;
-    [SerializeField] private float shootCooldown;
-    [SerializeField] private float shootPower;
-    [SerializeField] private float lifetime;*/
-
     [Header("Dash")]
     private TrailRenderer _trailRenderer;
+    [SerializeField] private Collider2D playerCollider2D;
     [SerializeField] private float looseEatForce = 1f;
-    private ScaleEat _scaleEat;
-    IEnumerator _dashCoroutine;
+    private IEnumerator _dashCoroutine;
     private bool _isDashing;
-    //[HideInInspector]
     public bool _canDash = false;
     [SerializeField] private float dashForce;
     [SerializeField] private float dashTime;
     [SerializeField] private float dashCooldown;
     private float _normalGravity;
-    private float _holdCool;
-    private PlayerInputHandler _playerInputHandler;
+    public bool _canHit = false;
     private void Awake()
     {
-        _playerInputHandler = GetComponent<PlayerInputHandler>();
         _playerManager = gameObject.GetComponent<PlayerManager>();
         _rb = gameObject.GetComponent<Rigidbody2D>();
         _playerManager.SetPlayerState(PlayerState.Moving);
         _vecGravity = new Vector2(0, -Physics2D.gravity.y);
-        _scaleEat = GetComponent<ScaleEat>();
         _trailRenderer = GetComponent<TrailRenderer>();
     }
-    void Update()
-    {
-        //_cooldown -= Time.deltaTime; cooldown shoot
-    }
-
     private void FixedUpdate()
     {
         _isGrounded = IsGrounded();
+
+        lookAtRight = _playerManager.InputVector.x switch
+        {
+            < 0 => false,
+            > 0 => true,
+            _ => lookAtRight
+        };
+
+        if (_playerManager.InputVector == Vector2.zero)
+            pointeurTransform.rotation = Quaternion.Euler(0, 0, lookAtRight ? 0 : 180);
 
         if (_playerManager.State == PlayerState.Moving)
             Move();
@@ -87,19 +77,12 @@ public class Movement : MonoBehaviour
         
         if (_isDashing) 
         {
-            _playerManager.eatAmount -= Time.deltaTime * looseEatForce;
-
             _rb.AddForce(_playerManager.InputVector * dashForce, ForceMode2D.Impulse);
         }
     }
-
-    public void SetHoldValue(float f)
+    private bool IsGrounded()
     {
-        _holdCool = f;
-    }
-    public bool IsGrounded()
-    {
-        return Physics2D.OverlapCapsule(groundCheck.position, new Vector2(1f, 0.2f), CapsuleDirection2D.Horizontal, 0,groundLayer);
+        return Physics2D.OverlapCapsule(groundCheck.position, new Vector2(1f, 0.2f), CapsuleDirection2D.Horizontal, 0,groundLayer | groundLayer2 | groundLayer3);
     }
     private void Move()
     {
@@ -186,7 +169,7 @@ public class Movement : MonoBehaviour
         if (collision.collider.tag.Contains("Jumpable"))
             _canWallJump = false;
     }
-    
+
     public void Dash()
     {
         if (_canDash)
@@ -204,6 +187,8 @@ public class Movement : MonoBehaviour
     
     private IEnumerator Dash(float dashDuration, float dashCooldown)
     {
+        _canHit = true;
+        gameObject.layer = LayerMask.NameToLayer("Dash");
         var originalVelocity = _rb.velocity;
         var originalGravityScale = _rb.gravityScale;
         _isDashing = true;
@@ -216,6 +201,8 @@ public class Movement : MonoBehaviour
         _rb.gravityScale = _normalGravity;
         _rb.velocity = originalVelocity;
         _rb.gravityScale = originalGravityScale;
+        _canHit = false;
+        gameObject.layer = LayerMask.NameToLayer("Player");
         _playerManager.SetPlayerState(PlayerState.Moving);
         _trailRenderer.emitting = false;
         yield return new WaitForSeconds(dashCooldown);
