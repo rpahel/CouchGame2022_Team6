@@ -25,8 +25,8 @@ public class Projectile : MonoBehaviour
                     break;
                 
                 case "Player":
-                    Movement mov;
-                    if (collider.gameObject != _playerGo && collider.gameObject.TryGetComponent<Movement>(out mov) && !_alreadyHitPlayer)
+                    PlayerMovement mov;
+                    if (collider.gameObject != _playerGo && collider.gameObject.TryGetComponent<PlayerMovement>(out mov) && !_alreadyHitPlayer)
                     {
                         _alreadyHitPlayer = true;
                         Debug.Log(collider.gameObject.name);

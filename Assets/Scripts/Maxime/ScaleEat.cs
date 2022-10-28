@@ -19,7 +19,7 @@ public class ScaleEat : MonoBehaviour
 
     public List<Sprite> listSprite = new List<Sprite>();
     
-    private Movement _movement;
+    private PlayerMovement _movement;
     public float timeToLooseEat;
     private void InitializedSize()
     {
@@ -27,7 +27,7 @@ public class ScaleEat : MonoBehaviour
     }
     private void Awake()
     {
-        _movement = gameObject.GetComponent<Movement>();
+        _movement = gameObject.GetComponent<PlayerMovement>();
         _playerManager = gameObject.GetComponent<PlayerManager>();
         _meshFilterGo = this.transform.GetChild(0).GetComponent<MeshFilter>();
         currentMesh = _meshFilterGo.mesh;

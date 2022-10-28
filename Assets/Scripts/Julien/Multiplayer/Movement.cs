@@ -23,6 +23,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask groundLayer2;
+    [SerializeField] private LayerMask groundLayer3;
     private bool _isGrounded;
     private bool _isJumping;
     private float _jumpCounter;
@@ -39,7 +40,6 @@ public class Movement : MonoBehaviour
     private TrailRenderer _trailRenderer;
     [SerializeField] private Collider2D playerCollider2D;
     [SerializeField] private float looseEatForce = 1f;
-    private ScaleEat _scaleEat;
     private IEnumerator _dashCoroutine;
     private bool _isDashing;
     public bool _canDash = false;
@@ -54,7 +54,6 @@ public class Movement : MonoBehaviour
         _rb = gameObject.GetComponent<Rigidbody2D>();
         _playerManager.SetPlayerState(PlayerState.Moving);
         _vecGravity = new Vector2(0, -Physics2D.gravity.y);
-        _scaleEat = GetComponent<ScaleEat>();
         _trailRenderer = GetComponent<TrailRenderer>();
     }
     private void FixedUpdate()
@@ -83,7 +82,7 @@ public class Movement : MonoBehaviour
     }
     private bool IsGrounded()
     {
-        return Physics2D.OverlapCapsule(groundCheck.position, new Vector2(1f, 0.2f), CapsuleDirection2D.Horizontal, 0,groundLayer | groundLayer2);
+        return Physics2D.OverlapCapsule(groundCheck.position, new Vector2(1f, 0.2f), CapsuleDirection2D.Horizontal, 0,groundLayer | groundLayer2 | groundLayer3);
     }
     private void Move()
     {

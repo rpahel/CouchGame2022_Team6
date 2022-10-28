@@ -16,7 +16,7 @@ public class PlayerInputHandler : MonoBehaviour
     public bool _canHoldCooldown;
 
     [Header("Scripts")]
-    private Movement _movement;
+    private PlayerMovement _movement;
     private PlayerManager _playerManager;
     private ShootProjectile _shootProjectile;
     //private Eat _eat;
@@ -30,7 +30,7 @@ public class PlayerInputHandler : MonoBehaviour
     private void Awake()
     {
         _playerManager = gameObject.GetComponent<PlayerManager>();
-        _movement = GetComponent<Movement>();
+        _movement = GetComponent<PlayerMovement>();
         _shootProjectile = gameObject.GetComponent<ShootProjectile>();
         //_eat = GetComponent<eatTest>();
         _controls = new PlayerControls();
@@ -80,24 +80,27 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnJump(CallbackContext context)
     {
-        if (_movement != null && context.performed)
+        /*if (_movement != null && context.performed)
             _movement.Jump();
         else if (_movement != null && context.canceled)
-            _movement.StopJump();
-    }
+            _movement.StopJump();*/
+        
+        if (_movement != null && context.performed)
+            _movement.OnJump();
+}
 
     private void OnShoot(CallbackContext context)
     {
         if (_shootProjectile != null && context.canceled) 
             _shootProjectile.Shoot();
     }
-    
+
     private void OnAim(CallbackContext context)
     {
         if (_shootProjectile != null && context.performed) 
             _shootProjectile.Aim();
     }
-    
+
     private void OnEat(InputAction.CallbackContext context)
     {
         /*if (_eat != null && context.performed)

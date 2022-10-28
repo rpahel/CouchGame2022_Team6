@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShootProjectile : MonoBehaviour
 {
     private PlayerManager _playerManager;
-    private Movement _movement;
+    private PlayerMovement _movement;
     
     [Header("Options Projectile")]
     [SerializeField] private GameObject projectilePrefab;
@@ -25,7 +25,7 @@ public class ShootProjectile : MonoBehaviour
     private void Awake()
     {
         _playerManager = gameObject.GetComponent<PlayerManager>();
-        _movement = gameObject.GetComponent<Movement>();
+        _movement = gameObject.GetComponent<PlayerMovement>();
         ResetCooldown();
     }
 

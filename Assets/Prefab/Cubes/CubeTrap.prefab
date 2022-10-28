@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2188657776110532954}
   - component: {fileID: 5529363717152140524}
   - component: {fileID: 4844367436440386211}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Cube
   m_TagString: CubeTrap
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2613636963887001772}
   - component: {fileID: -6608917199786195400}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: CubeTrap
   m_TagString: CubeTrap
   m_Icon: {fileID: 0}
