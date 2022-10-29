@@ -13,14 +13,12 @@ public abstract class Cube : MonoBehaviour
 
     //==========================================
     [SerializeField] protected GameObject cube;
-    #endregion
 
+    //==========================================
+    protected bool isManged;
+    public bool IsManged => isManged;
 
-    #region Custom_Functions
-    // Vérifie si ce cube a été mangé ou pas
-    public bool isManged()
-    {
-        return !cube.activeSelf;
-    }
+    //==========================================
+    [HideInInspector] public Vector2 unscaledPosition;
     #endregion
 }

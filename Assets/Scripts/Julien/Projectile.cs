@@ -16,8 +16,8 @@ public class Projectile : MonoBehaviour
                 case "CubeEdible":
                     Cube_Edible cube;
                     if (collider.transform.parent.TryGetComponent<Cube_Edible>(out cube)) {
-                        if (!cube.isManged()) {
-                            cube.OnExploded();
+                        if (!cube.IsManged) {
+                            //cube.OnExploded();
                         }
                     }
                     break;

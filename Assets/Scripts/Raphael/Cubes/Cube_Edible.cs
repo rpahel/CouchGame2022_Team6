@@ -10,11 +10,6 @@ public class Cube_Edible : Cube
     //======================================================================
     [SerializeField, Tooltip("Les restes en enfant ce gameObject.")]
     private GameObject[] restes = new GameObject[4];
-    [SerializeField, Tooltip("Le prefab de l'item que ce cube droppera lors de sa destruction.")]
-    private GameObject loot;
-    [SerializeField, Range(0, 100), Tooltip("La chance en pourcentage que ce cube drop un loot lors de sa destruction.")]
-    private int lootChance;
-    //[SerializeField, Range(1, 50)] private float vitesseDeDeplacement;
     [SerializeField, Range(0.01f, .5f), Tooltip("Le temps que met le cube a parcourir la distance départ -> joueur")]
     private float dureeDeDeplacement;
     [SerializeField, Range(-180, 180), Tooltip("Le degré de rotation du cube lors de l'animation quand tu le manges.")]
@@ -57,6 +52,8 @@ public class Cube_Edible : Cube
     /// <param name="playerTransform">(facultatif) Le transform du joueur qui mange le cube.</param>
     public void GetManged(Transform playerTransform = null)
     {
+        isManged = true;
+
         // Signale aux cubes voisins que ce cube s'est fait mangé
         for (int i = 0; i < 4; i++)
         {
@@ -72,7 +69,7 @@ public class Cube_Edible : Cube
         // Fais apparaitre les restes en fonction des cubes voisins qui sont toujours là
         for (int i = 0; i < 4; i++)
         {
-            if (cubesAutour[i] && !cubesAutour[i].isManged())
+            if (cubesAutour[i] && !cubesAutour[i].IsManged)
             {
                 restes[i].SetActive(true);
             }
@@ -95,20 +92,9 @@ public class Cube_Edible : Cube
         cube.transform.position -= Vector3.forward * 0.05f;
         float scaleFactor;
         float t = 0;
-        //float distanceCubeStart_Player;
-        //float distanceCubeCurrent_Player;
-        //Vector2 direction;
 
-        //while (!isInRadius(cube.transform.position, player.transform.position, .5f))
         while(t < 1f)
         {
-            //direction = (player.transform.position - cube.transform.position).normalized;
-            //cube.transform.position += (Vector3)direction * (Time.deltaTime * vitessDeDeplacement);
-
-            //distanceCubeStart_Player = (player.transform.position - cubeStartPos).magnitude;
-            //distanceCubeCurrent_Player = (player.transform.position - cube.transform.position).magnitude;
-            //alpha = distanceCubeCurrent_Player / distanceCubeStart_Player;
-
             cube.transform.rotation = Quaternion.Euler(Vector3.Lerp(cubeStartRot, cubeEndRot, t));
             cube.transform.position = Vector3.Lerp(cubeStartPos, player.position, t);
             cube.transform.position = DOVirtual.EasedValue(cubeStartPos, player.position, t, Ease.InBack, 3f);
@@ -131,30 +117,10 @@ public class Cube_Edible : Cube
     /// <param name="indexDuVoisin">L'index du voisin.</param>
     public void VoisinGotManged(int indexDuVoisin)
     {
-        if (!cube.activeSelf)
+        if (isManged)
         {
             restes[indexDuVoisin].SetActive(false);
         }
     }
-
-    /// <summary>
-    /// Fais exploser le cube et drop un loot.
-    /// </summary>
-    public void OnExploded()
-    {
-        float rand = Random.Range(0f, 1f);
-        if (rand >= lootChance / 100f)
-        {
-            Instantiate(loot, transform.position, Quaternion.identity);
-        }
-
-        GetManged();
-    }
     #endregion
-
-    private bool isInRadius(Vector3 position, Vector3 targetPosition, float radius)
-    {
-        float distanceSqr = (targetPosition - position).sqrMagnitude;
-        return distanceSqr <= (radius * radius);
-    }
 }

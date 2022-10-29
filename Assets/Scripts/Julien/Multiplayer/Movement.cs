@@ -176,7 +176,7 @@ public class Movement : MonoBehaviour
         {
             if (other.GetComponent<Collider2D>().CompareTag("CubeEdible"))
             {
-                other.gameObject.GetComponentInParent<Cube_Edible>().OnExploded();
+                //other.gameObject.GetComponentInParent<Cube_Edible>().OnExploded();
             }
             else if (other.GetComponent<Collider2D>().CompareTag("Player") && _canHit)
             {
