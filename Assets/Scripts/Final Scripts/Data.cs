@@ -19,6 +19,7 @@ namespace Data
         Dashing,
         WallJumping,
         Moving,
+        Falling,
     }
         
     public enum SwitchSizeSkin

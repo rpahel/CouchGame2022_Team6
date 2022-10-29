@@ -18,18 +18,24 @@ public class PlayerInputHandler : MonoBehaviour
     
 
     [Header("Scripts")]
-    private Movement _movement;
+    private PlayerMovement _movement;
     private PlayerManager _playerManager;
     private ShootProjectile _shootProjectile;
-    private Eat _eat;
+    //private Eat _eat;
+    [SerializeField] private EatScript _eat;
     private PlayerControls _controls;
     private ToolsManager _toolsManager;
+
+    [Header("VariablesEat")]
+    [SerializeField] private float MaxHoldLooseEat = 0.7f;
+    [SerializeField] private float MediumHoldLooseEat = 0.7f;
+    [SerializeField] private float MinHoldLooseEat = 0.7f;
     private void Awake()
     {
         _playerManager = gameObject.GetComponent<PlayerManager>();
-        _movement = GetComponent<Movement>();
+        _movement = GetComponent<PlayerMovement>();
         _shootProjectile = gameObject.GetComponent<ShootProjectile>();
-        _eat = GetComponent<Eat>();
+        //_eat = GetComponent<eatTest>();
         _controls = new PlayerControls();
         _toolsManager = gameObject.GetComponent<ToolsManager>();
 
@@ -93,29 +99,41 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnJump(CallbackContext context)
     {
-        if (_movement != null && context.performed)
+        /*if (_movement != null && context.performed)
             _movement.Jump();
         else if (_movement != null && context.canceled)
-            _movement.StopJump();
-    }
+            _movement.StopJump();*/
+        
+        if (_movement != null && context.started)
+            _movement.OnJump();
+ 
+        else if (_movement != null && context.performed)
+            _movement.HoldJump = true;
+ 
+        else if (_movement != null && context.canceled)
+            _movement.HoldJump = false;
+}
 
     private void OnShoot(CallbackContext context)
     {
         if (_shootProjectile != null && context.canceled) 
             _shootProjectile.Shoot();
     }
-    
+
     private void OnAim(CallbackContext context)
     {
         if (_shootProjectile != null && context.performed) 
             _shootProjectile.Aim();
     }
-    
+
     private void OnEat(InputAction.CallbackContext context)
     {
-        if (_eat != null && context.performed)
-            _eat.TryEat();
-        
+        /*if (_eat != null && context.performed)
+            _eat.TryEat();*/
+        if (_eat != null && context.started)
+            _playerManager.SetCanEat(true);
+        if (_eat != null && context.canceled)
+            _playerManager.SetCanEat(false);
     }
 
     private void OnDash(CallbackContext context)
@@ -133,17 +151,20 @@ public class PlayerInputHandler : MonoBehaviour
                 if (_canHoldCooldown && _holdCooldown <= 0.99f)
                 {
                     _movement.Dash();
-                    _playerManager.eatAmount -= 0.90f;
+                    _playerManager.eatAmount -= MinHoldLooseEat;
+                    ResetCooldown();
                 }
                 else if (_holdCooldown >= 1f && _canHoldCooldown)
                 {
                     _movement.Dash();
-                    _playerManager.eatAmount -= 0.30f;
+                    _playerManager.eatAmount -= MediumHoldLooseEat;
+                    ResetCooldown();
                 } 
             }
-            
-            ResetCooldown();
-            _playerManager.SetPlayerState(PlayerState.Moving);
+            else
+            {
+                _playerManager.SetPlayerState(PlayerState.Moving);
+            }      
         }
         
     }

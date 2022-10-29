@@ -29,7 +29,7 @@ public class LevelGenerator : MonoBehaviour
         GameObject parentObjSpawns = new GameObject("Initial Spawns");
         parentObjSpawns.transform.parent = transform;
 
-        // Check la couleur de chaque pixel dans l'image et fait spawn un cube aux coordonnées correspondantes
+        // Check la couleur de chaque pixel dans l'image et fait spawn un cube aux coordonnï¿½es correspondantes
         int n = 0;
         for (int i = 0; i < imageDeReference.height; i++)
         {
@@ -52,7 +52,7 @@ public class LevelGenerator : MonoBehaviour
                 {
                     if(n >= 4)
                     {
-                        throw new System.Exception("Plus de pixel bleu dans l'image de LD que le max de spawns autorisés (4).");
+                        throw new System.Exception("Plus de pixel bleu dans l'image de LD que le max de spawns autorisï¿½s (4).");
                     }
 
                     iniSpawns[n] = new GameObject($"Spawn {n + 1}").transform;
@@ -70,7 +70,7 @@ public class LevelGenerator : MonoBehaviour
     void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width)
     {
         GameObject cube = Instantiate(cubeToCreate, new Vector3(width * cubeToCreate.transform.localScale.x, height * cubeToCreate.transform.localScale.y, 0), Quaternion.identity);
-        cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString() + ", " + height.ToString() + ")";
+        //cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString() + ", " + height.ToString() + ")";
         cube.transform.parent = parentObj;
     }
 }

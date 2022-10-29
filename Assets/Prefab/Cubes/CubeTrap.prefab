@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2188657776110532954}
   - component: {fileID: 5529363717152140524}
   - component: {fileID: 4844367436440386211}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Cube
   m_TagString: CubeTrap
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 303830590082189049}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 5060444177187149915, guid: 4dfa2ce915406cb42bb4b20d26ed2109, type: 3}
 --- !u!23 &5529363717152140524
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 801cb89fcf08d2648bd6a2856538a92d, type: 2}
+  - {fileID: 2100000, guid: 6193ef69325679c47ae47e8be617cd1e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -120,7 +120,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2613636963887001772}
   - component: {fileID: -6608917199786195400}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: CubeTrap
   m_TagString: CubeTrap
   m_Icon: {fileID: 0}

@@ -17,11 +17,11 @@ TagManager:
   - Player
   - Water
   - UI
-  - Ground
-  - Destroyable
-  - 
-  - 
-  - 
+  - CubeEdible
+  - Dash
+  - Bedrock
+  - DashTrigger
+  - Trap
   - 
   - 
   - 

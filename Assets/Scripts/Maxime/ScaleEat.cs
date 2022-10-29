@@ -19,7 +19,7 @@ public class ScaleEat : MonoBehaviour
 
     public List<Sprite> listSprite = new List<Sprite>();
     
-    private Movement _movement;
+    private PlayerMovement _movement;
     public float timeToLooseEat;
     private void InitializedSize()
     {
@@ -27,7 +27,7 @@ public class ScaleEat : MonoBehaviour
     }
     private void Awake()
     {
-        _movement = gameObject.GetComponent<Movement>();
+        _movement = gameObject.GetComponent<PlayerMovement>();
         _playerManager = gameObject.GetComponent<PlayerManager>();
         _meshFilterGo = this.transform.GetChild(0).GetComponent<MeshFilter>();
         currentMesh = _meshFilterGo.mesh;
@@ -40,9 +40,10 @@ public class ScaleEat : MonoBehaviour
     void scaleEat()
     {
         _playerManager.eatAmount = Mathf.Clamp(_playerManager.eatAmount, 0f, _playerManager.maxEatValue);
-        _playerManager.textUI.text = (_playerManager.eatAmount * 100).ToString() + "%";
+        UpdateTextUI();
 
-        //juste pour sa soit smooth
+
+            //juste pour sa soit smooth
         float scaleTarget = Mathf.Lerp(1, maxScale, _playerManager.eatAmount); 
         //scaler.x = Mathf.Lerp(1,  maxScale, _playerManager.eatAmount);
 
@@ -73,5 +74,19 @@ public class ScaleEat : MonoBehaviour
             _playerManager.imageUI.sprite = listSprite[0];
             _movement._canDash = false;
         }
+    }
+
+    private void UpdateTextUI()
+    {
+        var text = _playerManager.eatAmount * 100;
+        
+        if(text == 100)
+            _playerManager.textUI.text = text.ToString() + "%";
+        
+        else if(text >0 && text < 10 || text < 1)
+            _playerManager.textUI.text = (text.ToString()).Substring(0, 1) + "%";
+        else
+            _playerManager.textUI.text = (text.ToString()).Substring(0, 2) + "%";
+
     }
 }
