@@ -14,7 +14,7 @@ public class PlayerInputs : MonoBehaviour
     #region Customs_Functions
     public void OnMove(InputAction.CallbackContext input)
     {
-        PManager.PMovement.OnMove(input.ReadValue<Vector2>());
+        PManager.PMovement.OnMove(input.ReadValue<Vector2>().normalized);
     }
 
     public void OnJump(InputAction.CallbackContext input)
@@ -41,9 +41,17 @@ public class PlayerInputs : MonoBehaviour
             PManager.PEat.HoldEat = false;
     }
 
+    public void OnShoot(InputAction.CallbackContext input)
+    {
+        if (input.started)
+        {
+            PManager.PShoot.OnShoot(PManager.AimDirection);
+        }
+    }
+
     public void Aim(InputAction.CallbackContext input)
     {
-        PManager.AimDirection = input.ReadValue<Vector2>();
+        PManager.AimDirection = input.ReadValue<Vector2>().normalized;
     }
     #endregion
 }

@@ -69,14 +69,6 @@ public class GameManager : MonoBehaviour
 
         GenerateProjectilePool(projectileNombre);
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Projectile p = GetAvailableProjectile();
-        }
-    }
     #endregion
 
     #region Custom_Functions
@@ -148,7 +140,6 @@ public class GameManager : MonoBehaviour
         {
             SetAsLastOfList(projPool, p);
             p.transform.SetAsLastSibling();
-            p.gameObject.SetActive(true);
             return p;
         }
     }

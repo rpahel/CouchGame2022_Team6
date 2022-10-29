@@ -26,6 +26,7 @@ namespace Data
         FALLING,
         DASHING,
         KNOCKBACKED,
+        STUNNED,
     }
     #endregion
     #region SKIN_SIZE

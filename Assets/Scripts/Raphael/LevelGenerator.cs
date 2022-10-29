@@ -18,8 +18,11 @@ public class LevelGenerator : MonoBehaviour
     //========================================================
     [Header("Cubes à utiliser.")]
     [SerializeField] private GameObject cubeEdible;
+    public GameObject CubeEdible => cubeEdible;
     [SerializeField] private GameObject cubeBedrock;
+    public GameObject CubeBedrock => cubeBedrock;
     [SerializeField] private GameObject cubeTrap;
+    public GameObject CubeTrap => cubeTrap;
 
     //========================================================
     [Header("Animation de spawn des cubes.")]

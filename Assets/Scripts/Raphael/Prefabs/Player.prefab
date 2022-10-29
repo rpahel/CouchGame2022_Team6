@@ -361,6 +361,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 9335d564-f3bc-434e-9109-7f530320dc93
     m_ActionName: Game/Aim[/DualShock4GamepadHID/leftStick]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3784764394035868593}
+        m_TargetAssemblyTypeName: PlayerInputs, Assembly-CSharp
+        m_MethodName: OnShoot
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: fd700e65-f6b9-42f0-b82a-69b23ae65c14
+    m_ActionName: Game/Shoot
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: GamePad
   m_DefaultActionMap: Game
@@ -378,6 +394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bc8062102733594883874ee604fef44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  color: {r: 0, g: 0, b: 0, a: 0}
   tailleMax: 2.857
   tailleMin: 1
 --- !u!114 &3784764394035868593
@@ -438,6 +455,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4092f8f1d6f99e34a91cdadcc1e78d11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pourcentageNecessaire: 0
+  cooldown: 0
+  forceOpposee: 0
+  pourcentagePerdu: 0
+  vitesseInitiale: 100
+  gravity: 0
+  forceDuRebond: 0
 --- !u!1 &8273371953776669671
 GameObject:
   m_ObjectHideFlags: 0

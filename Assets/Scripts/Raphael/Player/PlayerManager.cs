@@ -25,6 +25,7 @@ public class PlayerManager : MonoBehaviour
     #region Variables
     //============================
     public PLAYER_STATE PlayerState { get; set; }
+    [HideInInspector] public Color color;
 
     //============================
     public Vector2 AimDirection { get; set; }
@@ -80,6 +81,7 @@ public class PlayerManager : MonoBehaviour
         TryGetPlayerComponent(out pMovement);
         TryGetPlayerComponent(out pEat);
         TryGetPlayerComponent(out pInputs);
+        TryGetPlayerComponent(out pShoot);
     }
 
     private void SetManagerInComponents()
@@ -87,6 +89,7 @@ public class PlayerManager : MonoBehaviour
         pMovement.PManager = this;
         pEat.PManager = this;
         pInputs.PManager = this;
+        pShoot.PManager = this;
     }
     #endregion
 }
