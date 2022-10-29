@@ -9,15 +9,17 @@ public class PlayerManager : MonoBehaviour
     private Rigidbody2D rb2D;
     private Collider2D coll;
     private PlayerMovement pMovement;
-    private PlayerEat pEat;
     private PlayerInputs pInputs;
+    private PlayerShoot pShoot;
+    private PlayerEat pEat;
 
     // Getter
     public Rigidbody2D Rb2D => rb2D;
     public Collider2D PCollider => coll;
     public PlayerMovement PMovement => pMovement;
-    public PlayerEat PEat => pEat;
     public PlayerInputs PInputs => pInputs;
+    public PlayerShoot PShoot => pShoot;
+    public PlayerEat PEat => pEat;
     #endregion
 
     #region Variables

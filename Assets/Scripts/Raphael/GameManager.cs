@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Data;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,8 +21,8 @@ public class GameManager : MonoBehaviour
 
     //============================
     [Header("Données")]
-    public int minimumNbOfPlayers = 1;
-    public GameObject playerPrefab;
+    [SerializeField] private GameObject projectile;
+    [SerializeField] private int projectileNombre;
 
     //============================
     public  GAME_STATE GameState { get; private set; }
@@ -32,6 +34,13 @@ public class GameManager : MonoBehaviour
     //============================
     private Transform[] spawnPositions = new Transform[4];
     public  Transform[] SpawnPositions { get { return spawnPositions; } set { spawnPositions = value; } }
+
+    //============================
+    private List<Projectile> projPool = new List<Projectile>();
+    public List<Projectile> ProjectilePool => projPool;
+
+    //=============================
+    private Transform projPoolTransform;
     #endregion
 
     #region Unity_Functions
@@ -50,6 +59,22 @@ public class GameManager : MonoBehaviour
                 UnityEditor.EditorApplication.isPlaying = false;
             #endif
             throw new Exception("No PlayerInputManager component found in GameManager game object !");
+        }
+
+        if (projectile == null)
+            throw new Exception("Pas de projectile référencé dans le Game Manager.");
+
+        if (projectileNombre <= 0)
+            Debug.LogError($"ATTENTION t'as mis projectileNombre à {projectile} dans le Game Manager. Aucun projectile ne sera spawné.");
+
+        GenerateProjectilePool(projectileNombre);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Projectile p = GetAvailableProjectile();
         }
     }
     #endregion
@@ -79,6 +104,59 @@ public class GameManager : MonoBehaviour
         pi.transform.position = spawnPositions[pi.playerIndex].position;
         playerTransforms[pi.playerIndex] = pi.transform;
         cManager.UpdatePlayers(pi.transform);
+    }
+
+    private void GenerateProjectilePool(int number)
+    {
+        GameObject parent = new GameObject();
+        parent.name = "Projectile Pool";
+        projPoolTransform = parent.transform;
+
+        for(int i = 0; i < number; i++)
+        {
+            GameObject p = Instantiate(projectile, projPoolTransform);
+            p.name = "Projectile " + i;
+            projPool.Add(p.GetComponent<Projectile>());
+            p.SetActive(false);
+        }
+    }
+
+    private void AddProjectileToPool(int number)
+    {
+        for (int i = 0; i < number; i++)
+        {
+            GameObject p = Instantiate(projectile, projPoolTransform);
+            p.name = "Projectile" + projPool.Count;
+            p.SetActive(false);
+            p.transform.SetSiblingIndex(i);
+            projPool.Insert(i, p.GetComponent<Projectile>());
+        }
+    }
+
+    public Projectile GetAvailableProjectile()
+    {
+        Projectile p = projPool[0];
+
+        if (p.gameObject.activeSelf)
+        {
+            AddProjectileToPool(2);
+            SetAsLastOfList(projPool, p);
+            p.transform.SetAsLastSibling();
+            return GetAvailableProjectile();
+        }
+        else
+        {
+            SetAsLastOfList(projPool, p);
+            p.transform.SetAsLastSibling();
+            p.gameObject.SetActive(true);
+            return p;
+        }
+    }
+
+    private void SetAsLastOfList<T>(List<T> list, T element)
+    {
+        list.Remove(element);
+        list.Add(element);
     }
     #endregion
 }

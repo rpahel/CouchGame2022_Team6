@@ -12,7 +12,7 @@ public class ShootProjectile : MonoBehaviour
 {
     private PlayerManager_JULIEN _playerManager;
     
-    [Header("Options Projectile")]
+    [Header("Options Projectile_JULIEN")]
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField, Range(0, 1)] private float gravityScale;
     [SerializeField] private float shootCooldown;
@@ -43,7 +43,7 @@ public class ShootProjectile : MonoBehaviour
         {
             var projectile = Instantiate(projectilePrefab, endOfAim.position, Quaternion.identity);
             _rb = projectile.GetComponent<Rigidbody2D>();
-            var pr = projectile.GetComponent<Projectile>();
+            var pr = projectile.GetComponent<Projectile_JULIEN>();
             pr.InitializeValue(explosionRadius, shootImpactSatietyPercent, Power);
             _playerManager.eatAmount -= shootLooseEat;
             _rb.gravityScale = gravityScale;
