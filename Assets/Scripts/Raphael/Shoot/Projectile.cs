@@ -2,24 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO : Empecher les particules de disparaitre
 public class Projectile : MonoBehaviour
 {
     #region Variables
     //=============================================
-    [HideInInspector] public GameObject owner;
+    [HideInInspector] public PlayerManager owner;
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
     private Collider2D col;
+    private Vector2 currentVelocity;
 
     //=============================================
-    private Color color;
-    public Color PrColor { set => color = value; }
-
-    private float gravity;
-    public float Gravity { set => gravity = value; }
-
-    private float forceDuRebond;
-    public float ForceDuRebond { set => forceDuRebond = value; }
+    [HideInInspector] public Color color;
+    [HideInInspector] public float gravity;
+    [HideInInspector] public float forceDuRebond;
+    [HideInInspector] public int pourcentageInflige;
+    [HideInInspector] public float knockBackForce;
     #endregion
 
     #region Unity_Functions
@@ -48,15 +47,25 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject != owner)
+        if(collision.gameObject != owner && collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            // On check is c'est un player ou cube et accorde en fonction
+            Vector2 sensDuKnockBack = (collision.transform.position - owner.transform.position).x > 0 ? new Vector2(1, 1) : new Vector2(-1, 1);
+            collision.GetComponent<PlayerManager>().OnDamage(owner, pourcentageInflige, sensDuKnockBack * knockBackForce);
+            rb.velocity = new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y) * forceDuRebond;
+        }
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Trap"))
+        {
+            gameObject.SetActive(false);
+        }
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Destructible") || collision.gameObject.layer == LayerMask.NameToLayer("Indestructible"))
+        {
+            gameObject.SetActive(false);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject == owner)
+        if (collision.gameObject == owner.gameObject)
         {
             col.isTrigger = false;
         }
@@ -66,19 +75,28 @@ public class Projectile : MonoBehaviour
     {
         if (collision.gameObject != owner)
         {
-            if(collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
             {
-                Debug.Log("Joueur touché !");
+                Vector2 sensDuKnockBack = collision.GetContact(0).normal.x > 0 ? new Vector2(1, 1) : new Vector2(-1, 1);
+                collision.gameObject.GetComponent<PlayerManager>().OnDamage(owner, pourcentageInflige, sensDuKnockBack * knockBackForce);
+                rb.velocity = new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y) * currentVelocity.magnitude * forceDuRebond;
             }
-            else if(collision.gameObject.layer == LayerMask.NameToLayer("Indestructible"))
+            else if (collision.gameObject.layer == LayerMask.NameToLayer("Trap"))
             {
-                Debug.Log("Indestructible touché !");
+                Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, collision.GetContact(0).normal).normalized;
+                rb.velocity = sensDuRebond * currentVelocity.magnitude * forceDuRebond;
             }
-            else if(collision.gameObject.layer == LayerMask.NameToLayer("Destructible"))
+            else if (collision.gameObject.layer == LayerMask.NameToLayer("Destructible") || collision.gameObject.layer == LayerMask.NameToLayer("Indestructible"))
             {
-                Debug.Log("Destructible touché !");
+                //TODO: Faire apparaitre cube
+                gameObject.SetActive(false);
             }
         }
+    }
+
+    private void LateUpdate()
+    {
+        currentVelocity = rb.velocity;
     }
     #endregion
 

@@ -91,5 +91,13 @@ public class PlayerManager : MonoBehaviour
         pInputs.PManager = this;
         pShoot.PManager = this;
     }
+
+    public void OnDamage<T>(T damageDealer, int damage, Vector2 knockBackForce)
+    {
+        if (typeof(T) == typeof(PlayerManager))
+        {
+
+        }
+    }
     #endregion
 }

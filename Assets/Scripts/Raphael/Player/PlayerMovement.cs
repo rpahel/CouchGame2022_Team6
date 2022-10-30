@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
     private float vitesseMax;
     [SerializeField, Range(.01f, .2f), Tooltip("Durée de freinage en seconde.")]
     private float dureeAvantArret;
-    [SerializeField, Range(0, 70)]
+    [SerializeField]
     private int forceDeSaut;
     [SerializeField, Range(0, 30), Tooltip("Multiplicateur de la gravité, 1 = gravité de base d'Unity.")]
     private float echelleDeGravité;
@@ -47,13 +47,16 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Unity_Functions
-    private void Start()
+    private void Awake()
     {
         dureeAvantArret = dureeAvantArret < 0.01f ? 0.01f : dureeAvantArret;
-        
-        echelleDeGravité = echelleDeGravité != 0 ? echelleDeGravité : PManager.Rb2D.gravityScale;
-
+        SensDuRegard = Vector2.right;
         castRadius = transform.localScale.x * .5f - .05f;
+    }
+
+    private void Start()
+    {
+            echelleDeGravité = echelleDeGravité != 0 ? echelleDeGravité : PManager.Rb2D.gravityScale;
         castDistance = (PManager.PCollider as CapsuleCollider2D).size.y * transform.localScale.y * .25f + .3f;
     }
 
@@ -83,9 +86,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (holdJump && groundCheck)
             OnJump();
+
+        PManager.Rb2D.velocity = new Vector2(Mathf.Clamp(PManager.Rb2D.velocity.x, -vitesseMax, vitesseMax), PManager.Rb2D.velocity.y);
     }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         if (Application.isPlaying)
@@ -123,7 +128,7 @@ public class PlayerMovement : MonoBehaviour
         if (groundCheck)
             testlayer = groundCheck.collider.gameObject.layer;
 
-        if (groundCheck && (testlayer == 6 || testlayer == 7))
+        if (groundCheck && (testlayer == LayerMask.NameToLayer("Destructible") || testlayer == LayerMask.NameToLayer("Indestructible") || testlayer == LayerMask.NameToLayer("Trap")))
         {
             Jump();
         }
@@ -161,13 +166,12 @@ public class PlayerMovement : MonoBehaviour
             PManager.Rb2D.velocity = new Vector2(-PManager.Rb2D.velocity.x, PManager.Rb2D.velocity.y);
 
         PManager.Rb2D.velocity += new Vector2(inputVector_move.x, 0) * Time.fixedDeltaTime * 100f;
-        PManager.Rb2D.velocity = new Vector2(Mathf.Clamp(PManager.Rb2D.velocity.x, -vitesseMax, vitesseMax), PManager.Rb2D.velocity.y);
     }
 
     private void Jump()
     {
         PManager.Rb2D.velocity = new Vector2(PManager.Rb2D.velocity.x, 0);
-        PManager.Rb2D.velocity += new Vector2(0, forceDeSaut);
+        PManager.Rb2D.AddForce(Vector2.up * forceDeSaut, ForceMode2D.Impulse);
     }
     #endregion
 }
