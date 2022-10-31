@@ -2,16 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO : Empecher les particules de disparaitre
+
 public class Projectile : MonoBehaviour
 {
     #region Variables
+    //=============================================
+    [SerializeField, Range(0, 3)] private float dureeDeVie;
+    private float age;
+
     //=============================================
     [HideInInspector] public PlayerManager owner;
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
     private Collider2D col;
     private Vector2 currentVelocity;
+    private Coroutine lifeTime;
 
     //=============================================
     [HideInInspector] public Color color;
@@ -34,6 +39,8 @@ public class Projectile : MonoBehaviour
     {
         spriteRenderer.color = color;
         rb.gravityScale = gravity;
+        age = dureeDeVie;
+        lifeTime = StartCoroutine(DecreaseLifetime());
     }
 
     private void OnDisable()
@@ -43,11 +50,14 @@ public class Projectile : MonoBehaviour
         rb.velocity = Vector2.zero;
         col.isTrigger = true;
         transform.position = Vector2.zero;
+        if(lifeTime != null)
+            StopCoroutine(lifeTime);
+        age = 0;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject != owner && collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if(collision.gameObject != owner.gameObject && collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             Vector2 sensDuKnockBack = (collision.transform.position - owner.transform.position).x > 0 ? new Vector2(1, 1) : new Vector2(-1, 1);
             collision.GetComponent<PlayerManager>().OnDamage(owner, pourcentageInflige, sensDuKnockBack * knockBackForce);
@@ -73,7 +83,7 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject != owner)
+        if (collision.gameObject != owner.gameObject)
         {
             if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
             {
@@ -92,6 +102,15 @@ public class Projectile : MonoBehaviour
                 gameObject.SetActive(false);
             }
         }
+        else
+        {
+            Debug.Log("owner touché");
+            Debug.Log(currentVelocity);
+            Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, collision.GetContact(0).normal).normalized;
+            Debug.Log(sensDuRebond);
+            rb.velocity = sensDuRebond * currentVelocity.magnitude * forceDuRebond;
+            Debug.Log(rb.velocity);
+        }
     }
 
     private void LateUpdate()
@@ -106,5 +125,17 @@ public class Projectile : MonoBehaviour
     {
         rb.velocity = dir * speed;
     }
+
+    private IEnumerator DecreaseLifetime()
+    {
+        while(age > 0)
+        {
+            yield return new WaitForFixedUpdate();
+            age -= Time.deltaTime;
+        }
+
+        gameObject.SetActive(false);
+    }
+    
     #endregion
 }
