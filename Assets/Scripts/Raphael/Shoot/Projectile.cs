@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.ConstrainedExecution;
 using UnityEngine;
 
 
@@ -59,7 +60,7 @@ public class Projectile : MonoBehaviour
     {
         if(collision.gameObject != owner.gameObject && collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            Vector2 sensDuKnockBack = (collision.transform.position - owner.transform.position).x > 0 ? new Vector2(1, 1) : new Vector2(-1, 1);
+            Vector2 sensDuKnockBack = (collision.transform.position - transform.position).x > 0 ? new Vector2(1, 1) : new Vector2(-1, 1);
             collision.GetComponent<PlayerManager>().OnDamage(owner, pourcentageInflige, sensDuKnockBack * knockBackForce);
             rb.velocity = new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y) * forceDuRebond;
         }
@@ -98,18 +99,19 @@ public class Projectile : MonoBehaviour
             }
             else if (collision.gameObject.layer == LayerMask.NameToLayer("Destructible") || collision.gameObject.layer == LayerMask.NameToLayer("Indestructible"))
             {
-                //TODO: Faire apparaitre cube
+                SpawnCube(collision);
                 gameObject.SetActive(false);
+            }
+            else if (collision.gameObject.layer == LayerMask.NameToLayer("Projectile"))
+            {
+                Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, collision.GetContact(0).normal).normalized;
+                rb.velocity = sensDuRebond * currentVelocity.magnitude * forceDuRebond;
             }
         }
         else
         {
-            Debug.Log("owner touché");
-            Debug.Log(currentVelocity);
             Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, collision.GetContact(0).normal).normalized;
-            Debug.Log(sensDuRebond);
             rb.velocity = sensDuRebond * currentVelocity.magnitude * forceDuRebond;
-            Debug.Log(rb.velocity);
         }
     }
 
@@ -137,5 +139,64 @@ public class Projectile : MonoBehaviour
         gameObject.SetActive(false);
     }
     
+    private void SpawnCube(Collision2D collision)
+    {
+        Vector2 normal = collision.GetContact(0).normal;
+        switch (ApproximateDirection(normal))
+        {
+            case 0:
+                break;
+
+            case 1:
+                break;
+
+            case 2:
+                break;
+
+            case 3:
+                break;
+
+            case 4:
+                break;
+
+            case 5:
+                break;
+
+            case 6:
+                break;
+
+            case 7:
+                break;
+
+            default:
+                break;
+        }
+
+    }
+
+    private byte ApproximateDirection(Vector2 normal)
+    {
+        const float cos30 = 0.866f;
+
+        if (normal.y > cos30 && (normal.x > -.5f && normal.x < .5f))                             
+            return 0; // N
+        else if ((normal.x > .5f && normal.x < cos30) && (normal.y > .5f && normal.y < cos30))      
+            return 1; // NE
+        else if (normal.x > cos30 && (normal.y > -.5f && normal.y < .5f))                       
+            return 2; // E
+        else if ((normal.x > .5f && normal.x < cos30) && (normal.y < -.5f && normal.y > -cos30))    
+            return 3; // SE
+        else if (normal.y < -cos30 && (normal.x > -.5f && normal.x < .5f))                      
+            return 4; // S
+        else if ((normal.x > -cos30 && normal.x < -.5f) && (normal.y < -.5f && normal.y > -cos30))  
+            return 5; // SW
+        else if (normal.x < -cos30 && (normal.y > -.5f && normal.y < .5f))                      
+            return 6; // W
+        else if ((normal.x > -cos30 && normal.x < -.5f) && (normal.y > .5f && normal.y < cos30))    
+            return 7; // NW
+        
+        Debug.Log("You should not see this");
+        return 0;
+    }
     #endregion
 }
