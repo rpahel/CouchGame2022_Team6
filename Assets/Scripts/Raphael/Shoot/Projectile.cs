@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
 using UnityEngine;
+using Data;
 
 
 public class Projectile : MonoBehaviour
@@ -142,35 +143,53 @@ public class Projectile : MonoBehaviour
     private void SpawnCube(Collision2D collision)
     {
         Vector2 normal = collision.GetContact(0).normal;
-        switch (ApproximateDirection(normal))
-        {
-            case 0:
-                break;
-
-            case 1:
-                break;
-
-            case 2:
-                break;
-
-            case 3:
-                break;
-
-            case 4:
-                break;
-
-            case 5:
-                break;
-
-            case 6:
-                break;
-
-            case 7:
-                break;
-
-            default:
-                break;
-        }
+        //switch (ApproximateDirection(normal))
+        //{
+        //    case 0:
+        //        if (CheckAvailableSpaceAt(collision.transform.position, Vector2.up))
+        //            CreateCubeAtRelativePosition(collision.transform.position, Vector2.up);
+        //        break;
+        //
+        //    case 1:
+        //        if (CheckAvailableSpaceAt(collision.transform.position, Vector2.one))
+        //            CreateCubeAtRelativePosition(collision.transform.position, Vector2.one);
+        //        break;
+        //
+        //    case 2:
+        //        if (CheckAvailableSpaceAt(collision.transform.position, Vector2.right))
+        //            CreateCubeAtRelativePosition(collision.transform.position, Vector2.right);
+        //        break;
+        //
+        //    case 3:
+        //        if (CheckAvailableSpaceAt(collision.transform.position, new Vector2(1, -1)))
+        //            CreateCubeAtRelativePosition(collision.transform.position, new Vector2(1, -1));
+        //        break;
+        //
+        //    case 4:
+        //        if (CheckAvailableSpaceAt(collision.transform.position, Vector2.down))
+        //            CreateCubeAtRelativePosition(collision.transform.position, Vector2.down);
+        //        break;
+        //
+        //    case 5:
+        //        if (CheckAvailableSpaceAt(collision.transform.position, -Vector2.one))
+        //            CreateCubeAtRelativePosition(collision.transform.position, -Vector2.one);
+        //        break;
+        //
+        //    case 6:
+        //        if (CheckAvailableSpaceAt(collision.transform.position, Vector2.left))
+        //            CreateCubeAtRelativePosition(collision.transform.position, Vector2.left);
+        //        break;
+        //
+        //    case 7:
+        //        if (CheckAvailableSpaceAt(collision.transform.position, new Vector2(-1, 1)))
+        //            CreateCubeAtRelativePosition(collision.transform.position, new Vector2(-1, 1));
+        //        break;
+        //
+        //    default:
+        //        if (CheckAvailableSpaceAt(collision.transform.position, Vector2.up))
+        //            CreateCubeAtRelativePosition(collision.transform.position, Vector2.up);
+        //        break;
+        //}
 
     }
 
@@ -198,5 +217,38 @@ public class Projectile : MonoBehaviour
         Debug.Log("You should not see this");
         return 0;
     }
+
+    //private bool CheckAvailableSpaceAt(Vector2 originalObjectPosition, Vector2 relativePosition)
+    //{
+    //    Vector2 unscaledPos = originalObjectPosition / LevelGenerator.Instance.Echelle;
+    //    Vector2 targetPos = unscaledPos + relativePosition;
+    //    Transform targetTransform = LevelGenerator.Instance.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
+    //
+    //    if (targetTransform)
+    //    {
+    //        if (targetTransform.GetComponent<Cube>().IsManged)
+    //        {
+    //            Destroy(targetTransform.gameObject);
+    //            return true;
+    //        }
+    //        else
+    //            return false;
+    //    }
+    //    else
+    //    {
+    //        return true;
+    //    }    
+    //}
+    //
+    //private void CreateCubeAtRelativePosition(Vector2 originalObjectPosition, Vector2 relativePosition)
+    //{
+    //    Vector2 unscaledPos = originalObjectPosition / LevelGenerator.Instance.Echelle;
+    //    Vector2 targetPos = unscaledPos + relativePosition;
+    //
+    //    GameObject cube = Instantiate(LevelGenerator.Instance.CubeEdible, targetPos * LevelGenerator.Instance.Echelle, Quaternion.identity, LevelGenerator.Instance.ParentObjCubes);
+    //    cube.name = "Cube Créé (" + Mathf.RoundToInt(targetPos.x) + ", " + Mathf.RoundToInt(targetPos.y) + ") ";
+    //    LevelGenerator.Instance.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)] = cube.transform;
+    //    cube.GetComponent<Cube_Edible>().CheckForNeighbours(targetPos);
+    //}
     #endregion
 }

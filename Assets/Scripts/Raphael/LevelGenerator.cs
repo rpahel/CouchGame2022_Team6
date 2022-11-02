@@ -7,6 +7,9 @@ public class LevelGenerator : MonoBehaviour
 {
     #region Variables
     //========================================================
+    public static LevelGenerator Instance { get; private set; }
+
+    //========================================================
     [Header("Image de référence.")]
     [SerializeField] private Texture2D image;
     public Texture2D ImageRef => image;
@@ -43,15 +46,21 @@ public class LevelGenerator : MonoBehaviour
     private Transform[] iniSpawns = new Transform[4];
     public Transform[] IniSpawns => iniSpawns;
 
+    private GameObject parentObjCubes;
+    public Transform ParentObjCubes => parentObjCubes.transform;
+
     //========================================================
     private Transform[,] cubesArray;
+    public Transform[,] CubesArray { get => cubesArray; private set => cubesArray = value; }
+
     private int coroutinesRunning = 0;
     #endregion
 
     #region Unity_Functions
     private void Awake()
     {
-        cubesArray = new Transform[image.height, image.width];
+        Instance = this;
+        cubesArray = new Transform[image.width, image.height];
     }
 
     private void Start()
@@ -73,7 +82,7 @@ public class LevelGenerator : MonoBehaviour
         levelState = LEVEL_STATE.INITIALISING;
         GameManager.Instance.ChangeGameState(GAME_STATE.LOADING);
 
-        GameObject parentObjCubes = new GameObject("Cubes");
+        parentObjCubes = new GameObject("Cubes");
         parentObjCubes.transform.parent = transform;
 
         GameObject parentObjSpawns = new GameObject("Initial Spawns");
@@ -121,13 +130,13 @@ public class LevelGenerator : MonoBehaviour
 
     void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width)
     {
-        //GameObject cube = Instantiate(cubeToCreate, new Vector3(width * cubeToCreate.transform.localScale.x, height * cubeToCreate.transform.localScale.y, 0), Quaternion.identity);
         GameObject cube = Instantiate(cubeToCreate, new Vector3(width, height, 0) * echelle, Quaternion.identity);
         cube.GetComponent<Cube>().unscaledPosition = new Vector2(width, height);
         cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString() + ", " + height.ToString() + ")";
         cube.transform.localScale = Vector3.one * echelle;
         cube.transform.parent = parentObj;
-        cubesArray[height, width] = cube.transform;
+        //cubesArray[height, width] = cube.transform;
+        cubesArray[width, height] = cube.transform;
     }
     #endregion
 
@@ -143,9 +152,9 @@ public class LevelGenerator : MonoBehaviour
         {
             for (int j = 0; j < image.width; ++j)
             {
-                if (cubesArray[i,j] != null)
+                if (cubesArray[j, i] != null)
                 {
-                    cubesArray[i, j].localScale = Vector3.zero;
+                    cubesArray[j, i].localScale = Vector3.zero;
                 }
             }
         }
@@ -160,9 +169,9 @@ public class LevelGenerator : MonoBehaviour
                 {
                     for(int j = image.height - 1; j >= 0; --j)
                     {
-                        if(cubesArray[j, i] != null)
+                        if(cubesArray[i, j] != null)
                         {
-                            StartCoroutine(ScaleCubeAnimation(cubesArray[j, i], endScale));
+                            StartCoroutine(ScaleCubeAnimation(cubesArray[i, j], endScale));
                             if(entreCubesAnim != 0)
                                 yield return new WaitForSecondsRealtime(entreCubesAnim);
                         }
@@ -178,9 +187,9 @@ public class LevelGenerator : MonoBehaviour
                 {
                     for (int j = image.height - 1; j >= 0; --j)
                     {
-                        if (cubesArray[j, i] != null)
+                        if (cubesArray[i, j] != null)
                         {
-                            StartCoroutine(ScaleCubeAnimation(cubesArray[j, i], endScale));
+                            StartCoroutine(ScaleCubeAnimation(cubesArray[i, j], endScale));
                             if (entreCubesAnim != 0)
                                 yield return new WaitForSecondsRealtime(entreCubesAnim);
                         }
@@ -196,9 +205,9 @@ public class LevelGenerator : MonoBehaviour
                 {
                     for (int j = image.width - 1; j >= 0; --j)
                     {
-                        if (cubesArray[i, j] != null)
+                        if (cubesArray[j, i] != null)
                         {
-                            StartCoroutine(ScaleCubeAnimation(cubesArray[i, j], endScale));
+                            StartCoroutine(ScaleCubeAnimation(cubesArray[j, i], endScale));
                             if (entreCubesAnim != 0)
                                 yield return new WaitForSecondsRealtime(entreCubesAnim);
                         }
@@ -214,9 +223,9 @@ public class LevelGenerator : MonoBehaviour
                 {
                     for (int j = image.width - 1; j >= 0; --j)
                     {
-                        if (cubesArray[i, j] != null)
+                        if (cubesArray[j, i] != null)
                         {
-                            StartCoroutine(ScaleCubeAnimation(cubesArray[i, j], endScale));
+                            StartCoroutine(ScaleCubeAnimation(cubesArray[j, i], endScale));
                             if (entreCubesAnim != 0)
                                 yield return new WaitForSecondsRealtime(entreCubesAnim);
                         }
@@ -232,9 +241,9 @@ public class LevelGenerator : MonoBehaviour
                 {
                     for (int j = 0; j < image.width; ++j)
                     {
-                        if (cubesArray[i, j] != null)
+                        if (cubesArray[j, i] != null)
                         {
-                            cubesArray[i, j].localScale = endScale;
+                            cubesArray[j, i].localScale = endScale;
                         }
                     }
                 }
@@ -248,7 +257,7 @@ public class LevelGenerator : MonoBehaviour
             for (int j = 0; j < image.width; ++j)
             {
                 Cube_Edible tempCube;
-                if (cubesArray[i, j] != null && cubesArray[i, j].TryGetComponent(out tempCube))
+                if (cubesArray[j, i] != null && cubesArray[j, i].TryGetComponent(out tempCube))
                 {
                     tempCube.InitCubes();
                 }
@@ -279,6 +288,25 @@ public class LevelGenerator : MonoBehaviour
 
         coroutinesRunning--;
     }
+
+    //public void PrintLevelAscii()
+    //{
+    //    string ascii = "";
+    //    for (int i = image.height - 1; i >= 0; i--)
+    //    {
+    //        for (int j = 0; j < image.width; j++)
+    //        {
+    //            if (CubesArray[j, i])
+    //                ascii += "G ";
+    //            else
+    //                ascii += "O ";
+    //        }
+    //
+    //        ascii += "\n";
+    //    }
+    //
+    //    Debug.Log(ascii);
+    //}
     #endregion
 }
 

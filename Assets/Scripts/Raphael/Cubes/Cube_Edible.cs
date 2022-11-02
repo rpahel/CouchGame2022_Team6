@@ -21,9 +21,16 @@ public class Cube_Edible : Cube
     #endregion
 
     #region Unity_Functions
+    //======================================================================
+    //private void OnDestroy()
+    //{
+    //    if(UnityEditor.EditorApplication.isPlaying)
+    //        NullifySelfToNeighbours();
+    //}
     #endregion
 
     #region Custom_Functions
+    //======================================================================
     /// <summary>
     /// Regarde les cubes qu'il y a autour et les ajoute à la liste cubesAutour
     /// </summary>
@@ -122,5 +129,64 @@ public class Cube_Edible : Cube
             restes[indexDuVoisin].SetActive(false);
         }
     }
+
+    ///// <summary>
+    ///// Signale aux cubes voisins que ce cube s'est fait détruire et le supprime de leurs listes
+    ///// </summary>
+    //public void NullifySelfToNeighbours()
+    //{
+    //    // Signale aux cubes voisins que ce cube s'est fait détruire
+    //    for (int i = 0; i < 4; i++)
+    //    {
+    //        if (cubesAutour[i] && cubesAutour[i].CubeType == CUBE_TYPE.EDIBLE)
+    //        {
+    //            (cubesAutour[i] as Cube_Edible).CubesAutour[(i + 2) % 4] = null;
+    //        }
+    //    }
+    //}
+    //
+    ///// <summary>
+    ///// Utilisé pour remplir la liste des cubes voisins pour un cube créer DURANT la partie.
+    ///// </summary>
+    //public void CheckForNeighbours(Vector2 unscaledPos)
+    //{
+    //    Vector3 dir;
+    //    Vector2 targetPos;
+    //    Transform targetTransform;
+    //
+    //    for (int i = 0; i < 4; i++)
+    //    {
+    //        cubesAutour.Add(null);
+    //
+    //        dir = Quaternion.Euler(0, 0, -90 * i) * Vector3.up;
+    //        targetPos = unscaledPos + (Vector2)dir;
+    //        targetTransform = LevelGenerator.Instance.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
+    //
+    //        if (targetTransform)
+    //        {
+    //            Cube cubeClone;
+    //            if (targetTransform.TryGetComponent(out cubeClone))
+    //            {
+    //                cubesAutour[i] = cubeClone;
+    //            }
+    //        }
+    //    }
+    //
+    //    HelloNeighbours();
+    //}
+    //
+    ///// <summary>
+    ///// Ce cube est poli donc il se présente à ses voisins
+    ///// </summary>
+    //private void HelloNeighbours()
+    //{
+    //    for (int i = 0; i < 4; i++)
+    //    {
+    //        if (cubesAutour[i] && cubesAutour[i].CubeType == CUBE_TYPE.EDIBLE)
+    //        {
+    //            (cubesAutour[i] as Cube_Edible).CubesAutour[(i + 2) % 4] = this;
+    //        }
+    //    }
+    //}
     #endregion
 }
