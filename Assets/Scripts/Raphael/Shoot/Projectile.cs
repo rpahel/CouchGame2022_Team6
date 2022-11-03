@@ -61,7 +61,8 @@ public class Projectile : MonoBehaviour
     {
         if(collision.gameObject != owner.gameObject && collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            Vector2 sensDuKnockBack = (collision.transform.position - transform.position).x > 0 ? new Vector2(1, 1) : new Vector2(-1, 1);
+            Vector2 sensDuKnockBack = (collision.transform.position - transform.position).x > 0 ? new Vector2(1, 1f) : new Vector2(-1, 1f);
+            sensDuKnockBack.Normalize();
             collision.GetComponent<PlayerManager>().OnDamage(owner, pourcentageInflige, sensDuKnockBack * knockBackForce);
             rb.velocity = new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y) * forceDuRebond;
         }
@@ -83,13 +84,15 @@ public class Projectile : MonoBehaviour
         }
     }
 
+    // TODO : Quand on tire pile entre deux cubes ça créer deux cubes <- faut pas que ça le fasse du coup
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject != owner.gameObject)
         {
             if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
             {
-                Vector2 sensDuKnockBack = collision.GetContact(0).normal.x > 0 ? new Vector2(1, 1) : new Vector2(-1, 1);
+                Vector2 sensDuKnockBack = collision.GetContact(0).normal.x > 0 ? new Vector2(-1, 1f) : new Vector2(1, 1f);
+                sensDuKnockBack.Normalize();
                 collision.gameObject.GetComponent<PlayerManager>().OnDamage(owner, pourcentageInflige, sensDuKnockBack * knockBackForce);
                 rb.velocity = new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y) * currentVelocity.magnitude * forceDuRebond;
             }
@@ -173,7 +176,7 @@ public class Projectile : MonoBehaviour
         else if ((normal.x > -cos30 && normal.x < -.5f) && (normal.y > .5f && normal.y < cos30))    
             return originalPos + new Vector2(-1, 1);    // NW
         
-        Debug.Log("You should not see this");
+        Debug.Log("Tu ne devrais pas voir ça.");
         return originalPos + Vector2.up;                // N
     }
     #endregion

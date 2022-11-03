@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2730405057031229959}
   - component: {fileID: 1940364374433954416}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SpriteInterieur
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 3784764393620878286}
   - component: {fileID: 3784764393620878285}
   - component: {fileID: 3784764393620878284}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 6906842354963131351}
   - component: {fileID: 1293963572987568439}
   - component: {fileID: 2990907069813645592}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -397,6 +397,7 @@ MonoBehaviour:
   color: {r: 0, g: 0, b: 0, a: 0}
   tailleMax: 2.857
   tailleMin: 1
+  spriteInterieur: {fileID: 1940364374433954416}
 --- !u!114 &3784764394035868593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -456,8 +457,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pourcentageNecessaire: 12
-  cooldown: 2
-  forceOpposee: 1000
+  cooldown: 0.5
+  forceOpposee: 50
   vitesseInitiale: 40
   gravity: 5
   forceDuRebond: 1
@@ -473,7 +474,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5298322611093670605}
   - component: {fileID: 2761370740021712296}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

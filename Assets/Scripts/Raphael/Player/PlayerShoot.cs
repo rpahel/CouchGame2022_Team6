@@ -63,15 +63,34 @@ public class PlayerShoot : MonoBehaviour
         if(aimDirection == Vector2.zero)
             aimDirection = PManager.PMovement.SensDuRegard;
 
-        PManager.Rb2D.AddForce(-aimDirection * forceOpposee, ForceMode2D.Impulse);
+        ApplyShootOppositeForce(aimDirection);
 
         projectile.gameObject.SetActive(true);
         projectile.Shoot(aimDirection, vitesseInitiale);
 
         PManager.PEat.Remplissage -= pourcentageNecessaire;
+        PManager.PEat.Remplissage = Mathf.Clamp(PManager.PEat.Remplissage, 0, 100);
+        PManager.UpdatePlayerScale();
 
         cdTimer = cooldown;
         StartCoroutine(Cooldown());
+    }
+
+    void ApplyShootOppositeForce(Vector2 aimDirection)
+    {
+        Vector2 opposite = -aimDirection;
+
+        if(opposite.y < 0.2f)
+        {
+            if (PManager.PMovement.GroundCheck)
+            {
+                opposite = new Vector2(opposite.x, .5f);
+                opposite.Normalize();
+            }
+        }
+
+        PManager.Rb2D.AddForce(opposite * forceOpposee, ForceMode2D.Impulse);
+        PManager.PlayerState = Data.PLAYER_STATE.SHOOTING;
     }
 
     IEnumerator Cooldown()

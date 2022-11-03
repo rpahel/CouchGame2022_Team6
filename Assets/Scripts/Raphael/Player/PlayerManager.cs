@@ -34,6 +34,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float tailleMax = 2.857f;
     [SerializeField] private float tailleMin = 1f;
 
+    //============================ TODO : Supprimer
+    public SpriteRenderer spriteInterieur;
     #endregion
 
     #region Unity_Functions
@@ -52,7 +54,24 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        #if UNITY_EDITOR
         transform.localScale = Vector3.one * Mathf.Lerp(tailleMin, tailleMax, pEat.Remplissage * .01f);
+
+        Debug.DrawRay(transform.position - Vector3.forward, AimDirection * 5f, Color.cyan, Time.deltaTime);
+        
+        if (PlayerState == PLAYER_STATE.KNOCKBACKED)
+        {
+            spriteInterieur.color = Color.red;
+        }
+        else if (PlayerState == PLAYER_STATE.SHOOTING)
+        {
+            spriteInterieur.color = Color.blue;
+        }
+        else
+        {
+            spriteInterieur.color = Color.white;
+        }
+        #endif
     }
     #endregion
 
@@ -92,13 +111,19 @@ public class PlayerManager : MonoBehaviour
         pShoot.PManager = this;
     }
 
-    // TODO:
     public void OnDamage<T>(T damageDealer, int damage, Vector2 knockBackForce)
     {
-        if (typeof(T) == typeof(PlayerManager))
-        {
+        PEat.Remplissage -= damage;
+        PEat.Remplissage = Mathf.Clamp(PEat.Remplissage, 0, 100);
+        UpdatePlayerScale();
 
-        }
+        rb2D.AddForce(knockBackForce, ForceMode2D.Impulse);
+        PlayerState = PLAYER_STATE.KNOCKBACKED;
+    }
+
+    public void UpdatePlayerScale()
+    {
+        transform.localScale = Vector3.one * Mathf.Lerp(tailleMin, tailleMax, pEat.Remplissage * .01f);
     }
     #endregion
 }

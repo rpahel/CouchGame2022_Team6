@@ -56,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-            echelleDeGravité = echelleDeGravité != 0 ? echelleDeGravité : PManager.Rb2D.gravityScale;
+        echelleDeGravité = echelleDeGravité != 0 ? echelleDeGravité : PManager.Rb2D.gravityScale;
         castDistance = (PManager.PCollider as CapsuleCollider2D).size.y * transform.localScale.y * .25f + .3f;
     }
 
@@ -72,22 +72,35 @@ public class PlayerMovement : MonoBehaviour
             PManager.Rb2D.gravityScale = echelleDeGravité;
         #endif
 
-        castRadius = transform.localScale.x * .5f - .05f;
-        castDistance = (PManager.PCollider as CapsuleCollider2D).size.y * transform.localScale.y * .25f + .3f;
+        if(PManager.PlayerState != PLAYER_STATE.STUNNED)
+        {
+            castRadius = transform.localScale.x * .5f - .05f;
+            castDistance = (PManager.PCollider as CapsuleCollider2D).size.y * transform.localScale.y * .25f + .3f;
 
-        groundCheck = Physics2D.CircleCast(transform.position, castRadius, Vector2.down, castDistance);
+            groundCheck = Physics2D.CircleCast(transform.position, castRadius, Vector2.down, castDistance);
 
-        if (groundCheck)
-            PManager.PlayerState = PLAYER_STATE.WALKING;
-        else
-            PManager.PlayerState = PLAYER_STATE.FALLING;
+            if (PManager.PlayerState != PLAYER_STATE.KNOCKBACKED & PManager.PlayerState != PLAYER_STATE.SHOOTING)
+            {
+                if (groundCheck)
+                    PManager.PlayerState = PLAYER_STATE.WALKING;
+                else
+                    PManager.PlayerState = PLAYER_STATE.FALLING;
 
-        Deplacement();
+                Deplacement();
 
-        if (holdJump && groundCheck)
-            OnJump();
+                if (holdJump && groundCheck)
+                    OnJump();
 
-        PManager.Rb2D.velocity = new Vector2(Mathf.Clamp(PManager.Rb2D.velocity.x, -vitesseMax, vitesseMax), PManager.Rb2D.velocity.y);
+                PManager.Rb2D.velocity = new Vector2(Mathf.Clamp(PManager.Rb2D.velocity.x, -vitesseMax, vitesseMax), PManager.Rb2D.velocity.y);
+            }
+            else
+            {
+                if (PManager.Rb2D.velocity.y <= 0 && groundCheck)
+                {
+                    PManager.PlayerState = PLAYER_STATE.WALKING;
+                }
+            }
+        }
     }
 
 #if UNITY_EDITOR
@@ -124,11 +137,16 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnJump()
     {
+        if (PManager.PlayerState == PLAYER_STATE.KNOCKBACKED || PManager.PlayerState == PLAYER_STATE.SHOOTING)
+            return;
+
         int testlayer = 0;
         if (groundCheck)
             testlayer = groundCheck.collider.gameObject.layer;
 
-        if (groundCheck && (testlayer == LayerMask.NameToLayer("Destructible") || testlayer == LayerMask.NameToLayer("Indestructible") || testlayer == LayerMask.NameToLayer("Trap")))
+        if (groundCheck && (testlayer == LayerMask.NameToLayer("Destructible")
+            || testlayer == LayerMask.NameToLayer("Indestructible")
+            || testlayer == LayerMask.NameToLayer("Trap")))
         {
             Jump();
         }

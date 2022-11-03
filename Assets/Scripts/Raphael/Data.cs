@@ -25,6 +25,7 @@ namespace Data
         WALKING,
         FALLING,
         DASHING,
+        SHOOTING,
         KNOCKBACKED,
         STUNNED,
     }

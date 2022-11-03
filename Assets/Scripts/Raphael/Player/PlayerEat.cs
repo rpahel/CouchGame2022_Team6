@@ -40,7 +40,7 @@ public class PlayerEat : MonoBehaviour
         tickHoldEat = 1f;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         cooldown += Time.deltaTime;
         cooldown = Mathf.Clamp(cooldown, 0, eatCooldown);
@@ -68,7 +68,7 @@ public class PlayerEat : MonoBehaviour
     {
         if (cooldown < eatCooldown)
         {
-            Debug.Log($"Attendez un peu avant de manger ({cooldown.ToString("0.00")} / {eatCooldown.ToString("0.00")})");
+            Debug.Log($"Attendez un peu avant de manger ({cooldown:0.00} / {eatCooldown:0.00})");
             return;
         }
 
@@ -96,6 +96,7 @@ public class PlayerEat : MonoBehaviour
             hit.transform.parent.GetComponent<Cube_Edible>().GetManged(transform);
             remplissage += tauxRemplissage;
             remplissage = Mathf.Clamp(remplissage, 0, 100);
+            PManager.UpdatePlayerScale();
         }
         else if(!(PManager.PMovement.GroundCheck))
         {
@@ -107,6 +108,7 @@ public class PlayerEat : MonoBehaviour
                 hit.transform.parent.GetComponent<Cube_Edible>().GetManged(transform);
                 remplissage += tauxRemplissage;
                 remplissage = Mathf.Clamp(remplissage, 0, 100);
+                PManager.UpdatePlayerScale();
             }
         }
 
