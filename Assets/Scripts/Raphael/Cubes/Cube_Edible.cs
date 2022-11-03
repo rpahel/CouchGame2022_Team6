@@ -34,21 +34,33 @@ public class Cube_Edible : Cube
     /// <summary>
     /// Regarde les cubes qu'il y a autour et les ajoute à la liste cubesAutour
     /// </summary>
-    public void InitCubes()
+    public void InitCubes(int width, int height)
     {
+        Vector3 dir;
+        Vector2 targetPos;
+        Transform targetCubeTransform;
+
         for (int i = 0; i < 4; i++)
         {
             cubesAutour.Add(null);
 
-            Vector3 dir = Quaternion.Euler(0, 0, -90 * i) * Vector3.up;
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, transform.localScale.x);
-            if (hit)
+            dir = Quaternion.Euler(0, 0, -90 * i) * Vector3.up;
+            //RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, transform.localScale.x);
+            //if (hit)
+            //{
+            //    Cube cubeClone;
+            //    if (hit.transform.parent && hit.transform.parent.TryGetComponent(out cubeClone))
+            //    {
+            //        cubesAutour[i] = cubeClone;
+            //    }
+            //}
+
+            targetPos = unscaledPosition + (Vector2)dir;
+            targetCubeTransform = LevelGenerator.Instance.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
+
+            if (targetCubeTransform)
             {
-                Cube cubeClone;
-                if (hit.transform.parent && hit.transform.parent.TryGetComponent(out cubeClone))
-                {
-                    cubesAutour[i] = cubeClone;
-                }
+                cubesAutour[i] = targetCubeTransform.GetComponent<Cube>();
             }
         }
     }

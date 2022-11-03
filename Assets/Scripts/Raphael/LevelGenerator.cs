@@ -76,7 +76,7 @@ public class LevelGenerator : MonoBehaviour
     {
         if (!image)
         {
-            throw new System.NullReferenceException();
+            throw new System.NullReferenceException("Pas d'image de référence dans le Level Generator.");
         }
 
         levelState = LEVEL_STATE.INITIALISING;
@@ -95,7 +95,12 @@ public class LevelGenerator : MonoBehaviour
             for (int j = 0; j < image.width; j++)
             {
                 Color pixColor = image.GetPixel(j, i);
-                if (pixColor == Color.green)
+
+                if (pixColor == Color.white)
+                {
+                    CreateCubeOnPlay(cubeEdible, parentObjCubes.transform, i, j, false);
+                }
+                else if (pixColor == Color.green)
                 {
                     CreateCubeOnPlay(cubeEdible, parentObjCubes.transform, i, j);
                 }
@@ -109,7 +114,9 @@ public class LevelGenerator : MonoBehaviour
                 }
                 else if (pixColor == Color.blue)
                 {
-                    if(n >= 4)
+                    CreateCubeOnPlay(cubeEdible, parentObjCubes.transform, i, j, false);
+
+                    if (n >= 4)
                     {
                         throw new System.Exception("Plus de pixel bleu dans l'image de référence que le max de spawns autorisés (4).");
                     }
@@ -122,21 +129,26 @@ public class LevelGenerator : MonoBehaviour
 
                     n++;
                 }
+                else
+                {
+                    CreateCubeOnPlay(cubeEdible, parentObjCubes.transform, i, j, false);
+                }
             }
         }
 
         GameManager.Instance.SpawnPositions = iniSpawns;
     }
 
-    void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width)
+    void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width, bool visible = true)
     {
         GameObject cube = Instantiate(cubeToCreate, new Vector3(width, height, 0) * echelle, Quaternion.identity);
         cube.GetComponent<Cube>().unscaledPosition = new Vector2(width, height);
         cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString() + ", " + height.ToString() + ")";
         cube.transform.localScale = Vector3.one * echelle;
         cube.transform.parent = parentObj;
-        //cubesArray[height, width] = cube.transform;
         cubesArray[width, height] = cube.transform;
+        if (!visible)
+            cube.SetActive(false);
     }
     #endregion
 
@@ -257,9 +269,9 @@ public class LevelGenerator : MonoBehaviour
             for (int j = 0; j < image.width; ++j)
             {
                 Cube_Edible tempCube;
-                if (cubesArray[j, i] != null && cubesArray[j, i].TryGetComponent(out tempCube))
+                if (cubesArray[j, i] && cubesArray[j, i].TryGetComponent(out tempCube))
                 {
-                    tempCube.InitCubes();
+                    tempCube.InitCubes(j, i);
                 }
             }
         }
