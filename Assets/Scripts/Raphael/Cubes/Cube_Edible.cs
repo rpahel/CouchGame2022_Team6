@@ -21,12 +21,6 @@ public class Cube_Edible : Cube
     #endregion
 
     #region Unity_Functions
-    //======================================================================
-    //private void OnDestroy()
-    //{
-    //    if(UnityEditor.EditorApplication.isPlaying)
-    //        NullifySelfToNeighbours();
-    //}
     #endregion
 
     #region Custom_Functions
@@ -45,15 +39,6 @@ public class Cube_Edible : Cube
             cubesAutour.Add(null);
 
             dir = Quaternion.Euler(0, 0, -90 * i) * Vector3.up;
-            //RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, transform.localScale.x);
-            //if (hit)
-            //{
-            //    Cube cubeClone;
-            //    if (hit.transform.parent && hit.transform.parent.TryGetComponent(out cubeClone))
-            //    {
-            //        cubesAutour[i] = cubeClone;
-            //    }
-            //}
 
             targetPos = unscaledPosition + (Vector2)dir;
             targetCubeTransform = LevelGenerator.Instance.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
@@ -63,13 +48,19 @@ public class Cube_Edible : Cube
                 cubesAutour[i] = targetCubeTransform.GetComponent<Cube>();
             }
         }
+
+        if (!gameObject.activeSelf)
+        {
+            GetManged(null, false);
+            gameObject.SetActive(true);
+        }
     }
 
     /// <summary>
     /// Fais disparaitre le mesh du cube et le remplace par des meshs de miettes en fonction des cubes autour.
     /// </summary>
     /// <param name="playerTransform">(facultatif) Le transform du joueur qui mange le cube.</param>
-    public void GetManged(Transform playerTransform = null)
+    public void GetManged(Transform playerTransform = null, bool showRestes = true)
     {
         isManged = true;
 
@@ -86,14 +77,17 @@ public class Cube_Edible : Cube
             cube.SetActive(false);
 
         // Fais apparaitre les restes en fonction des cubes voisins qui sont toujours là
-        for (int i = 0; i < 4; i++)
+        if (showRestes)
         {
-            if (cubesAutour[i] && !cubesAutour[i].IsManged)
+            for (int i = 0; i < 4; i++)
             {
-                restes[i].SetActive(true);
+                if (cubesAutour[i] && !cubesAutour[i].IsManged)
+                {
+                    restes[i].SetActive(true);
+                }
             }
         }
-
+        
         if(playerTransform)
         {
             cube.transform.parent = null;
@@ -142,63 +136,15 @@ public class Cube_Edible : Cube
         }
     }
 
-    ///// <summary>
-    ///// Signale aux cubes voisins que ce cube s'est fait détruire et le supprime de leurs listes
-    ///// </summary>
-    //public void NullifySelfToNeighbours()
+
+    // TODO
+    /// <summary>
+    /// Refais apparaitre ce cube sur la carte;
+    /// </summary>
+    //public void GetVomited()
     //{
-    //    // Signale aux cubes voisins que ce cube s'est fait détruire
-    //    for (int i = 0; i < 4; i++)
-    //    {
-    //        if (cubesAutour[i] && cubesAutour[i].CubeType == CUBE_TYPE.EDIBLE)
-    //        {
-    //            (cubesAutour[i] as Cube_Edible).CubesAutour[(i + 2) % 4] = null;
-    //        }
-    //    }
+    //    
     //}
-    //
-    ///// <summary>
-    ///// Utilisé pour remplir la liste des cubes voisins pour un cube créer DURANT la partie.
-    ///// </summary>
-    //public void CheckForNeighbours(Vector2 unscaledPos)
-    //{
-    //    Vector3 dir;
-    //    Vector2 targetPos;
-    //    Transform targetTransform;
-    //
-    //    for (int i = 0; i < 4; i++)
-    //    {
-    //        cubesAutour.Add(null);
-    //
-    //        dir = Quaternion.Euler(0, 0, -90 * i) * Vector3.up;
-    //        targetPos = unscaledPos + (Vector2)dir;
-    //        targetTransform = LevelGenerator.Instance.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
-    //
-    //        if (targetTransform)
-    //        {
-    //            Cube cubeClone;
-    //            if (targetTransform.TryGetComponent(out cubeClone))
-    //            {
-    //                cubesAutour[i] = cubeClone;
-    //            }
-    //        }
-    //    }
-    //
-    //    HelloNeighbours();
-    //}
-    //
-    ///// <summary>
-    ///// Ce cube est poli donc il se présente à ses voisins
-    ///// </summary>
-    //private void HelloNeighbours()
-    //{
-    //    for (int i = 0; i < 4; i++)
-    //    {
-    //        if (cubesAutour[i] && cubesAutour[i].CubeType == CUBE_TYPE.EDIBLE)
-    //        {
-    //            (cubesAutour[i] as Cube_Edible).CubesAutour[(i + 2) % 4] = this;
-    //        }
-    //    }
-    //}
+
     #endregion
 }

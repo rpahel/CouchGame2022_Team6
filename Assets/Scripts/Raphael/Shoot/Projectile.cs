@@ -143,112 +143,33 @@ public class Projectile : MonoBehaviour
     private void SpawnCube(Collision2D collision)
     {
         Vector2 normal = collision.GetContact(0).normal;
-        //switch (ApproximateDirection(normal))
-        //{
-        //    case 0:
-        //        if (CheckAvailableSpaceAt(collision.transform.position, Vector2.up))
-        //            CreateCubeAtRelativePosition(collision.transform.position, Vector2.up);
-        //        break;
-        //
-        //    case 1:
-        //        if (CheckAvailableSpaceAt(collision.transform.position, Vector2.one))
-        //            CreateCubeAtRelativePosition(collision.transform.position, Vector2.one);
-        //        break;
-        //
-        //    case 2:
-        //        if (CheckAvailableSpaceAt(collision.transform.position, Vector2.right))
-        //            CreateCubeAtRelativePosition(collision.transform.position, Vector2.right);
-        //        break;
-        //
-        //    case 3:
-        //        if (CheckAvailableSpaceAt(collision.transform.position, new Vector2(1, -1)))
-        //            CreateCubeAtRelativePosition(collision.transform.position, new Vector2(1, -1));
-        //        break;
-        //
-        //    case 4:
-        //        if (CheckAvailableSpaceAt(collision.transform.position, Vector2.down))
-        //            CreateCubeAtRelativePosition(collision.transform.position, Vector2.down);
-        //        break;
-        //
-        //    case 5:
-        //        if (CheckAvailableSpaceAt(collision.transform.position, -Vector2.one))
-        //            CreateCubeAtRelativePosition(collision.transform.position, -Vector2.one);
-        //        break;
-        //
-        //    case 6:
-        //        if (CheckAvailableSpaceAt(collision.transform.position, Vector2.left))
-        //            CreateCubeAtRelativePosition(collision.transform.position, Vector2.left);
-        //        break;
-        //
-        //    case 7:
-        //        if (CheckAvailableSpaceAt(collision.transform.position, new Vector2(-1, 1)))
-        //            CreateCubeAtRelativePosition(collision.transform.position, new Vector2(-1, 1));
-        //        break;
-        //
-        //    default:
-        //        if (CheckAvailableSpaceAt(collision.transform.position, Vector2.up))
-        //            CreateCubeAtRelativePosition(collision.transform.position, Vector2.up);
-        //        break;
-        //}
-
+        Vector2 targetPos = PositionInNormalDirection(collision.transform.position / LevelGenerator.Instance.Echelle, normal);
+        // TODO: Make cube appear
     }
 
-    private byte ApproximateDirection(Vector2 normal)
+    private Vector2 PositionInNormalDirection(Vector2 originalPos, Vector2 normal)
     {
         const float cos30 = 0.866f;
 
         if (normal.y > cos30 && (normal.x > -.5f && normal.x < .5f))                             
-            return 0; // N
+            return originalPos + Vector2.up;            // N
         else if ((normal.x > .5f && normal.x < cos30) && (normal.y > .5f && normal.y < cos30))      
-            return 1; // NE
+            return originalPos + Vector2.one;           // NE
         else if (normal.x > cos30 && (normal.y > -.5f && normal.y < .5f))                       
-            return 2; // E
+            return originalPos + Vector2.right;         // E
         else if ((normal.x > .5f && normal.x < cos30) && (normal.y < -.5f && normal.y > -cos30))    
-            return 3; // SE
+            return originalPos + new Vector2(1, -1);    // SE
         else if (normal.y < -cos30 && (normal.x > -.5f && normal.x < .5f))                      
-            return 4; // S
+            return originalPos + Vector2.down;          // S
         else if ((normal.x > -cos30 && normal.x < -.5f) && (normal.y < -.5f && normal.y > -cos30))  
-            return 5; // SW
+            return originalPos - Vector2.one;           // SW
         else if (normal.x < -cos30 && (normal.y > -.5f && normal.y < .5f))                      
-            return 6; // W
+            return originalPos + Vector2.left;          // W
         else if ((normal.x > -cos30 && normal.x < -.5f) && (normal.y > .5f && normal.y < cos30))    
-            return 7; // NW
+            return originalPos + new Vector2(-1, 1);    // NW
         
         Debug.Log("You should not see this");
-        return 0;
+        return originalPos + Vector2.up;                // N
     }
-
-    //private bool CheckAvailableSpaceAt(Vector2 originalObjectPosition, Vector2 relativePosition)
-    //{
-    //    Vector2 unscaledPos = originalObjectPosition / LevelGenerator.Instance.Echelle;
-    //    Vector2 targetPos = unscaledPos + relativePosition;
-    //    Transform targetTransform = LevelGenerator.Instance.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
-    //
-    //    if (targetTransform)
-    //    {
-    //        if (targetTransform.GetComponent<Cube>().IsManged)
-    //        {
-    //            Destroy(targetTransform.gameObject);
-    //            return true;
-    //        }
-    //        else
-    //            return false;
-    //    }
-    //    else
-    //    {
-    //        return true;
-    //    }    
-    //}
-    //
-    //private void CreateCubeAtRelativePosition(Vector2 originalObjectPosition, Vector2 relativePosition)
-    //{
-    //    Vector2 unscaledPos = originalObjectPosition / LevelGenerator.Instance.Echelle;
-    //    Vector2 targetPos = unscaledPos + relativePosition;
-    //
-    //    GameObject cube = Instantiate(LevelGenerator.Instance.CubeEdible, targetPos * LevelGenerator.Instance.Echelle, Quaternion.identity, LevelGenerator.Instance.ParentObjCubes);
-    //    cube.name = "Cube Créé (" + Mathf.RoundToInt(targetPos.x) + ", " + Mathf.RoundToInt(targetPos.y) + ") ";
-    //    LevelGenerator.Instance.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)] = cube.transform;
-    //    cube.GetComponent<Cube_Edible>().CheckForNeighbours(targetPos);
-    //}
     #endregion
 }
