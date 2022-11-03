@@ -20,6 +20,8 @@ namespace Data
         WallJumping,
         Moving,
         Falling,
+        KNOCKBACKED,
+        STUNNED,
     }
 
     public enum SwitchSizeSkin
@@ -28,4 +30,19 @@ namespace Data
         Medium,
         Big
     }  
+    public enum LEVEL_STATE
+    {
+        NONE,
+        INITIALISING,
+        LOADING,
+        LOADED
+    }
+    public enum GAME_STATE
+    {
+        NONE,
+        MENU,
+        LOADING,
+        PLAYING,
+        END
+    }
 }

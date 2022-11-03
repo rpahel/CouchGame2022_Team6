@@ -19,12 +19,12 @@ public class Cube_Edible : Cube
     [SerializeField] private float doScaleExplodeTiming = 0.5f;
     [SerializeField] private bool rotateOnExplode = true;
 
-    private void Start()
+    /*private void Start()
     {
         InitCubes();
-    }
+    }*/
 
-    protected void InitCubes()
+    public void InitCubes()
     {
         for (int i = 0; i < 4; i++)
         {

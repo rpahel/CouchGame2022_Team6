@@ -1,13 +1,18 @@
 using UnityEngine;
 using Data;
 using System.Collections;
+using Cinemachine;
 using DG.Tweening;
+using UnityEngine.UI;
+using TMPro;
 
 public class LevelGenerator : MonoBehaviour
 {
     #region Variables
-    //========================================================
-    public static LevelGenerator Instance { get; private set; }
+    
+    [SerializeField] private CinemachineTargetGroup cinemachine;
+    [SerializeField] private GameObject[] playersUI;
+    [SerializeField] private GameObject playerPrefab;
 
     //========================================================
     [Header("Image de r�f�rence.")]
@@ -40,8 +45,8 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField, Range(0f, .1f)] private float entreLignesAnim;
 
     //========================================================
-    //private LEVEL_STATE levelState = LEVEL_STATE.NONE;
-    //public LEVEL_STATE LevelState => levelState;
+    private LEVEL_STATE levelState = LEVEL_STATE.NONE;
+    public LEVEL_STATE LevelState => levelState;
 
     private Transform[] iniSpawns = new Transform[4];
     public Transform[] IniSpawns => iniSpawns;
@@ -59,7 +64,6 @@ public class LevelGenerator : MonoBehaviour
     #region Unity_Functions
     private void Awake()
     {
-        Instance = this;
         cubesArray = new Transform[image.width, image.height];
     }
 
@@ -79,8 +83,8 @@ public class LevelGenerator : MonoBehaviour
             throw new System.NullReferenceException();
         }
 
-        //levelState = LEVEL_STATE.INITIALISING;
-        //GameManager.Instance.ChangeGameState(GAME_STATE.LOADING);
+        levelState = LEVEL_STATE.INITIALISING;
+        GameManager.Instance.SetGameState(GAME_STATE.LOADING);
 
         parentObjCubes = new GameObject("Cubes");
         parentObjCubes.transform.parent = transform;
@@ -125,7 +129,20 @@ public class LevelGenerator : MonoBehaviour
             }
         }
 
-        //GameManager.Instance.SpawnPositions = iniSpawns;
+        var playerConfigs = PlayerConfigurationManager.Instance.GetPlayerConfigs().ToArray();
+        cinemachine.m_Targets = new CinemachineTargetGroup.Target[playerConfigs.Length];
+
+        for (int i = 0; i < playerConfigs.Length; i++)
+        {
+            var player = Instantiate(playerPrefab, iniSpawns[i].position, iniSpawns[i].rotation,
+                gameObject.transform);
+            playersUI[i].SetActive(true);
+            player.GetComponent<PlayerManager>().imageUI = playersUI[i].transform.GetChild(0).GetComponent<Image>();
+            player.GetComponent<PlayerManager>().textUI = playersUI[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+            player.GetComponent<PlayerInputHandler>().InitializePlayer(playerConfigs[i]);
+            cinemachine.m_Targets[i].target = player.transform;
+            cinemachine.m_Targets[i].weight = 1;
+        }
     }
 
     void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width)
@@ -259,13 +276,13 @@ public class LevelGenerator : MonoBehaviour
                 Cube_Edible tempCube;
                 if (cubesArray[j, i] != null && cubesArray[j, i].TryGetComponent(out tempCube))
                 {
-                    //tempCube.InitCubes();
+                    tempCube.InitCubes();
                 }
             }
         }
 
-        //levelState = LEVEL_STATE.LOADED;
-        //GameManager.Instance.ChangeGameState(GAME_STATE.PLAYING);
+        levelState = LEVEL_STATE.LOADED;
+        GameManager.Instance.SetGameState(GAME_STATE.PLAYING);
 
         coroutinesRunning--;
     }

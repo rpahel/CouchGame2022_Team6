@@ -1867,13 +1867,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7bed8b178ffee44a860348c49002fe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imageDeReference: {fileID: 2800000, guid: 49929b079128a4e4cab5ada558d62913, type: 3}
+  cinemachine: {fileID: 0}
+  playersUI: []
+  playerPrefab: {fileID: 0}
+  image: {fileID: 2800000, guid: 49929b079128a4e4cab5ada558d62913, type: 3}
+  echelle: 2.857143
   cubeEdible: {fileID: 8285069557062406365, guid: 22250a75237cf084c880653b13ce293d,
     type: 3}
   cubeBedrock: {fileID: 2613636963887001808, guid: c7f75a0a01a2fd944b4e35a457f711f5,
     type: 3}
   cubeTrap: {fileID: 2613636963887001808, guid: fd8e6153315a70a4c9d48f9614a0b90d,
     type: 3}
+  spawnAnim: 1
+  smoothType: 27
+  attenteAvantAnim: 1.001
+  animation: 0.198
+  entreCubesAnim: 0.0564
+  entreLignesAnim: 0.0509
 --- !u!4 &1060792688
 Transform:
   m_ObjectHideFlags: 0
