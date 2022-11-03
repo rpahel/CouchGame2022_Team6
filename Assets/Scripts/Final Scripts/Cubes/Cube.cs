@@ -11,6 +11,7 @@ public abstract class Cube : MonoBehaviour
 
     [SerializeField] protected GameObject cube;
 
+    [HideInInspector] public Vector2 unscaledPosition;
     // Vérifie si ce cube a été mangé ou pas
     public bool isManged()
     {

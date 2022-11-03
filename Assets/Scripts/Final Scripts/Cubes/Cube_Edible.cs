@@ -11,6 +11,8 @@ public class Cube_Edible : Cube
 
     private List<Cube> cubesAutour = new List<Cube>(4);
     public List<Cube> CubesAutour { get => cubesAutour; set => cubesAutour = value; }
+    
+    
 
 
     [Header("Effect")] 
@@ -23,7 +25,10 @@ public class Cube_Edible : Cube
     {
         InitCubes();
     }*/
-
+    
+    /// <summary>
+    /// Regarde les cubes qu'il y a autour et les ajoute à la liste cubesAutour
+    /// </summary>
     public void InitCubes()
     {
         for (int i = 0; i < 4; i++)
