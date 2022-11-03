@@ -21,7 +21,7 @@ namespace Data
         Moving,
         Falling,
     }
-        
+
     public enum SwitchSizeSkin
     {
         Little,
