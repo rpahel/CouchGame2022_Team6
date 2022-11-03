@@ -456,7 +456,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pourcentageNecessaire: 12
-  cooldown: 0.5
+  cooldown: 2
   forceOpposee: 1000
   vitesseInitiale: 40
   gravity: 5

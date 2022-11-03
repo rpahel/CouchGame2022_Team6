@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerShoot : MonoBehaviour
@@ -15,6 +16,7 @@ public class PlayerShoot : MonoBehaviour
     private int pourcentageNecessaire;
     [SerializeField, Range(0, 2), Tooltip("Laps de temps entre chaque tir.")]
     private float cooldown;
+    private float cdTimer;
     [SerializeField, Tooltip("Force de poussée arrière sur ce joueur suite à son propre tir.")]
     private float forceOpposee;
 
@@ -31,6 +33,18 @@ public class PlayerShoot : MonoBehaviour
     #region Custom_Functions
     public void OnShoot(Vector2 aimDirection)
     {
+        if(cdTimer > 0)
+        {
+            Debug.Log($"Attendez le cooldown du tir ({cdTimer:0.000}s)");
+            return;
+        }
+
+        if(PManager.PEat.Remplissage < pourcentageNecessaire)
+        {
+            Debug.Log("Pas assez de nourriture pour shoot.");
+            return;
+        }
+
         Projectile projectile = GameManager.Instance.GetAvailableProjectile();
         projectile.owner = PManager;
         projectile.color = PManager.color;
@@ -47,6 +61,22 @@ public class PlayerShoot : MonoBehaviour
 
         projectile.gameObject.SetActive(true);
         projectile.Shoot(aimDirection, vitesseInitiale);
+
+        PManager.PEat.Remplissage -= pourcentageNecessaire;
+
+        cdTimer = cooldown;
+        StartCoroutine(Cooldown());
+    }
+
+    IEnumerator Cooldown()
+    {
+        while(cdTimer > 0)
+        {
+            cdTimer -= Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+
+        cdTimer = 0;
     }
     #endregion
 }

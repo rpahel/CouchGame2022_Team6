@@ -11,8 +11,6 @@ public class GameManager : MonoBehaviour
     //============================
     private PlayerInputManager pInputManager;
     [SerializeField] private CameraManager cManager;
-    //[SerializeField] private LevelGenerator lGenerator;
-    //public LevelGenerator LGenerator => lGenerator;
     #endregion
 
     #region Variables

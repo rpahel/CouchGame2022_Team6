@@ -39,7 +39,7 @@ public class Projectile : MonoBehaviour
 
     private void OnEnable()
     {
-        spriteRenderer.color = color;
+        spriteRenderer.color = Color.black;
         rb.gravityScale = gravity;
         age = dureeDeVie;
         lifeTime = StartCoroutine(DecreaseLifetime());
@@ -139,12 +139,17 @@ public class Projectile : MonoBehaviour
 
         gameObject.SetActive(false);
     }
-    
+
     private void SpawnCube(Collision2D collision)
     {
         Vector2 normal = collision.GetContact(0).normal;
         Vector2 targetPos = PositionInNormalDirection(collision.transform.position / LevelGenerator.Instance.Echelle, normal);
-        // TODO: Make cube appear
+        Transform targetTransform = LevelGenerator.Instance.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
+        Cube_Edible cube;
+        if(targetTransform.TryGetComponent(out cube))
+        {
+            cube.GetVomited(collision.GetContact(0).point);
+        }
     }
 
     private Vector2 PositionInNormalDirection(Vector2 originalPos, Vector2 normal)
