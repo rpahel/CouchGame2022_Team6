@@ -33,7 +33,13 @@ public class PlayerShoot : MonoBehaviour
     #region Custom_Functions
     public void OnShoot(Vector2 aimDirection)
     {
-        if(cdTimer > 0)
+        if (PManager.PlayerState == Data.PLAYER_STATE.STUNNED)
+        {
+            Debug.Log("Vous êtes stunned et ne pouvez donc pas tirer.");
+            return;
+        }
+
+        if (cdTimer > 0)
         {
             Debug.Log($"Attendez le cooldown du tir ({cdTimer:0.000}s)");
             return;
