@@ -6,6 +6,8 @@ using UnityEngine;
 public class CameraManager : MonoBehaviour
 {
     #region Variables
+
+    [SerializeField] private LevelGenerator _levelGenerator;
     //===============================================
     private List<Transform> pTransforms = new List<Transform>();
     public List<Transform> PTransforms { get => pTransforms; set => pTransforms = value; }
@@ -42,8 +44,8 @@ public class CameraManager : MonoBehaviour
 
     private void Start()
     {
-        //echelle = GameManager.Instance.LGenerator.Echelle;
-        //realImageSize = GameManager.Instance.LGenerator.ImageRef.Size();
+        echelle = _levelGenerator.Echelle;
+        realImageSize = _levelGenerator.ImageRef.Size();
         imageSize_16_9 = realImageSize.x > realImageSize.y ?
                          new Vector2(realImageSize.x, realImageSize.x / format) :
                          new Vector2(realImageSize.y * format, realImageSize.y);

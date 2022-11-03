@@ -128,21 +128,6 @@ public class LevelGenerator : MonoBehaviour
                 }
             }
         }
-
-        var playerConfigs = PlayerConfigurationManager.Instance.GetPlayerConfigs().ToArray();
-        cinemachine.m_Targets = new CinemachineTargetGroup.Target[playerConfigs.Length];
-
-        for (int i = 0; i < playerConfigs.Length; i++)
-        {
-            var player = Instantiate(playerPrefab, iniSpawns[i].position, iniSpawns[i].rotation,
-                gameObject.transform);
-            playersUI[i].SetActive(true);
-            player.GetComponent<PlayerManager>().imageUI = playersUI[i].transform.GetChild(0).GetComponent<Image>();
-            player.GetComponent<PlayerManager>().textUI = playersUI[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-            player.GetComponent<PlayerInputHandler>().InitializePlayer(playerConfigs[i]);
-            cinemachine.m_Targets[i].target = player.transform;
-            cinemachine.m_Targets[i].weight = 1;
-        }
     }
 
     void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width)
@@ -283,6 +268,21 @@ public class LevelGenerator : MonoBehaviour
 
         levelState = LEVEL_STATE.LOADED;
         GameManager.Instance.SetGameState(GAME_STATE.PLAYING);
+        
+        var playerConfigs = PlayerConfigurationManager.Instance.GetPlayerConfigs().ToArray();
+        cinemachine.m_Targets = new CinemachineTargetGroup.Target[playerConfigs.Length];
+
+        for (int i = 0; i < playerConfigs.Length; i++)
+        {
+            var player = Instantiate(playerPrefab, iniSpawns[i].position, iniSpawns[i].rotation,
+                gameObject.transform);
+            playersUI[i].SetActive(true);
+            player.GetComponent<PlayerManager>().imageUI = playersUI[i].transform.GetChild(0).GetComponent<Image>();
+            player.GetComponent<PlayerManager>().textUI = playersUI[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+            player.GetComponent<PlayerInputHandler>().InitializePlayer(playerConfigs[i]);
+            cinemachine.m_Targets[i].target = player.transform;
+            cinemachine.m_Targets[i].weight = 1;
+        }
 
         coroutinesRunning--;
     }
