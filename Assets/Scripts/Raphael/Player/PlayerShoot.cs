@@ -1,12 +1,16 @@
 using Data;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Windows;
 
 public class PlayerShoot : MonoBehaviour
 {
+
+    // TODO : Quand on shoot trop près d'un cube ça annule le tir, on perd pas de bouffe.
+    // TODO : Quand une balle touche entre deux cubes, ça créer deux cubes. On ne veut pas ça.
+
+
+
+
     #region Autres Scripts
     //============================
     public PlayerManager PManager { get; set; }
@@ -21,6 +25,8 @@ public class PlayerShoot : MonoBehaviour
     private float cdTimer;
     [SerializeField, Tooltip("Force de poussée arrière sur ce joueur suite à son propre tir.")]
     private float forceOpposee;
+    [SerializeField]
+    private Transform aimPivot;
 
     [Header("Projectile")]
     [SerializeField] private float vitesseInitiale;
@@ -32,10 +38,24 @@ public class PlayerShoot : MonoBehaviour
     private float knockBackForce;
     #endregion
 
+    #region Unity_Functions
+    private void FixedUpdate()
+    {
+        if (PManager.PlayerState == PLAYER_STATE.SHOOTING)
+        {
+            aimPivot.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, PManager.AimDirection) - 90f);
+        }
+        else if (aimPivot.gameObject.activeSelf)
+        {
+            aimPivot.gameObject.SetActive(false);
+        }
+    }
+    #endregion
+
     #region Custom_Functions
     public void OnShoot(Vector2 aimDirection)
     {
-        if (PManager.PlayerState == Data.PLAYER_STATE.STUNNED)
+        if (PManager.PlayerState == PLAYER_STATE.STUNNED)
         {
             Debug.Log("Vous êtes stunned et ne pouvez donc pas tirer.");
             return;
@@ -77,17 +97,18 @@ public class PlayerShoot : MonoBehaviour
         cdTimer = cooldown;
         StartCoroutine(Cooldown());
 
-        if (PManager.PlayerState != Data.PLAYER_STATE.KNOCKBACKED)
-            PManager.PlayerState = Data.PLAYER_STATE.WALKING;
+        if (PManager.PlayerState != PLAYER_STATE.KNOCKBACKED)
+            PManager.PlayerState = PLAYER_STATE.WALKING;
     }
 
     public void HoldShoot()
     {
-        if (PManager.PlayerState != Data.PLAYER_STATE.KNOCKBACKED && PManager.PlayerState != Data.PLAYER_STATE.STUNNED)
+        if (PManager.PlayerState != PLAYER_STATE.KNOCKBACKED && PManager.PlayerState != PLAYER_STATE.STUNNED)
         {
             if (PManager.PEat.Remplissage >= pourcentageNecessaire)
             {
                 PManager.PlayerState = PLAYER_STATE.SHOOTING;
+                aimPivot.gameObject.SetActive(true);
             }
         }
     }
