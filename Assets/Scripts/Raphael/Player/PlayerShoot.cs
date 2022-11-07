@@ -80,7 +80,7 @@ public class PlayerShoot : MonoBehaviour
     {
         Vector2 opposite = -aimDirection;
 
-        if(opposite.y < 0.2f)
+        if(opposite.y < 0.2f && Mathf.Abs(opposite.x) > 0.1f)
         {
             if (PManager.PMovement.GroundCheck)
             {

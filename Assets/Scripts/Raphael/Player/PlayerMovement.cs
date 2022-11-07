@@ -79,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
 
             groundCheck = Physics2D.CircleCast(transform.position, castRadius, Vector2.down, castDistance);
 
-            if (PManager.PlayerState != PLAYER_STATE.KNOCKBACKED & PManager.PlayerState != PLAYER_STATE.SHOOTING)
+            if (PManager.PlayerState != PLAYER_STATE.KNOCKBACKED && PManager.PlayerState != PLAYER_STATE.SHOOTING)
             {
                 if (groundCheck)
                     PManager.PlayerState = PLAYER_STATE.WALKING;
