@@ -79,12 +79,15 @@ public class PlayerMovement : MonoBehaviour
 
             groundCheck = Physics2D.CircleCast(transform.position, castRadius, Vector2.down, castDistance);
 
-            if (PManager.PlayerState != PLAYER_STATE.KNOCKBACKED && PManager.PlayerState != PLAYER_STATE.SHOOTING)
+            if (PManager.PlayerState != PLAYER_STATE.KNOCKBACKED)
             {
-                if (groundCheck)
-                    PManager.PlayerState = PLAYER_STATE.WALKING;
-                else
-                    PManager.PlayerState = PLAYER_STATE.FALLING;
+                if(PManager.PlayerState != PLAYER_STATE.SHOOTING)
+                {
+                    if (groundCheck)
+                        PManager.PlayerState = PLAYER_STATE.WALKING;
+                    else
+                        PManager.PlayerState = PLAYER_STATE.FALLING;
+                }
 
                 Deplacement();
 
@@ -95,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                if (PManager.Rb2D.velocity.y <= 0 && groundCheck)
+                if (PManager.Rb2D.velocity.y <= 0 && groundCheck && PManager.PlayerState != PLAYER_STATE.SHOOTING)
                 {
                     PManager.PlayerState = PLAYER_STATE.WALKING;
                 }
@@ -118,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
     #region Custom_Functions
     public void OnMove(Vector2 input)
     {
-        if (Mathf.Abs(input.x) <= deadZone)
+        if (Mathf.Abs(input.x) <= deadZone || PManager.PlayerState == PLAYER_STATE.SHOOTING)
         {
             inputVector_move = Vector2.zero;
             return;

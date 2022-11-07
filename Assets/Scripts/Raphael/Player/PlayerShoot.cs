@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Windows;
 
 public class PlayerShoot : MonoBehaviour
 {
@@ -63,7 +64,7 @@ public class PlayerShoot : MonoBehaviour
         if(aimDirection == Vector2.zero)
             aimDirection = PManager.PMovement.SensDuRegard;
 
-        ApplyShootOppositeForce(aimDirection);
+        //ApplyShootOppositeForce(aimDirection);
 
         projectile.gameObject.SetActive(true);
         projectile.Shoot(aimDirection, vitesseInitiale);
@@ -74,24 +75,27 @@ public class PlayerShoot : MonoBehaviour
 
         cdTimer = cooldown;
         StartCoroutine(Cooldown());
+
+        if (PManager.PlayerState != Data.PLAYER_STATE.KNOCKBACKED)
+            PManager.PlayerState = Data.PLAYER_STATE.WALKING;
     }
 
-    void ApplyShootOppositeForce(Vector2 aimDirection)
-    {
-        Vector2 opposite = -aimDirection;
-
-        if(opposite.y < 0.2f && Mathf.Abs(opposite.x) > 0.1f)
-        {
-            if (PManager.PMovement.GroundCheck)
-            {
-                opposite = new Vector2(opposite.x, .5f);
-                opposite.Normalize();
-            }
-        }
-
-        PManager.Rb2D.AddForce(opposite * forceOpposee, ForceMode2D.Impulse);
-        PManager.PlayerState = Data.PLAYER_STATE.SHOOTING;
-    }
+    //void ApplyShootOppositeForce(Vector2 aimDirection)
+    //{
+    //    Vector2 opposite = -aimDirection;
+    //
+    //    if(opposite.y < 0.2f && Mathf.Abs(opposite.x) > 0.1f)
+    //    {
+    //        if (PManager.PMovement.GroundCheck)
+    //        {
+    //            opposite = new Vector2(opposite.x, .5f);
+    //            opposite.Normalize();
+    //        }
+    //    }
+    //
+    //    PManager.Rb2D.AddForce(opposite * forceOpposee, ForceMode2D.Impulse);
+    //    PManager.PlayerState = Data.PLAYER_STATE.SHOOTING;
+    //}
 
     IEnumerator Cooldown()
     {
