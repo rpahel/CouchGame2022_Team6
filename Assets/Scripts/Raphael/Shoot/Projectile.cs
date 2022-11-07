@@ -66,14 +66,15 @@ public class Projectile : MonoBehaviour
             collision.GetComponent<PlayerManager>().OnDamage(owner, pourcentageInflige, sensDuKnockBack * knockBackForce);
             rb.velocity = new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y) * forceDuRebond;
         }
-        else if (collision.gameObject.layer == LayerMask.NameToLayer("Trap"))
+        else
         {
             gameObject.SetActive(false);
         }
-        else if (collision.gameObject.layer == LayerMask.NameToLayer("Destructible") || collision.gameObject.layer == LayerMask.NameToLayer("Indestructible"))
-        {
-            gameObject.SetActive(false);
-        }
+        //else if (collision.gameObject.layer == LayerMask.NameToLayer("Destructible") || collision.gameObject.layer == LayerMask.NameToLayer("Indestructible"))
+        //{
+        //    //SpawnCube(collision); //Trop chiant, le cube spawn autour du player du coup ça l'englobe et le player peut se retrouver coincer. 
+        //    gameObject.SetActive(false);
+        //}
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -94,12 +95,12 @@ public class Projectile : MonoBehaviour
                 Vector2 sensDuKnockBack = collision.GetContact(0).normal.x > 0 ? new Vector2(-1, 1f) : new Vector2(1, 1f);
                 sensDuKnockBack.Normalize();
                 collision.gameObject.GetComponent<PlayerManager>().OnDamage(owner, pourcentageInflige, sensDuKnockBack * knockBackForce);
-                rb.velocity = new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y) * currentVelocity.magnitude * forceDuRebond;
+                rb.velocity = forceDuRebond * currentVelocity.magnitude * new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y);
             }
             else if (collision.gameObject.layer == LayerMask.NameToLayer("Trap"))
             {
                 Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, collision.GetContact(0).normal).normalized;
-                rb.velocity = sensDuRebond * currentVelocity.magnitude * forceDuRebond;
+                rb.velocity = currentVelocity.magnitude * forceDuRebond * sensDuRebond;
             }
             else if (collision.gameObject.layer == LayerMask.NameToLayer("Destructible") || collision.gameObject.layer == LayerMask.NameToLayer("Indestructible"))
             {
@@ -109,7 +110,7 @@ public class Projectile : MonoBehaviour
             else if (collision.gameObject.layer == LayerMask.NameToLayer("Projectile"))
             {
                 Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, collision.GetContact(0).normal).normalized;
-                rb.velocity = sensDuRebond * currentVelocity.magnitude * forceDuRebond;
+                rb.velocity = currentVelocity.magnitude * forceDuRebond * sensDuRebond;
             }
         }
         else
@@ -154,6 +155,18 @@ public class Projectile : MonoBehaviour
             cube.GetVomited(collision.GetContact(0).point);
         }
     }
+
+    //private void SpawnCube(Collider2D collider)
+    //{
+    //    Vector2 normal = (transform.position - collider.transform.position).normalized;
+    //    Vector2 targetPos = PositionInNormalDirection(collider.transform.position / LevelGenerator.Instance.Echelle, normal);
+    //    Transform targetTransform = LevelGenerator.Instance.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
+    //    Cube_Edible cube;
+    //    if (targetTransform.TryGetComponent(out cube))
+    //    {
+    //        cube.GetVomited((Vector2)collider.transform.position + normal);
+    //    }
+    //}
 
     private Vector2 PositionInNormalDirection(Vector2 originalPos, Vector2 normal)
     {

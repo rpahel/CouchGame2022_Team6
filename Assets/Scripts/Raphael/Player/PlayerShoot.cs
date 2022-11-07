@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class PlayerShoot : MonoBehaviour
 {
-
     // TODO : Quand on shoot trop près d'un cube ça annule le tir, on perd pas de bouffe.
-    // TODO : Quand une balle touche entre deux cubes, ça créer deux cubes. On ne veut pas ça.
-
-
-
 
     #region Autres Scripts
     //============================
