@@ -157,3 +157,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeType: 2
   cube: {fileID: 303830590082189049}
+  unscaledPosition: {x: 0, y: 0}

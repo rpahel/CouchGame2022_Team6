@@ -286,6 +286,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2613636963887001772}
   - component: {fileID: 5219080403393118203}
+  - component: {fileID: 448762463512423227}
   m_Layer: 6
   m_Name: CubeEdible
   m_TagString: CubeEdible
@@ -327,12 +328,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeType: 1
   cube: {fileID: 303830590082189049}
+  unscaledPosition: {x: 0, y: 0}
   restes:
   - {fileID: 2531556312048333293}
   - {fileID: 3530211992881418058}
   - {fileID: 1866652284042003069}
   - {fileID: 5241827266282811671}
   loot: {fileID: 8913226969172518835, guid: 181e62fe249a31f449c192aacdd6800e, type: 3}
+  doMoveEatTiming: 0.7
+  doScaleEatTiming: 0.8
+  doScaleExplodeTiming: 0.5
+  rotateOnExplode: 1
+--- !u!114 &448762463512423227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2613636963887001808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2584bc75985d9b74c9626f30b96b0d0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pattern:
+  - {x: -1, y: 1}
+  - {x: 0, y: 0}
+  - {x: 1, y: 1}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: -1, y: -1}
+  - {x: 0, y: 0}
+  - {x: 1, y: -1}
 --- !u!1 &3530211992881418058
 GameObject:
   m_ObjectHideFlags: 0
