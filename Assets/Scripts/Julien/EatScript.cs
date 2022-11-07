@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class EatScript : MonoBehaviour
 {
-    [SerializeField] protected PlayerManager _playerManager;
+    [SerializeField] private PlayerManager _playerManager;
+    [SerializeField] private StrechAndSquash stretchEffect;
     
     [Header("Eat")]
     [SerializeField, Range(0f, 1f)]
@@ -46,6 +47,7 @@ public class EatScript : MonoBehaviour
             else
             {
                 Debug.Log("eat");
+                stretchEffect.SquashEffectEat();
                 EatCube(cubeMangeable);
             }
         }

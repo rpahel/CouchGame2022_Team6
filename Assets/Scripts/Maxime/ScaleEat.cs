@@ -13,8 +13,9 @@ public class ScaleEat : MonoBehaviour
     public Mesh meshAverage;
     public Mesh meshBig;
     public Mesh currentMesh;
+    public bool canUpdateScale = true;
     private MeshFilter _meshFilterGo;
-    private float maxScale = 2.857143f;
+    public float maxScale = 2.857143f;
     [SerializeField] private float scaleSmooth;
 
     public List<Sprite> listSprite = new List<Sprite>();
@@ -42,37 +43,39 @@ public class ScaleEat : MonoBehaviour
         _playerManager.eatAmount = Mathf.Clamp(_playerManager.eatAmount, 0f, _playerManager.maxEatValue);
         UpdateTextUI();
 
-
+        if (canUpdateScale)
+        {
             //juste pour sa soit smooth
-        float scaleTarget = Mathf.Lerp(1, maxScale, _playerManager.eatAmount); 
-        //scaler.x = Mathf.Lerp(1,  maxScale, _playerManager.eatAmount);
+            float scaleTarget = Mathf.Lerp(1, maxScale, _playerManager.eatAmount);
+            //scaler.x = Mathf.Lerp(1,  maxScale, _playerManager.eatAmount);
 
-        scaler.y = Mathf.Lerp(scaler.y, scaleTarget, scaleSmooth); 
-        scaler.x = Mathf.Lerp(scaler.x,  scaleTarget, scaleSmooth);
-        scaler.z = Mathf.Lerp(scaler.z, scaleTarget, scaleSmooth);
-        transform.localScale = scaler;
+            scaler.y = Mathf.Lerp(scaler.y, scaleTarget, scaleSmooth);
+            scaler.x = Mathf.Lerp(scaler.x, scaleTarget, scaleSmooth);
+            scaler.z = Mathf.Lerp(scaler.z, scaleTarget, scaleSmooth);
+            transform.localScale = scaler;
 
-        if (_playerManager.eatAmount >=  0.71f)
-        {
-            _playerManager.SetSkin(SwitchSizeSkin.Big);
-            _meshFilterGo.mesh = meshBig;
-            _playerManager.imageUI.sprite = listSprite[2];
-            _movement._canDash = true;
-           // _playerManager.eatAmount -= Time.deltaTime * timeToLooseEat;
-        }
-        else if (_playerManager.eatAmount <= 0.35f)
-        {
-            _playerManager.SetSkin(SwitchSizeSkin.Little);
-            _meshFilterGo.mesh = meshLittle;
-            _playerManager.imageUI.sprite = listSprite[1];
-            _movement._canDash = false;
-        }
-        else
-        {
-            _playerManager.SetSkin(SwitchSizeSkin.Medium);
-            _meshFilterGo.mesh = meshAverage;
-            _playerManager.imageUI.sprite = listSprite[0];
-            _movement._canDash = false;
+            if (_playerManager.eatAmount >= 0.71f)
+            {
+                _playerManager.SetSkin(SwitchSizeSkin.Big);
+                _meshFilterGo.mesh = meshBig;
+                _playerManager.imageUI.sprite = listSprite[2];
+                _movement._canDash = true;
+                // _playerManager.eatAmount -= Time.deltaTime * timeToLooseEat;
+            }
+            else if (_playerManager.eatAmount <= 0.35f)
+            {
+                _playerManager.SetSkin(SwitchSizeSkin.Little);
+                _meshFilterGo.mesh = meshLittle;
+                _playerManager.imageUI.sprite = listSprite[1];
+                _movement._canDash = false;
+            }
+            else
+            {
+                _playerManager.SetSkin(SwitchSizeSkin.Medium);
+                _meshFilterGo.mesh = meshAverage;
+                _playerManager.imageUI.sprite = listSprite[0];
+                _movement._canDash = false;
+            }
         }
     }
 
