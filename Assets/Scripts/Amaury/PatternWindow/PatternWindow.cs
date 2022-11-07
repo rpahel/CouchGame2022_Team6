@@ -79,11 +79,6 @@ public class PatternWindow : EditorWindow {
         }
 
         currentTNT.pattern = pattern;
-
-        PrefabUtility.SaveAsPrefabAsset(currentTNT.gameObject, AssetDatabase.GetAssetPath(currentTNT.gameObject));
-        PrefabUtility.UnloadPrefabContents(currentTNT.gameObject);
-        
-        
     }
 
     private Vector2 CalculateVector(int position) {

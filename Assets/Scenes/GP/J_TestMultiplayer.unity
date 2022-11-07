@@ -514,7 +514,7 @@ MonoBehaviour:
   - {fileID: 718803671}
   playerPrefab: {fileID: 7366054978402329224, guid: 53f839e78d055ac479a0cf91933107ab,
     type: 3}
-  image: {fileID: 2800000, guid: 49929b079128a4e4cab5ada558d62913, type: 3}
+  image: {fileID: 2800000, guid: 5a066218fd63a2742976fbd45fb45bb5, type: 3}
   echelle: 1
   cubeEdible: {fileID: 2613636963887001808, guid: 74a185477bf05c94796ad895b5c85abe,
     type: 3}

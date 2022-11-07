@@ -38,15 +38,17 @@ public class Projectile : MonoBehaviour {
         
         if (col.gameObject.transform.parent.gameObject.TryGetComponent<TNT>(out TNT tnt))  {
 
-            RaycastHit2D[] hits = Physics2D.RaycastAll(col.gameObject.transform.position,new Vector2(0,1),1000, 1 << 8);//1 >> 8
+            foreach (Vector2 direction in tnt.pattern) {
+                if (direction != Vector2.zero) {
+                    RaycastHit2D[] hits = Physics2D.RaycastAll(col.gameObject.transform.position,new Vector2(0,1),1000, 1 << 6);//1 >> 8
 
-            Debug.Log("size " + hits.Length);
-            foreach (RaycastHit2D hit in hits) {
-                if (hit.collider != null) {
-                    if (hit.collider.gameObject.layer != 8 && hit.collider.gameObject.TryGetComponent<Cube_Edible>(out Cube_Edible c)) {
-                        //c.GetManged();
+                    Debug.Log("size " + hits.Length);
+                    foreach (RaycastHit2D hit in hits) {
+                        if (hit.collider != null) {
+                            if (hit.collider.gameObject.transform.parent.gameObject.TryGetComponent<Cube_Edible>(out Cube_Edible c)) 
+                                c.OnExploded();
+                        }
                     }
-                        
                 }
             }
         }
