@@ -20,6 +20,7 @@ namespace Data
         WallJumping,
         Moving,
         Falling,
+        KOCKBACK
     }
         
     public enum SwitchSizeSkin
