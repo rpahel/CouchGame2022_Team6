@@ -3,7 +3,8 @@ using System.Collections;
 using UnityEngine;
 using DG.Tweening;
 using Data;
- 
+using UnityEngine.VFX;
+
 public class PlayerMovement : MonoBehaviour
 {
     #region Autres Scripts
@@ -71,6 +72,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(1f, 2f)] private float WidthMultiplier = 2f;
     [SerializeField, Range(1f, 2f)] private float LengthMultiplier = 2f;
     [SerializeField] private BoxCollider2D dashCollider;
+    
+    //============================
+    [Header("Vfx")] 
+    [SerializeField] private VisualEffect visualEffect;
     #endregion
 
     #region Unity_Functions
@@ -87,6 +92,7 @@ public class PlayerMovement : MonoBehaviour
     {
         dureeAvantArret = dureeAvantArret < 0.01f ? 0.01f : dureeAvantArret;
         echelleDeGravité = echelleDeGravité != 0 ? echelleDeGravité : _rb.gravityScale;
+        visualEffect.Play();
     }
  
     private void Update()
@@ -203,7 +209,7 @@ public class PlayerMovement : MonoBehaviour
         _rb.velocity += new Vector2(0, forceDeSaut);
     }
     #endregion
-    
+
     public void Dash(float holdValue)
     {
         CheckHoldValue(holdValue);
