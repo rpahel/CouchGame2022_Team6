@@ -515,7 +515,8 @@ MonoBehaviour:
   playerPrefab: {fileID: 7366054978402329224, guid: 53f839e78d055ac479a0cf91933107ab,
     type: 3}
   image: {fileID: 2800000, guid: 49929b079128a4e4cab5ada558d62913, type: 3}
-  echelle: 1
+  background: {fileID: 1583586695}
+  echelle: 2.857143
   cubeEdible: {fileID: 2613636963887001808, guid: 74a185477bf05c94796ad895b5c85abe,
     type: 3}
   cubeBedrock: {fileID: 2613636963887001808, guid: c7f75a0a01a2fd944b4e35a457f711f5,
@@ -523,7 +524,7 @@ MonoBehaviour:
   cubeTrap: {fileID: 2613636963887001808, guid: fd8e6153315a70a4c9d48f9614a0b90d,
     type: 3}
   spawnAnim: 1
-  smoothType: 21
+  smoothType: 27
   attenteAvantAnim: 1
   animation: 0.3
   entreCubesAnim: 0
@@ -701,7 +702,7 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 1791635879}
+  m_LookAt: {fileID: 0}
   m_Follow: {fileID: 1791635879}
   m_Lens:
     FieldOfView: 60
@@ -729,7 +730,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 488356190}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 643.90594, y: 219.44547, z: -46.46471}
+  m_LocalPosition: {x: 0, y: 0, z: -70}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -749,7 +750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f453f694addf4275988fac205bc91968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BoundingShape2D: {fileID: 2046758808}
+  m_BoundingShape2D: {fileID: 1669853145}
   m_Damping: 0
   m_MaxWindowSize: -1
 --- !u!1 &550823462
@@ -1495,7 +1496,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!64 &1583586696
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1585,6 +1586,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1669853143}
   - component: {fileID: 1669853144}
+  - component: {fileID: 1669853145}
   m_Layer: 0
   m_Name: ---CamManager---
   m_TagString: Untagged
@@ -1607,7 +1609,6 @@ Transform:
   - {fileID: 2146728518}
   - {fileID: 488356192}
   - {fileID: 1791635879}
-  - {fileID: 2046758809}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1623,10 +1624,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d80c1a363407ef747a6e9ad53eda1b7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _levelGenerator: {fileID: 0}
+  _levelGenerator: {fileID: 280540223}
   targetGroup: {fileID: 1791635878}
   VCam: {fileID: 488356190}
   minLensSize: 8
+--- !u!60 &1669853145
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1669853142}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0, y: 1}
+      - {x: -0.95105654, y: 0.30901697}
+      - {x: -0.5877852, y: -0.80901706}
+      - {x: 0.58778536, y: -0.80901694}
+      - {x: 0.9510565, y: 0.30901712}
 --- !u!1 &1791635877
 GameObject:
   m_ObjectHideFlags: 0
@@ -1668,7 +1699,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1791635877}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 643.90594, y: 219.44547, z: 23.535286}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1890,67 +1921,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &2046758807
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2046758809}
-  - component: {fileID: 2046758808}
-  m_Layer: 0
-  m_Name: ConfinerCollider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!60 &2046758808
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2046758807}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -1.42857, y: -1.42857}
-      - {x: -1.42857, y: 61.42857}
-      - {x: 117.1429, y: 61.42857}
-      - {x: 117.1429, y: -1.42857}
---- !u!4 &2046758809
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2046758807}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -25.282854, y: -7.8202095, z: 25.99194}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1669853143}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2146728515
 GameObject:
   m_ObjectHideFlags: 0
@@ -2030,7 +2000,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2146728515}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 643.90594, y: 219.44547, z: -46.46471}
+  m_LocalPosition: {x: 0, y: 0, z: -70}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2216,6 +2186,3 @@ MonoBehaviour:
   _holdCooldown: 0
   _canHoldCooldown: 0
   _eat: {fileID: 0}
-  MaxHoldLooseEat: 0.7
-  MediumHoldLooseEat: 0.7
-  MinHoldLooseEat: 0.7

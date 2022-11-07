@@ -51,8 +51,9 @@ public class PlayerMovement : MonoBehaviour
     
     //============================
     [Header("Dash")]
+    [SerializeField] private DashType dashType;
+    [SerializeField] private DashLoading dashLoading;
     private TrailRenderer _trailRenderer;
-    [SerializeField] private Collider2D playerCollider2D;
     [SerializeField] private float looseEatForce = 1f;
     private ScaleEat _scaleEat;
     private IEnumerator _dashCoroutine;
@@ -60,11 +61,18 @@ public class PlayerMovement : MonoBehaviour
     public bool _canDash = false;
     [SerializeField] private float dashForce;
     [SerializeField] private float dashTime;
+    private float dashTimeMultiplier;
     [SerializeField] private float dashCooldown;
+    private Vector2 originalVelocity;
+    private float originalGravityScale;
     private float _normalGravity;
     public bool _canHit = false;
+    [SerializeField] private float LooseEatValue = 0.7f;
+    [SerializeField, Range(1f, 2f)] private float WidthMultiplier = 2f;
+    [SerializeField, Range(1f, 2f)] private float LengthMultiplier = 2f;
+    [SerializeField] private BoxCollider2D dashCollider;
     #endregion
- 
+
     #region Unity_Functions
 
     private void Awake()
@@ -196,27 +204,62 @@ public class PlayerMovement : MonoBehaviour
     }
     #endregion
     
-    public void Dash()
+    public void Dash(float holdValue)
     {
-        if (_canDash)
-        {
-            if (_dashCoroutine != null) 
-            {
-                StopCoroutine(_dashCoroutine);
-            }
+        CheckHoldValue(holdValue);
 
-            _playerManager.SetPlayerState(PlayerState.Dashing);
-            _dashCoroutine = Dash(dashTime, dashCooldown);
-            StartCoroutine(_dashCoroutine);
+        if (_dashCoroutine != null) 
+        {
+            StopCoroutine(_dashCoroutine);
         }
+
+        _playerManager.SetPlayerState(PlayerState.Dashing);
+        if(dashType == DashType.Normal)
+            _dashCoroutine = DashCoroutine(dashTimeMultiplier);
+        else
+            _dashCoroutine = InfiniteDashCoroutine();
+        StartCoroutine(_dashCoroutine);
+    }
+
+    private void CheckHoldValue(float hold)
+    {
+        if (hold < 1f)
+        {
+            //particles
+            _playerManager.eatAmount -= LooseEatValue;
+        }
+        else if(hold >= 1f && hold < 2f)
+        {
+            _playerManager.eatAmount -= LooseEatValue;
+        }
+        else
+            _playerManager.eatAmount -= LooseEatValue;
+       
+
+        if (dashLoading == DashLoading.IncreaseLength)   //Increase Length
+        {
+            var holdClamp = Mathf.Clamp(hold, 0f, 2f);
+            var lengthValue = Mathf.Lerp(dashTime, LengthMultiplier * dashTime, holdClamp / 2);
+            dashTimeMultiplier = lengthValue;
+            Debug.Log("DashTime" + dashTimeMultiplier);
+        }
+        else if (dashLoading == DashLoading.IncreaseWidth)  //Increase collider 
+        {
+            dashTimeMultiplier = dashTime;
+            var holdClamp = Mathf.Clamp(hold, 0f, 2f);
+            var sizeValue = Mathf.Lerp(1.5f, WidthMultiplier * 1.5f, holdClamp / 2);           
+            dashCollider.size = new Vector2(sizeValue, sizeValue);
+            Debug.Log("DashSize" + sizeValue);
+        }          
     }
     
-    private IEnumerator Dash(float dashDuration, float dashCooldown)
+    private IEnumerator DashCoroutine(float dashDuration)
     {
+        _playerManager.DisableInputs();
         _canHit = true;
         gameObject.layer = LayerMask.NameToLayer("Dash");
-        var originalVelocity = _rb.velocity;
-        var originalGravityScale = _rb.gravityScale;
+        originalVelocity = _rb.velocity;
+        originalGravityScale = _rb.gravityScale;
         _isDashing = true;
         _trailRenderer.emitting = true;
         _canDash = false;
@@ -231,8 +274,47 @@ public class PlayerMovement : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("Player");
         _playerManager.SetPlayerState(PlayerState.Moving);
         _trailRenderer.emitting = false;
+        _playerManager.EnableInputs();
         yield return new WaitForSeconds(dashCooldown);
         _canDash = true;
 
+    }
+
+    private IEnumerator InfiniteDashCoroutine()
+    {
+        _playerManager.DisableInputs();
+        _canHit = true;
+        gameObject.layer = LayerMask.NameToLayer("Dash");
+        originalVelocity = _rb.velocity;
+        originalGravityScale = _rb.gravityScale;
+        _isDashing = true;
+        _trailRenderer.emitting = true;
+        _canDash = false;
+        _rb.gravityScale = 0;
+        _rb.velocity = Vector2.zero;
+        yield break;
+    }
+    public IEnumerator EndInfiniteDash()
+    {
+        _isDashing = false;
+        _rb.gravityScale = _normalGravity;
+        _rb.velocity = originalVelocity;
+        _rb.gravityScale = originalGravityScale;
+        _canHit = false;
+        gameObject.layer = LayerMask.NameToLayer("Player");
+        _playerManager.SetPlayerState(PlayerState.Moving);
+        _trailRenderer.emitting = false;
+        _playerManager.EnableInputs();
+        yield return new WaitForSeconds(dashCooldown);
+        _canDash = true;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (_playerManager.State == PlayerState.Dashing && dashType == DashType.Infinite)
+        {
+            StartCoroutine(EndInfiniteDash());
+        }
+            
     }
 }

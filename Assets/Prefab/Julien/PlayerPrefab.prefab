@@ -567,13 +567,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   lookAtRight: 0
-  playerCollider2D: {fileID: 5833838575412098440}
+  dashType: 0
+  dashLoading: 1
   looseEatForce: 1
   _canDash: 0
   dashForce: 10
-  dashTime: 0.4
+  dashTime: 0.25
   dashCooldown: 1
   _canHit: 0
+  LooseEatValue: 0.2
+  WidthMultiplier: 2
+  LengthMultiplier: 2
+  dashCollider: {fileID: 8657660670936110400}
 --- !u!50 &7366054978402329226
 Rigidbody2D:
   serializedVersion: 4
@@ -611,9 +616,6 @@ MonoBehaviour:
   _holdCooldown: 0
   _canHoldCooldown: 0
   _eat: {fileID: 3725391769850130967}
-  MaxHoldLooseEat: 0.7
-  MediumHoldLooseEat: 0.7
-  MinHoldLooseEat: 0.7
 --- !u!114 &8852710062912591228
 MonoBehaviour:
   m_ObjectHideFlags: 0

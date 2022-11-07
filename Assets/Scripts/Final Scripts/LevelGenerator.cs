@@ -18,8 +18,11 @@ public class LevelGenerator : MonoBehaviour
     [Header("Image de r�f�rence.")]
     [SerializeField] private Texture2D image;
     public Texture2D ImageRef => image;
-
-    [SerializeField, Header("Scale des cubes."), Range(1f, 3f)]
+    
+    [Header("Background")]
+    [SerializeField] private GameObject background;
+     
+    [SerializeField, Header("Scale des cubes."), Range(1f, 2.857143f)]
     private float echelle = 2.857143f;
     public float Echelle => echelle;
 
@@ -57,6 +60,8 @@ public class LevelGenerator : MonoBehaviour
     //========================================================
     private Transform[,] cubesArray;
     public Transform[,] CubesArray { get => cubesArray; private set => cubesArray = value; }
+
+    //private bool[,] cubesArrayBool;
 
     private int coroutinesRunning = 0;
     #endregion
@@ -132,12 +137,39 @@ public class LevelGenerator : MonoBehaviour
 
     void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width)
     {
+        /*if(cubeToCreate.transform.localScale.x < 2)
+        {
+
+        }
+
+        else
+        {
+            GameObject cube = Instantiate(cubeToCreate, new Vector3(width, height, 0) * echelle, Quaternion.identity);
+        }
+            
+
+        if(cube.TryGetComponent<Cube>(out Cube cub))
+        {
+            cub.GetComponent<Cube>().unscaledPosition = new Vector2(width, height);
+            cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString() + ", " + height.ToString() + ")";
+        }*/
+
         GameObject cube = Instantiate(cubeToCreate, new Vector3(width, height, 0) * echelle, Quaternion.identity);
         cube.GetComponent<Cube>().unscaledPosition = new Vector2(width, height);
         cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString() + ", " + height.ToString() + ")";
+
+        /*else
+        {
+            foreach (Transform child in cube.transform)
+            {
+                child.gameObject.GetComponent<Cube>().unscaledPosition = new Vector2(width, height);     
+            }
+            cube.name = "Cube " + "EDIBLE" + " (" + width.ToString() + ", " + height.ToString() + ")";
+        }*/
+
+
         cube.transform.localScale = Vector3.one * echelle;
         cube.transform.parent = parentObj;
-        //cubesArray[height, width] = cube.transform;
         cubesArray[width, height] = cube.transform;
     }
     #endregion
