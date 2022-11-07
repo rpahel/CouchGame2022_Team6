@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
+    private PlayerInputHandler _inputs;
+
     [field: Header("Player State")]
     public PlayerState State { get; private set; }
 
@@ -31,6 +33,7 @@ public class PlayerManager : MonoBehaviour
     private void Awake()
     {
         eatAmount = maxEatValue/2;
+        _inputs = GetComponent<PlayerInputHandler>();
     }
 
     private void Start()
@@ -56,5 +59,14 @@ public class PlayerManager : MonoBehaviour
     public void SetCanEat(bool result)
     {
         _canEat = result;
+    }
+
+    public void EnableInputs()
+    {
+        _inputs.EnableInputs();
+    }
+    public void DisableInputs()
+    {
+        _inputs.DisableInputs();
     }
 }

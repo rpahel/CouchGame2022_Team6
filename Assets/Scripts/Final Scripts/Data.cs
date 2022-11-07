@@ -45,4 +45,15 @@ namespace Data
         PLAYING,
         END
     }
+    public enum DashType
+    {
+        Normal,
+        Infinite,
+    }
+
+    public enum DashLoading
+    {
+        IncreaseWidth,
+        IncreaseLength,
+    }
 }

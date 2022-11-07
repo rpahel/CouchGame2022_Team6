@@ -23,10 +23,6 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private EatScript _eat;
     private PlayerControls _controls;
 
-    [Header("VariablesEat")]
-    [SerializeField] private float MaxHoldLooseEat = 0.7f;
-    [SerializeField] private float MediumHoldLooseEat = 0.7f;
-    [SerializeField] private float MinHoldLooseEat = 0.7f;
     private void Awake()
     {
         _playerManager = gameObject.GetComponent<PlayerManager>();
@@ -129,18 +125,24 @@ public class PlayerInputHandler : MonoBehaviour
         {
             if (_movement._canDash == true)
             {
-                if (_canHoldCooldown && _holdCooldown <= 0.99f)
+                if (_canHoldCooldown)
                 {
-                    _movement.Dash();
-                    _playerManager.eatAmount -= MinHoldLooseEat;
+                    _movement.Dash(_holdCooldown);
                     ResetCooldown();
                 }
-                else if (_holdCooldown >= 1f && _canHoldCooldown)
+                /*else if (_holdCooldown >= 1f && _holdCooldown < 2f && _canHoldCooldown)
                 {
                     _movement.Dash();
                     _playerManager.eatAmount -= MediumHoldLooseEat;
                     ResetCooldown();
                 } 
+                else if (_holdCooldown >= 2f && _canHoldCooldown)
+                {
+                    _movement.Dash();
+                    _playerManager.eatAmount -= MediumHoldLooseEat;
+                    ResetCooldown();
+                }*/
+   
             }
             else
             {
@@ -155,12 +157,6 @@ public class PlayerInputHandler : MonoBehaviour
         if (_canHoldCooldown)
             _holdCooldown += Time.deltaTime;
 
-        if (_holdCooldown >= 2f)
-        {
-            _movement.Dash();
-            ResetCooldown();
-        }
-
     }
 
     private void ResetCooldown()
@@ -169,4 +165,13 @@ public class PlayerInputHandler : MonoBehaviour
         _holdCooldown = 0f;
     }
 
+    public void DisableInputs()
+    {
+        _controls.Disable();
+    }
+
+    public void EnableInputs()
+    {
+        _controls.Enable();
+    }
 }
