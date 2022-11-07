@@ -1,3 +1,4 @@
+using Data;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -78,6 +79,17 @@ public class PlayerShoot : MonoBehaviour
 
         if (PManager.PlayerState != Data.PLAYER_STATE.KNOCKBACKED)
             PManager.PlayerState = Data.PLAYER_STATE.WALKING;
+    }
+
+    public void HoldShoot()
+    {
+        if (PManager.PlayerState != Data.PLAYER_STATE.KNOCKBACKED && PManager.PlayerState != Data.PLAYER_STATE.STUNNED)
+        {
+            if (PManager.PEat.Remplissage >= pourcentageNecessaire)
+            {
+                PManager.PlayerState = PLAYER_STATE.SHOOTING;
+            }
+        }
     }
 
     //void ApplyShootOppositeForce(Vector2 aimDirection)

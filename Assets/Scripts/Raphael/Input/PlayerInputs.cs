@@ -43,9 +43,9 @@ public class PlayerInputs : MonoBehaviour
 
     public void OnShoot(InputAction.CallbackContext input)
     {
-        if (input.performed && (PManager.PlayerState != Data.PLAYER_STATE.KNOCKBACKED && PManager.PlayerState != Data.PLAYER_STATE.STUNNED))
+        if (input.performed)
         {
-            PManager.PlayerState = Data.PLAYER_STATE.SHOOTING;
+            PManager.PShoot.HoldShoot();
         }
 
         if (input.canceled)
