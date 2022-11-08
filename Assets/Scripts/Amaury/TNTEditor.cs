@@ -16,7 +16,7 @@ public class TNTEditor : Editor {
 
     public override void OnInspectorGUI() {
 
-        DrawDefaultInspector();
+        //DrawDefaultInspector();
 
         if (GUILayout.Button("Pattern")) {
             PatternWindow window = EditorWindow.GetWindow<PatternWindow>();

@@ -36,19 +36,23 @@ public class Projectile : MonoBehaviour {
         }
         
         
-        if (col.gameObject.transform.parent.gameObject.TryGetComponent<TNT>(out TNT tnt))  {
-
+        if (col.gameObject.transform.parent.gameObject.TryGetComponent<TNT>(out TNT tnt)) {
             foreach (Vector2 direction in tnt.pattern) {
                 if (direction != Vector2.zero) {
-                    RaycastHit2D[] hits = Physics2D.RaycastAll(col.gameObject.transform.position,new Vector2(0,1),1000, 1 << 6);//1 >> 8
+                    Debug.Log("direction " + direction);
+                    RaycastHit2D[] hits = Physics2D.RaycastAll(col.gameObject.transform.parent.gameObject.transform.position - (Vector3)direction * 100,direction,1000, 1 << 6);
 
-                    Debug.Log("size " + hits.Length);
                     foreach (RaycastHit2D hit in hits) {
                         if (hit.collider != null) {
-                            if (hit.collider.gameObject.transform.parent.gameObject.TryGetComponent<Cube_Edible>(out Cube_Edible c)) 
-                                c.OnExploded();
+                            if (hit.collider.gameObject.transform.parent.gameObject.TryGetComponent<Cube_Edible>(out Cube_Edible c)) {
+                               // Debug.Log("entered " + hit.collider.gameObject.transform.parent.gameObject);
+                                //c.OnExploded();
+                                c.gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.red;
+                            }
                         }
                     }
+                    
+                    col.gameObject.transform.parent.gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.blue;
                 }
             }
         }

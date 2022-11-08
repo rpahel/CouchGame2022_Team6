@@ -95,7 +95,7 @@ public class Cube_Edible : Cube
         float rand = Random.Range(0f, 1f);
         if (rand >= 0.90f)
         {
-            Debug.Log($"{gameObject.name}, {rand}.");
+           // Debug.Log($"{gameObject.name}, {rand}.");
             Instantiate(loot, transform.position, Quaternion.identity);
         }
 
