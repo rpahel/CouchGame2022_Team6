@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class StrechAndSquash : MonoBehaviour
 {
+    private PlayerManager _playerManager;
     private ScaleEat _scaleEat;
     private Transform _transform;
         
@@ -20,18 +21,19 @@ public class StrechAndSquash : MonoBehaviour
     private void Awake()
     {
         _transform = transform;
+        _playerManager = GetComponent<PlayerManager>();
         _scaleEat = GetComponent<ScaleEat>();
     }
 
     public void SquashEffectJump()
     {
-        if(_transform.localScale.x <= 0.9 * _scaleEat.maxScale)
+        if(_transform.localScale.x <= 0.9 * _playerManager.MaxScale)
             StartCoroutine(SquashEffectJumpCoroutine());
     }
     
     public void SquashEffectEat()
     {
-        if(_transform.localScale.x <= 0.9 * _scaleEat.maxScale)
+        if(_transform.localScale.x <= 0.9 * _playerManager.MaxScale)
             StartCoroutine(SquashEffectEatCoroutine());
     }
     

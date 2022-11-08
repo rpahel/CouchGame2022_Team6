@@ -18,8 +18,12 @@ public class PlayerManager : MonoBehaviour
 
     public float eatAmount;
 
-    private float _maxEatValue = 1;
-    public float maxEatValue => _maxEatValue;
+    private const float maxEatValue = 1;
+    public float MaxEatValue => maxEatValue;
+
+    private const float maxScale = 2.857143f;
+
+    public float MaxScale => maxScale;
     
     public SwitchSizeSkin SwitchSkin  { get; private set; }
     
@@ -32,7 +36,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
-        eatAmount = maxEatValue/2;
+        eatAmount = MaxEatValue/2;
         _inputs = GetComponent<PlayerInputHandler>();
     }
 
