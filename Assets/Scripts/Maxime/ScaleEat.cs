@@ -49,6 +49,7 @@ public class ScaleEat : MonoBehaviour
         scaler.y = Mathf.Lerp(scaler.y, scaleTarget, scaleSmooth);
         scaler.x = Mathf.Lerp(scaler.x, scaleTarget, scaleSmooth);
         scaler.z = Mathf.Lerp(scaler.z, scaleTarget, scaleSmooth);
+        //Scale factor
         transform.localScale = scaler;
 
         switch (_playerManager.eatAmount)

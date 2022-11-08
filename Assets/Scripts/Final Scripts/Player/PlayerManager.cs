@@ -73,4 +73,16 @@ public class PlayerManager : MonoBehaviour
     {
         _inputs.DisableInputs();
     }
+
+    public void ResetPlayer()
+    {
+        eatAmount = MaxEatValue/2;
+    }
+
+    public void SetDead()
+    {
+        State = PlayerState.Dead;
+        GameManager.Instance.gameObject.GetComponent<RespawnPlayer>().Respawn(gameObject);
+        gameObject.SetActive(false);
+    }
 }

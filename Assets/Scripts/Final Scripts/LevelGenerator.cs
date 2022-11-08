@@ -308,6 +308,7 @@ public class LevelGenerator : MonoBehaviour
         {
             var player = Instantiate(playerPrefab, iniSpawns[i].position, iniSpawns[i].rotation,
                 gameObject.transform);
+            GameManager.Instance.AddPlayer(player);
             playersUI[i].SetActive(true);
             player.GetComponent<PlayerManager>().imageUI = playersUI[i].transform.GetChild(0).GetComponent<Image>();
             player.GetComponent<PlayerManager>().textUI = playersUI[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>();

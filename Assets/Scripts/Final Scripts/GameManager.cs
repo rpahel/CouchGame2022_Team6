@@ -3,10 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Data;
+using UnityEditor.PackageManager.Requests;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    
+    private List<GameObject> _listPlayersGo = new List<GameObject>();
+    
+    public List<GameObject> ListPlayersGo=> _listPlayersGo;
     
     public  GAME_STATE GameState { get; private set; }
     
@@ -38,6 +43,11 @@ public class GameManager : MonoBehaviour
 
         GenerateProjectilePool(projectileNombre);
         
+    }
+
+    public void AddPlayer(GameObject playerGo)
+    {
+        _listPlayersGo.Add(playerGo);
     }
 
     public void SetGameState(GAME_STATE state)

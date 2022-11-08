@@ -22,6 +22,7 @@ namespace Data
         Falling,
         KNOCKBACKED,
         STUNNED,
+        Dead,
     }
 
     public enum SwitchSizeSkin
