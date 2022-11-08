@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerShoot : MonoBehaviour
 {
-    // TODO : Quand on shoot trop près d'un cube ça annule le tir, on perd pas de bouffe.
+    // TODO : Quand on shoot trop prï¿½s d'un cube ï¿½a annule le tir, on perd pas de bouffe.
 
     #region Autres Scripts
     //============================
@@ -13,27 +13,38 @@ public class PlayerShoot : MonoBehaviour
 
     #region Variables
     //============================
-    [SerializeField, Range(0, 100), Tooltip("Pourcentage de nourriture utilisé pour tirer.")]
+    [SerializeField, Range(0, 100), Tooltip("Pourcentage de nourriture utilisï¿½ pour tirer.")]
     private int pourcentageNecessaire;
     [SerializeField, Range(0, 2), Tooltip("Laps de temps entre chaque tir.")]
     private float cooldown;
     private float cdTimer;
-    [SerializeField, Tooltip("Force de poussée arrière sur ce joueur suite à son propre tir.")]
+    [SerializeField, Tooltip("Force de poussï¿½e arriï¿½re sur ce joueur suite ï¿½ son propre tir.")]
     private float forceOpposee;
     [SerializeField]
     private Transform aimPivot;
 
+    //============================
     [Header("Projectile")]
     [SerializeField] private float vitesseInitiale;
     [SerializeField] private float gravity;
     [SerializeField] private float forceDuRebond;
-    [SerializeField, Range(0, 100), Tooltip("Pourcentage de nourriture retiré au joueur ennemi touché.")]
+    [SerializeField, Range(0, 100), Tooltip("Pourcentage de nourriture retirï¿½ au joueur ennemi touchï¿½.")]
     private int pourcentageInflige;
-    [SerializeField, Tooltip("Force du knockback infligé au joueur ennemi.")]
+    [SerializeField, Tooltip("Force du knockback infligï¿½ au joueur ennemi.")]
     private float knockBackForce;
+
+    //============================
+    private float raycastRange;
+    private float limitDistance;
     #endregion
 
     #region Unity_Functions
+    private void Start()
+    {
+        raycastRange = LevelGenerator.Instance.Echelle * 4;
+        limitDistance = 1.5f * LevelGenerator.Instance.Echelle;
+    }
+
     private void FixedUpdate()
     {
         if (PManager.PlayerState == PLAYER_STATE.SHOOTING)
@@ -50,9 +61,12 @@ public class PlayerShoot : MonoBehaviour
     #region Custom_Functions
     public void OnShoot(Vector2 aimDirection)
     {
+        if (PManager.PlayerState != PLAYER_STATE.KNOCKBACKED)
+            PManager.PlayerState = PLAYER_STATE.WALKING;
+
         if (PManager.PlayerState == PLAYER_STATE.STUNNED)
         {
-            Debug.Log("Vous êtes stunned et ne pouvez donc pas tirer.");
+            Debug.Log("Vous ï¿½tes stunned et ne pouvez donc pas tirer.");
             return;
         }
 
@@ -68,6 +82,15 @@ public class PlayerShoot : MonoBehaviour
             return;
         }
 
+        if(aimDirection == Vector2.zero)
+            aimDirection = PManager.PMovement.SensDuRegard;
+
+        if (!IsThereEnoughSpace(aimDirection))
+        {
+            Debug.Log("Not enough space to spawn a cube.");
+            return;
+        }
+
         Projectile projectile = GameManager.Instance.GetAvailableProjectile();
         projectile.owner = PManager;
         projectile.color = PManager.color;
@@ -76,9 +99,6 @@ public class PlayerShoot : MonoBehaviour
         projectile.forceDuRebond = forceDuRebond;
         projectile.pourcentageInflige = pourcentageInflige;
         projectile.knockBackForce = knockBackForce;
-
-        if(aimDirection == Vector2.zero)
-            aimDirection = PManager.PMovement.SensDuRegard;
 
         //ApplyShootOppositeForce(aimDirection);
 
@@ -91,9 +111,6 @@ public class PlayerShoot : MonoBehaviour
 
         cdTimer = cooldown;
         StartCoroutine(Cooldown());
-
-        if (PManager.PlayerState != PLAYER_STATE.KNOCKBACKED)
-            PManager.PlayerState = PLAYER_STATE.WALKING;
     }
 
     public void HoldShoot()
@@ -124,6 +141,28 @@ public class PlayerShoot : MonoBehaviour
     //    PManager.Rb2D.AddForce(opposite * forceOpposee, ForceMode2D.Impulse);
     //    PManager.PlayerState = Data.PLAYER_STATE.SHOOTING;
     //}
+
+    private bool IsThereEnoughSpace(Vector2 aimDirection)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, aimDirection, raycastRange);
+
+        if (hit)
+        {
+            Vector2 selfToHit = hit.transform.position - transform.position;
+
+            if (hit.collider.CompareTag("Player"))
+                return true;
+
+            if (Mathf.Abs(selfToHit.x) >= limitDistance + PManager.PCollider.bounds.extents.x || Mathf.Abs(selfToHit.y) >= limitDistance + PManager.PCollider.bounds.extents.y)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+
+        return true;
+    }
 
     IEnumerator Cooldown()
     {
