@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
 using UnityEngine;
 using Data;
-
+using System;
 
 public class Projectile : MonoBehaviour
 {
@@ -19,6 +19,7 @@ public class Projectile : MonoBehaviour
     private Collider2D col;
     private Vector2 currentVelocity;
     private Coroutine lifeTime;
+    private int layerMask;
 
     //=============================================
     [HideInInspector] public Color color;
@@ -35,6 +36,7 @@ public class Projectile : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
+        layerMask = LayerMask.GetMask("Destructible", "Indestructible", "Trap");
     }
 
     private void OnEnable()
@@ -59,22 +61,20 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject != owner.gameObject && collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+        int collisionToBin = LayerMask.GetMask(LayerMask.LayerToName(collision.gameObject.layer));
+        int binAND = collisionToBin & layerMask;
+
+        if (collision.gameObject != owner.gameObject && collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             Vector2 sensDuKnockBack = (collision.transform.position - transform.position).x > 0 ? new Vector2(1, 1f) : new Vector2(-1, 1f);
             sensDuKnockBack.Normalize();
             collision.GetComponent<PlayerManager>().OnDamage(owner, pourcentageInflige, sensDuKnockBack * knockBackForce);
             rb.velocity = new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y) * forceDuRebond;
         }
-        else
+        else if (binAND == 64 || binAND == 128 || binAND == 256)
         {
             gameObject.SetActive(false);
         }
-        //else if (collision.gameObject.layer == LayerMask.NameToLayer("Destructible") || collision.gameObject.layer == LayerMask.NameToLayer("Indestructible"))
-        //{
-        //    //SpawnCube(collision); //Trop chiant, le cube spawn autour du player du coup ça l'englobe et le player peut se retrouver coincer. 
-        //    gameObject.SetActive(false);
-        //}
     }
 
     private void OnTriggerExit2D(Collider2D collision)
