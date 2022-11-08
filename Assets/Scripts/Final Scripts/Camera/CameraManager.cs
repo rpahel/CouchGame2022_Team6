@@ -31,6 +31,7 @@ public class CameraManager : MonoBehaviour
 
     //===============================================
     [SerializeField] private GameObject VCam;
+    [SerializeField] private GameObject _targetGroup;
     [SerializeField] private float minLensSize;
     #endregion
 
@@ -94,7 +95,8 @@ public class CameraManager : MonoBehaviour
 
         cineCam.m_Lens.OrthographicSize = realMaxLensSize;
         barycentre = .5f * echelle * (realImageSize - Vector2.one);
-        VCam.transform.position = (Vector3)barycentre - Vector3.forward * 10;
+        _targetGroup.transform.position = (Vector3)barycentre - Vector3.forward * 10;
+        _levelGenerator.background.transform.position = (Vector3)barycentre;
 
         cineCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_MinimumOrthoSize = minLensSize;
         cineCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_MaximumOrthoSize = realMaxLensSize;

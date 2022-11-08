@@ -71,20 +71,6 @@ MonoBehaviour:
     max: Infinity
     enumValues: []
     descendantCount: 0
-  - name: zValue
-    path: zValue
-    tooltip: 
-    sheetType: m_Float
-    realType: Single
-    defaultValue:
-      m_Type:
-        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0
-    min: -Infinity
-    max: Infinity
-    enumValues: []
-    descendantCount: 0
   m_ImportDependencies: []
   m_GraphVersion: 9
   m_ResourceVersion: 1
@@ -3219,7 +3205,7 @@ MonoBehaviour:
   m_OutputSlots:
   - {fileID: 8926484042661614797}
   m_ExposedName: zValue
-  m_Exposed: 1
+  m_Exposed: 0
   m_Order: 2
   m_Category: 
   m_Min:

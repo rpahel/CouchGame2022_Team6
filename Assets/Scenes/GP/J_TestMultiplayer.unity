@@ -1627,6 +1627,7 @@ MonoBehaviour:
   _levelGenerator: {fileID: 280540223}
   targetGroup: {fileID: 1791635878}
   VCam: {fileID: 488356190}
+  _targetGroup: {fileID: 1791635877}
   minLensSize: 8
 --- !u!60 &1669853145
 PolygonCollider2D:

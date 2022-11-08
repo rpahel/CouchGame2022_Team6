@@ -20,7 +20,7 @@ public class LevelGenerator : MonoBehaviour
     public Texture2D ImageRef => image;
     
     [Header("Background")]
-    [SerializeField] private GameObject background;
+    public GameObject background;
      
     [SerializeField, Header("Scale des cubes."), Range(1f, 2.857143f)]
     private float echelle = 2.857143f;

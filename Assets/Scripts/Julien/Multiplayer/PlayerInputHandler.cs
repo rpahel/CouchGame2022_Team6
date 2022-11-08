@@ -12,7 +12,7 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerConfiguration _playerConfig;
     [SerializeField] private MeshRenderer playerMesh;
 
-    public float _holdCooldown;
+    public float HoldCooldown { get; private set; }
     public bool _canHoldCooldown;
 
     [Header("Scripts")]
@@ -125,24 +125,10 @@ public class PlayerInputHandler : MonoBehaviour
         {
             if (_movement._canDash == true)
             {
-                if (_canHoldCooldown)
-                {
-                    _movement.Dash(_holdCooldown);
-                    ResetCooldown();
-                }
-                /*else if (_holdCooldown >= 1f && _holdCooldown < 2f && _canHoldCooldown)
-                {
-                    _movement.Dash();
-                    _playerManager.eatAmount -= MediumHoldLooseEat;
-                    ResetCooldown();
-                } 
-                else if (_holdCooldown >= 2f && _canHoldCooldown)
-                {
-                    _movement.Dash();
-                    _playerManager.eatAmount -= MediumHoldLooseEat;
-                    ResetCooldown();
-                }*/
-   
+                if (!_canHoldCooldown) return;
+                
+                _movement.Dash(HoldCooldown);
+                ResetCooldown();
             }
             else
             {
@@ -155,14 +141,13 @@ public class PlayerInputHandler : MonoBehaviour
     private void Update()
     {
         if (_canHoldCooldown)
-            _holdCooldown += Time.deltaTime;
-
+            HoldCooldown += Time.deltaTime;
     }
 
     private void ResetCooldown()
     {
         _canHoldCooldown = false;
-        _holdCooldown = 0f;
+        HoldCooldown = 0f;
     }
 
     public void DisableInputs()
