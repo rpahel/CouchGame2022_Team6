@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class PlayerManager : MonoBehaviour
 {
     private PlayerInputHandler _inputs;
+    private Rigidbody2D _rb;
 
     [field: Header("Player State")]
     public PlayerState State { get; private set; }
@@ -38,6 +39,7 @@ public class PlayerManager : MonoBehaviour
     {
         eatAmount = MaxEatValue/2;
         _inputs = GetComponent<PlayerInputHandler>();
+        _rb = GetComponent<Rigidbody2D>();
     }
 
     private void Start()
@@ -91,5 +93,18 @@ public class PlayerManager : MonoBehaviour
     {
         State = PlayerState.Dead;
         GameManager.Instance.RespawnPlayer(gameObject);
+    }
+
+    public void OnDamage<T>(T damageDealer, int damage, Vector2 knockBackForce)
+    {
+        eatAmount -= damage; //Div damage par 100
+
+        _rb.AddForce(knockBackForce, ForceMode2D.Impulse);
+        State = PlayerState.KNOCKBACKED;
+    }
+
+    public void OnDamage<T>(T damageDealer, int damage)
+    {
+        eatAmount -= damage; //Div damage par 100
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using Data;
 using System.Collections;
 using UnityEngine;
@@ -10,7 +9,7 @@ public class PlayerShootRaph : MonoBehaviour
     #region Autres Scripts
     //============================
     private PlayerManager _playerManager;
-    private Movement _movement;
+    private PlayerMovement _playerMovement;
     #endregion
 
     #region Variables
@@ -25,6 +24,7 @@ public class PlayerShootRaph : MonoBehaviour
     [SerializeField]
     private Transform aimPivot;
 
+    //============================
     [Header("Projectile")]
     [SerializeField] private float vitesseInitiale;
     [SerializeField] private float gravity;
@@ -33,31 +33,28 @@ public class PlayerShootRaph : MonoBehaviour
     private int pourcentageInflige;
     [SerializeField, Tooltip("Force du knockback inflig� au joueur ennemi.")]
     private float knockBackForce;
+
+    //============================
+    private float raycastRange;
+    private float limitDistance;
     #endregion
 
     #region Unity_Functions
-
-    private void Awake()
+    private void Start()
     {
-        _movement = GetComponent<Movement>();
-    }
-
-    private void FixedUpdate()
-    {
-        /*if (_playerManager.State == PlayerState.Shooting)
-        {
-            aimPivot.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, PManager.AimDirection) - 90f);
-        }
-        else if (aimPivot.gameObject.activeSelf)
-        {
-            aimPivot.gameObject.SetActive(false);
-        }*/
+        _playerManager = GetComponent<PlayerManager>();
+        _playerMovement = GetComponent<PlayerMovement>();
+        raycastRange = GameManager.Instance.LevelGenerator.Echelle * 4;
+        limitDistance = 1.5f * GameManager.Instance.LevelGenerator.Echelle;
     }
     #endregion
 
     #region Custom_Functions
-    public void OnShoot()
+    public void OnShoot(Vector2 aimDirection)
     {
+        if (_playerManager.State != PlayerState.KNOCKBACKED)
+            _playerManager.SetPlayerState(PlayerState.Moving);
+
         if (_playerManager.State == PlayerState.STUNNED)
         {
             Debug.Log("Vous �tes stunned et ne pouvez donc pas tirer.");
@@ -70,11 +67,17 @@ public class PlayerShootRaph : MonoBehaviour
             return;
         }
 
-        /*if(PManager.PEat.Remplissage < pourcentageNecessaire)
+        if (_playerManager.eatAmount < (float)pourcentageNecessaire/100)
         {
             Debug.Log("Pas assez de nourriture pour shoot.");
             return;
-        }*/
+        }
+
+        if (!IsThereEnoughSpace(aimDirection))
+        {
+            Debug.Log("Not enough space to spawn a cube.");
+            return;
+        }
 
         ProjectileRaph projectile = GameManager.Instance.GetAvailableProjectile();
         projectile.owner = _playerManager;
@@ -85,33 +88,24 @@ public class PlayerShootRaph : MonoBehaviour
         projectile.pourcentageInflige = pourcentageInflige;
         projectile.knockBackForce = knockBackForce;
 
-        var dir = _playerManager.InputVector;
-        if (dir == Vector2.zero)
-            dir = _movement.lookAtRight ? Vector2.right : Vector2.left;
-
-            //ApplyShootOppositeForce(aimDirection);
+        //ApplyShootOppositeForce(aimDirection);
 
         projectile.gameObject.SetActive(true);
-        projectile.Shoot(dir, vitesseInitiale);
+        projectile.Shoot(aimDirection, vitesseInitiale);
 
-        //PManager.PEat.Remplissage -= pourcentageNecessaire;
-        //PManager.PEat.Remplissage = Mathf.Clamp(PManager.PEat.Remplissage, 0, 100);
-        //PManager.UpdatePlayerScale();
+        _playerManager.eatAmount -= pourcentageNecessaire/100;
 
         cdTimer = cooldown;
         StartCoroutine(Cooldown());
-
-        if (_playerManager.State != PlayerState.KNOCKBACKED)
-            _playerManager.SetPlayerState(PlayerState.Moving);
     }
 
     public void HoldShoot()
     {
         if (_playerManager.State != PlayerState.KNOCKBACKED && _playerManager.State != PlayerState.STUNNED)
         {
-            //if (PManager.PEat.Remplissage >= pourcentageNecessaire)
+            if (_playerManager.eatAmount >= pourcentageNecessaire/100)
             {
-                _playerManager.SetPlayerState(PlayerState.Shooting); 
+                _playerManager.SetPlayerState(PlayerState.Shooting);
                 aimPivot.gameObject.SetActive(true);
             }
         }
@@ -134,9 +128,62 @@ public class PlayerShootRaph : MonoBehaviour
     //    PManager.PlayerState = Data.PLAYER_STATE.SHOOTING;
     //}
 
+    private bool IsThereEnoughSpace(Vector2 aimDirection)
+    {
+        Vector2 rayOrigin = (Vector2)transform.position + (Vector2)(Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, aimDirection) - 90f) * (.5f * Vector2.right));
+        RaycastHit2D hit1 = Physics2D.Raycast(rayOrigin, aimDirection, raycastRange);
+
+#if UNITY_EDITOR
+        if (!hit1)
+            Debug.DrawRay(rayOrigin, aimDirection * raycastRange, Color.red, 5f);
+        else
+            Debug.DrawLine(rayOrigin, hit1.point, Color.red, 5f);
+#endif
+
+        rayOrigin = (Vector2)transform.position - (Vector2)(Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, aimDirection) - 90f) * (.5f * Vector2.right));
+        RaycastHit2D hit2 = Physics2D.Raycast(rayOrigin, aimDirection, raycastRange);
+
+#if UNITY_EDITOR
+        if (!hit2)
+            Debug.DrawRay(rayOrigin, aimDirection * raycastRange, Color.red, 5f);
+        else
+            Debug.DrawLine(rayOrigin, hit2.point, Color.red, 5f);
+#endif
+
+        RaycastHit2D winnerHit;
+
+        if (hit1 && hit2)
+        {
+            if (hit1.distance < hit2.distance)
+                winnerHit = hit1;
+            else
+                winnerHit = hit2;
+        }
+        else if (hit1)
+            winnerHit = hit1;
+        else
+            winnerHit = hit2;
+
+        if (winnerHit)
+        {
+            if (winnerHit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+                return true;
+
+            RaycastHit2D[] hits = GameManager.Instance.SquareCast((Vector2)winnerHit.transform.position + GameManager.Instance.LevelGenerator.Echelle * winnerHit.normal, GameManager.Instance.LevelGenerator.Echelle * .9f, true);
+
+            foreach (RaycastHit2D hit2D in hits)
+            {
+                if (hit2D)
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
     IEnumerator Cooldown()
     {
-        while(cdTimer > 0)
+        while (cdTimer > 0)
         {
             cdTimer -= Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();

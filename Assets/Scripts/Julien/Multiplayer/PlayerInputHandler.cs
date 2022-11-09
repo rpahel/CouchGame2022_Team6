@@ -18,8 +18,8 @@ public class PlayerInputHandler : MonoBehaviour
     [Header("Scripts")]
     private PlayerMovement _movement;
     private PlayerManager _playerManager;
-    private ShootProjectile _shootProjectile;
-    //private Eat _eat;
+    //private ShootProjectile _shootProjectile;
+    private PlayerShootRaph _shootProjectile;
     [SerializeField] private EatScript _eat;
     private PlayerControls _controls;
 
@@ -27,7 +27,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
         _playerManager = gameObject.GetComponent<PlayerManager>();
         _movement = GetComponent<PlayerMovement>();
-        _shootProjectile = gameObject.GetComponent<ShootProjectile>();
+        _shootProjectile = gameObject.GetComponent<PlayerShootRaph>();
         //_eat = GetComponent<eatTest>();
         _controls = new PlayerControls();
     }
@@ -93,14 +93,14 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnShoot(CallbackContext context)
     {
-        if (_shootProjectile != null && context.canceled) 
-            _shootProjectile.Shoot();
+        //if (_shootProjectile != null && context.canceled) 
+            //_shootProjectile.Shoot();
     }
 
     private void OnAim(CallbackContext context)
     {
-        if (_shootProjectile != null && context.performed) 
-            _shootProjectile.Aim();
+        //if (_shootProjectile != null && context.performed) 
+            //_shootProjectile.Aim();
     }
 
     private void OnEat(InputAction.CallbackContext context)
