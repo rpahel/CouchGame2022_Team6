@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Data;
 
 public class EatScript : MonoBehaviour
 {
@@ -18,10 +19,10 @@ public class EatScript : MonoBehaviour
 
     public void OnTriggerStayFunction(Collider2D other)
     {
-        Debug.Log("OnStay");
+        //Debug.Log("OnStay");
         if (!_playerManager.CanEat) { return; }
 
-        Debug.Log("try Eat");
+        //Debug.Log("try Eat");
         if (!canEat)
         {
             print("I'm on eating cooldown !");
@@ -34,25 +35,39 @@ public class EatScript : MonoBehaviour
             return;
         }
 
-        if (!other.transform.parent.CompareTag("CubeEdible") || !other.gameObject.activeSelf) return;
-
-        Cube_Edible cubeMangeable;
-        if (other.transform.parent && other.transform.parent.TryGetComponent<Cube_Edible>(out cubeMangeable))
+        if (other.transform.parent.CompareTag("CubeEdible") && other.gameObject.activeSelf)
         {
-            if (cubeEated >= maxCubeMangeable)
+            Cube_Edible cubeMangeable;
+            if (other.transform.parent && other.transform.parent.TryGetComponent<Cube_Edible>(out cubeMangeable))
             {
-                canEat = false;
-                StartCoroutine(CooldownCoroutine());
+                if (cubeEated >= maxCubeMangeable)
+                {
+                    canEat = false;
+                    StartCoroutine(CooldownCoroutine());
+                }
+                else
+                {
+                    //Debug.Log("eat");
+                    stretchEffect.SquashEffectEat();
+                    EatCube(cubeMangeable);
+                }
             }
             else
+                print("Pas de Raf_CubeMangeable dans le cube vis?.");
+        }
+
+        else if (other.CompareTag("Player"))
+        {
+            var pj = other.gameObject.GetComponent<PlayerManager>();
+            if (pj.State != PlayerState.Dead)
             {
-                Debug.Log("eat");
-                stretchEffect.SquashEffectEat();
-                EatCube(cubeMangeable);
+                if (pj.SwitchSkin == SwitchSizeSkin.Little)
+                {
+                        Debug.LogError("Dead");
+                        pj.SetDead2();
+                }
             }
         }
-        else
-            print("Pas de Raf_CubeMangeable dans le cube vis?.");
     }
     public void EatCube(Cube_Edible cubeMangeable)
     {

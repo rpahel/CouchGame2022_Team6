@@ -28,21 +28,24 @@ public class DashTrigger : MonoBehaviour
         {
             Debug.Log("HitPlayer");
             var pj = other.gameObject.GetComponent<PlayerManager>();
-            switch (pj.SwitchSkin)
+            if(pj.State != PlayerState.Dead)
             {
-                case SwitchSizeSkin.Big:
-                    pj.eatAmount -= DamageBigEat;
-                    break;
-                case SwitchSizeSkin.Medium:
-                    pj.eatAmount -= DamageMediumEat;
-                    break;
-                case SwitchSizeSkin.Little:
-                    Debug.LogError("Dead");
-                    pj.SetDead2();
-                    break;
-            }
+                switch (pj.SwitchSkin)
+                {
+                    case SwitchSizeSkin.Big:
+                        pj.eatAmount -= DamageBigEat;
+                        break;
+                    case SwitchSizeSkin.Medium:
+                        pj.eatAmount -= DamageMediumEat;
+                        break;
+                    case SwitchSizeSkin.Little:
+                        Debug.LogError("Dead");
+                        pj.SetDead2();
+                        break;
+                }
 
-            _movement._canHit = false;
+                _movement._canHit = false;
+            }
         }
     }
 }
