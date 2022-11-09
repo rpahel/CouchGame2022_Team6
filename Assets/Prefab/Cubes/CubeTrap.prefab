@@ -120,6 +120,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2613636963887001772}
   - component: {fileID: -6608917199786195400}
+  - component: {fileID: 5068112207029822932}
   m_Layer: 10
   m_Name: CubeTrap
   m_TagString: CubeTrap
@@ -157,3 +158,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeType: 2
   cube: {fileID: 303830590082189049}
+  stopBeInTrap: 0
+  DecreaseEat: 23.92
+  canLooseGraille: 1
+  canTopCollid: 0
+  duration: 0.1
+  strength: 0.35
+  vibrato: 1
+  randomess: 0
+  baseSpeed: 0
+  knockForce: 57
+  takeDmg: 0.2
+--- !u!61 &5068112207029822932
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2613636963887001808}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0

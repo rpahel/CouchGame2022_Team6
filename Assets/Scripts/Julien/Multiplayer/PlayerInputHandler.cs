@@ -15,6 +15,8 @@ public class PlayerInputHandler : MonoBehaviour
     public float HoldCooldown { get; private set; }
     public bool _canHoldCooldown;
 
+    
+
     [Header("Scripts")]
     private PlayerMovement _movement;
     private PlayerManager _playerManager;
@@ -22,6 +24,7 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerShootRaph _shootProjectile;
     [SerializeField] private EatScript _eat;
     private PlayerControls _controls;
+    private ToolsManager _toolsManager;
 
     private void Awake()
     {
@@ -30,6 +33,8 @@ public class PlayerInputHandler : MonoBehaviour
         _shootProjectile = gameObject.GetComponent<PlayerShootRaph>();
         //_eat = GetComponent<eatTest>();
         _controls = new PlayerControls();
+        _toolsManager = gameObject.GetComponent<ToolsManager>();
+
     }
 
     public void InitializePlayer(PlayerConfiguration pc)
@@ -66,8 +71,22 @@ public class PlayerInputHandler : MonoBehaviour
         {
             OnDash(obj);
         }
+        else if (obj.action.name == _controls.Gameplay.CheatMenu.name)
+        {
+            
+            OnCheatMenu(obj);
+        }
+
+
     }
     
+    private void OnCheatMenu(CallbackContext context)
+    {
+        Debug.Log("coucou");
+     
+        _toolsManager.activeMenuCheat();
+   
+    }
     private void OnMove(CallbackContext context)
     {
         if(_playerManager != null)
