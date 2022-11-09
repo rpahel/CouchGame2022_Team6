@@ -6,12 +6,12 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 
-[CustomEditor(typeof(TNT))]
+[CustomEditor(typeof(Cube_TNT))]
 public class TNTEditor : Editor {
     
-    private TNT instance;
+    private Cube_TNT instance;
     private void OnEnable() {
-        instance = (TNT)target;
+        instance = (Cube_TNT)target;
     }
 
     public override void OnInspectorGUI() {

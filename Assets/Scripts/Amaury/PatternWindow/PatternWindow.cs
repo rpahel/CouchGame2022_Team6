@@ -9,7 +9,7 @@ using UnityEditor.UIElements;
 public class PatternWindow : EditorWindow {
 
     public Vector2[] pattern = new Vector2[9];
-    public TNT currentTNT;
+    public Cube_TNT currentTNT;
     
     private VisualElement root;
 

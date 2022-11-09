@@ -9,7 +9,8 @@ namespace Data
         NONE,
         EDIBLE,
         TRAP,
-        BEDROCK
+        BEDROCK,
+        TNT
     }
     
     public enum PlayerState

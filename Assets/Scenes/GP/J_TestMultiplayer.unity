@@ -516,18 +516,20 @@ MonoBehaviour:
     type: 3}
   image: {fileID: 2800000, guid: 5a066218fd63a2742976fbd45fb45bb5, type: 3}
   echelle: 1
-  cubeEdible: {fileID: 2613636963887001808, guid: 74a185477bf05c94796ad895b5c85abe,
+  cubeEdible: {fileID: 1840754553473877102, guid: 74a185477bf05c94796ad895b5c85abe,
     type: 3}
   cubeBedrock: {fileID: 2613636963887001808, guid: c7f75a0a01a2fd944b4e35a457f711f5,
     type: 3}
   cubeTrap: {fileID: 2613636963887001808, guid: fd8e6153315a70a4c9d48f9614a0b90d,
     type: 3}
+  cubeTNT: {fileID: 2683171982362620024, guid: 98d1d34e960e5214a9fe980db1a0c370, type: 3}
   spawnAnim: 1
   smoothType: 21
   attenteAvantAnim: 1
   animation: 0.3
   entreCubesAnim: 0
-  entreLignesAnim: 0.05
+  entreLignesAnim: 0.0157
+  tntDelay: 30
 --- !u!1 &310256359
 GameObject:
   m_ObjectHideFlags: 0

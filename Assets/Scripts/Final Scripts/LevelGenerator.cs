@@ -2,10 +2,16 @@ using System;
 using UnityEngine;
 using Data;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
 using Cinemachine;
 using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
+using Quaternion = UnityEngine.Quaternion;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -33,6 +39,8 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private GameObject cubeTrap;
     public GameObject CubeTrap => cubeTrap;
 
+    [SerializeField] private GameObject cubeTNT;
+
     //========================================================
     [Header("Animation de spawn des cubes.")]
     [SerializeField] private SPAWN_ANIMATION spawnAnim;
@@ -44,6 +52,8 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField, Range(.1f, .3f)] private new float animation;
     [SerializeField, Range(0f, .1f)] private float entreCubesAnim;
     [SerializeField, Range(0f, .1f)] private float entreLignesAnim;
+    [SerializeField,Range(0f,60f)] private float tntDelay;
+    private float tntTimer;
 
     //========================================================
     private LEVEL_STATE levelState = LEVEL_STATE.NONE;
@@ -73,6 +83,34 @@ public class LevelGenerator : MonoBehaviour
         GenerateLevel();
         StartCoroutine(PlayAnimation());
     }
+
+    private void Update() {
+        tntTimer += Time.deltaTime;
+
+        if (tntTimer >= tntDelay) {
+            tntTimer = 0f;
+
+            int randX = UnityEngine.Random.Range(0,ImageRef.width - 1);
+            int randY = UnityEngine.Random.Range(0, ImageRef.height - 1);
+
+            Vector3 randomPos = new Vector3(randX, randY, 0);
+            
+            RaycastHit2D hit = Physics2D.CircleCast(randomPos,cubeTNT.transform.localScale.magnitude / 2,Vector3.right,cubeTNT.transform.localScale.magnitude / 2,1 << 3 | 1 << 6 | 1 << 8 | 1 << 10);
+
+            while (hit.collider != null) {
+                randX = UnityEngine.Random.Range(0,ImageRef.width - 1);
+                randY = UnityEngine.Random.Range(0, ImageRef.height - 1);
+
+                randomPos = new Vector3(randX, randY, 0);
+                
+                hit = Physics2D.CircleCast(randomPos,cubeTNT.transform.localScale.magnitude / 2,Vector3.right,cubeTNT.transform.localScale.magnitude / 2,1 << 3 | 1 << 6 | 1 << 8 | 1 << 10);
+            }
+            
+            GameObject tnt = Instantiate(cubeTNT, randomPos, Quaternion.identity);
+            tnt.transform.localScale = Vector3.one * echelle;
+        }
+    }
+    
     #endregion
 
     #region Custom_Functions
@@ -277,8 +315,7 @@ public class LevelGenerator : MonoBehaviour
         var playerConfigs = PlayerConfigurationManager.Instance.GetPlayerConfigs().ToArray();
         cinemachine.m_Targets = new CinemachineTargetGroup.Target[playerConfigs.Length];
 
-        for (int i = 0; i < playerConfigs.Length; i++)
-        {
+        for (int i = 0; i < playerConfigs.Length; i++) {
             var player = Instantiate(playerPrefab, iniSpawns[i].position, iniSpawns[i].rotation,
                 gameObject.transform);
             playersUI[i].SetActive(true);

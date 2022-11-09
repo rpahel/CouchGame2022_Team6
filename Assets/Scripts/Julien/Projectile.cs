@@ -36,38 +36,10 @@ public class Projectile : MonoBehaviour {
             rb.AddForce(-col.contacts[0].normal * _shootBounce,ForceMode2D.Impulse);
         }
         
-        
-        if (col.gameObject.transform.parent.gameObject.TryGetComponent<TNT>(out TNT tnt)) {
-            foreach (Vector2 dir in tnt.pattern) {
-                if (dir != Vector2.zero) {
-                    Vector3 direction = new Vector3(dir.x,dir.y,col.gameObject.transform.parent.position.z);
-
-                    foreach (Cube_Edible c in FindCubeInDirection(direction, FindObjectsOfType<Cube>().ToList(), col.gameObject.transform.parent.gameObject))
-                        c.OnExploded();
-                    
-                    col.gameObject.transform.parent.gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.blue;
-                }
-            }
-        }
+        if (col.gameObject.transform.parent.gameObject.TryGetComponent<Cube_TNT>(out Cube_TNT tnt)) 
+            tnt.Explode(col.gameObject.transform.parent);
         
         Destroy(transform.gameObject);
-    }
-
-    private List<Cube_Edible> FindCubeInDirection(Vector3 direction,List<Cube> cubes,GameObject origin) {
-        List<Vector3> allPositions = new List<Vector3>();
-
-        for (int i = 0; i < 100; i++) 
-            allPositions.Add(origin.transform.position + direction * i);
-
-        List<Cube_Edible> cubesInDir = new List<Cube_Edible>();
-
-        foreach (Cube cube in cubes) {
-            if(allPositions.Contains(cube.transform.position) && cube is Cube_Edible)
-                cubesInDir.Add((Cube_Edible)cube);
-        }
-
-        return cubesInDir;
-        // Trouver tt les cubes qui ont leur position dans allPositions
     }
 
     public void InitializeValue(float impactSatietyPercent, float force,float cubeBounce, GameObject player) {
