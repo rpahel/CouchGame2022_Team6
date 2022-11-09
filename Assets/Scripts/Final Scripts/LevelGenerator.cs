@@ -74,6 +74,7 @@ public class LevelGenerator : MonoBehaviour
     private int coroutinesRunning = 0;
 
     private List<TNT> allPaterns;
+    private Vector3 lastTNTSpawnedPosition;
     #endregion
 
     #region Unity_Functions
@@ -81,6 +82,7 @@ public class LevelGenerator : MonoBehaviour
     {
         cubesArray = new Transform[image.width, image.height];
         allPaterns = new List<TNT>();
+        lastTNTSpawnedPosition = Vector3.zero;
     }
 
     private void Start()
@@ -95,33 +97,63 @@ public class LevelGenerator : MonoBehaviour
         if (tntTimer >= tntDelay) {
             tntTimer = 0f;
 
-            int randX = UnityEngine.Random.Range(0,ImageRef.width - 1);
-            int randY = UnityEngine.Random.Range(0, ImageRef.height - 1);
+            int randX = UnityEngine.Random.Range(1,ImageRef.width - 1);
+            int randY = UnityEngine.Random.Range(1, ImageRef.height - 1);
 
             Vector3 randomPos = new Vector3(randX, randY, 0);
             
+            
             RaycastHit2D hit = Physics2D.CircleCast(randomPos,cubeTNT.transform.localScale.magnitude / 2,Vector3.right,cubeTNT.transform.localScale.magnitude / 2,1 << 3 | 1 << 6 | 1 << 8 | 1 << 10 | 1 << 11);
 
-            while (hit.collider != null) {
-                randX = UnityEngine.Random.Range(0,ImageRef.width - 1);
-                randY = UnityEngine.Random.Range(0, ImageRef.height - 1);
-
-                randomPos = new Vector3(randX, randY, 0);
-                
-                hit = Physics2D.CircleCast(randomPos,cubeTNT.transform.localScale.magnitude / 2,Vector3.right,cubeTNT.transform.localScale.magnitude / 2,1 << 3 | 1 << 6 | 1 << 8 | 1 << 10 | 1 << 11);
-            }
-            // Soucis ca peut spawn vrm tous au  mm endroit et faire bizarre
+            int lastArea = FindArea(lastTNTSpawnedPosition, ImageRef.width - 1, ImageRef.height - 1);
+            List<int> areas = new List<int>(){ 0,1,2,3 };
+            areas.Remove(lastArea);
+            int goArea = areas[Random.Range(0, areas.Count)];
             
+            Debug.Log("goArea " + goArea);
+            
+            while (hit.collider != null && FindArea(randomPos, ImageRef.width - 1, ImageRef.height - 1) == goArea) {
+              randX = UnityEngine.Random.Range(1,ImageRef.width - 1);
+              randY = UnityEngine.Random.Range(1, ImageRef.height - 1);
+
+              randomPos = new Vector3(randX, randY, 0);
+              
+              hit = Physics2D.CircleCast(randomPos,cubeTNT.transform.localScale.magnitude / 2,Vector3.right,cubeTNT.transform.localScale.magnitude / 2,1 << 3 | 1 << 6 | 1 << 8 | 1 << 10 | 1 << 11);
+            }
+                
+            Debug.Log("spawn " + FindArea(randomPos,ImageRef.width - 1,ImageRef.height - 1) + " last " + FindArea(lastTNTSpawnedPosition,ImageRef.width - 1,ImageRef.height - 1));
             GameObject tnt = Instantiate(cubeTNT, randomPos, Quaternion.identity,parentObjCubes.transform);
             tnt.transform.localScale = Vector3.one * echelle;
             AssignRandomPattern(tnt.GetComponent<Cube_TNT>());
-            
+            lastTNTSpawnedPosition = randomPos;
+
         }
     }
     
     #endregion
 
     #region Custom_Functions
+    
+    private void FindTNTPatterns() {
+        foreach (TNT tntComp in GetComponents<TNT>()) 
+            allPaterns.Add(tntComp);
+        
+    }
+
+    private void AssignRandomPattern(Cube_TNT cube) => cube.pattern = allPaterns[Random.Range(0, allPaterns.Count)];
+
+    private int FindArea(Vector3 check,int width,int height) {
+        Vector2[] mins = { Vector2.zero,new Vector2(width / 2,0),new Vector2(0,height / 2), new Vector2(width / 2,height / 2) };
+        Vector2[] maxs = { new Vector2(width / 2,height / 2), new Vector2(width,height / 2),new Vector2(width / 2,height), new Vector2(width,height)};
+
+        for (int i = 0; i < mins.Length; i++) {
+            if (check.x >= mins[i].x && check.x <= maxs[i].x && check.y >= mins[i].y && check.y <= maxs[i].y) 
+                return i;
+        }
+
+        return -1;
+    }
+    
     [ContextMenu("Generate level")]
     public void GenerateLevel()
     {
@@ -371,13 +403,6 @@ public class LevelGenerator : MonoBehaviour
         coroutinesRunning--;
     }
 
-    private void FindTNTPatterns() {
-        foreach (TNT tntComp in GetComponents<TNT>()) 
-            allPaterns.Add(tntComp);
-        
-    }
-
-    private void AssignRandomPattern(Cube_TNT cube) => cube.pattern = allPaterns[Random.Range(0, allPaterns.Count)];
     
 
     //public void PrintLevelAscii()
