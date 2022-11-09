@@ -1,5 +1,6 @@
 using Data;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerShoot : MonoBehaviour
@@ -144,21 +145,52 @@ public class PlayerShoot : MonoBehaviour
 
     private bool IsThereEnoughSpace(Vector2 aimDirection)
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, aimDirection, raycastRange);
+        Vector2 rayOrigin = (Vector2)transform.position + (Vector2)(Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, aimDirection) - 90f) * (.5f * Vector2.right));
+        RaycastHit2D hit1 = Physics2D.Raycast(rayOrigin, aimDirection, raycastRange);
 
-        if (hit)
-        {
-            Vector2 selfToHit = hit.transform.position - transform.position;
-
-            if (hit.collider.CompareTag("Player"))
-                return true;
-
-            if (Mathf.Abs(selfToHit.x) >= limitDistance + PManager.PCollider.bounds.extents.x || Mathf.Abs(selfToHit.y) >= limitDistance + PManager.PCollider.bounds.extents.y)
-            {
-                return true;
-            }
+        #if UNITY_EDITOR
+            if (!hit1)
+                Debug.DrawRay(rayOrigin, aimDirection * raycastRange, Color.red, 5f);
             else
-                return false;
+                Debug.DrawLine(rayOrigin, hit1.point, Color.red, 5f);
+        #endif
+
+        rayOrigin = (Vector2)transform.position - (Vector2)(Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, aimDirection) - 90f) * (.5f * Vector2.right));
+        RaycastHit2D hit2 = Physics2D.Raycast(rayOrigin, aimDirection, raycastRange);
+
+        #if UNITY_EDITOR
+            if(!hit2)
+                Debug.DrawRay(rayOrigin, aimDirection * raycastRange, Color.red, 5f);
+            else
+                Debug.DrawLine(rayOrigin, hit2.point, Color.red, 5f);
+        #endif
+
+        RaycastHit2D winnerHit;
+
+        if (hit1 && hit2)
+        {
+            if (hit1.distance < hit2.distance)
+                winnerHit = hit1;
+            else
+                winnerHit = hit2;
+        }
+        else if (hit1)
+            winnerHit = hit1;
+        else
+            winnerHit = hit2;
+
+        if (winnerHit)
+        {
+            if (winnerHit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+                return true;
+        
+            RaycastHit2D[] hits = GameManager.Instance.SquareCast((Vector2)winnerHit.transform.position + LevelGenerator.Instance.Echelle * winnerHit.normal, LevelGenerator.Instance.Echelle * .9f);
+        
+            foreach(RaycastHit2D hit2D in hits)
+            {
+                if (hit2D)
+                    return false;
+            }
         }
 
         return true;
@@ -166,7 +198,7 @@ public class PlayerShoot : MonoBehaviour
 
     IEnumerator Cooldown()
     {
-        while(cdTimer > 0)
+        while (cdTimer > 0)
         {
             cdTimer -= Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();

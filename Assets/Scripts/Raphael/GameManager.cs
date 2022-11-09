@@ -147,5 +147,43 @@ public class GameManager : MonoBehaviour
         list.Remove(element);
         list.Add(element);
     }
+
+
+
+    public RaycastHit2D[] SquareCast(Vector2 origin, float size, bool drawDebug = false)
+    {
+        Vector2[] localPositions = new Vector2[8];
+        Vector2[] worldPositions = new Vector2[8];
+        RaycastHit2D[] hits = new RaycastHit2D[8];
+
+        for (int i = 0; i < 8; i++)
+        {
+            switch (i)
+            {
+                case 0: localPositions[i] = new Vector2(0, 1); break;
+                case 1: localPositions[i] = new Vector2(1, 1); break;
+                case 2: localPositions[i] = new Vector2(1, 0); break;
+                case 3: localPositions[i] = new Vector2(1, -1); break;
+                case 4: localPositions[i] = new Vector2(0, -1); break;
+                case 5: localPositions[i] = new Vector2(-1, -1); break;
+                case 6: localPositions[i] = new Vector2(-1, 0); break;
+                case 7: localPositions[i] = new Vector2(-1, 1); break;
+            }
+
+            worldPositions[i] = origin + .5f * size * localPositions[i];
+        }
+
+        for (int i = 0; i < 8; i++)
+        {
+            hits[i] = Physics2D.Linecast(worldPositions[i], worldPositions[(i + 4) % 8]);
+
+            #if UNITY_EDITOR
+                if (drawDebug)
+                    Debug.DrawLine(worldPositions[i], worldPositions[(i + 4) % 8], Color.red, 5f);
+            #endif
+        }
+
+        return hits;
+    }
     #endregion
 }

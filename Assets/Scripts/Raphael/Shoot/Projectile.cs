@@ -4,6 +4,7 @@ using System.Runtime.ConstrainedExecution;
 using UnityEngine;
 using Data;
 using System;
+using UnityEngine.InputSystem.HID;
 
 public class Projectile : MonoBehaviour
 {
@@ -104,7 +105,11 @@ public class Projectile : MonoBehaviour
             }
             else if (collision.gameObject.layer == LayerMask.NameToLayer("Destructible") || collision.gameObject.layer == LayerMask.NameToLayer("Indestructible"))
             {
-                SpawnCube(collision);
+                if (CanSpawnCubeAt((Vector2)collision.transform.position + LevelGenerator.Instance.Echelle * collision.GetContact(0).normal))
+                    SpawnCube(collision);
+                else
+                    Debug.Log("Not enough space to spawn cube.");
+
                 gameObject.SetActive(false);
             }
             else if (collision.gameObject.layer == LayerMask.NameToLayer("Projectile"))
@@ -191,6 +196,21 @@ public class Projectile : MonoBehaviour
         
         Debug.Log("Tu ne devrais pas voir ça.");
         return originalPos + Vector2.up;                // N
+    }
+
+    bool CanSpawnCubeAt(Vector2 position)
+    {
+        RaycastHit2D[] hits = GameManager.Instance.SquareCast(position, LevelGenerator.Instance.Echelle * .9f);
+
+        foreach(RaycastHit2D hit in hits)
+        {
+            if (hit && hit.transform.gameObject.layer != LayerMask.NameToLayer("Projectile"))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
     #endregion
 }
