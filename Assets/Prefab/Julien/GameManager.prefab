@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 114055375776213090}
   - component: {fileID: 114055375776213089}
+  - component: {fileID: 712403600}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -42,5 +43,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 601c2bf777a9f9942901c2694437f9b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _levelGenerator: {fileID: 0}
+  _cinemachine: {fileID: 0}
+  _playersUI:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _playerPrefab: {fileID: 7366054978402329224, guid: 53f839e78d055ac479a0cf91933107ab,
+    type: 3}
+  projectile: {fileID: 0}
+  projectileNombre: 0
+--- !u!114 &712403600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114055375776213088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6451146eac4979a43afe46dd245647b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

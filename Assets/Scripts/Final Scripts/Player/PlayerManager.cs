@@ -79,10 +79,17 @@ public class PlayerManager : MonoBehaviour
         eatAmount = MaxEatValue/2;
     }
 
+    [ContextMenu("SetDead")]
     public void SetDead()
     {
         State = PlayerState.Dead;
-        GameManager.Instance.gameObject.GetComponent<RespawnPlayer>().Respawn(gameObject);
-        gameObject.SetActive(false);
+        //GameManager.Instance.gameObject.GetComponent<RespawnPlayer>().Respawn(gameObject);
+    }
+
+    [ContextMenu("SetDead2")]
+    public void SetDead2()
+    {
+        State = PlayerState.Dead;
+        GameManager.Instance.RespawnPlayer(gameObject);
     }
 }

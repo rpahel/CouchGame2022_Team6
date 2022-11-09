@@ -506,14 +506,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7bed8b178ffee44a860348c49002fe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cinemachine: {fileID: 1791635878}
-  playersUI:
-  - {fileID: 254176671}
-  - {fileID: 873281666}
-  - {fileID: 1858775887}
-  - {fileID: 718803671}
-  playerPrefab: {fileID: 7366054978402329224, guid: 53f839e78d055ac479a0cf91933107ab,
-    type: 3}
   image: {fileID: 2800000, guid: 49929b079128a4e4cab5ada558d62913, type: 3}
   background: {fileID: 1583586695}
   echelle: 2.857
@@ -1052,11 +1044,49 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 712403600, guid: 6221fedd0c0c0874eb7b6555a4cf9fb5, type: 3}
+      propertyPath: cooldownRespawn
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 712403600, guid: 6221fedd0c0c0874eb7b6555a4cf9fb5, type: 3}
+      propertyPath: cooldownInvincible
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 114055375776213088, guid: 6221fedd0c0c0874eb7b6555a4cf9fb5,
         type: 3}
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 114055375776213089, guid: 6221fedd0c0c0874eb7b6555a4cf9fb5,
+        type: 3}
+      propertyPath: _cinemachine
+      value: 
+      objectReference: {fileID: 1791635878}
+    - target: {fileID: 114055375776213089, guid: 6221fedd0c0c0874eb7b6555a4cf9fb5,
+        type: 3}
+      propertyPath: _levelGenerator
+      value: 
+      objectReference: {fileID: 280540223}
+    - target: {fileID: 114055375776213089, guid: 6221fedd0c0c0874eb7b6555a4cf9fb5,
+        type: 3}
+      propertyPath: _playersUI.Array.data[0]
+      value: 
+      objectReference: {fileID: 254176671}
+    - target: {fileID: 114055375776213089, guid: 6221fedd0c0c0874eb7b6555a4cf9fb5,
+        type: 3}
+      propertyPath: _playersUI.Array.data[1]
+      value: 
+      objectReference: {fileID: 873281666}
+    - target: {fileID: 114055375776213089, guid: 6221fedd0c0c0874eb7b6555a4cf9fb5,
+        type: 3}
+      propertyPath: _playersUI.Array.data[2]
+      value: 
+      objectReference: {fileID: 1858775887}
+    - target: {fileID: 114055375776213089, guid: 6221fedd0c0c0874eb7b6555a4cf9fb5,
+        type: 3}
+      propertyPath: _playersUI.Array.data[3]
+      value: 
+      objectReference: {fileID: 718803671}
     - target: {fileID: 114055375776213090, guid: 6221fedd0c0c0874eb7b6555a4cf9fb5,
         type: 3}
       propertyPath: m_RootOrder
@@ -1114,25 +1144,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6221fedd0c0c0874eb7b6555a4cf9fb5, type: 3}
---- !u!1 &712403599 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 114055375776213088, guid: 6221fedd0c0c0874eb7b6555a4cf9fb5,
-    type: 3}
-  m_PrefabInstance: {fileID: 712403598}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &712403600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 712403599}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6451146eac4979a43afe46dd245647b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelGenerator: {fileID: 280540223}
 --- !u!1 &718803671
 GameObject:
   m_ObjectHideFlags: 0

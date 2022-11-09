@@ -9,10 +9,6 @@ using TMPro;
 public class LevelGenerator : MonoBehaviour
 {
     #region Variables
-    
-    [SerializeField] private CinemachineTargetGroup cinemachine;
-    [SerializeField] private GameObject[] playersUI;
-    [SerializeField] private GameObject playerPrefab;
 
     //========================================================
     [Header("Image de r�f�rence.")]
@@ -60,8 +56,6 @@ public class LevelGenerator : MonoBehaviour
     //========================================================
     private Transform[,] cubesArray;
     public Transform[,] CubesArray { get => cubesArray; private set => cubesArray = value; }
-
-    //private bool[,] cubesArrayBool;
 
     private int coroutinesRunning = 0;
     #endregion
@@ -300,23 +294,7 @@ public class LevelGenerator : MonoBehaviour
 
         levelState = LEVEL_STATE.LOADED;
         GameManager.Instance.SetGameState(GAME_STATE.PLAYING);
-        
-        var playerConfigs = PlayerConfigurationManager.Instance.GetPlayerConfigs().ToArray();
-        cinemachine.m_Targets = new CinemachineTargetGroup.Target[playerConfigs.Length];
-
-        for (int i = 0; i < playerConfigs.Length; i++)
-        {
-            var player = Instantiate(playerPrefab, iniSpawns[i].position, iniSpawns[i].rotation,
-                gameObject.transform);
-            GameManager.Instance.AddPlayer(player);
-            playersUI[i].SetActive(true);
-            player.GetComponent<PlayerManager>().imageUI = playersUI[i].transform.GetChild(0).GetComponent<Image>();
-            player.GetComponent<PlayerManager>().textUI = playersUI[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-            player.GetComponent<PlayerInputHandler>().InitializePlayer(playerConfigs[i]);
-            cinemachine.m_Targets[i].target = player.transform;
-            cinemachine.m_Targets[i].weight = 1;
-        }
-
+        GameManager.Instance.SpawnAllPlayers();
         coroutinesRunning--;
     }
 

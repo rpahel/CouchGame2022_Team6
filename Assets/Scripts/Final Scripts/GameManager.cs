@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 using Data;
 using UnityEditor.PackageManager.Requests;
 
@@ -10,12 +11,24 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     
     private List<GameObject> _listPlayersGo = new List<GameObject>();
-    
-    public List<GameObject> ListPlayersGo=> _listPlayersGo;
-    
+    public List<GameObject> ListPlayersGo => _listPlayersGo;
     public  GAME_STATE GameState { get; private set; }
-    
-    //============================
+
+    //============================ Spawn/Respawn
+    [Header("Spawn")]
+    [SerializeField] private LevelGenerator _levelGenerator;
+    [SerializeField] private CinemachineTargetGroup _cinemachine;
+    [SerializeField] private GameObject[] _playersUI;
+    [SerializeField] private GameObject _playerPrefab;
+
+    private PlayersManager _playersManager;
+
+    public LevelGenerator LevelGenerator => _levelGenerator;
+    public CinemachineTargetGroup CinemachineTargetGroup => _cinemachine;
+    public GameObject[] PlayersUI => _playersUI;
+    public GameObject PlayerPrefab => _playerPrefab;
+
+    //============================ Projectile
     [Header("Donn�es")]
     [SerializeField] private GameObject projectile;
     [SerializeField] private int projectileNombre;
@@ -33,8 +46,12 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(Instance);
         }
+
         GameState = GAME_STATE.NONE;
-        
+        _playersManager = GetComponent<PlayersManager>();
+
+        Debug.Log("Manager ok");
+
         if (projectile == null)
             throw new Exception("Pas de projectile r�f�renc� dans le Game Manager.");
 
@@ -42,12 +59,26 @@ public class GameManager : MonoBehaviour
             Debug.LogError($"ATTENTION t'as mis projectileNombre � {projectile} dans le Game Manager. Aucun projectile ne sera spawn�.");
 
         GenerateProjectilePool(projectileNombre);
-        
+    }
+
+    public void SpawnAllPlayers()
+    {
+        _playersManager.SpawnPlayers();
+    }
+
+    public void RespawnPlayer(GameObject playerGo)
+    {
+        _playersManager.Respawn2(playerGo);
     }
 
     public void AddPlayer(GameObject playerGo)
     {
         _listPlayersGo.Add(playerGo);
+    }
+
+    public void RemovePlayer(GameObject playerGo)
+    {
+        _listPlayersGo.Remove(playerGo);
     }
 
     public void SetGameState(GAME_STATE state)

@@ -38,7 +38,7 @@ public class DashTrigger : MonoBehaviour
                     break;
                 case SwitchSizeSkin.Little:
                     Debug.LogError("Dead");
-                    pj.SetDead();
+                    pj.SetDead2();
                     break;
             }
 

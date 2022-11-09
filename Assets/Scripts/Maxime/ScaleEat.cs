@@ -77,6 +77,8 @@ public class ScaleEat : MonoBehaviour
 
     private void UpdateTextUI()
     {
+        if (_playerManager.textUI == null) return;
+
         var text = _playerManager.eatAmount * 100;
 
         switch (text)
