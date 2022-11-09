@@ -131,37 +131,31 @@ public class PlayerMovement : MonoBehaviour
 
         _isGrounded = IsGrounded();
 
-        if (_playerManager.State != PlayerState.STUNNED)
+        if (_playerManager.State == PlayerState.STUNNED) return;
+        
+        float castRadius = transform.localScale.x * .5f - .05f;
+        float castDistance = _capsuleCollider.size.y * transform.localScale.y * .25f + .3f;
+
+        if (_playerManager.State != PlayerState.KNOCKBACKED)
         {
-            float castRadius = transform.localScale.x * .5f - .05f;
-            float castDistance = _capsuleCollider.size.y * transform.localScale.y * .25f + .3f;
+            if (_playerManager.State != PlayerState.Aiming)
+                _playerManager.SetPlayerState(groundCheck ? PlayerState.Moving : PlayerState.Falling);
 
-            if (_playerManager.State != PlayerState.KNOCKBACKED)
-            {
-                if (_playerManager.State != PlayerState.Aiming)
-                {
-                    if (groundCheck)
-                        _playerManager.SetPlayerState(PlayerState.Moving);
-                    else
-                        _playerManager.SetPlayerState(PlayerState.Falling);
-                }
+            Deplacement();
+            OnMove();
 
-                Deplacement();
-                OnMove();
+            if (holdJump && groundCheck)
+                OnJump();
 
-                if (holdJump && groundCheck)
-                    OnJump();
-
-                _rb.velocity = new Vector2(Mathf.Clamp(_rb.velocity.x, -vitesseMax, vitesseMax), _rb.velocity.y);
-            }
-            else
-            {
-                if (_rb.velocity.y <= 0 && groundCheck && _playerManager.State != PlayerState.Aiming)
-                {
-                    _playerManager.SetPlayerState(PlayerState.Moving);
-                }
-            }
+            _rb.velocity = new Vector2(Mathf.Clamp(_rb.velocity.x, -vitesseMax, vitesseMax), _rb.velocity.y);
         }
+        /*else
+        {
+            if (_rb.velocity.y <= 0 && groundCheck && _playerManager.State != PlayerState.Aiming) TODO:: VOIR AVEC RAF CAR PB TRAP
+            {
+                _playerManager.SetPlayerState(PlayerState.Moving);
+            }
+        }*/
     }
     
     #endregion
@@ -291,20 +285,27 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        if (dashLoading == DashLoading.IncreaseLength)   //Increase Length
+        switch (dashLoading)
         {
-            var holdClamp = Mathf.Clamp(hold, 0f, 2f);
-            var lengthValue = Mathf.Lerp(dashTime, LengthMultiplier * dashTime, holdClamp / 2);
-            dashTimeMultiplier = lengthValue;
-            Debug.Log("DashTime" + dashTimeMultiplier);
-        }
-        else if (dashLoading == DashLoading.IncreaseWidth)  //Increase collider 
-        {
-            dashTimeMultiplier = dashTime;
-            var holdClamp = Mathf.Clamp(hold, 0f, 2f);
-            var sizeValue = Mathf.Lerp(1.5f, WidthMultiplier * 1.5f, holdClamp / 2);           
-            dashCollider.size = new Vector2(sizeValue, sizeValue);
-            Debug.Log("DashSize" + sizeValue);
+            //Increase Length
+            case DashLoading.IncreaseLength:
+            {
+                var holdClamp = Mathf.Clamp(hold, 0f, 2f);
+                var lengthValue = Mathf.Lerp(dashTime, LengthMultiplier * dashTime, holdClamp / 2);
+                dashTimeMultiplier = lengthValue;
+                Debug.Log("DashTime" + dashTimeMultiplier);
+                break;
+            }
+            //Increase collider 
+            case DashLoading.IncreaseWidth:
+            {
+                dashTimeMultiplier = dashTime;
+                var holdClamp = Mathf.Clamp(hold, 0f, 2f);
+                var sizeValue = Mathf.Lerp(1.5f, WidthMultiplier * 1.5f, holdClamp / 2);           
+                dashCollider.size = new Vector2(sizeValue, sizeValue);
+                Debug.Log("DashSize" + sizeValue);
+                break;
+            }
         }
     }
     

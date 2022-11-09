@@ -19,7 +19,7 @@ public class SliderScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _slider.value = playerHandler._holdCooldown;
+        //_slider.value = playerHandler._holdCooldown;
     }
 
     public void UpdateProgress()
