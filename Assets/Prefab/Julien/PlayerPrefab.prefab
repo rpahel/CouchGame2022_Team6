@@ -681,7 +681,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   lookAtRight: 0
-  dashType: 1
+  dashType: 0
   dashLoading: 1
   looseEatForce: 1
   _canDash: 0
