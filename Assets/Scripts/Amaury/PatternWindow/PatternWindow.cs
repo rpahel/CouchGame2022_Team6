@@ -79,6 +79,8 @@ public class PatternWindow : EditorWindow {
         }
 
         currentTNT.pattern = pattern;
+        
+        PrefabUtility.SavePrefabAsset(currentTNT.gameObject,out bool result);
     }
 
     private Vector2 CalculateVector(int position) {

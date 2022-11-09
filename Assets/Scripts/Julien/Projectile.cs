@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -37,20 +38,12 @@ public class Projectile : MonoBehaviour {
         
         
         if (col.gameObject.transform.parent.gameObject.TryGetComponent<TNT>(out TNT tnt)) {
-            foreach (Vector2 direction in tnt.pattern) {
-                if (direction != Vector2.zero) {
-                    Debug.Log("direction " + direction);
-                    RaycastHit2D[] hits = Physics2D.RaycastAll(col.gameObject.transform.parent.gameObject.transform.position - (Vector3)direction * 100,direction,1000, 1 << 6);
+            foreach (Vector2 dir in tnt.pattern) {
+                if (dir != Vector2.zero) {
+                    Vector3 direction = new Vector3(dir.x,dir.y,col.gameObject.transform.parent.position.z);
 
-                    foreach (RaycastHit2D hit in hits) {
-                        if (hit.collider != null) {
-                            if (hit.collider.gameObject.transform.parent.gameObject.TryGetComponent<Cube_Edible>(out Cube_Edible c)) {
-                               // Debug.Log("entered " + hit.collider.gameObject.transform.parent.gameObject);
-                                //c.OnExploded();
-                                c.gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.red;
-                            }
-                        }
-                    }
+                    foreach (Cube_Edible c in FindCubeInDirection(direction, FindObjectsOfType<Cube>().ToList(), col.gameObject.transform.parent.gameObject))
+                        c.OnExploded();
                     
                     col.gameObject.transform.parent.gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.blue;
                 }
@@ -58,6 +51,23 @@ public class Projectile : MonoBehaviour {
         }
         
         Destroy(transform.gameObject);
+    }
+
+    private List<Cube_Edible> FindCubeInDirection(Vector3 direction,List<Cube> cubes,GameObject origin) {
+        List<Vector3> allPositions = new List<Vector3>();
+
+        for (int i = 0; i < 100; i++) 
+            allPositions.Add(origin.transform.position + direction * i);
+
+        List<Cube_Edible> cubesInDir = new List<Cube_Edible>();
+
+        foreach (Cube cube in cubes) {
+            if(allPositions.Contains(cube.transform.position) && cube is Cube_Edible)
+                cubesInDir.Add((Cube_Edible)cube);
+        }
+
+        return cubesInDir;
+        // Trouver tt les cubes qui ont leur position dans allPositions
     }
 
     public void InitializeValue(float impactSatietyPercent, float force,float cubeBounce, GameObject player) {

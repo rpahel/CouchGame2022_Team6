@@ -352,15 +352,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pattern:
-  - {x: -1, y: 1}
   - {x: 0, y: 0}
-  - {x: 1, y: 1}
-  - {x: 0, y: 0}
+  - {x: 0, y: 1}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
-  - {x: -1, y: -1}
   - {x: 0, y: 0}
-  - {x: 1, y: -1}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: -1}
+  - {x: 0, y: 0}
 --- !u!1 &3530211992881418058
 GameObject:
   m_ObjectHideFlags: 0
