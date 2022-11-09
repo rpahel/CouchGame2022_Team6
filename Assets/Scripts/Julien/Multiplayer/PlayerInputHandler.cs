@@ -93,14 +93,14 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnShoot(CallbackContext context)
     {
-        //if (_shootProjectile != null && context.canceled) 
-            //_shootProjectile.Shoot();
+        if (_shootProjectile != null && context.canceled) 
+            _shootProjectile.OnShoot(_playerManager.InputVector.normalized);
     }
 
     private void OnAim(CallbackContext context)
     {
-        //if (_shootProjectile != null && context.performed) 
-            //_shootProjectile.Aim();
+        if (_shootProjectile != null && context.performed) 
+            _shootProjectile.Aim();
     }
 
     private void OnEat(InputAction.CallbackContext context)

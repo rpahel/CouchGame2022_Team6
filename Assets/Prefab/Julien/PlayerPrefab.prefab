@@ -624,6 +624,7 @@ GameObject:
   - component: {fileID: 1103561136773747212}
   - component: {fileID: 5833838575412098440}
   - component: {fileID: 4137726927642007}
+  - component: {fileID: 114269620317164115}
   m_Layer: 3
   m_Name: PlayerPrefab
   m_TagString: Player
@@ -946,3 +947,24 @@ MonoBehaviour:
   durationJump: 0.6
   scaleMultiplierEat: 1.2
   durationEat: 0.045
+--- !u!114 &114269620317164115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7366054978402329224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 268d4ca14fced0143be71b634e78516b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pourcentageNecessaire: 12
+  cooldown: 0.5
+  forceOpposee: 50
+  aimPivot: {fileID: 0}
+  vitesseInitiale: 40
+  gravity: 5
+  forceDuRebond: 1
+  pourcentageInflige: 20
+  knockBackForce: 50

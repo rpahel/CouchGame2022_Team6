@@ -13,8 +13,6 @@ public abstract class Cube : MonoBehaviour
 
     [HideInInspector] public Vector2 unscaledPosition;
     // Vérifie si ce cube a été mangé ou pas
-    public bool isManged()
-    {
-        return !cube.activeSelf;
-    }
+    protected bool isManged;
+    public bool IsManged => isManged;
 }

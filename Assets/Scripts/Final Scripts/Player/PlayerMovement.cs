@@ -126,20 +126,42 @@ public class PlayerMovement : MonoBehaviour
         if (_isDashing) 
         {
             _rb.AddForce(_playerManager.InputVector * dashForce, ForceMode2D.Impulse);
+            return;
         }
-
-        //_playerManager.SetPlayerState(groundCheck ? PlayerState.Moving : PlayerState.Falling);
 
         _isGrounded = IsGrounded();
 
-        if (_playerManager.State == PlayerState.Moving)
+        if (_playerManager.State != PlayerState.STUNNED)
         {
-            Deplacement();
-            OnMove();
+            float castRadius = transform.localScale.x * .5f - .05f;
+            float castDistance = _capsuleCollider.size.y * transform.localScale.y * .25f + .3f;
+
+            if (_playerManager.State != PlayerState.KNOCKBACKED)
+            {
+                if (_playerManager.State != PlayerState.Aiming)
+                {
+                    if (groundCheck)
+                        _playerManager.SetPlayerState(PlayerState.Moving);
+                    else
+                        _playerManager.SetPlayerState(PlayerState.Falling);
+                }
+
+                Deplacement();
+                OnMove();
+
+                if (holdJump && groundCheck)
+                    OnJump();
+
+                _rb.velocity = new Vector2(Mathf.Clamp(_rb.velocity.x, -vitesseMax, vitesseMax), _rb.velocity.y);
+            }
+            else
+            {
+                if (_rb.velocity.y <= 0 && groundCheck && _playerManager.State != PlayerState.Aiming)
+                {
+                    _playerManager.SetPlayerState(PlayerState.Moving);
+                }
+            }
         }
-        
-        if (holdJump && groundCheck && _playerManager.State == PlayerState.Moving)
-            OnJump();
     }
     
     #endregion
@@ -148,7 +170,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnMove()
     {
-        if (Mathf.Abs(_playerManager.InputVector.x) <= deadZone)
+        if (Mathf.Abs(_playerManager.InputVector.x) <= deadZone || _playerManager.State == PlayerState.Aiming)
         {
             _inputVectorWithDeadZone = Vector2.zero;
             return;
@@ -213,7 +235,7 @@ public class PlayerMovement : MonoBehaviour
         
         _rb.velocity += new Vector2(_inputVectorWithDeadZone.x, 0) * (Time.fixedDeltaTime * 100f);
         
-        _rb.velocity = new Vector2(Mathf.Clamp(_rb.velocity.x, -vitesseMax, vitesseMax), _rb.velocity.y);
+        //_rb.velocity = new Vector2(Mathf.Clamp(_rb.velocity.x, -vitesseMax, vitesseMax), _rb.velocity.y);
     }
  
     private void Jump()

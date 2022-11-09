@@ -21,8 +21,6 @@ public class PlayerShootRaph : MonoBehaviour
     private float cdTimer;
     [SerializeField, Tooltip("Force de pouss�e arri�re sur ce joueur suite � son propre tir.")]
     private float forceOpposee;
-    [SerializeField]
-    private Transform aimPivot;
 
     //============================
     [Header("Projectile")]
@@ -99,17 +97,17 @@ public class PlayerShootRaph : MonoBehaviour
         StartCoroutine(Cooldown());
     }
 
-    public void HoldShoot()
+    /*public void HoldShoot()
     {
         if (_playerManager.State != PlayerState.KNOCKBACKED && _playerManager.State != PlayerState.STUNNED)
         {
             if (_playerManager.eatAmount >= pourcentageNecessaire/100)
             {
                 _playerManager.SetPlayerState(PlayerState.Shooting);
-                aimPivot.gameObject.SetActive(true);
+                //aimPivot.gameObject.SetActive(true);
             }
         }
-    }
+    }*/
 
     //void ApplyShootOppositeForce(Vector2 aimDirection)
     //{
@@ -190,6 +188,12 @@ public class PlayerShootRaph : MonoBehaviour
         }
 
         cdTimer = 0;
+    }
+
+    public void Aim()
+    {
+        Debug.Log("Aim");
+        _playerManager.SetPlayerState(PlayerState.Aiming);
     }
     #endregion
 }

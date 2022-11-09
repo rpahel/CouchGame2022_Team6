@@ -1743,6 +1743,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114055375776213089, guid: 6221fedd0c0c0874eb7b6555a4cf9fb5,
         type: 3}
+      propertyPath: projectile
+      value: 
+      objectReference: {fileID: 6314667027240828348, guid: d81d0ff3def99a543923d314c9860db9,
+        type: 3}
+    - target: {fileID: 114055375776213089, guid: 6221fedd0c0c0874eb7b6555a4cf9fb5,
+        type: 3}
       propertyPath: _cinemachine
       value: 
       objectReference: {fileID: 1791635878}
@@ -1751,6 +1757,11 @@ PrefabInstance:
       propertyPath: _levelGenerator
       value: 
       objectReference: {fileID: 280540223}
+    - target: {fileID: 114055375776213089, guid: 6221fedd0c0c0874eb7b6555a4cf9fb5,
+        type: 3}
+      propertyPath: projectileNombre
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 114055375776213089, guid: 6221fedd0c0c0874eb7b6555a4cf9fb5,
         type: 3}
       propertyPath: _playersUI.Array.data[0]

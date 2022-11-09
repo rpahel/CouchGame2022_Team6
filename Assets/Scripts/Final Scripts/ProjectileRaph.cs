@@ -103,7 +103,7 @@ public class ProjectileRaph : MonoBehaviour
                 Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, collision.GetContact(0).normal).normalized;
                 rb.velocity = currentVelocity.magnitude * forceDuRebond * sensDuRebond;
             }
-            else if (collision.gameObject.layer == LayerMask.NameToLayer("Destructible") || collision.gameObject.layer == LayerMask.NameToLayer("Indestructible"))
+            else if (collision.gameObject.layer == LayerMask.NameToLayer("CubeEdible") || collision.gameObject.layer == LayerMask.NameToLayer("Bedrock"))
             {
                 if (CanSpawnCubeAt((Vector2)collision.transform.position + GameManager.Instance.LevelGenerator.Echelle * collision.GetContact(0).normal))
                     SpawnCube(collision);
@@ -212,5 +212,7 @@ public class ProjectileRaph : MonoBehaviour
 
         return true;
     }
+
+
     #endregion
 }
