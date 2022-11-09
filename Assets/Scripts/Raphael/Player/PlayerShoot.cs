@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class PlayerShoot : MonoBehaviour
 {
-    // TODO : Quand on shoot trop pr�s d'un cube �a annule le tir, on perd pas de bouffe.
-
     #region Autres Scripts
     //============================
     public PlayerManager PManager { get; set; }

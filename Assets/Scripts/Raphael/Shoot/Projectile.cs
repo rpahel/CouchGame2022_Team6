@@ -105,7 +105,7 @@ public class Projectile : MonoBehaviour
             }
             else if (collision.gameObject.layer == LayerMask.NameToLayer("Destructible") || collision.gameObject.layer == LayerMask.NameToLayer("Indestructible"))
             {
-                if (CanSpawnCubeAt((Vector2)collision.transform.position + LevelGenerator.Instance.Echelle * collision.GetContact(0).normal))
+                if (CanSpawnCubeAt(PositionInNormalDirection(collision.transform.position, collision.GetContact(0).normal, LevelGenerator.Instance.Echelle)))
                     SpawnCube(collision);
                 else
                     Debug.Log("Not enough space to spawn cube.");
@@ -161,38 +161,26 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    //private void SpawnCube(Collider2D collider)
-    //{
-    //    Vector2 normal = (transform.position - collider.transform.position).normalized;
-    //    Vector2 targetPos = PositionInNormalDirection(collider.transform.position / LevelGenerator.Instance.Echelle, normal);
-    //    Transform targetTransform = LevelGenerator.Instance.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
-    //    Cube_Edible cube;
-    //    if (targetTransform.TryGetComponent(out cube))
-    //    {
-    //        cube.GetVomited((Vector2)collider.transform.position + normal);
-    //    }
-    //}
-
-    private Vector2 PositionInNormalDirection(Vector2 originalPos, Vector2 normal)
+    private Vector2 PositionInNormalDirection(Vector2 originalPos, Vector2 normal, float scale = 1f)
     {
         const float cos30 = 0.866f;
 
         if (normal.y > cos30 && (normal.x > -.5f && normal.x < .5f))                             
-            return originalPos + Vector2.up;            // N
+            return originalPos + Vector2.up * scale;            // N
         else if ((normal.x > .5f && normal.x < cos30) && (normal.y > .5f && normal.y < cos30))      
-            return originalPos + Vector2.one;           // NE
+            return originalPos + Vector2.one * scale;           // NE
         else if (normal.x > cos30 && (normal.y > -.5f && normal.y < .5f))                       
-            return originalPos + Vector2.right;         // E
+            return originalPos + Vector2.right * scale;         // E
         else if ((normal.x > .5f && normal.x < cos30) && (normal.y < -.5f && normal.y > -cos30))    
-            return originalPos + new Vector2(1, -1);    // SE
+            return originalPos + new Vector2(1, -1) * scale;    // SE
         else if (normal.y < -cos30 && (normal.x > -.5f && normal.x < .5f))                      
-            return originalPos + Vector2.down;          // S
+            return originalPos + Vector2.down * scale;          // S
         else if ((normal.x > -cos30 && normal.x < -.5f) && (normal.y < -.5f && normal.y > -cos30))  
-            return originalPos - Vector2.one;           // SW
+            return originalPos - Vector2.one * scale;           // SW
         else if (normal.x < -cos30 && (normal.y > -.5f && normal.y < .5f))                      
-            return originalPos + Vector2.left;          // W
+            return originalPos + Vector2.left * scale;          // W
         else if ((normal.x > -cos30 && normal.x < -.5f) && (normal.y > .5f && normal.y < cos30))    
-            return originalPos + new Vector2(-1, 1);    // NW
+            return originalPos + new Vector2(-1, 1) * scale;    // NW
         
         Debug.Log("Tu ne devrais pas voir ça.");
         return originalPos + Vector2.up;                // N
@@ -200,12 +188,17 @@ public class Projectile : MonoBehaviour
 
     bool CanSpawnCubeAt(Vector2 position)
     {
-        RaycastHit2D[] hits = GameManager.Instance.SquareCast(position, LevelGenerator.Instance.Echelle * .9f);
+        RaycastHit2D[] hits = GameManager.Instance.SquareCast(position, LevelGenerator.Instance.Echelle * .9f, true);
 
         foreach(RaycastHit2D hit in hits)
         {
             if (hit && hit.transform.gameObject.layer != LayerMask.NameToLayer("Projectile"))
             {
+                if(hit.transform.GetComponent<PlayerManager>() == owner)
+                {
+                    return true;
+                }
+
                 return false;
             }
         }
