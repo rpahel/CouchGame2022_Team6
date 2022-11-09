@@ -9,7 +9,9 @@ using Cinemachine;
 using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 using Quaternion = UnityEngine.Quaternion;
+using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
@@ -70,12 +72,15 @@ public class LevelGenerator : MonoBehaviour
     public Transform[,] CubesArray { get => cubesArray; private set => cubesArray = value; }
 
     private int coroutinesRunning = 0;
+
+    private List<TNT> allPaterns;
     #endregion
 
     #region Unity_Functions
     private void Awake()
     {
         cubesArray = new Transform[image.width, image.height];
+        allPaterns = new List<TNT>();
     }
 
     private void Start()
@@ -95,7 +100,7 @@ public class LevelGenerator : MonoBehaviour
 
             Vector3 randomPos = new Vector3(randX, randY, 0);
             
-            RaycastHit2D hit = Physics2D.CircleCast(randomPos,cubeTNT.transform.localScale.magnitude / 2,Vector3.right,cubeTNT.transform.localScale.magnitude / 2,1 << 3 | 1 << 6 | 1 << 8 | 1 << 10);
+            RaycastHit2D hit = Physics2D.CircleCast(randomPos,cubeTNT.transform.localScale.magnitude / 2,Vector3.right,cubeTNT.transform.localScale.magnitude / 2,1 << 3 | 1 << 6 | 1 << 8 | 1 << 10 | 1 << 11);
 
             while (hit.collider != null) {
                 randX = UnityEngine.Random.Range(0,ImageRef.width - 1);
@@ -103,11 +108,15 @@ public class LevelGenerator : MonoBehaviour
 
                 randomPos = new Vector3(randX, randY, 0);
                 
-                hit = Physics2D.CircleCast(randomPos,cubeTNT.transform.localScale.magnitude / 2,Vector3.right,cubeTNT.transform.localScale.magnitude / 2,1 << 3 | 1 << 6 | 1 << 8 | 1 << 10);
+                hit = Physics2D.CircleCast(randomPos,cubeTNT.transform.localScale.magnitude / 2,Vector3.right,cubeTNT.transform.localScale.magnitude / 2,1 << 3 | 1 << 6 | 1 << 8 | 1 << 10 | 1 << 11);
             }
             
-            GameObject tnt = Instantiate(cubeTNT, randomPos, Quaternion.identity);
+            GameObject tnt = Instantiate(cubeTNT, randomPos, Quaternion.identity,parentObjCubes.transform);
             tnt.transform.localScale = Vector3.one * echelle;
+            AssignRandomPattern(tnt.GetComponent<Cube_TNT>());
+            
+            foreach(Vector3 vec in tnt.GetComponent<Cube_TNT>().pattern.pattern)
+                Debug.Log("vec " + vec);
         }
     }
     
@@ -141,6 +150,12 @@ public class LevelGenerator : MonoBehaviour
             for (int j = 0; j < image.width; j++)
             {
                 Color pixColor = image.GetPixel(j, i);
+                
+                
+                if(pixColor != Color.green && pixColor != Color.black && pixColor != Color.red && pixColor != Color.blue && pixColor != Color.white)
+                    Debug.Log("color " + pixColor + " model " + new Color(1,1,0,1f));
+                
+                
                 if (pixColor == Color.green)
                 {
                     CreateCubeOnPlay(cubeEdible, parentObjCubes.transform, i, j);
@@ -152,6 +167,10 @@ public class LevelGenerator : MonoBehaviour
                 else if (pixColor == Color.red)
                 {
                     CreateCubeOnPlay(cubeTrap, parentObjCubes.transform, i, j);
+                }
+                else if (pixColor == new Color(1f,1f,0,1f))
+                {
+                    CreateCubeOnPlay(cubeTNT,parentObjCubes.transform,i,j);
                 }
                 else if (pixColor == Color.blue)
                 {
@@ -170,6 +189,8 @@ public class LevelGenerator : MonoBehaviour
                 }
             }
         }
+        
+        FindTNTPatterns();
     }
 
 
@@ -301,7 +322,7 @@ public class LevelGenerator : MonoBehaviour
         {
             for (int j = 0; j < image.width; ++j)
             {
-                Cube_Edible tempCube;
+                CubeDestroyable tempCube;
                 if (cubesArray[j, i] != null && cubesArray[j, i].TryGetComponent(out tempCube))
                 {
                     tempCube.InitCubes();
@@ -347,6 +368,15 @@ public class LevelGenerator : MonoBehaviour
 
         coroutinesRunning--;
     }
+
+    private void FindTNTPatterns() {
+        foreach (TNT tntComp in GetComponents<TNT>()) 
+            allPaterns.Add(tntComp);
+        
+    }
+
+    private void AssignRandomPattern(Cube_TNT cube) => cube.pattern = allPaterns[Random.Range(0, allPaterns.Count - 1)];
+    
 
     //public void PrintLevelAscii()
     //{

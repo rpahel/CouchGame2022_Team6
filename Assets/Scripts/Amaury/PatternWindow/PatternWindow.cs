@@ -9,7 +9,7 @@ using UnityEditor.UIElements;
 public class PatternWindow : EditorWindow {
 
     public Vector2[] pattern = new Vector2[9];
-    public Cube_TNT currentTNT;
+    public TNT currentTNT;
     
     private VisualElement root;
 
@@ -80,7 +80,7 @@ public class PatternWindow : EditorWindow {
 
         currentTNT.pattern = pattern;
         
-        PrefabUtility.SavePrefabAsset(currentTNT.gameObject,out bool result);
+       // PrefabUtility.SavePrefabAsset(currentTNT.gameObject,out bool result);
     }
 
     private Vector2 CalculateVector(int position) {

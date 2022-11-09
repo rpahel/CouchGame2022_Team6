@@ -6,25 +6,24 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 
-[CustomEditor(typeof(Cube_TNT))]
+[CustomEditor(typeof(TNT))]
 public class TNTEditor : Editor {
     
-    private Cube_TNT instance;
+    private TNT instance;
+ 
+    
     private void OnEnable() {
-        instance = (Cube_TNT)target;
+        instance = (TNT)target;
     }
 
     public override void OnInspectorGUI() {
-
-        //DrawDefaultInspector();
-
+    
         if (GUILayout.Button("Pattern")) {
             PatternWindow window = EditorWindow.GetWindow<PatternWindow>();
             window.currentTNT = instance;
             window.pattern = instance.pattern;
             window.Show();
         }
-       
-        
+
     }
 }

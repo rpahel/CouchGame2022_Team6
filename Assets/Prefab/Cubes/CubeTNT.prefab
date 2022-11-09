@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2244665003739675122}
   - component: {fileID: 5603943904997600324}
   - component: {fileID: 6488855553638085339}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 1530385579373162660}
   - component: {fileID: 8823583709522651255}
   - component: {fileID: 9053113251251134701}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Reste_Bas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,7 +204,7 @@ GameObject:
   - component: {fileID: 6830470536867788078}
   - component: {fileID: 561734028739128158}
   - component: {fileID: 2167237912663631083}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Reste_Haut
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,10 +285,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2683171982362619908}
-  - component: {fileID: -935960027702243069}
-  m_Layer: 6
+  - component: {fileID: -7543414153631485186}
+  m_Layer: 11
   m_Name: CubeTNT
-  m_TagString: CubeEdible
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -313,7 +313,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-935960027702243069
+--- !u!114 &-7543414153631485186
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -328,6 +328,10 @@ MonoBehaviour:
   cubeType: 4
   cube: {fileID: 382355189999240785}
   unscaledPosition: {x: 0, y: 0}
+  loot: {fileID: 0}
+  doScaleExplodeTiming: 0.5
+  rotateOnExplode: 1
+  pattern: {fileID: 0}
 --- !u!1 &3568222346686025698
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,7 +343,7 @@ GameObject:
   - component: {fileID: 1480114690799475490}
   - component: {fileID: 6364502348628701369}
   - component: {fileID: 8485777689600932716}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Rest_Droite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -422,7 +426,7 @@ GameObject:
   - component: {fileID: 6340218916854017474}
   - component: {fileID: 5319191051740183612}
   - component: {fileID: 1707639694018172268}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Rest_Gauche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
