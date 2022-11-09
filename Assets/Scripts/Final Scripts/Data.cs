@@ -20,13 +20,41 @@ namespace Data
         WallJumping,
         Moving,
         Falling,
-        KOCKBACK
+        KNOCKBACKED,
+        STUNNED,
+        Dead,
     }
-        
+
     public enum SwitchSizeSkin
     {
         Little,
         Medium,
         Big
     }  
+    public enum LEVEL_STATE
+    {
+        NONE,
+        INITIALISING,
+        LOADING,
+        LOADED
+    }
+    public enum GAME_STATE
+    {
+        NONE,
+        MENU,
+        LOADING,
+        PLAYING,
+        END
+    }
+    public enum DashType
+    {
+        Normal,
+        Infinite,
+    }
+
+    public enum DashLoading
+    {
+        IncreaseWidth,
+        IncreaseLength,
+    }
 }

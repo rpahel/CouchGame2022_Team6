@@ -11,6 +11,8 @@ public class Cube_Edible : Cube
 
     private List<Cube> cubesAutour = new List<Cube>(4);
     public List<Cube> CubesAutour { get => cubesAutour; set => cubesAutour = value; }
+    
+    
 
 
     [Header("Effect")] 
@@ -19,27 +21,34 @@ public class Cube_Edible : Cube
     [SerializeField] private float doScaleExplodeTiming = 0.5f;
     [SerializeField] private bool rotateOnExplode = true;
 
-    private void Start()
+    /// <summary>
+    /// Regarde les cubes qu'il y a autour et les ajoute à la liste cubesAutour
+    /// </summary>
+    public void InitCubes(int width, int height)
     {
-        InitCubes();
-    }
+        Vector3 dir;
+        Vector2 targetPos;
+        Transform targetCubeTransform;
 
-    protected void InitCubes()
-    {
         for (int i = 0; i < 4; i++)
         {
             cubesAutour.Add(null);
 
-            Vector3 dir = Quaternion.Euler(0, 0, -90 * i) * Vector3.up;
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, transform.localScale.x);
-            if (hit)
+            dir = Quaternion.Euler(0, 0, -90 * i) * Vector3.up;
+
+            targetPos = unscaledPosition + (Vector2)dir;
+            targetCubeTransform = GameManager.Instance.LevelGenerator.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
+
+            if (targetCubeTransform)
             {
-                Cube cubeClone;
-                if (hit.transform.parent && hit.transform.parent.TryGetComponent<Cube>(out cubeClone))
-                {
-                    cubesAutour[i] = cubeClone;
-                }
+                cubesAutour[i] = targetCubeTransform.GetComponent<Cube>();
             }
+        }
+
+        if (!gameObject.activeSelf)
+        {
+            GetManged(null, false);
+            gameObject.SetActive(true);
         }
     }
 
@@ -58,6 +67,58 @@ public class Cube_Edible : Cube
 
     }
 
+    public void GetManged(Transform playerTransform = null, bool showRestes = true)
+    {
+        isManged = true;
+
+        // Signale aux cubes voisins que ce cube s'est fait mangé
+        for (int i = 0; i < 4; i++)
+        {
+            if (cubesAutour[i] && cubesAutour[i].CubeType == CUBETYPE.EDIBLE)
+            {
+                (cubesAutour[i] as Cube_Edible).VoisinGotManged((i + 2) % 4);
+            }
+        }
+
+        if (!playerTransform)
+            cube.SetActive(false);
+
+        // Fais apparaitre les restes en fonction des cubes voisins qui sont toujours là
+        if (showRestes)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (cubesAutour[i] && !cubesAutour[i].IsManged)
+                {
+                    restes[i].SetActive(true);
+                }
+            }
+        }
+
+        if (playerTransform)
+        {
+            cube.transform.parent = null;
+            cube.GetComponent<Collider2D>().enabled = false;
+
+            //StartCoroutine(Aspiration(cube, playerTransform));
+        }
+    }
+
+    public void GetVomited(Vector2 impactPos)
+    {
+        foreach (GameObject reste in restes)
+        {
+            reste.SetActive(false);
+        }
+
+        cube.transform.localScale = Vector3.one;
+        cube.transform.rotation = Quaternion.Euler(Vector3.zero);
+        cube.SetActive(true);
+        isManged = false;
+
+        //StartCoroutine(VomitedAnimation(impactPos));
+    }
+
     private IEnumerator EatEffect(EatScript eat)
     {
         transform.GetChild(0).GetComponent<BoxCollider2D>().enabled = false;
@@ -69,7 +130,7 @@ public class Cube_Edible : Cube
         // Fais apparaitre les restes en fonction des cubes voisins qui sont toujours là
         for (int i = 0; i < 4; i++)
         {
-            if (cubesAutour[i] && !cubesAutour[i].isManged())
+            if (cubesAutour[i] && !cubesAutour[i].IsManged)
             {
                 restes[i].SetActive(true);
             }
@@ -123,7 +184,7 @@ public class Cube_Edible : Cube
         // Fais apparaitre les restes en fonction des cubes voisins qui sont toujours là
         for (int i = 0; i < 4; i++)
         {
-            if (cubesAutour[i] && !cubesAutour[i].isManged())
+            if (cubesAutour[i] && !cubesAutour[i].IsManged)
             {
                 restes[i].SetActive(true);
             }

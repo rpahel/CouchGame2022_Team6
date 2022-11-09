@@ -5,7 +5,7 @@ public class DashTrigger : MonoBehaviour
 {
     private ScaleEat _scaleEat;
     private PlayerManager _playerManager;
-    private Movement _movement;
+    private PlayerMovement _movement;
 
     [SerializeField] private float DamageBigEat = 0.4f;
     [SerializeField] private float DamageMediumEat = 0.4f;
@@ -13,20 +13,23 @@ public class DashTrigger : MonoBehaviour
     {
         _scaleEat = GetComponentInParent<ScaleEat>();
         _playerManager = GetComponentInParent<PlayerManager>();
-        _movement = GetComponentInParent<Movement>();
+        _movement = GetComponentInParent<PlayerMovement>();
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (_playerManager.State == PlayerState.Dashing)
+        if (_playerManager.State != PlayerState.Dashing) return;
+        
+        if (other.GetComponent<Collider2D>().CompareTag("CubeEdible"))
         {
-            if (other.GetComponent<Collider2D>().CompareTag("CubeEdible"))
+            Debug.Log("HitCubeEdible");
+            other.gameObject.GetComponentInParent<Cube_Edible>().OnExploded();
+        }
+        else if (other.GetComponent<Collider2D>().CompareTag("Player") && _movement._canHit)
+        {
+            Debug.Log("HitPlayer");
+            var pj = other.gameObject.GetComponent<PlayerManager>();
+            if(pj.State != PlayerState.Dead)
             {
-                Debug.Log("HitCubeEdible");
-                other.gameObject.GetComponentInParent<Cube_Edible>().OnExploded();
-            }
-            else if (other.GetComponent<Collider2D>().CompareTag("Player") && _movement._canHit)
-            {
-                PlayerManager pj = other.gameObject.GetComponent<PlayerManager>();
                 switch (pj.SwitchSkin)
                 {
                     case SwitchSizeSkin.Big:
@@ -37,6 +40,7 @@ public class DashTrigger : MonoBehaviour
                         break;
                     case SwitchSizeSkin.Little:
                         Debug.LogError("Dead");
+                        pj.SetDead2();
                         break;
                 }
 

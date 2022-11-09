@@ -12,7 +12,7 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerConfiguration _playerConfig;
     [SerializeField] private MeshRenderer playerMesh;
 
-    public float _holdCooldown;
+    public float HoldCooldown { get; private set; }
     public bool _canHoldCooldown;
 
     
@@ -20,21 +20,17 @@ public class PlayerInputHandler : MonoBehaviour
     [Header("Scripts")]
     private PlayerMovement _movement;
     private PlayerManager _playerManager;
-    private ShootProjectile _shootProjectile;
-    //private Eat _eat;
+    //private ShootProjectile _shootProjectile;
+    private PlayerShootRaph _shootProjectile;
     [SerializeField] private EatScript _eat;
     private PlayerControls _controls;
     private ToolsManager _toolsManager;
 
-    [Header("VariablesEat")]
-    [SerializeField] private float MaxHoldLooseEat = 0.7f;
-    [SerializeField] private float MediumHoldLooseEat = 0.7f;
-    [SerializeField] private float MinHoldLooseEat = 0.7f;
     private void Awake()
     {
         _playerManager = gameObject.GetComponent<PlayerManager>();
         _movement = GetComponent<PlayerMovement>();
-        _shootProjectile = gameObject.GetComponent<ShootProjectile>();
+        _shootProjectile = gameObject.GetComponent<PlayerShootRaph>();
         //_eat = GetComponent<eatTest>();
         _controls = new PlayerControls();
         _toolsManager = gameObject.GetComponent<ToolsManager>();
@@ -117,7 +113,7 @@ public class PlayerInputHandler : MonoBehaviour
     private void OnShoot(CallbackContext context)
     {
         if (_shootProjectile != null && context.canceled) 
-            _shootProjectile.Shoot();
+            _shootProjectile.OnShoot(_playerManager.InputVector.normalized);
     }
 
     private void OnAim(CallbackContext context)
@@ -148,18 +144,10 @@ public class PlayerInputHandler : MonoBehaviour
         {
             if (_movement._canDash == true)
             {
-                if (_canHoldCooldown && _holdCooldown <= 0.99f)
-                {
-                    _movement.Dash();
-                    _playerManager.eatAmount -= MinHoldLooseEat;
-                    ResetCooldown();
-                }
-                else if (_holdCooldown >= 1f && _canHoldCooldown)
-                {
-                    _movement.Dash();
-                    _playerManager.eatAmount -= MediumHoldLooseEat;
-                    ResetCooldown();
-                } 
+                if (!_canHoldCooldown) return;
+                
+                _movement.Dash(HoldCooldown);
+                ResetCooldown();
             }
             else
             {
@@ -172,20 +160,22 @@ public class PlayerInputHandler : MonoBehaviour
     private void Update()
     {
         if (_canHoldCooldown)
-            _holdCooldown += Time.deltaTime;
-
-        if (_holdCooldown >= 2f)
-        {
-            _movement.Dash();
-            ResetCooldown();
-        }
-
+            HoldCooldown += Time.deltaTime;
     }
 
     private void ResetCooldown()
     {
         _canHoldCooldown = false;
-        _holdCooldown = 0f;
+        HoldCooldown = 0f;
     }
 
+    public void DisableInputs()
+    {
+        _controls.Disable();
+    }
+
+    public void EnableInputs()
+    {
+        _controls.Enable();
+    }
 }

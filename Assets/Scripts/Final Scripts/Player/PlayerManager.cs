@@ -9,6 +9,9 @@ using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
+    private PlayerInputHandler _inputs;
+    private Rigidbody2D _rb;
+
     [field: Header("Player State")]
     public PlayerState State { get; private set; }
 
@@ -16,8 +19,12 @@ public class PlayerManager : MonoBehaviour
 
     public float eatAmount;
 
-    private float _maxEatValue = 1;
-    public float maxEatValue => _maxEatValue;
+    private const float maxEatValue = 1;
+    public float MaxEatValue => maxEatValue;
+
+    private const float maxScale = 2.857143f;
+
+    public float MaxScale => maxScale;
     
     public SwitchSizeSkin SwitchSkin  { get; private set; }
     
@@ -30,7 +37,9 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
-        eatAmount = maxEatValue/2;
+        eatAmount = MaxEatValue/2;
+        _inputs = GetComponent<PlayerInputHandler>();
+        _rb = GetComponent<Rigidbody2D>();
     }
 
     private void Start()
@@ -56,5 +65,46 @@ public class PlayerManager : MonoBehaviour
     public void SetCanEat(bool result)
     {
         _canEat = result;
+    }
+
+    public void EnableInputs()
+    {
+        _inputs.EnableInputs();
+    }
+    public void DisableInputs()
+    {
+        _inputs.DisableInputs();
+    }
+
+    public void ResetPlayer()
+    {
+        eatAmount = MaxEatValue/2;
+    }
+
+    [ContextMenu("SetDead")]
+    public void SetDead()
+    {
+        State = PlayerState.Dead;
+        //GameManager.Instance.gameObject.GetComponent<RespawnPlayer>().Respawn(gameObject);
+    }
+
+    [ContextMenu("SetDead2")]
+    public void SetDead2()
+    {
+        State = PlayerState.Dead;
+        GameManager.Instance.RespawnPlayer(gameObject);
+    }
+
+    public void OnDamage<T>(T damageDealer, int damage, Vector2 knockBackForce)
+    {
+        eatAmount -= damage; //Div damage par 100
+
+        _rb.AddForce(knockBackForce, ForceMode2D.Impulse);
+        State = PlayerState.KNOCKBACKED;
+    }
+
+    public void OnDamage<T>(T damageDealer, int damage)
+    {
+        eatAmount -= damage; //Div damage par 100
     }
 }
