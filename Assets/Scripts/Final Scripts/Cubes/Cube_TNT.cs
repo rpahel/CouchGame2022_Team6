@@ -8,6 +8,8 @@ using Unity.VisualScripting;
 public class Cube_TNT : CubeDestroyable {
     
     public TNT pattern;
+    [Range(0, 100)] 
+    public float damageEat;
 
     public void Explode(Transform colParent) {
         foreach (Vector2 dir in pattern.pattern) {
@@ -20,6 +22,12 @@ public class Cube_TNT : CubeDestroyable {
                     if (c.gameObject != this.gameObject && c is Cube_TNT)
                       ((Cube_TNT)c).Explode(c.transform);
                 }
+
+                RaycastHit2D hit = Physics2D.Raycast(colParent.position, direction, 1000, 1 << 3);
+
+                if (hit.collider != null)
+                    hit.collider.GetComponent<PlayerManager>().eatAmount -= damageEat / 100;
+
             }
         }
     }

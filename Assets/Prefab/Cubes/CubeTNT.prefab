@@ -332,6 +332,7 @@ MonoBehaviour:
   doScaleExplodeTiming: 0.5
   rotateOnExplode: 1
   pattern: {fileID: 0}
+  damageEat: 10
 --- !u!1 &3568222346686025698
 GameObject:
   m_ObjectHideFlags: 0

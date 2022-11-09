@@ -110,13 +110,12 @@ public class LevelGenerator : MonoBehaviour
                 
                 hit = Physics2D.CircleCast(randomPos,cubeTNT.transform.localScale.magnitude / 2,Vector3.right,cubeTNT.transform.localScale.magnitude / 2,1 << 3 | 1 << 6 | 1 << 8 | 1 << 10 | 1 << 11);
             }
+            // Soucis ca peut spawn vrm tous au  mm endroit et faire bizarre
             
             GameObject tnt = Instantiate(cubeTNT, randomPos, Quaternion.identity,parentObjCubes.transform);
             tnt.transform.localScale = Vector3.one * echelle;
             AssignRandomPattern(tnt.GetComponent<Cube_TNT>());
             
-            foreach(Vector3 vec in tnt.GetComponent<Cube_TNT>().pattern.pattern)
-                Debug.Log("vec " + vec);
         }
     }
     
@@ -141,6 +140,7 @@ public class LevelGenerator : MonoBehaviour
         parentObjSpawns.transform.parent = transform;
         
         
+        FindTNTPatterns();
         
 
         // Check la couleur de chaque pixel dans l'image et fait spawn un cube aux coordonn�es correspondantes
@@ -170,7 +170,8 @@ public class LevelGenerator : MonoBehaviour
                 }
                 else if (pixColor == new Color(1f,1f,0,1f))
                 {
-                    CreateCubeOnPlay(cubeTNT,parentObjCubes.transform,i,j);
+                    GameObject obj = CreateCubeOnPlay(cubeTNT,parentObjCubes.transform,i,j);
+                    AssignRandomPattern(obj.GetComponent<Cube_TNT>());
                 }
                 else if (pixColor == Color.blue)
                 {
@@ -190,11 +191,10 @@ public class LevelGenerator : MonoBehaviour
             }
         }
         
-        FindTNTPatterns();
     }
 
 
-    void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width)
+    GameObject CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width)
     {
         GameObject cube = Instantiate(cubeToCreate, new Vector3(width, height, 0) * echelle, Quaternion.identity);
         cube.GetComponent<Cube>().unscaledPosition = new Vector2(width, height);
@@ -203,6 +203,8 @@ public class LevelGenerator : MonoBehaviour
         cube.transform.parent = parentObj;
         //cubesArray[height, width] = cube.transform;
         cubesArray[width, height] = cube.transform;
+
+        return cube;
     }
     #endregion
 
@@ -375,7 +377,7 @@ public class LevelGenerator : MonoBehaviour
         
     }
 
-    private void AssignRandomPattern(Cube_TNT cube) => cube.pattern = allPaterns[Random.Range(0, allPaterns.Count - 1)];
+    private void AssignRandomPattern(Cube_TNT cube) => cube.pattern = allPaterns[Random.Range(0, allPaterns.Count)];
     
 
     //public void PrintLevelAscii()

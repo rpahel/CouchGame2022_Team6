@@ -31,6 +31,7 @@ public class PlayerManager : MonoBehaviour
     private void Awake()
     {
         eatAmount = maxEatValue/2;
+        eatAmount = 0.1f;
     }
 
     private void Start()
