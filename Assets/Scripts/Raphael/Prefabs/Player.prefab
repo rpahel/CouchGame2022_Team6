@@ -303,6 +303,7 @@ GameObject:
   - component: {fileID: 6906842354963131351}
   - component: {fileID: 1293963572987568439}
   - component: {fileID: 2990907069813645592}
+  - component: {fileID: -3623799545061017393}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -495,6 +496,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: fd700e65-f6b9-42f0-b82a-69b23ae65c14
     m_ActionName: Game/Shoot
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a0bdb637-8780-48c9-ad17-06545e42832d
+    m_ActionName: Game/Special[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: GamePad
   m_DefaultActionMap: Game
@@ -583,6 +588,21 @@ MonoBehaviour:
   forceDuRebond: 1
   pourcentageInflige: 20
   knockBackForce: 50
+--- !u!114 &-3623799545061017393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3784764394035868596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbc7df21e43a6da48966236c26992211, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dureeAvantChargeMax: 3
+  distanceMin: 10
+  distanceMax: 40
 --- !u!1 &8273371953776669671
 GameObject:
   m_ObjectHideFlags: 0

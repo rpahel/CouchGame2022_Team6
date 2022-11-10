@@ -9,22 +9,11 @@ namespace Data
         BEDROCK
     }
     #endregion
-    #region PlayerState
-    public enum PlayerState
-    {
-        Aiming,
-        Shooting,
-        Dashing,
-        WallJumping,
-        Moving,
-    }
-    #endregion
     #region PLAYER_STATE
     public enum PLAYER_STATE
     {
         WALKING,
         FALLING,
-        DASHING,
         SHOOTING,
         KNOCKBACKED,
         STUNNED,

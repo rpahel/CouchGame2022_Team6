@@ -14,6 +14,7 @@ public class PlayerManager : MonoBehaviour
     private PlayerInputs pInputs;
     private PlayerShoot pShoot;
     private PlayerEat pEat;
+    private PlayerSpecial pDash;
 
     // Getter
     public Rigidbody2D Rb2D => rb2D;
@@ -22,6 +23,7 @@ public class PlayerManager : MonoBehaviour
     public PlayerInputs PInputs => pInputs;
     public PlayerShoot PShoot => pShoot;
     public PlayerEat PEat => pEat;
+    public PlayerSpecial PDash => pDash;
     #endregion
 
     #region Variables
@@ -103,6 +105,7 @@ public class PlayerManager : MonoBehaviour
         TryGetPlayerComponent(out pEat);
         TryGetPlayerComponent(out pInputs);
         TryGetPlayerComponent(out pShoot);
+        TryGetPlayerComponent(out pDash);
     }
 
     private void SetManagerInComponents()
@@ -111,6 +114,7 @@ public class PlayerManager : MonoBehaviour
         pEat.PManager = this;
         pInputs.PManager = this;
         pShoot.PManager = this;
+        pDash.PManager = this;
     }
 
     public void OnDamage<T>(T damageDealer, int damage, Vector2 knockBackForce)

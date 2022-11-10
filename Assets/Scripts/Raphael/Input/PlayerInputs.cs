@@ -1,3 +1,4 @@
+using Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,9 +7,6 @@ public class PlayerInputs : MonoBehaviour
     #region Autres Scripts
     //============================
     public PlayerManager PManager { get; set; }
-    #endregion
-
-    #region Unity_Functions
     #endregion
 
     #region Customs_Functions
@@ -57,6 +55,25 @@ public class PlayerInputs : MonoBehaviour
     public void Aim(InputAction.CallbackContext input)
     {
         PManager.AimDirection = input.ReadValue<Vector2>().normalized;
+    }
+
+    public void Special(InputAction.CallbackContext input)
+    {
+        if (PManager.PlayerState == PLAYER_STATE.STUNNED)
+            return;
+
+        if (PManager.PlayerState == PLAYER_STATE.SHOOTING)
+            return;
+
+        if (input.performed)
+        {
+            //#
+        }
+
+        if (input.canceled)
+        {
+            //#
+        }
     }
     #endregion
 }
