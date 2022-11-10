@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerConfigurationManager : MonoBehaviour
 {
@@ -14,6 +15,12 @@ public class PlayerConfigurationManager : MonoBehaviour
     [SerializeField] private int maxPlayers = 4;
 
     public static PlayerConfigurationManager Instance { get; private set; }
+    
+    
+    //======================================= UI LOADING
+    [SerializeField] private GameObject loadingScreen;
+    [SerializeField] private GameObject playersLayout;
+    [SerializeField] private Slider loadingSlider;
 
     private void Awake()
     {
@@ -45,8 +52,23 @@ public class PlayerConfigurationManager : MonoBehaviour
 
         if (_playerConfigs.Count >= minPlayers && _playerConfigs.Count <= maxPlayers && _playerConfigs.All(p => p.IsReady == true ))
         {
-            SceneManager.LoadScene("J_TestMultiplayer");
+            playersLayout.SetActive(false);
+            loadingScreen.SetActive(true);
+            StartCoroutine(LoadAsynchronously(1));
         }
+    }
+
+    private IEnumerator LoadAsynchronously(int index)
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(index);
+        
+        while (!operation.isDone)
+        {
+            float progress = Mathf.Clamp01(operation.progress / 0.9f);
+            loadingSlider.value = progress;
+            yield return null;
+        }
+        
     }
 
     public void HandlePlayerJoin(PlayerInput pi)

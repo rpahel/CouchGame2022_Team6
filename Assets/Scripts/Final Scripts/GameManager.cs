@@ -22,11 +22,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _playerPrefab;
 
     private PlayersManager _playersManager;
+    
+    //============================ Game Options
+    [SerializeField] private float gameDuration;
+    [SerializeField] private float counterBeforeGame;
 
     public LevelGenerator LevelGenerator => _levelGenerator;
     public CinemachineTargetGroup CinemachineTargetGroup => _cinemachine;
     public GameObject[] PlayersUI => _playersUI;
     public GameObject PlayerPrefab => _playerPrefab;
+    
+    //============================ Game Animator UI
+
+    [SerializeField] private Animator animatorUI;
 
     //============================ Projectile
     [Header("Donn�es")]
