@@ -9,7 +9,6 @@ public class PlayerShootRaph : MonoBehaviour
     #region Autres Scripts
     //============================
     private PlayerManager _playerManager;
-    private PlayerMovement _playerMovement;
     #endregion
 
     #region Variables
@@ -34,16 +33,13 @@ public class PlayerShootRaph : MonoBehaviour
 
     //============================
     private float raycastRange;
-    private float limitDistance;
     #endregion
 
     #region Unity_Functions
     private void Start()
     {
         _playerManager = GetComponent<PlayerManager>();
-        _playerMovement = GetComponent<PlayerMovement>();
         raycastRange = GameManager.Instance.LevelGenerator.Echelle * 4;
-        limitDistance = 1.5f * GameManager.Instance.LevelGenerator.Echelle;
     }
     #endregion
 
