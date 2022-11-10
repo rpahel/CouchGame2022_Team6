@@ -95,6 +95,7 @@ public class PlayerShoot : MonoBehaviour
         projectile.forceDuRebond = forceDuRebond;
         projectile.pourcentageInflige = pourcentageInflige;
         projectile.knockBackForce = knockBackForce;
+        projectile.ownerVelocityAtLaunch = PManager.Rb2D.velocity;
 
         //ApplyShootOppositeForce(aimDirection);
 
@@ -143,22 +144,22 @@ public class PlayerShoot : MonoBehaviour
         Vector2 rayOrigin = (Vector2)transform.position + (Vector2)(Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, aimDirection) - 90f) * (.5f * Vector2.right));
         RaycastHit2D hit1 = Physics2D.Raycast(rayOrigin, aimDirection, raycastRange);
 
-        #if UNITY_EDITOR
-            if (!hit1)
-                Debug.DrawRay(rayOrigin, aimDirection * raycastRange, Color.red, 5f);
-            else
-                Debug.DrawLine(rayOrigin, hit1.point, Color.red, 5f);
-        #endif
+        //#if UNITY_EDITOR
+        //    if (!hit1)
+        //        Debug.DrawRay(rayOrigin, aimDirection * raycastRange, Color.red, 5f);
+        //    else
+        //        Debug.DrawLine(rayOrigin, hit1.point, Color.red, 5f);
+        //#endif
 
         rayOrigin = (Vector2)transform.position - (Vector2)(Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, aimDirection) - 90f) * (.5f * Vector2.right));
         RaycastHit2D hit2 = Physics2D.Raycast(rayOrigin, aimDirection, raycastRange);
 
-        #if UNITY_EDITOR
-            if(!hit2)
-                Debug.DrawRay(rayOrigin, aimDirection * raycastRange, Color.red, 5f);
-            else
-                Debug.DrawLine(rayOrigin, hit2.point, Color.red, 5f);
-        #endif
+        //#if UNITY_EDITOR
+        //    if(!hit2)
+        //        Debug.DrawRay(rayOrigin, aimDirection * raycastRange, Color.red, 5f);
+        //    else
+        //        Debug.DrawLine(rayOrigin, hit2.point, Color.red, 5f);
+        //#endif
 
         RaycastHit2D winnerHit;
 

@@ -24,6 +24,7 @@ public class Projectile : MonoBehaviour
     [HideInInspector] public float forceDuRebond;
     [HideInInspector] public int pourcentageInflige;
     [HideInInspector] public float knockBackForce;
+    [HideInInspector] public Vector2 ownerVelocityAtLaunch;
     #endregion
 
     #region Unity_Functions
@@ -204,16 +205,16 @@ public class Projectile : MonoBehaviour
                 {
                     if (hasHurt) return false;
 
-                    if(ClosestAxis(impactedCubeToOwner).x == 0)
+                    if(ClosestAxis(impactedCubeToOwner, true).x == 0)
                     {
-                        Debug.DrawRay(position, impactedCubeToOwner, Color.blue, 5f);
-                        Vector2 safe = position + (owner.PCollider.bounds.extents.y + .5f * LevelGenerator.Instance.Echelle) * ClosestAxis(impactedCubeToOwner);
+                        Debug.DrawRay((Vector2)owner.transform.position - impactedCubeToOwner, impactedCubeToOwner, Color.blue, 5f);
+                        Vector2 safe = position + (owner.PCollider.bounds.extents.y + .5f * LevelGenerator.Instance.Echelle) * ClosestAxis(impactedCubeToOwner, true);
                         owner.PousseToiVers(safe + new Vector2(owner.transform.position.x - safe.x, 0));
                     }
                     else
                     {
-                        Debug.DrawRay(position, impactedCubeToOwner, Color.blue, 5f);
-                        Vector2 safe = position + (owner.PCollider.bounds.extents.x + .5f * LevelGenerator.Instance.Echelle) * ClosestAxis(impactedCubeToOwner);
+                        Debug.DrawRay((Vector2)owner.transform.position - impactedCubeToOwner, impactedCubeToOwner, Color.blue, 5f);
+                        Vector2 safe = position + (owner.PCollider.bounds.extents.x + .5f * LevelGenerator.Instance.Echelle) * ClosestAxis(impactedCubeToOwner, true);
                         owner.PousseToiVers(safe + new Vector2(0, owner.transform.position.y - safe.y));
                     }
 
@@ -253,7 +254,7 @@ public class Projectile : MonoBehaviour
         return Vector2.up;
     }
 
-    Vector2 ClosestAxis(Vector2 direction, bool predictUsingOwnerVelocity = false) // TODO : Retourne un vecteur différent en fonction de la vélocité de l'owner pour une meme direction
+    Vector2 ClosestAxis(Vector2 direction, bool predictUsingOwnerVelocity = false)
     {
         if (!predictUsingOwnerVelocity)
         {
@@ -270,7 +271,42 @@ public class Projectile : MonoBehaviour
         }
         else
         {
-            throw new Exception("Not implemented yet.");
+            direction = ApproxNormal(direction);
+            Debug.DrawRay(owner.transform.position, ownerVelocityAtLaunch.normalized * 4f, Color.magenta, 5f);
+            Debug.Log(ownerVelocityAtLaunch);
+            if(ownerVelocityAtLaunch == Vector2.zero) { ownerVelocityAtLaunch = Vector2.down; }
+            Vector2 ownerVelocity = ClosestAxis(ownerVelocityAtLaunch);
+            Debug.DrawRay(owner.transform.position, ownerVelocity * 4f, Color.yellow, 5f);
+
+            if(direction == Vector2.up || direction == Vector2.down || direction == Vector2.left || direction == Vector2.right)
+            {
+                if (ownerVelocity == Vector2.left || ownerVelocity == Vector2.right) return ownerVelocity == Vector2.left ? Vector2.right : Vector2.left;
+                else if (ownerVelocity == Vector2.down || ownerVelocity == Vector2.up) return ownerVelocity == Vector2.down ? Vector2.up : Vector2.down;
+            }
+            else if (direction == Vector2.one)
+            {
+                if(ownerVelocity == Vector2.left) return Vector2.right;
+                else if(ownerVelocity == Vector2.down) return Vector2.up;
+            }
+            else if(direction == -Vector2.one)
+            {
+                if (ownerVelocity == Vector2.right) return Vector2.left;
+                else if (ownerVelocity == Vector2.up) return Vector2.down;
+            }
+            else if(direction == new Vector2(1, -1))
+            {
+                if (ownerVelocity == Vector2.left) return Vector2.right;
+                else if (ownerVelocity == Vector2.up) return Vector2.down;
+            }
+            else if(direction == new Vector2(-1, 1))
+            {
+                if (ownerVelocity == Vector2.right) return Vector2.left;
+                else if (ownerVelocity == Vector2.down) return Vector2.up;
+            }
+
+            // C'est pas censé arriver là mais au cas où je mets ça là
+            if (ownerVelocity == Vector2.left || ownerVelocity == Vector2.right) return ownerVelocity == Vector2.left ? Vector2.right : Vector2.left;
+            else return ownerVelocity == Vector2.down ? Vector2.up : Vector2.down;
         }
     }
     #endregion
