@@ -69,10 +69,12 @@ public class PlayerManager : MonoBehaviour
 
     public void EnableInputs()
     {
+        Debug.Log("Enable");
         _inputs.EnableInputs();
     }
     public void DisableInputs()
     {
+        Debug.Log("Disable");
         _inputs.DisableInputs();
     }
 

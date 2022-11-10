@@ -35,6 +35,7 @@ public class PlayersManager : MonoBehaviour
             player.GetComponent<PlayerInputHandler>().InitializePlayer(playerConfigs[i]);
             manager.CinemachineTargetGroup.m_Targets[i].target = player.transform;
             manager.CinemachineTargetGroup.m_Targets[i].weight = 1;
+            player.GetComponent<PlayerManager>().DisableInputs();
         }
     }
 

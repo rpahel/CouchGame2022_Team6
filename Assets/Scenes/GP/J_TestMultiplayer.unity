@@ -2029,6 +2029,11 @@ PrefabInstance:
       objectReference: {fileID: 1791635878}
     - target: {fileID: 114055375776213089, guid: 6221fedd0c0c0874eb7b6555a4cf9fb5,
         type: 3}
+      propertyPath: gameDuration
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 114055375776213089, guid: 6221fedd0c0c0874eb7b6555a4cf9fb5,
+        type: 3}
       propertyPath: _levelGenerator
       value: 
       objectReference: {fileID: 280540223}
@@ -2246,13 +2251,14 @@ GameObject:
   m_Component:
   - component: {fileID: 780698839}
   - component: {fileID: 780698840}
+  - component: {fileID: 780698841}
   m_Layer: 0
   m_Name: 3,2,1,Go
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &780698839
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2297,6 +2303,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &780698841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 780698838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2112b8f9293e7db4a9f09ebb2cd0c9bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &843446830
 GameObject:
   m_ObjectHideFlags: 0

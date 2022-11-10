@@ -14,6 +14,12 @@ public class GameManager : MonoBehaviour
     public List<GameObject> ListPlayersGo => _listPlayersGo;
     public  GAME_STATE GameState { get; private set; }
 
+
+    
+    //============================ Game Options
+    [Header("Game Options")]
+    [SerializeField] private float gameDuration;
+
     //============================ Spawn/Respawn
     [Header("Spawn")]
     [SerializeField] private LevelGenerator _levelGenerator;
@@ -22,11 +28,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _playerPrefab;
 
     private PlayersManager _playersManager;
-    
-    //============================ Game Options
-    [SerializeField] private float gameDuration;
-    [SerializeField] private float counterBeforeGame;
-
     public LevelGenerator LevelGenerator => _levelGenerator;
     public CinemachineTargetGroup CinemachineTargetGroup => _cinemachine;
     public GameObject[] PlayersUI => _playersUI;
@@ -72,6 +73,21 @@ public class GameManager : MonoBehaviour
     public void SpawnAllPlayers()
     {
         _playersManager.SpawnPlayers();
+        animatorUI.SetTrigger("Countdown");
+    }
+
+    public void StartGame()
+    {
+        EnableAllInputs();
+        //game timer
+        
+    }
+    public void EnableAllInputs()
+    {
+        foreach (var playerGo in _listPlayersGo)
+        {
+            playerGo.GetComponent<PlayerManager>().EnableInputs();
+        }
     }
 
     public void RespawnPlayer(GameObject playerGo)
