@@ -273,7 +273,7 @@ public class Projectile : MonoBehaviour
         {
             direction = ApproxNormal(direction);
             Debug.DrawRay(owner.transform.position, ownerVelocityAtLaunch.normalized * 4f, Color.magenta, 5f);
-            Debug.Log(ownerVelocityAtLaunch);
+            //Debug.Log(ownerVelocityAtLaunch);
             if(ownerVelocityAtLaunch == Vector2.zero) { ownerVelocityAtLaunch = Vector2.down; }
             Vector2 ownerVelocity = ClosestAxis(ownerVelocityAtLaunch);
             Debug.DrawRay(owner.transform.position, ownerVelocity * 4f, Color.yellow, 5f);
