@@ -15,7 +15,7 @@ public class PlayerInputHandler : MonoBehaviour
     public float HoldCooldown { get; private set; }
     public bool _canHoldCooldown;
 
-    
+    private bool _inputsDisable = true;
 
     [Header("Scripts")]
     private PlayerMovement _movement;
@@ -47,6 +47,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Input_OnActionTriggered(CallbackContext obj)
     {
+        if (_inputsDisable) return;
+        
         if (obj.action.name == _controls.Gameplay.Move.name)
         {
             OnMove(obj);
@@ -171,11 +173,11 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void DisableInputs()
     {
-        _controls.Disable();
+        _inputsDisable = true;
     }
 
     public void EnableInputs()
     {
-        _controls.Enable();
+        _inputsDisable = false;
     }
 }

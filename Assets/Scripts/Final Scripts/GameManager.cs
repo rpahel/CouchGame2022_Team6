@@ -12,10 +12,8 @@ public class GameManager : MonoBehaviour
     
     private List<GameObject> _listPlayersGo = new List<GameObject>();
     public List<GameObject> ListPlayersGo => _listPlayersGo;
-    public  GAME_STATE GameState { get; private set; }
 
 
-    
     //============================ Game Options
     [Header("Game Options")]
     [SerializeField] private float gameDuration;
@@ -27,7 +25,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject[] _playersUI;
     [SerializeField] private GameObject _playerPrefab;
 
-    private PlayersManager _playersManager;
+    private SpawnManager _spawnManager;
     public LevelGenerator LevelGenerator => _levelGenerator;
     public CinemachineTargetGroup CinemachineTargetGroup => _cinemachine;
     public GameObject[] PlayersUI => _playersUI;
@@ -53,13 +51,9 @@ public class GameManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(Instance);
         }
-
-        GameState = GAME_STATE.NONE;
-        _playersManager = GetComponent<PlayersManager>();
-
-        Debug.Log("Manager ok");
+        
+        _spawnManager = GetComponent<SpawnManager>();
 
         if (projectile == null)
             throw new Exception("Pas de projectile r�f�renc� dans le Game Manager.");
@@ -72,13 +66,14 @@ public class GameManager : MonoBehaviour
 
     public void SpawnAllPlayers()
     {
-        _playersManager.SpawnPlayers();
+        _spawnManager.SpawnPlayers();
         animatorUI.SetTrigger("Countdown");
     }
 
     public void StartGame()
     {
         EnableAllInputs();
+        ApplicationManager.Instance.SetGameState(GAME_STATE.PLAYING);
         //game timer
         
     }
@@ -92,7 +87,7 @@ public class GameManager : MonoBehaviour
 
     public void RespawnPlayer(GameObject playerGo)
     {
-        _playersManager.Respawn2(playerGo);
+        _spawnManager.Respawn2(playerGo);
     }
 
     public void AddPlayer(GameObject playerGo)
@@ -103,11 +98,6 @@ public class GameManager : MonoBehaviour
     public void RemovePlayer(GameObject playerGo)
     {
         _listPlayersGo.Remove(playerGo);
-    }
-
-    public void SetGameState(GAME_STATE state)
-    {
-        GameState = state;
     }
     
     private void GenerateProjectilePool(int number)

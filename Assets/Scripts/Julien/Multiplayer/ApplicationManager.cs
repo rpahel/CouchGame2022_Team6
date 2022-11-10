@@ -6,16 +6,18 @@ using UnityEngine.InputSystem;
 using System.Linq;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Data;
 
-public class PlayerConfigurationManager : MonoBehaviour
+public class ApplicationManager : MonoBehaviour
 {
     private List<PlayerConfiguration> _playerConfigs;
 
     [SerializeField] private int minPlayers = 2;
     [SerializeField] private int maxPlayers = 4;
 
-    public static PlayerConfigurationManager Instance { get; private set; }
+    public static ApplicationManager Instance { get; private set; }
     
+    public  GAME_STATE GameState { get; private set; }
     
     //======================================= UI LOADING
     [SerializeField] private GameObject loadingScreen;
@@ -34,6 +36,8 @@ public class PlayerConfigurationManager : MonoBehaviour
             DontDestroyOnLoad(Instance);
             _playerConfigs = new List<PlayerConfiguration>();
         }
+        
+        GameState = GAME_STATE.MENU;
     }
 
     public List<PlayerConfiguration> GetPlayerConfigs()
@@ -52,6 +56,7 @@ public class PlayerConfigurationManager : MonoBehaviour
 
         if (_playerConfigs.Count >= minPlayers && _playerConfigs.Count <= maxPlayers && _playerConfigs.All(p => p.IsReady == true ))
         {
+            GameState = GAME_STATE.LOADING;
             playersLayout.SetActive(false);
             loadingScreen.SetActive(true);
             StartCoroutine(LoadAsynchronously(1));
@@ -81,7 +86,11 @@ public class PlayerConfigurationManager : MonoBehaviour
             _playerConfigs.Add(new PlayerConfiguration(pi));
         }
     }
-
+    
+    public void SetGameState(GAME_STATE state)
+    {
+        GameState = state;
+    }
 }
 
 public class PlayerConfiguration

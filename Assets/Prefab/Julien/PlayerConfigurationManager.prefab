@@ -45,7 +45,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 792acda12cc880242ab14de32a7b1491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minPlayers: 2
   maxPlayers: 4
+  loadingScreen: {fileID: 0}
+  playersLayout: {fileID: 0}
+  loadingSlider: {fileID: 0}
 --- !u!114 &8210660276910839729
 MonoBehaviour:
   m_ObjectHideFlags: 0

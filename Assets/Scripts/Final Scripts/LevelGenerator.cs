@@ -83,7 +83,6 @@ public class LevelGenerator : MonoBehaviour
         }
 
         levelState = LEVEL_STATE.INITIALISING;
-        GameManager.Instance.SetGameState(GAME_STATE.LOADING);
 
         parentObjCubes = new GameObject("Cubes");
         parentObjCubes.transform.parent = transform;
@@ -280,7 +279,6 @@ public class LevelGenerator : MonoBehaviour
         }
 
         levelState = LEVEL_STATE.LOADED;
-        GameManager.Instance.SetGameState(GAME_STATE.PLAYING);
         GameManager.Instance.SpawnAllPlayers();
         coroutinesRunning--;
     }

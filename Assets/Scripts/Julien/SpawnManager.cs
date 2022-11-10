@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using TMPro;
 using Cinemachine;
 
-public class PlayersManager : MonoBehaviour
+public class SpawnManager : MonoBehaviour
 {
     //============================ Spawn/Respawn
     [Header("Spawn")]
@@ -20,7 +20,7 @@ public class PlayersManager : MonoBehaviour
     public void SpawnPlayers()
     {
         var manager = GameManager.Instance;
-        var playerConfigs = PlayerConfigurationManager.Instance.GetPlayerConfigs().ToArray();
+        var playerConfigs = ApplicationManager.Instance.GetPlayerConfigs().ToArray();
         manager.CinemachineTargetGroup.m_Targets = new CinemachineTargetGroup.Target[playerConfigs.Length];
 
         for (int i = 0; i < playerConfigs.Length; i++)
@@ -35,7 +35,6 @@ public class PlayersManager : MonoBehaviour
             player.GetComponent<PlayerInputHandler>().InitializePlayer(playerConfigs[i]);
             manager.CinemachineTargetGroup.m_Targets[i].target = player.transform;
             manager.CinemachineTargetGroup.m_Targets[i].weight = 1;
-            player.GetComponent<PlayerManager>().DisableInputs();
         }
     }
 
@@ -88,7 +87,7 @@ public class PlayersManager : MonoBehaviour
     private void RespawnPlayerInstantiate(int index)
     {
         var manager = GameManager.Instance;
-        var playerConfigs = PlayerConfigurationManager.Instance.GetPlayerConfigs().ToArray();
+        var playerConfigs = ApplicationManager.Instance.GetPlayerConfigs().ToArray();
         var player = Instantiate(manager.PlayerPrefab, manager.LevelGenerator.IniSpawns[index].position, Quaternion.identity, manager.LevelGenerator.gameObject.transform); ;
         player.gameObject.name = "Player " + playerConfigs[index].PlayerIndex;
         GameManager.Instance.AddPlayer(player);

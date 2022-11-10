@@ -996,16 +996,6 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8210660276910839728, guid: a852cf6ceb20d7848b071c1dd26654a9,
         type: 3}
-      propertyPath: maxPlayers
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8210660276910839728, guid: a852cf6ceb20d7848b071c1dd26654a9,
-        type: 3}
-      propertyPath: minPlayers
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8210660276910839728, guid: a852cf6ceb20d7848b071c1dd26654a9,
-        type: 3}
       propertyPath: loadingScreen
       value: 
       objectReference: {fileID: 837855193}
@@ -1077,7 +1067,7 @@ PrefabInstance:
     - target: {fileID: 8210660276910839742, guid: a852cf6ceb20d7848b071c1dd26654a9,
         type: 3}
       propertyPath: m_Name
-      value: PlayerConfigurationManager
+      value: ApplicationManager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a852cf6ceb20d7848b071c1dd26654a9, type: 3}

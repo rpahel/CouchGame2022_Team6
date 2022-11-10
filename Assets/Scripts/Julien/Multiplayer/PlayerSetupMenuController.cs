@@ -35,7 +35,7 @@ public class PlayerSetupMenuController : MonoBehaviour
     public void SetColor(Material color)
     {
         if (!inputEnabled) { return;}
-        PlayerConfigurationManager.Instance.SetPlayerColor(PlayerIndex, color);
+        ApplicationManager.Instance.SetPlayerColor(PlayerIndex, color);
         readyPanel.SetActive(true);
         readyButton.Select();
         menuPanel.SetActive(false);
@@ -44,7 +44,7 @@ public class PlayerSetupMenuController : MonoBehaviour
     public void ReadyPlayer()
     {
         if (!inputEnabled) { return;}
-        PlayerConfigurationManager.Instance.ReadyPlayer(PlayerIndex);
+        ApplicationManager.Instance.ReadyPlayer(PlayerIndex);
         readyButton.gameObject.SetActive(false);
     }
 }
