@@ -137,7 +137,7 @@ public class Cube_Trap : Cube
     }
     IEnumerator timeToStateMoving()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.15f);
         playerManager.SetPlayerState(PlayerState.Moving);
         canLooseGraille = true;
 
@@ -156,7 +156,7 @@ public class Cube_Trap : Cube
         canLooseGraille = false;
         playerManager = collision.gameObject.GetComponent<PlayerManager>();
         playerManager.SetPlayerState(PlayerState.KNOCKBACKED);
-        playerManager.DisableInputs();
+        //playerManager.DisableInputs();
         movement = collision.gameObject.GetComponent<PlayerMovement>();
         collision.rigidbody.velocity = Vector2.zero;
         collision.rigidbody.AddForce(vec * knockForce , ForceMode2D.Impulse);
@@ -170,7 +170,7 @@ public class Cube_Trap : Cube
         //StartCoroutine(timeToLooseEat());
 
         StartCoroutine(timeToStateMoving());
-        playerManager.EnableInputs();
+        //playerManager.EnableInputs();
     }
     
     private void OnGUI()

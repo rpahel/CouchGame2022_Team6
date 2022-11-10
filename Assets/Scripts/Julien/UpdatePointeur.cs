@@ -22,10 +22,9 @@ public class UpdatePointeur : MonoBehaviour
     void Update()
     {
         pointeur.gameObject.SetActive(_playerManager.InputVector.sqrMagnitude > 0.1f ? true : false);
-        if (pointeur.gameObject.activeSelf)
-        {
-            angle = Mathf.Atan2(_playerManager.InputVector.y, _playerManager.InputVector.x);
-            pointeur.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * angle);
-        }
+        if (!pointeur.gameObject.activeSelf) return;
+        
+        angle = Mathf.Atan2(_playerManager.InputVector.y, _playerManager.InputVector.x);
+        pointeur.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * angle);
     }
 }

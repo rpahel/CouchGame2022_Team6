@@ -50,7 +50,8 @@ public class PlayerMovement : MonoBehaviour
     public bool HoldJump { set => holdJump = value; }
  
     //============================
-    
+
+    [SerializeField] private GameObject meshObj;
     public bool lookAtRight; // à ne pas confondre avec aimDirection
     
     //============================
@@ -179,6 +180,9 @@ public class PlayerMovement : MonoBehaviour
             _ => lookAtRight
         };
 
+        meshObj.transform.rotation =
+            (lookAtRight == true) ? Quaternion.Euler(0f, 140f, 0f) : Quaternion.Euler(0f, -140f, 0f);
+
         if (freinage == null) return;
         
         StopCoroutine(freinage);
@@ -197,7 +201,7 @@ public class PlayerMovement : MonoBehaviour
     
     private bool IsGrounded()
     {
-        return Physics2D.OverlapCapsule(groundCheck.position, new Vector2(1f, 0.2f), CapsuleDirection2D.Horizontal, 0,groundLayer | groundLayer2 | groundLayer3);
+        return Physics2D.OverlapCapsule(groundCheck.position, new Vector2(1f, 0.4f), CapsuleDirection2D.Horizontal, 0,groundLayer | groundLayer2 | groundLayer3);
     }
  
     IEnumerator Freinage()

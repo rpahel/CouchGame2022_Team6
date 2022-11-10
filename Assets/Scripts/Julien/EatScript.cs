@@ -20,10 +20,10 @@ public class EatScript : MonoBehaviour
     public void OnTriggerStayFunction(Collider2D other)
     {
         //Debug.Log("OnStay");
-        if (!_playerManager.CanEat) { return; }
+       // if (!_playerManager.CanEat) { return; }
 
         //Debug.Log("try Eat");
-        if (!canEat)
+        /*if (!canEat)
         {
             print("I'm on eating cooldown !");
 
@@ -33,9 +33,9 @@ public class EatScript : MonoBehaviour
         {
             print("I'm full !!");
             return;
-        }
+        }*/
 
-        if (other.transform.parent.CompareTag("CubeEdible") && other.gameObject.activeSelf)
+        if (other.transform.parent.CompareTag("CubeEdible") && other.gameObject.activeSelf && _playerManager.CanEat && _playerManager.eatAmount < 1 && canEat) 
         {
             Cube_Edible cubeMangeable;
             if (other.transform.parent && other.transform.parent.TryGetComponent<Cube_Edible>(out cubeMangeable))
@@ -56,7 +56,7 @@ public class EatScript : MonoBehaviour
                 print("Pas de Raf_CubeMangeable dans le cube vis?.");
         }
 
-        else if (other.CompareTag("Player"))
+        else if (other.CompareTag("Player") && _playerManager.CanEat && canEat)
         {
             var pj = other.gameObject.GetComponent<PlayerManager>();
             if (pj.State != PlayerState.Dead)
@@ -64,6 +64,8 @@ public class EatScript : MonoBehaviour
                 if (pj.SwitchSkin == SwitchSizeSkin.Little)
                 {
                         Debug.LogError("Dead");
+                        canEat = false;
+                        StartCoroutine(CooldownCoroutine());
                         pj.SetDead2();
                 }
             }

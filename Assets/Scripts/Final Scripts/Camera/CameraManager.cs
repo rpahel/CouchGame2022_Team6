@@ -2,7 +2,6 @@ using Cinemachine;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-
 public class CameraManager : MonoBehaviour
 {
     #region Variables
@@ -46,10 +45,12 @@ public class CameraManager : MonoBehaviour
     private void Start()
     {
         echelle = _levelGenerator.Echelle;
-        realImageSize = _levelGenerator.ImageRef.Size();
+        //realImageSize = _levelGenerator.ImageRef.Size();
+        realImageSize = new Vector2(_levelGenerator.ImageRef.width, _levelGenerator.ImageRef.height);
         imageSize_16_9 = realImageSize.x > realImageSize.y ?
                          new Vector2(realImageSize.x, realImageSize.x / format) :
                          new Vector2(realImageSize.y * format, realImageSize.y);
+        
 
         maxLensSizeX = imageSize_16_9.x * .8f * (echelle / 2.857143f);
         maxLensSizeY = imageSize_16_9.y * 1.425f * (echelle / 2.857143f);

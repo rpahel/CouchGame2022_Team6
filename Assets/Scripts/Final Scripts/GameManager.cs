@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using Data;
-using UnityEditor.PackageManager.Requests;
+//using UnityEditor.PackageManager.Requests;
 
 public class GameManager : MonoBehaviour
 {
