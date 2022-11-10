@@ -1,10 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.ConstrainedExecution;
 using UnityEngine;
-using Data;
 using System;
-using UnityEngine.InputSystem.HID;
 
 public class Projectile : MonoBehaviour
 {
@@ -20,7 +16,7 @@ public class Projectile : MonoBehaviour
     private Collider2D col;
     private Vector2 currentVelocity;
     private Coroutine lifeTime;
-    private int layerMask;
+    private bool hasHurt;
 
     //=============================================
     [HideInInspector] public Color color;
@@ -37,7 +33,6 @@ public class Projectile : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
-        layerMask = LayerMask.GetMask("Destructible", "Indestructible", "Trap");
     }
 
     private void OnEnable()
@@ -46,6 +41,7 @@ public class Projectile : MonoBehaviour
         rb.gravityScale = gravity;
         age = dureeDeVie;
         lifeTime = StartCoroutine(DecreaseLifetime());
+        hasHurt = false;
     }
 
     private void OnDisable()
@@ -58,23 +54,40 @@ public class Projectile : MonoBehaviour
         if(lifeTime != null)
             StopCoroutine(lifeTime);
         age = 0;
+        hasHurt = false;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        int collisionToBin = LayerMask.GetMask(LayerMask.LayerToName(collision.gameObject.layer));
-        int binAND = collisionToBin & layerMask;
+        if (collider.gameObject != owner.gameObject)
+        {
+            if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
+                Vector2 sensDuKnockBack = (collider.transform.position - transform.position).x > 0 ? new Vector2(-1, 1f) : new Vector2(1, 1f);
+                sensDuKnockBack.Normalize();
+                collider.gameObject.GetComponent<PlayerManager>().OnDamage(owner, pourcentageInflige, sensDuKnockBack * knockBackForce);
+                rb.velocity = forceDuRebond * currentVelocity.magnitude * new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y);
+                hasHurt = true;
+            }
+            else if (collider.gameObject.layer == LayerMask.NameToLayer("Trap"))
+            {
+                Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, ApproxNormal(transform.position - collider.transform.position)).normalized;
+                rb.velocity = currentVelocity.magnitude * forceDuRebond * sensDuRebond;
+            }
+            else if (collider.gameObject.layer == LayerMask.NameToLayer("Destructible") || collider.gameObject.layer == LayerMask.NameToLayer("Indestructible"))
+            {
+                if (CanSpawnCubeAt(PositionInNormalDirection(collider.transform.position, transform.position - collider.transform.position, LevelGenerator.Instance.Echelle), owner.transform.position - collider.transform.position))
+                    SpawnCube(collider);
+                else
+                    Debug.Log("Not enough space to spawn cube.");
 
-        if (collision.gameObject != owner.gameObject && collision.gameObject.layer == LayerMask.NameToLayer("Player"))
-        {
-            Vector2 sensDuKnockBack = (collision.transform.position - transform.position).x > 0 ? new Vector2(1, 1f) : new Vector2(-1, 1f);
-            sensDuKnockBack.Normalize();
-            collision.GetComponent<PlayerManager>().OnDamage(owner, pourcentageInflige, sensDuKnockBack * knockBackForce);
-            rb.velocity = new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y) * forceDuRebond;
-        }
-        else if (binAND == 64 || binAND == 128 || binAND == 256)
-        {
-            gameObject.SetActive(false);
+                gameObject.SetActive(false);
+            }
+            else if (collider.gameObject.layer == LayerMask.NameToLayer("Projectile"))
+            {
+                Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, ApproxNormal(transform.position - collider.transform.position)).normalized;
+                rb.velocity = currentVelocity.magnitude * forceDuRebond * sensDuRebond;
+            }
         }
     }
 
@@ -97,6 +110,7 @@ public class Projectile : MonoBehaviour
                 sensDuKnockBack.Normalize();
                 collision.gameObject.GetComponent<PlayerManager>().OnDamage(owner, pourcentageInflige, sensDuKnockBack * knockBackForce);
                 rb.velocity = forceDuRebond * currentVelocity.magnitude * new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y);
+                hasHurt = true;
             }
             else if (collision.gameObject.layer == LayerMask.NameToLayer("Trap"))
             {
@@ -105,7 +119,7 @@ public class Projectile : MonoBehaviour
             }
             else if (collision.gameObject.layer == LayerMask.NameToLayer("Destructible") || collision.gameObject.layer == LayerMask.NameToLayer("Indestructible"))
             {
-                if (CanSpawnCubeAt(PositionInNormalDirection(collision.transform.position, collision.GetContact(0).normal, LevelGenerator.Instance.Echelle)))
+                if (CanSpawnCubeAt(PositionInNormalDirection(collision.transform.position, collision.GetContact(0).normal, LevelGenerator.Instance.Echelle), owner.transform.position - collision.transform.position))
                     SpawnCube(collision);
                 else
                     Debug.Log("Not enough space to spawn cube.");
@@ -161,32 +175,24 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    private Vector2 PositionInNormalDirection(Vector2 originalPos, Vector2 normal, float scale = 1f)
+    private void SpawnCube(Collider2D collider)
     {
-        const float cos30 = 0.866f;
-
-        if (normal.y > cos30 && (normal.x > -.5f && normal.x < .5f))                             
-            return originalPos + Vector2.up * scale;            // N
-        else if ((normal.x > .5f && normal.x < cos30) && (normal.y > .5f && normal.y < cos30))      
-            return originalPos + Vector2.one * scale;           // NE
-        else if (normal.x > cos30 && (normal.y > -.5f && normal.y < .5f))                       
-            return originalPos + Vector2.right * scale;         // E
-        else if ((normal.x > .5f && normal.x < cos30) && (normal.y < -.5f && normal.y > -cos30))    
-            return originalPos + new Vector2(1, -1) * scale;    // SE
-        else if (normal.y < -cos30 && (normal.x > -.5f && normal.x < .5f))                      
-            return originalPos + Vector2.down * scale;          // S
-        else if ((normal.x > -cos30 && normal.x < -.5f) && (normal.y < -.5f && normal.y > -cos30))  
-            return originalPos - Vector2.one * scale;           // SW
-        else if (normal.x < -cos30 && (normal.y > -.5f && normal.y < .5f))                      
-            return originalPos + Vector2.left * scale;          // W
-        else if ((normal.x > -cos30 && normal.x < -.5f) && (normal.y > .5f && normal.y < cos30))    
-            return originalPos + new Vector2(-1, 1) * scale;    // NW
-        
-        Debug.Log("Tu ne devrais pas voir ça.");
-        return originalPos + Vector2.up;                // N
+        Vector2 normal = ApproxNormal(transform.position - collider.transform.position);
+        Vector2 targetPos = PositionInNormalDirection(collider.transform.position / LevelGenerator.Instance.Echelle, normal);
+        Transform targetTransform = LevelGenerator.Instance.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
+        Cube_Edible cube;
+        if (targetTransform.TryGetComponent(out cube))
+        {
+            cube.GetVomited(transform.position);
+        }
     }
 
-    bool CanSpawnCubeAt(Vector2 position)
+    private Vector2 PositionInNormalDirection(Vector2 originalPos, Vector2 normal, float scale = 1f)
+    {
+        return originalPos + scale * ApproxNormal(normal);
+    }
+
+    bool CanSpawnCubeAt(Vector2 position, Vector2 impactedCubeToOwner)
     {
         RaycastHit2D[] hits = GameManager.Instance.SquareCast(position, LevelGenerator.Instance.Echelle * .9f, true);
 
@@ -196,6 +202,21 @@ public class Projectile : MonoBehaviour
             {
                 if(hit.transform.GetComponent<PlayerManager>() == owner)
                 {
+                    if (hasHurt) return false;
+
+                    if(ClosestAxis(impactedCubeToOwner).x == 0)
+                    {
+                        Debug.DrawRay(position, impactedCubeToOwner, Color.blue, 5f);
+                        Vector2 safe = position + (owner.PCollider.bounds.extents.y + .5f * LevelGenerator.Instance.Echelle) * ClosestAxis(impactedCubeToOwner);
+                        owner.PousseToiVers(safe + new Vector2(owner.transform.position.x - safe.x, 0));
+                    }
+                    else
+                    {
+                        Debug.DrawRay(position, impactedCubeToOwner, Color.blue, 5f);
+                        Vector2 safe = position + (owner.PCollider.bounds.extents.x + .5f * LevelGenerator.Instance.Echelle) * ClosestAxis(impactedCubeToOwner);
+                        owner.PousseToiVers(safe + new Vector2(0, owner.transform.position.y - safe.y));
+                    }
+
                     return true;
                 }
 
@@ -204,6 +225,53 @@ public class Projectile : MonoBehaviour
         }
 
         return true;
+    }
+
+    Vector2 ApproxNormal(Vector2 normalToApproximate)
+    {
+        normalToApproximate.Normalize();
+        const float cos30 = 0.866f;
+
+        if (normalToApproximate.y > cos30 && (normalToApproximate.x > -.5f && normalToApproximate.x < .5f))
+            return Vector2.up;            // N
+        else if ((normalToApproximate.x > .5f && normalToApproximate.x < cos30) && (normalToApproximate.y > .5f && normalToApproximate.y < cos30))
+            return Vector2.one;           // NE
+        else if (normalToApproximate.x > cos30 && (normalToApproximate.y > -.5f && normalToApproximate.y < .5f))
+            return Vector2.right;         // E
+        else if ((normalToApproximate.x > .5f && normalToApproximate.x < cos30) && (normalToApproximate.y < -.5f && normalToApproximate.y > -cos30))
+            return new Vector2(1, -1);    // SE
+        else if (normalToApproximate.y < -cos30 && (normalToApproximate.x > -.5f && normalToApproximate.x < .5f))
+            return Vector2.down;          // S
+        else if ((normalToApproximate.x > -cos30 && normalToApproximate.x < -.5f) && (normalToApproximate.y < -.5f && normalToApproximate.y > -cos30))
+            return -Vector2.one;           // SW
+        else if (normalToApproximate.x < -cos30 && (normalToApproximate.y > -.5f && normalToApproximate.y < .5f))
+            return Vector2.left;          // W
+        else if ((normalToApproximate.x > -cos30 && normalToApproximate.x < -.5f) && (normalToApproximate.y > .5f && normalToApproximate.y < cos30))
+            return new Vector2(-1, 1);    // NW
+
+        Debug.Log("Tu ne devrais pas voir ça.");
+        return Vector2.up;
+    }
+
+    Vector2 ClosestAxis(Vector2 direction, bool predictUsingOwnerVelocity = false) // TODO : Retourne un vecteur différent en fonction de la vélocité de l'owner pour une meme direction
+    {
+        if (!predictUsingOwnerVelocity)
+        {
+            if(Mathf.Abs(direction.y) > Mathf.Abs(direction.x))
+            {
+                if (direction.y > 0) return Vector2.up;
+                else return Vector2.down;
+            }
+            else
+            {
+                if (direction.x > 0) return Vector2.right;
+                else return Vector2.left;
+            }
+        }
+        else
+        {
+            throw new Exception("Not implemented yet.");
+        }
     }
     #endregion
 }

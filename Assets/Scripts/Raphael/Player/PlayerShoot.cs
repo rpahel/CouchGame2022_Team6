@@ -1,6 +1,5 @@
 using Data;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerShoot : MonoBehaviour
@@ -34,14 +33,12 @@ public class PlayerShoot : MonoBehaviour
 
     //============================
     private float raycastRange;
-    private float limitDistance;
     #endregion
 
     #region Unity_Functions
     private void Start()
     {
         raycastRange = LevelGenerator.Instance.Echelle * 4;
-        limitDistance = 1.5f * LevelGenerator.Instance.Echelle;
     }
 
     private void FixedUpdate()

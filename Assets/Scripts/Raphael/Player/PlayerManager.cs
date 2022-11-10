@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using Data;
+using System.Collections;
+using DG.Tweening;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -24,10 +26,12 @@ public class PlayerManager : MonoBehaviour
 
     #region Variables
     //============================
-    public PLAYER_STATE PlayerState { get; set; }
     [HideInInspector] public Color color;
+    private Vector3 previousPos;
+    public Vector3 PreviousPos => previousPos;
 
     //============================
+    public PLAYER_STATE PlayerState { get; set; }
     public Vector2 AimDirection { get; set; }
 
     //============================
@@ -124,6 +128,74 @@ public class PlayerManager : MonoBehaviour
     public void UpdatePlayerScale()
     {
         transform.localScale = Vector3.one * Mathf.Lerp(tailleMin, tailleMax, pEat.Remplissage * .01f);
+    }
+
+    public void PousseToiVers(Vector2 endPosition)
+    {
+        DrawWireSphere(endPosition, .5f, Color.cyan, 5f);
+        StartCoroutine(PousseToiAnimation(endPosition));
+    }
+
+    IEnumerator PousseToiAnimation(Vector2 endPosition)
+    {
+        Vector2 iniPos = transform.position;
+        float t = 0;
+        while (t < 1)
+        {
+            if (PlayerState == PLAYER_STATE.KNOCKBACKED)
+                break;
+
+            rb2D.velocity = Vector2.zero;
+            transform.position = DOVirtual.EasedValue(iniPos, endPosition, t, Ease.OutBack, 2f);
+            t += Time.deltaTime * 4f;
+            yield return null;
+        }
+
+        if(PlayerState != PLAYER_STATE.KNOCKBACKED)
+        {
+            transform.position = endPosition;
+        }
+    }
+
+    public static void DrawWireSphere(Vector3 center, float radius, Color color, float duration, int quality = 3)
+    {
+        quality = Mathf.Clamp(quality, 1, 10);
+
+        int segments = quality << 2;
+        int subdivisions = quality << 3;
+        int halfSegments = segments >> 1;
+        float strideAngle = 360F / subdivisions;
+        float segmentStride = 180F / segments;
+
+        Vector3 first;
+        Vector3 next;
+        for (int i = 0; i < segments; i++)
+        {
+            first = (Vector3.forward * radius);
+            first = Quaternion.AngleAxis(segmentStride * (i - halfSegments), Vector3.right) * first;
+
+            for (int j = 0; j < subdivisions; j++)
+            {
+                next = Quaternion.AngleAxis(strideAngle, Vector3.up) * first;
+                UnityEngine.Debug.DrawLine(first + center, next + center, color, duration);
+                first = next;
+            }
+        }
+
+        Vector3 axis;
+        for (int i = 0; i < segments; i++)
+        {
+            first = (Vector3.forward * radius);
+            first = Quaternion.AngleAxis(segmentStride * (i - halfSegments), Vector3.up) * first;
+            axis = Quaternion.AngleAxis(90F, Vector3.up) * first;
+
+            for (int j = 0; j < subdivisions; j++)
+            {
+                next = Quaternion.AngleAxis(strideAngle, axis) * first;
+                UnityEngine.Debug.DrawLine(first + center, next + center, color, duration);
+                first = next;
+            }
+        }
     }
     #endregion
 }

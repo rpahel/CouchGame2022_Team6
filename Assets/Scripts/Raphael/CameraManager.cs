@@ -19,7 +19,7 @@ public class CameraManager : MonoBehaviour
     private float maxLensSizeX;
     private float maxLensSizeY;
     private float realMaxLensSize;
-    private const float format = 1.77777777778f;
+    private const float format = 1.77777777778f; // TODO : Prendre le format de l'écran au lieu de le mettre en dur
     private Vector2 barycentre;
     private Vector2 realImageSize;
     private Vector2 imageSize_16_9;
