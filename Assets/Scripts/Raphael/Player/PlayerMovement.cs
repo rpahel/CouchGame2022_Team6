@@ -43,14 +43,13 @@ public class PlayerMovement : MonoBehaviour
     public bool HoldJump { set => holdJump = value; }
 
     //============================
-    public Vector2 SensDuRegard { get; set; } // à ne pas confondre avec aimDirection
     #endregion
 
     #region Unity_Functions
     private void Awake()
     {
         dureeAvantArret = dureeAvantArret < 0.01f ? 0.01f : dureeAvantArret;
-        SensDuRegard = Vector2.right;
+        PManager.SensDuRegard = Vector2.right;
         castRadius = transform.localScale.x * .5f - .05f;
     }
 
@@ -129,7 +128,7 @@ public class PlayerMovement : MonoBehaviour
         
         inputVector_move = input;
 
-        SensDuRegard = inputVector_move.x > 0 ? Vector2.right : Vector2.left;
+        PManager.SensDuRegard = inputVector_move.x > 0 ? Vector2.right : Vector2.left;
 
         if(freinage != null)
         {

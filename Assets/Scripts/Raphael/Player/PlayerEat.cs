@@ -83,7 +83,7 @@ public class PlayerEat : MonoBehaviour
             if(!(PManager.PMovement.GroundCheck))
                 direction = Vector2.up;
             else
-                direction = PManager.PMovement.SensDuRegard;
+                direction = PManager.SensDuRegard;
         }
 
         #if UNITY_EDITOR
@@ -100,7 +100,7 @@ public class PlayerEat : MonoBehaviour
         }
         else if(!(PManager.PMovement.GroundCheck))
         {
-            direction = PManager.PMovement.SensDuRegard;
+            direction = PManager.SensDuRegard;
             hit = Physics2D.Raycast(transform.position, direction.normalized, eatDistance, 1 << LayerMask.NameToLayer("Destructible"));
 
             if (hit)

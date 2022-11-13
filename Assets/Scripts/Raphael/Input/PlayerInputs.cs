@@ -62,17 +62,14 @@ public class PlayerInputs : MonoBehaviour
         if (PManager.PlayerState == PLAYER_STATE.STUNNED)
             return;
 
-        if (PManager.PlayerState == PLAYER_STATE.SHOOTING)
-            return;
-
         if (input.performed)
         {
-            //#
+            PManager.PSpecial.Charge(true);
         }
 
         if (input.canceled)
         {
-            //#
+            PManager.PSpecial.Charge(false);
         }
     }
     #endregion

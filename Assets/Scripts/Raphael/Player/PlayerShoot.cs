@@ -45,7 +45,7 @@ public class PlayerShoot : MonoBehaviour
     {
         if (PManager.PlayerState == PLAYER_STATE.SHOOTING)
         {
-            aimPivot.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, PManager.AimDirection) - 90f);
+            aimPivot.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, PManager.AimDirection != Vector2.zero ? PManager.AimDirection : PManager.SensDuRegard) - 90f);
         }
         else if (aimPivot.gameObject.activeSelf)
         {
@@ -79,7 +79,7 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if(aimDirection == Vector2.zero)
-            aimDirection = PManager.PMovement.SensDuRegard;
+            aimDirection = PManager.SensDuRegard;
 
         if (!IsThereEnoughSpace(aimDirection))
         {

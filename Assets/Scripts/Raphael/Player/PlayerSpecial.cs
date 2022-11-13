@@ -15,12 +15,12 @@ public class PlayerSpecial : MonoBehaviour
     [SerializeField, Range(1, 3), Tooltip("Durée en secondes avant d'atteindre le niveau de charge max.")]
     private float dureeAvantChargeMax;
     [SerializeField, Range(0, 40), Tooltip("Distance en mètres du special à son maximum.")]
-    private float distanceMin;
-    [SerializeField, Range(0, 40), Tooltip("Distance en mètres du special à son minimum (simple press du bouton).")]
     private float distanceMax;
+    [SerializeField, Range(0, 40), Tooltip("Distance en mètres du special à son minimum (simple press du bouton).")]
+    private float distanceMin;
 
     //===================================================
-    private float charge; // 0 à 100
+    private float charge; // 0 à 1
     private bool isHolding;
     #endregion
 
@@ -36,14 +36,42 @@ public class PlayerSpecial : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, distanceMax);
     }
-    #endif
+#endif
+
+    private void Update()
+    {
+        if(isHolding)
+        {
+            charge += Time.deltaTime / dureeAvantChargeMax;
+            charge = Mathf.Clamp01(charge);
+            #if UNITY_EDITOR
+            Debug.DrawRay((Vector2)transform.position + PManager.PCollider.bounds.extents.y * Vector2.down,     (distanceMin + charge * (distanceMax - distanceMin)) * (PManager.AimDirection != Vector2.zero ? PManager.AimDirection : PManager.SensDuRegard), Color.magenta);
+            Debug.DrawRay((Vector2)transform.position + PManager.PCollider.bounds.extents.x * Vector2.right,    (distanceMin + charge * (distanceMax - distanceMin)) * (PManager.AimDirection != Vector2.zero ? PManager.AimDirection : PManager.SensDuRegard), Color.magenta);
+            Debug.DrawRay((Vector2)transform.position + PManager.PCollider.bounds.extents.x * Vector2.left,     (distanceMin + charge * (distanceMax - distanceMin)) * (PManager.AimDirection != Vector2.zero ? PManager.AimDirection : PManager.SensDuRegard), Color.magenta);
+            Debug.DrawRay((Vector2)transform.position + PManager.PCollider.bounds.extents.y * Vector2.up,       (distanceMin + charge * (distanceMax - distanceMin)) * (PManager.AimDirection != Vector2.zero ? PManager.AimDirection : PManager.SensDuRegard), Color.magenta);
+            #endif
+        }
+    }
     #endregion
 
     #region Custom_Functions
     //===================================================
-    public void OnCharge()
+    public void Charge(bool state = true)
     {
-        isHolding = true;
+        if (state)
+        {
+            if (PManager.PlayerState != PLAYER_STATE.KNOCKBACKED)
+                PManager.PlayerState = PLAYER_STATE.SHOOTING;
+        }
+        else
+        {
+            charge = 0;
+
+            if (PManager.PlayerState != PLAYER_STATE.KNOCKBACKED)
+                PManager.PlayerState = PLAYER_STATE.WALKING;
+        }
+
+        isHolding = state;
     }
 
     public void UseSpecial()
