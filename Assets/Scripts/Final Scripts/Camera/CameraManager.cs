@@ -98,6 +98,8 @@ public class CameraManager : MonoBehaviour
         barycentre = .5f * echelle * (realImageSize - Vector2.one);
         _targetGroup.transform.position = (Vector3)barycentre - Vector3.forward * 10;
         _levelGenerator.background.transform.position = (Vector3)barycentre;
+        if (_levelGenerator.background.TryGetComponent(out StartParallax startParallax))
+            startParallax.EnableParallax();
 
         cineCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_MinimumOrthoSize = minLensSize;
         cineCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_MaximumOrthoSize = realMaxLensSize;

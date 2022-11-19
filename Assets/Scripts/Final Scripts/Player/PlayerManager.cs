@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Data;
 using DG.Tweening;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,7 @@ public class PlayerManager : MonoBehaviour
 {
     private PlayerInputHandler _inputs;
     private Rigidbody2D _rb;
+    private StatisticsManager _statisticsManager;
 
     [field: Header("Player State")]
     public PlayerState State { get; private set; }
@@ -40,6 +42,7 @@ public class PlayerManager : MonoBehaviour
         eatAmount = MaxEatValue/2;
         _inputs = GetComponent<PlayerInputHandler>();
         _rb = GetComponent<Rigidbody2D>();
+        _statisticsManager = GameManager.Instance.gameObject.GetComponent<StatisticsManager>();
     }
 
     private void Start()
@@ -83,32 +86,102 @@ public class PlayerManager : MonoBehaviour
         eatAmount = MaxEatValue/2;
     }
 
-    [ContextMenu("SetDead")]
-    public void SetDead()
-    {
-        State = PlayerState.Dead;
-        //GameManager.Instance.gameObject.GetComponent<RespawnPlayer>().Respawn(gameObject);
-    }
-
-    [ContextMenu("SetDead2")]
-    public void SetDead2()
+    private void SetDead()
     {
         State = PlayerState.Dead;
         GameManager.Instance.RespawnPlayer(gameObject);
     }
 
-    public void OnDamage<T>(T damageDealer, int damage, Vector2 knockBackForce)
+    public void OnDamage<T>(T damageDealer, float damage, Vector2 knockBackForce)
     {
-        eatAmount -= damage; //Div damage par 100
-
+        var damageDealerIsAPlayer = false;
+        PlayerManager damager = null;
+        
+        switch(damageDealer)
+        {
+            case PlayerManager playerManager:
+                damager = playerManager; 
+                damageDealerIsAPlayer = true;
+                break;
+            case Cube_Trap:
+                damageDealerIsAPlayer = false;
+                break;
+            default:
+                Debug.Log("Dont know this damage dealer type");
+                break;
+        }
+        
+        eatAmount -= damage;
         _rb.AddForce(knockBackForce, ForceMode2D.Impulse);
         State = PlayerState.KNOCKBACKED;
+        
+        if(damageDealerIsAPlayer)
+            UpdateStats(damager, damage);
+        
     }
 
-    public void OnDamage<T>(T damageDealer, int damage)
+    public void OnDamage<T>(T damageDealer, bool isEnemyDead)
     {
-        eatAmount -= damage; //Div damage par 100
+        if(!isEnemyDead) {Debug.LogError("Call OnDamage with parameter isEnemyDead on false");}
+        
+        var damageDealerIsAPlayer = false;
+        PlayerManager damager = null;
+        
+        switch(damageDealer)
+        {
+            case PlayerManager playerManager:
+                damager = playerManager; 
+                damageDealerIsAPlayer = true;
+                break;
+            case Cube_Trap:
+                damageDealerIsAPlayer = false;
+                break;
+            default:
+                Debug.Log("Dont know this damage dealer type");
+                break;
+        }
+
+       
+        Debug.LogError("Dead");
+        
+        if(damageDealerIsAPlayer)
+            UpdateStats(damager, true);
+        
+        SetDead();
+        
     }
+
+    private void UpdateStats(PlayerManager damageDealer, float damage)
+    {
+        var indexDamageDealer = UsefullMethods.GetPlayerIndex(damageDealer.gameObject);
+        
+        foreach (var playerStat in _statisticsManager.ArrayStats)
+        {
+            if (playerStat._playerIndex == indexDamageDealer)
+            {
+                playerStat._damageDeal += damage;
+            }
+        }
+    }
+    private void UpdateStats(PlayerManager damageDealer, bool playerDead)
+    {
+
+        var indexDamageDealer = UsefullMethods.GetPlayerIndex(damageDealer.gameObject);
+        var indexDamageReceiver = UsefullMethods.GetPlayerIndex(this.gameObject);
+        
+        foreach (var playerStat in _statisticsManager.ArrayStats)
+        {
+            if (playerStat._playerIndex == indexDamageDealer)
+            {
+                playerStat._kill++;
+            }
+            else if (playerStat._playerIndex == indexDamageReceiver)
+            {
+                playerStat._death++;
+            }
+        }
+    }
+    
 
     public void PousseToiVers(Vector2 endPosition)
     {

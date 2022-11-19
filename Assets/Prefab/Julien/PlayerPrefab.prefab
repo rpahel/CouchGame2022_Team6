@@ -620,7 +620,6 @@ GameObject:
   - component: {fileID: 8852710062912591228}
   - component: {fileID: 6404831158282792958}
   - component: {fileID: 7973215681648496309}
-  - component: {fileID: -7049740124717223735}
   - component: {fileID: 1103561136773747212}
   - component: {fileID: 5833838575412098440}
   - component: {fileID: 4137726927642007}
@@ -882,27 +881,6 @@ MonoBehaviour:
   eatAmount: 0
   imageUI: {fileID: 0}
   textUI: {fileID: 0}
---- !u!114 &-7049740124717223735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7366054978402329224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c06430e4d78ea8c4ea25037bb033dd53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 6281874285060839021, guid: 9270cf8bf8d841748b4fef10bf8f0023,
-    type: 3}
-  gravityScale: 0.3
-  shootCooldown: 1
-  Power: 16
-  explosionRadius: 4
-  shootImpactSatietyPercent: 15
-  shootLooseEat: 8
-  endOfAim: {fileID: 8995548306197928054}
 --- !u!114 &1103561136773747212
 MonoBehaviour:
   m_ObjectHideFlags: 0

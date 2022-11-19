@@ -34,14 +34,13 @@ public class DashTrigger : MonoBehaviour
             switch (pj.SwitchSkin)
             {
                 case SwitchSizeSkin.Big:
-                    pj.eatAmount -= DamageBigEat;
+                    pj.OnDamage(_playerManager, DamageBigEat, new Vector2(0f, 0f));
                     break;
                 case SwitchSizeSkin.Medium:
-                    pj.eatAmount -= DamageMediumEat;
+                    pj.OnDamage(_playerManager, DamageBigEat, new Vector2(0f, 0f));
                     break;
                 case SwitchSizeSkin.Little:
-                    Debug.LogError("Dead");
-                    pj.SetDead2();
+                    pj.OnDamage(_playerManager, true);
                     break;
             }
 

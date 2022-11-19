@@ -36,6 +36,8 @@ public class SpawnManager : MonoBehaviour
             manager.CinemachineTargetGroup.m_Targets[i].target = player.transform;
             manager.CinemachineTargetGroup.m_Targets[i].weight = 1;
         }
+        
+        GameManager.Instance.StatsManager.InitializeStats();
     }
 
     /*
@@ -104,8 +106,7 @@ public class SpawnManager : MonoBehaviour
     {
         yield return new WaitForSeconds(cooldownRespawn);
         GameManager.Instance.RemovePlayer(playerGo);
-        char playerName = playerGo.name[playerGo.name.Length - 1];
-        int index = Convert.ToInt32(new string(playerName, 1));
+        var index= UsefullMethods.GetPlayerIndex(playerGo);
 
         RespawnPlayerInstantiate(index);
         Destroy(playerGo);

@@ -59,19 +59,16 @@ public class EatScript : MonoBehaviour
         else if (other.CompareTag("Player") && _playerManager.CanEat && canEat)
         {
             var pj = other.gameObject.GetComponent<PlayerManager>();
-            if (pj.State != PlayerState.Dead)
-            {
-                if (pj.SwitchSkin == SwitchSizeSkin.Little)
-                {
-                        Debug.LogError("Dead");
-                        canEat = false;
-                        StartCoroutine(CooldownCoroutine());
-                        pj.SetDead2();
-                }
-            }
+            
+            if (pj.State == PlayerState.Dead || pj.SwitchSkin != SwitchSizeSkin.Little) return;
+
+            canEat = false;
+            StartCoroutine(CooldownCoroutine());
+            pj.OnDamage(_playerManager, true);
         }
     }
-    public void EatCube(Cube_Edible cubeMangeable)
+
+    private void EatCube(Cube_Edible cubeMangeable)
     {
         ++cubeEated;
         cubeMangeable.GetManged(this);
@@ -79,7 +76,7 @@ public class EatScript : MonoBehaviour
         _playerManager.eatAmount = Mathf.Clamp(_playerManager.eatAmount, 0f, 1f);
     }
 
-    public IEnumerator CooldownCoroutine()
+    private IEnumerator CooldownCoroutine()
     {
         yield return new WaitForSeconds(eatCooldown);
         cubeEated = 0;
