@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 8210660276910839731}
   - component: {fileID: 8210660276910839728}
   - component: {fileID: 8210660276910839729}
+  - component: {fileID: 8210660277160871275}
+  - component: {fileID: 7590916244435267606}
   m_Layer: 0
   m_Name: PlayerConfigurationManager
   m_TagString: Untagged
@@ -45,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 792acda12cc880242ab14de32a7b1491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  language: 10
   minPlayers: 2
   maxPlayers: 4
   loadingScreen: {fileID: 0}
@@ -107,3 +110,32 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &8210660277160871275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8210660276910839742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50cf2546973275f4caa0511552ee3aef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TableId: 1s2dlAItA7u4QXf4AWArxc6x0Djg6r_Xf3NOxacfC54A
+  Sheets:
+  - Name: Menu
+    Id: 0
+  SaveFolder: {fileID: 102900000, guid: 8ed95a1239d5ace4faffbb4d0151419b, type: 3}
+--- !u!114 &7590916244435267606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8210660276910839742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf1d26d60166ca40bc5c5f552235e03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -4,14 +4,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Linq;
+using Assets.SimpleLocalization;
+using Cinemachine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Data;
+using Unity.VisualScripting;
 
 public class ApplicationManager : MonoBehaviour
 {
-    private List<PlayerConfiguration> _playerConfigs;
+    [Header("Application Options")]
+    [SerializeField] private SystemLanguage language;
 
+
+    private List<PlayerConfiguration> _playerConfigs;
+    [Header("Players Configuration Options")]
     [SerializeField] private int minPlayers = 2;
     [SerializeField] private int maxPlayers = 4;
 
@@ -38,6 +45,7 @@ public class ApplicationManager : MonoBehaviour
         }
         
         GameState = GAME_STATE.MENU;
+        LocalizationManager.Language = language.ToString();
     }
 
     public List<PlayerConfiguration> GetPlayerConfigs()

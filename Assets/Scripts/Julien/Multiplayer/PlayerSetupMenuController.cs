@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.SimpleLocalization;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +10,7 @@ public class PlayerSetupMenuController : MonoBehaviour
 {
     private int PlayerIndex;
 
-    [SerializeField] private Text titleText;
+    [SerializeField] private LocalizedText text;
 
     [SerializeField] private GameObject readyPanel;
     [SerializeField] private GameObject menuPanel;
@@ -20,7 +22,8 @@ public class PlayerSetupMenuController : MonoBehaviour
     public void SetPlayerIndex(int pi)
     {
         PlayerIndex = pi;
-        titleText.text = "Player" + (pi + 1).ToString();
+        text.hardText = (pi + 1).ToString();
+        //titleText.text = "Player" + (pi + 1).ToString();
         ignoreInputTime = Time.time + ignoreInputTime;
     }
 
