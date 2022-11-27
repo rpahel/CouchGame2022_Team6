@@ -1,21 +1,21 @@
+using Data;
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
-using Data;
 
 public class Cube_Edible : Cube
 {
     #region Variables
     //======================================================================
     [SerializeField, Tooltip("Les restes en enfant ce gameObject.")]
-    private GameObject[] restes = new GameObject[4];
+    private GameObject[] leftOvers = new GameObject[4];
     [SerializeField, Range(0.01f, .5f), Tooltip("Le temps que met le cube a parcourir la distance départ -> joueur")]
-    private float dureeDeDeplacement;
+    private float moveDuration;
     [SerializeField, Range(-180, 180), Tooltip("Le degré de rotation du cube lors de l'animation quand tu le manges.")]
-    private float degresDeRotation;
-    [SerializeField, Range(0.01f, 2f), Tooltip("Le temps que met le cube apparaitre après être spawné par projectile.")]
-    private float dureeDeApparition;
+    private float rotationDegrees;
+    [SerializeField, Range(0.01f, 2f), Tooltip("Le temps que met le cube à apparaitre après être spawné par projectile.")]
+    private float apparitionDuration;
 
     //======================================================================
     private List<Cube> cubesAutour = new List<Cube>(4);
@@ -61,7 +61,7 @@ public class Cube_Edible : Cube
     /// <param name="playerTransform">(facultatif) Le transform du joueur qui mange le cube.</param>
     public void GetManged(Transform playerTransform = null, bool showRestes = true)
     {
-        isManged = true;
+        isEaten = true;
 
         // Signale aux cubes voisins que ce cube s'est fait mangé
         for (int i = 0; i < 4; i++)
@@ -80,9 +80,9 @@ public class Cube_Edible : Cube
         {
             for (int i = 0; i < 4; i++)
             {
-                if (cubesAutour[i] && !cubesAutour[i].IsManged)
+                if (cubesAutour[i] && !cubesAutour[i].IsEaten)
                 {
-                    restes[i].SetActive(true);
+                    leftOvers[i].SetActive(true);
                 }
             }
         }
@@ -100,7 +100,7 @@ public class Cube_Edible : Cube
     {
         Vector3 cubeStartPos = cube.transform.position;
         Vector3 cubeStartRot = cube.transform.rotation.eulerAngles;
-        Vector3 cubeEndRot = cubeStartRot + new Vector3(0, 0, degresDeRotation);
+        Vector3 cubeEndRot = cubeStartRot + new Vector3(0, 0, rotationDegrees);
         cube.transform.position -= Vector3.forward * 0.05f;
         float scaleFactor;
         float t = 0;
@@ -112,7 +112,7 @@ public class Cube_Edible : Cube
             cube.transform.position = DOVirtual.EasedValue(cubeStartPos, player.position, t, Ease.InBack, 3f);
             scaleFactor = DOVirtual.EasedValue(2.857143f, 0, t, Ease.InBack, 2f);
             cube.transform.localScale = Vector3.one * scaleFactor;
-            t += Time.deltaTime / dureeDeDeplacement;
+            t += Time.deltaTime / moveDuration;
             yield return new WaitForFixedUpdate();
         }
 
@@ -129,18 +129,18 @@ public class Cube_Edible : Cube
     /// <param name="indexDuVoisin">L'index du voisin.</param>
     public void VoisinGotManged(int indexDuVoisin)
     {
-        if (isManged)
+        if (isEaten)
         {
-            restes[indexDuVoisin].SetActive(false);
+            leftOvers[indexDuVoisin].SetActive(false);
         }
     }
 
     /// <summary>
-    /// Refais apparaitre ce cube sur la carte;
+    /// Refais apparaitre ce cube sur la carte.
     /// </summary>
     public void GetVomited(Vector2 impactPos)
     {
-        foreach(GameObject reste in restes)
+        foreach(GameObject reste in leftOvers)
         {
             reste.SetActive(false);
         }
@@ -148,7 +148,7 @@ public class Cube_Edible : Cube
         cube.transform.localScale = Vector3.one;
         cube.transform.rotation = Quaternion.Euler(Vector3.zero);
         cube.SetActive(true);
-        isManged = false;
+        isEaten = false;
 
         StartCoroutine(VomitedAnimation(impactPos));
     }
@@ -165,7 +165,7 @@ public class Cube_Edible : Cube
         {
             cube.transform.localScale = DOVirtual.EasedValue(startScale, endScale, t, Ease.OutElastic, .5f);
             cube.transform.localPosition = DOVirtual.EasedValue(startPos, endPos, Mathf.InverseLerp(startScale.x, endScale.x, cube.transform.localScale.x), Ease.Linear);
-            t += Time.fixedDeltaTime / dureeDeApparition;
+            t += Time.fixedDeltaTime / apparitionDuration;
             yield return new WaitForFixedUpdate();
         }
 

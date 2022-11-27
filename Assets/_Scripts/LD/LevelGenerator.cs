@@ -12,8 +12,8 @@ public class LevelGenerator : MonoBehaviour
     public Texture2D ImageRef => image;
 
     [SerializeField, Header("Scale des cubes."), Range(1f, 3f)]
-    private float echelle = 2.857143f;
-    public float Echelle => echelle;
+    private float scale = 2.857143f;
+    public float Scale => scale;
 
     //========================================================
     [Header("Cubes à utiliser.")]
@@ -30,11 +30,11 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private Ease smoothType;
 
     //========================================================
-    [Header("Durées")]
-    [SerializeField, Range(0.1f, 2f)] private float attenteAvantAnim;
+    [Header("Durées de l'animation.")]
+    [SerializeField, Range(0.1f, 2f)] private float beforeStart;
     [SerializeField, Range(.1f, .3f)] private new float animation;
-    [SerializeField, Range(0f, .1f)] private float entreCubesAnim;
-    [SerializeField, Range(0f, .1f)] private float entreLignesAnim;
+    [SerializeField, Range(0f, .1f)] private float betweenCubes;
+    [SerializeField, Range(0f, .1f)] private float betweenLines;
 
     //========================================================
     private LEVEL_STATE levelState = LEVEL_STATE.NONE;
@@ -47,8 +47,8 @@ public class LevelGenerator : MonoBehaviour
     public Transform ParentObjCubes => parentObjCubes.transform;
 
     //========================================================
-    private Transform[,] cubesArray;
-    public Transform[,] CubesArray { get => cubesArray; private set => cubesArray = value; }
+    private Transform[,] cubesArray; // Représentation en code du niveau.
+    public Transform[,] CubesArray => cubesArray;
 
     private int coroutinesRunning = 0;
     #endregion
@@ -67,7 +67,7 @@ public class LevelGenerator : MonoBehaviour
     #endregion
 
     #region Custom_Functions
-    [ContextMenu("Generate level")]
+    //========================================================
     public void GenerateLevel()
     {
         if (!image)
@@ -118,7 +118,7 @@ public class LevelGenerator : MonoBehaviour
                     }
 
                     iniSpawns[n] = new GameObject($"Spawn {n + 1}").transform;
-                    iniSpawns[n].position = new Vector3(j * echelle, i * echelle, 0);
+                    iniSpawns[n].position = new Vector3(j * scale, i * scale, 0);
                     iniSpawns[n].localScale = Vector3.one;
                     iniSpawns[n].rotation = Quaternion.identity;
                     iniSpawns[n].transform.parent = parentObjSpawns.transform;
@@ -132,15 +132,15 @@ public class LevelGenerator : MonoBehaviour
             }
         }
 
-        GameManager.Instance.SpawnPositions = iniSpawns;
+        GameManager.Instance.spawnPositions = iniSpawns;
     }
 
     void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width, bool visible = true)
     {
-        GameObject cube = Instantiate(cubeToCreate, new Vector3(width, height, 0) * echelle, Quaternion.identity);
+        GameObject cube = Instantiate(cubeToCreate, new Vector3(width, height, 0) * scale, Quaternion.identity);
         cube.GetComponent<Cube>().unscaledPosition = new Vector2(width, height);
-        cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString() + ", " + height.ToString() + ")";
-        cube.transform.localScale = Vector3.one * echelle;
+        cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString("00") + ", " + height.ToString("00") + ")";
+        cube.transform.localScale = Vector3.one * scale;
         cube.transform.parent = parentObj;
         cubesArray[width, height] = cube.transform;
         if (!visible)
@@ -149,12 +149,12 @@ public class LevelGenerator : MonoBehaviour
     #endregion
 
     #region Animations
-    //============================
+    //=================================================
     IEnumerator PlayAnimation()
     {
         coroutinesRunning++;
 
-        Vector3 endScale = Vector3.one * echelle;
+        Vector3 endScale = Vector3.one * scale;
 
         for (int i = 0; i < image.height; ++i)
         {
@@ -167,7 +167,7 @@ public class LevelGenerator : MonoBehaviour
             }
         }
 
-        yield return new WaitForSecondsRealtime(attenteAvantAnim);
+        yield return new WaitForSecondsRealtime(beforeStart);
         levelState = LEVEL_STATE.LOADING;
 
         switch(spawnAnim)
@@ -180,13 +180,13 @@ public class LevelGenerator : MonoBehaviour
                         if(cubesArray[i, j] != null)
                         {
                             StartCoroutine(ScaleCubeAnimation(cubesArray[i, j], endScale));
-                            if(entreCubesAnim != 0)
-                                yield return new WaitForSecondsRealtime(entreCubesAnim);
+                            if(betweenCubes != 0)
+                                yield return new WaitForSecondsRealtime(betweenCubes);
                         }
                     }
 
-                    if(entreLignesAnim != 0)
-                        yield return new WaitForSecondsRealtime(entreLignesAnim);
+                    if(betweenLines != 0)
+                        yield return new WaitForSecondsRealtime(betweenLines);
                 }
                 break;
 
@@ -198,13 +198,13 @@ public class LevelGenerator : MonoBehaviour
                         if (cubesArray[i, j] != null)
                         {
                             StartCoroutine(ScaleCubeAnimation(cubesArray[i, j], endScale));
-                            if (entreCubesAnim != 0)
-                                yield return new WaitForSecondsRealtime(entreCubesAnim);
+                            if (betweenCubes != 0)
+                                yield return new WaitForSecondsRealtime(betweenCubes);
                         }
                     }
 
-                    if (entreLignesAnim != 0)
-                        yield return new WaitForSecondsRealtime(entreLignesAnim);
+                    if (betweenLines != 0)
+                        yield return new WaitForSecondsRealtime(betweenLines);
                 }
                 break;
 
@@ -216,13 +216,13 @@ public class LevelGenerator : MonoBehaviour
                         if (cubesArray[j, i] != null)
                         {
                             StartCoroutine(ScaleCubeAnimation(cubesArray[j, i], endScale));
-                            if (entreCubesAnim != 0)
-                                yield return new WaitForSecondsRealtime(entreCubesAnim);
+                            if (betweenCubes != 0)
+                                yield return new WaitForSecondsRealtime(betweenCubes);
                         }
                     }
 
-                    if (entreLignesAnim != 0)
-                        yield return new WaitForSecondsRealtime(entreLignesAnim);
+                    if (betweenLines != 0)
+                        yield return new WaitForSecondsRealtime(betweenLines);
                 }
                 break;
 
@@ -234,13 +234,13 @@ public class LevelGenerator : MonoBehaviour
                         if (cubesArray[j, i] != null)
                         {
                             StartCoroutine(ScaleCubeAnimation(cubesArray[j, i], endScale));
-                            if (entreCubesAnim != 0)
-                                yield return new WaitForSecondsRealtime(entreCubesAnim);
+                            if (betweenCubes != 0)
+                                yield return new WaitForSecondsRealtime(betweenCubes);
                         }
                     }
 
-                    if (entreLignesAnim != 0)
-                        yield return new WaitForSecondsRealtime(entreLignesAnim);
+                    if (betweenLines != 0)
+                        yield return new WaitForSecondsRealtime(betweenLines);
                 }
                 break;
 
@@ -260,6 +260,7 @@ public class LevelGenerator : MonoBehaviour
 
         yield return new WaitUntil(() => coroutinesRunning == 1);
 
+        // Initialisation des cubes
         for (int i = 0; i < image.height; ++i)
         {
             for (int j = 0; j < image.width; ++j)

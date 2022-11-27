@@ -4,17 +4,16 @@ using UnityEngine;
 public class PlayerEat : MonoBehaviour
 {
     #region Autres Scripts
-    //============================
+    //====================================================================================
     public PlayerManager PManager { get; set; }
     #endregion
 
     #region Variables
-    //============================
-    [SerializeField, Range(0, 100), Tooltip("La quantité de nourriture dans le corps.")]
-    private int remplissage;
-    public int Remplissage { get => remplissage; set => remplissage = value; }
+    //====================================================================================
+    [Range(0, 100), Tooltip("La quantité de nourriture dans le corps.")]
+    public int fullness;
 
-    //============================
+    //====================================================================================
     [SerializeField, Tooltip("La durée d'attente entre deux inputs de manger."), Range(0f, 1f)]
     private float eatCooldown;
     [SerializeField, Tooltip("Le nombre de cubes mangés par seconde."), Range(2, 10)]
@@ -22,13 +21,13 @@ public class PlayerEat : MonoBehaviour
     [SerializeField, Tooltip("Distance max pour pouvoir manger le cube qu'on vise."), Range(1f, 5f)]
     private float eatDistance;
     [SerializeField, Tooltip("Combien de nourriture tu reçois en mangeant un cube. 100 = Un cube suffit à te remplir."), Range(0f, 100f)]
-    private int tauxRemplissage;
+    private int filling;
 
-    //============================
+    //====================================================================================
     private float cooldown;
     private float tickHoldEat;
 
-    //============================
+    //====================================================================================
     private bool holdEat;
     public bool HoldEat { set => holdEat = value; }
     #endregion
@@ -42,12 +41,11 @@ public class PlayerEat : MonoBehaviour
 
     private void FixedUpdate()
     {
-        cooldown += Time.deltaTime;
-        cooldown = Mathf.Clamp(cooldown, 0, eatCooldown);
+        cooldown = Mathf.Clamp(cooldown + Time.deltaTime, 0, eatCooldown);
 
         if (holdEat)
         {
-            if (remplissage <= 100)
+            if (fullness <= 100)
             {
                 if (tickHoldEat >= 1f)
                 {
@@ -64,6 +62,11 @@ public class PlayerEat : MonoBehaviour
     #endregion
 
     #region Custom_Functions
+
+    /// <summary>
+    /// Essaie de manger ce qui se trouve dans direction.
+    /// </summary>
+    // TODO : Supprimer les Debug
     public void OnEat(Vector2 direction)
     {
         if (cooldown < eatCooldown)
@@ -72,7 +75,7 @@ public class PlayerEat : MonoBehaviour
             return;
         }
 
-        if(remplissage >= 100)
+        if(fullness >= 100)
         {
             Debug.Log("Tu es plein et ne peut donc plus manger! Vomis.");
             return;
@@ -83,7 +86,7 @@ public class PlayerEat : MonoBehaviour
             if(!(PManager.PMovement.GroundCheck))
                 direction = Vector2.up;
             else
-                direction = PManager.SensDuRegard;
+                direction = PManager.LookDirection;
         }
 
         #if UNITY_EDITOR
@@ -94,20 +97,18 @@ public class PlayerEat : MonoBehaviour
         if (hit)
         {
             hit.transform.parent.GetComponent<Cube_Edible>().GetManged(transform);
-            remplissage += tauxRemplissage;
-            remplissage = Mathf.Clamp(remplissage, 0, 100);
+            fullness = Mathf.Clamp(fullness + filling, 0, 100);
             PManager.UpdatePlayerScale();
         }
-        else if(!(PManager.PMovement.GroundCheck))
+        else if(!(PManager.PMovement.GroundCheck)) // S'il touche rien et qu'il n'est pas au sol on ressaie de manger dans le sens du regard cette fois
         {
-            direction = PManager.SensDuRegard;
+            direction = PManager.LookDirection;
             hit = Physics2D.Raycast(transform.position, direction.normalized, eatDistance, 1 << LayerMask.NameToLayer("Destructible"));
 
             if (hit)
             {
                 hit.transform.parent.GetComponent<Cube_Edible>().GetManged(transform);
-                remplissage += tauxRemplissage;
-                remplissage = Mathf.Clamp(remplissage, 0, 100);
+                fullness = Mathf.Clamp(fullness + filling, 0, 100);
                 PManager.UpdatePlayerScale();
             }
         }

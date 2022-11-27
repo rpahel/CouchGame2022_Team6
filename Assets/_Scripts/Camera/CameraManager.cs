@@ -7,22 +7,21 @@ public class CameraManager : MonoBehaviour
 {
     #region Variables
     //===============================================
-    private List<Transform> pTransforms = new List<Transform>();
-    public List<Transform> PTransforms { get => pTransforms; set => pTransforms = value; }
+    [HideInInspector] public List<Transform> pTransforms = new List<Transform>();
 
     //===============================================
     [SerializeField] private CinemachineTargetGroup targetGroup;
     public CinemachineTargetGroup TargetGroup => targetGroup;
 
     //===============================================
-    private float echelle;
+    private float scale;
     private float maxLensSizeX;
     private float maxLensSizeY;
     private float realMaxLensSize;
-    private const float format = 1.77777777778f; // TODO : Prendre le format de l'écran au lieu de le mettre en dur
+    private float screenFormat;
     private Vector2 barycentre;
     private Vector2 realImageSize;
-    private Vector2 imageSize_16_9;
+    private Vector2 imageSizeToScreenFormat;
     private PolygonCollider2D camConfiner;
     private CinemachineVirtualCamera cineCam;
     private CinemachineConfiner2D cineConfiner;
@@ -35,6 +34,7 @@ public class CameraManager : MonoBehaviour
     #region Unity_Functions
     private void Awake()
     {
+        screenFormat = 16f / 9f; // TODO : Prendre le format de l'écran au lieu de le mettre en dur
         cineCam = VCam.GetComponent<CinemachineVirtualCamera>();
         cineConfiner = VCam.GetComponent<CinemachineConfiner2D>();
         camConfiner = GetComponent<PolygonCollider2D>();
@@ -42,26 +42,35 @@ public class CameraManager : MonoBehaviour
 
     private void Start()
     {
-        echelle = GameManager.Instance.LevelGenerator.Echelle;
+        scale = GameManager.Instance.LevelGenerator.Scale;
         realImageSize = GameManager.Instance.LevelGenerator.ImageRef.Size();
-        imageSize_16_9 = realImageSize.x > realImageSize.y ?
-                         new Vector2(realImageSize.x, realImageSize.x / format) :
-                         new Vector2(realImageSize.y * format, realImageSize.y);
 
-        maxLensSizeX = imageSize_16_9.x * .8f * (echelle / 2.857143f);
-        maxLensSizeY = imageSize_16_9.y * 1.425f * (echelle / 2.857143f);
+        // On converti la taille de l'image pour s'adapter au format de l'écran
+        imageSizeToScreenFormat = realImageSize.x > realImageSize.y ?
+                         new Vector2(realImageSize.x, realImageSize.x / screenFormat) :
+                         new Vector2(realImageSize.y * screenFormat, realImageSize.y);
+
+        // Ici on setup les tailles min et max de la lentille
+        maxLensSizeX = imageSizeToScreenFormat.x * .8f * (scale / 2.857143f);
+        maxLensSizeY = imageSizeToScreenFormat.y * 1.425f * (scale / 2.857143f);
         realMaxLensSize = (realImageSize.x > realImageSize.y) ? maxLensSizeX : maxLensSizeY;
         cineConfiner.m_MaxWindowSize = realMaxLensSize;
 
-        Vector2 imageCenterInWorld = (realImageSize - Vector2.one) * .5f * echelle;
-        Debug.DrawLine(imageCenterInWorld, imageCenterInWorld + Vector2.right * 20, Color.cyan, 100000f);
-        Debug.DrawLine(imageCenterInWorld, imageCenterInWorld + Vector2.down * 20, Color.cyan, 100000f);
+        Vector2 imageCenterInWorld = .5f * scale * (realImageSize - Vector2.one);
 
+        #if UNITY_EDITOR
+        { 
+            Debug.DrawLine(imageCenterInWorld, imageCenterInWorld + Vector2.right * 20, Color.cyan, 5f);
+            Debug.DrawLine(imageCenterInWorld, imageCenterInWorld + Vector2.down * 20, Color.cyan, 5f);
+        }
+        #endif
+
+        // On setup les limites du camera confiner
         Vector2[] tempPoints = new Vector2[4];
         for(int i = 0; i < 4; i++)
         {
             // 0 = 00, 1 = 01, 2 = 10, 3 = 11;
-            tempPoints[i] = (new Vector2(((i >> 1) & 1) * imageSize_16_9.x, (i & 1) * imageSize_16_9.y) - .5f * Vector2.one) * echelle;
+            tempPoints[i] = (new Vector2(((i >> 1) & 1) * imageSizeToScreenFormat.x, (i & 1) * imageSizeToScreenFormat.y) - .5f * Vector2.one) * scale;
         }
         (tempPoints[2], tempPoints[3]) = (tempPoints[3], tempPoints[2]); // On échange les deux derniers index
 
@@ -73,9 +82,10 @@ public class CameraManager : MonoBehaviour
 
         Vector2 imageCenterToBoundsCenter = (Vector2)bounds.center - imageCenterInWorld;
         
+        // On ajuste le camera confiner pour que le niveau soit bien au centre de l'écran
         for (int i = 0; i < 4; i++)
         {
-            //Déplacer à gauche ou vers le haut
+            // Déplacer à gauche ou vers le haut
             tempPoints[i] -= imageCenterToBoundsCenter;
         }
 
@@ -87,11 +97,17 @@ public class CameraManager : MonoBehaviour
 
         camConfiner.SetPath(0, tempPoints);
         cineConfiner.InvalidateCache(); // Refresh le confiner pour prendre en compte les nouveaux points
-        Debug.DrawLine(new Vector3(bounds.min.x, bounds.max.y, -8), new Vector3(bounds.max.x, bounds.min.y, -8), Color.red, 1000);
-        Debug.DrawLine(bounds.min - Vector3.forward * 8, bounds.max - Vector3.forward * 8, Color.red, 1000);
 
+#if UNITY_EDITOR
+        { 
+            Debug.DrawLine(new Vector3(bounds.min.x, bounds.max.y, -8), new Vector3(bounds.max.x, bounds.min.y, -8), Color.red, 5);
+            Debug.DrawLine(bounds.min - Vector3.forward * 8, bounds.max - Vector3.forward * 8, Color.red, 5);
+        }
+#endif
+
+        // On setup la camera bien au centre du level
         cineCam.m_Lens.OrthographicSize = realMaxLensSize;
-        barycentre = .5f * echelle * (realImageSize - Vector2.one);
+        barycentre = .5f * scale * (realImageSize - Vector2.one);
         VCam.transform.position = (Vector3)barycentre - Vector3.forward * 10;
 
         cineCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_MinimumOrthoSize = minLensSize;
@@ -101,15 +117,27 @@ public class CameraManager : MonoBehaviour
 
     #region Custom_Functions
 
+    /// <summary>
+    /// On donne ou on retire un joueur du target group de la camera.
+    /// </summary>
+    /// <param name="pTransform">Le transform du joueur à suivre. S'il est déjà dans la liste, il sera retiré.</param>
     public void UpdatePlayers(Transform pTransform)
     {
-        PTransforms.Add(pTransform);
+        if (pTransforms.Contains(pTransform))
+        {
+            pTransforms.Remove(pTransform);
+        }
+        else
+        {
+            pTransforms.Add(pTransform);
+        }
+
         targetGroup.m_Targets = new CinemachineTargetGroup.Target[pTransforms.Count];
 
-        for(int i = 0; i < PTransforms.Count; i++)
+        for(int i = 0; i < pTransforms.Count; i++)
         {
             CinemachineTargetGroup.Target target;
-            target.target = PTransforms[i];
+            target.target = pTransforms[i];
             target.weight = 1;
             target.radius = 6;
             targetGroup.m_Targets.SetValue(target, i);

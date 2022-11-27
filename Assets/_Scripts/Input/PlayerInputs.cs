@@ -5,11 +5,12 @@ using UnityEngine.InputSystem;
 public class PlayerInputs : MonoBehaviour
 {
     #region Autres Scripts
-    //============================
+    //==========================================================================
     public PlayerManager PManager { get; set; }
     #endregion
 
     #region Customs_Functions
+    //==========================================================================
     public void OnMove(InputAction.CallbackContext input)
     {
         PManager.PMovement.OnMove(input.ReadValue<Vector2>().normalized);

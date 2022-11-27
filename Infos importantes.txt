@@ -1,0 +1,17 @@
+Default scale de tout = 2.857143
+
+===========================================================
+Si un joueur meurt, on désactive le joueur.
+Sauf que si le joueur appuie sur un bouton pendant qu'il est désactivé, ça fait pop un nouveau joueur.
+On ne veut pas ça.
+Il faudrait faire un menu où les joueurs se connecte et une fois tous connectés, désactive la possibilité de se connecter.
+Ca risque de faire perdre le playerInput et du coup le joueur pourra plus controler son avatar... à tester
+Idée 2: Rajouter un état MORT au joueur qui le retire de la caméra et le fout hors champ jusqu'à qu'il est censé repop.
+Comme ça, ça évite de le désactiver et donc de faire chier le playerInput
+
+==========================================================
+Si tous les joueurs meurt en meme temps, la caméra risque de ne pas savoir quoi faire.
+Si c'est gênant, go la replacer au milieu.
+CameraManager.UpdatePlayers()
+
+==========================================================

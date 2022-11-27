@@ -1,8 +1,10 @@
-using System;
-using UnityEngine;
+using CustomMaths;
 using Data;
-using System.Collections;
 using DG.Tweening;
+using System;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -31,74 +33,87 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector] public Color color;
 
     //============================
-    public PLAYER_STATE PlayerState { get; set; }
+    private PLAYER_STATE playerState;
+    public PLAYER_STATE PlayerState
+    {
+        get { return playerState; }
+        set 
+        {
+            if (PlayerState != value)
+            {
+                PreviousPlayerState = playerState;
+                playerState = value;
+            }
+        }
+    }
+
+    public PLAYER_STATE PreviousPlayerState { get; private set; }
     public Vector2 AimDirection { get; set; }
-    public Vector2 SensDuRegard { get; set; }
+    public Vector2 LookDirection { get; set; }
 
     //============================
-    [SerializeField] private float tailleMax = 2.857f;
-    [SerializeField] private float tailleMin = 1f;
+    [SerializeField] private float maxSize = 2.857f;
+    [SerializeField] private float minSize = 1f;
 
     //============================ TODO : Supprimer
-    public SpriteRenderer spriteInterieur;
+    public SpriteRenderer insideSprite;
     #endregion
 
     #region Unity_Functions
     private void Awake()
     {
         TryGetAllComponents();
-        SetManagerInComponents();
+        SetSelfInComponents();
     }
 
     private void Update()
     {
-        #if UNITY_EDITOR
-            Debug.DrawRay(transform.position - Vector3.forward, AimDirection * 5f, Color.cyan, Time.deltaTime);
-#endif
 
+        #if UNITY_EDITOR
+        {
+            Debug.DrawRay(transform.position - Vector3.forward, AimDirection * 5f, Color.cyan, Time.deltaTime);
+        }
+        #endif
+
+        // On change LookDirection ici
         if (AimDirection.x > 0)
-            SensDuRegard = Vector2.right;
+            LookDirection = Vector2.right;
         else if (AimDirection.x < 0)
-            SensDuRegard = Vector2.left;
+            LookDirection = Vector2.left;
     }
 
     private void FixedUpdate()
     {
-        #if UNITY_EDITOR
-        transform.localScale = Vector3.one * Mathf.Lerp(tailleMin, tailleMax, pEat.Remplissage * .01f);
+        UpdatePlayerScale();
 
-        Debug.DrawRay(transform.position - Vector3.forward, AimDirection * 5f, Color.cyan, Time.deltaTime);
-        
+        // On change la couleur du joueur en fonction de son état
         if (PlayerState == PLAYER_STATE.KNOCKBACKED)
-        {
-            spriteInterieur.color = Color.red;
-        }
+            insideSprite.color = Color.red;
         else if (PlayerState == PLAYER_STATE.SHOOTING)
-        {
-            spriteInterieur.color = Color.blue;
-        }
+            insideSprite.color = Color.blue;
         else
-        {
-            spriteInterieur.color = Color.white;
-        }
-        #endif
+            insideSprite.color = Color.white;
     }
     #endregion
 
     #region Custom_Functions
+
     /// <summary>
     /// Essaie de récupérer, dans le Player gameObject, le Component donné. Arrête le mode Play et retourne une erreur lorsque le Component n'est pas trouvé.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     /// <param name="component">Le component à récupérer.</param>
     /// <exception cref="Exception">Le component n'a pas été trouvé</exception>
     private void TryGetPlayerComponent<T>(out T component)
     {
-        if (!TryGetComponent<T>(out component))
+        if (!TryGetComponent(out component))
         {
+
             #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
+            {
+                UnityEditor.EditorApplication.isPlaying = false;
+            }
             #endif
+
             throw new Exception($"No {typeof(T)} component found in Player game object !");
         }
     }
@@ -114,7 +129,7 @@ public class PlayerManager : MonoBehaviour
         TryGetPlayerComponent(out pSpecial);
     }
 
-    private void SetManagerInComponents()
+    private void SetSelfInComponents()
     {
         pMovement.PManager = this;
         pEat.PManager = this;
@@ -123,24 +138,39 @@ public class PlayerManager : MonoBehaviour
         pSpecial.PManager = this;
     }
 
+    /// <summary>
+    /// Réduit la jauge de bouffe et knockback le joueur.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="damageDealer">L'objet responsable des dégats (un joueur, un piège, etc).</param>
+    /// <param name="damage">La quantité de bouffe à retirer.</param>
     public void OnDamage<T>(T damageDealer, int damage, Vector2 knockBackForce)
     {
-        PEat.Remplissage -= damage;
-        PEat.Remplissage = Mathf.Clamp(PEat.Remplissage, 0, 100);
+        PEat.fullness = Mathf.Clamp(PEat.fullness - damage, 0, 100);
         UpdatePlayerScale();
 
-        rb2D.AddForce(knockBackForce, ForceMode2D.Impulse);
+        //rb2D.AddForce(knockBackForce, ForceMode2D.Impulse);
+        rb2D.velocity += Time.deltaTime * 100f * knockBackForce;
         PlayerState = PLAYER_STATE.KNOCKBACKED;
     }
 
     public void UpdatePlayerScale()
     {
-        transform.localScale = Vector3.one * Mathf.Lerp(tailleMin, tailleMax, pEat.Remplissage * .01f);
+        transform.localScale = Vector3.one * Mathf.Lerp(minSize, maxSize, pEat.fullness * .01f);
     }
 
+    /// <summary>
+    /// Pousse de façon smooth le joueur vers un endroit donné.
+    /// </summary>
     public void PousseToiVers(Vector2 endPosition)
     {
-        DrawWireSphere(endPosition, .5f, Color.cyan, 5f);
+
+        #if UNITY_EDITOR
+        {
+            CustomDebugs.DrawWireSphere(endPosition, .5f, Color.magenta, 5f, 1);
+        }
+        #endif
+
         StartCoroutine(PousseToiAnimation(endPosition));
     }
 
@@ -162,47 +192,6 @@ public class PlayerManager : MonoBehaviour
         if(PlayerState != PLAYER_STATE.KNOCKBACKED)
         {
             transform.position = endPosition;
-        }
-    }
-
-    public static void DrawWireSphere(Vector3 center, float radius, Color color, float duration, int quality = 3)
-    {
-        quality = Mathf.Clamp(quality, 1, 10);
-    
-        int segments = quality << 2;
-        int subdivisions = quality << 3;
-        int halfSegments = segments >> 1;
-        float strideAngle = 360F / subdivisions;
-        float segmentStride = 180F / segments;
-    
-        Vector3 first;
-        Vector3 next;
-        for (int i = 0; i < segments; i++)
-        {
-            first = (Vector3.forward * radius);
-            first = Quaternion.AngleAxis(segmentStride * (i - halfSegments), Vector3.right) * first;
-    
-            for (int j = 0; j < subdivisions; j++)
-            {
-                next = Quaternion.AngleAxis(strideAngle, Vector3.up) * first;
-                UnityEngine.Debug.DrawLine(first + center, next + center, color, duration);
-                first = next;
-            }
-        }
-    
-        Vector3 axis;
-        for (int i = 0; i < segments; i++)
-        {
-            first = (Vector3.forward * radius);
-            first = Quaternion.AngleAxis(segmentStride * (i - halfSegments), Vector3.up) * first;
-            axis = Quaternion.AngleAxis(90F, Vector3.up) * first;
-    
-            for (int j = 0; j < subdivisions; j++)
-            {
-                next = Quaternion.AngleAxis(strideAngle, axis) * first;
-                UnityEngine.Debug.DrawLine(first + center, next + center, color, duration);
-                first = next;
-            }
         }
     }
     #endregion

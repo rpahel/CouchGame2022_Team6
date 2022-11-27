@@ -20,7 +20,7 @@
                     "id": "562d1a41-5f32-42ab-9e45-fdb0a77a530e",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 },
                 {
@@ -186,7 +186,7 @@
                     "name": "",
                     "id": "aebafe45-cbfc-4f5c-ab1d-f16c81280099",
                     "path": "<Gamepad>/buttonSouth",
-                    "interactions": "Hold",
+                    "interactions": "",
                     "processors": "",
                     "groups": "GamePad",
                     "action": "Jump",
@@ -197,7 +197,7 @@
                     "name": "",
                     "id": "a658c3e5-27d8-4fda-b56f-76e6a5573b0c",
                     "path": "<Keyboard>/space",
-                    "interactions": "Hold",
+                    "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Jump",

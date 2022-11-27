@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Data;
+using UnityEngine;
 
 [ExecuteInEditMode]
 public abstract class Cube : MonoBehaviour
@@ -15,8 +13,8 @@ public abstract class Cube : MonoBehaviour
     [SerializeField] protected GameObject cube;
 
     //==========================================
-    protected bool isManged;
-    public bool IsManged => isManged;
+    protected bool isEaten;
+    public bool IsEaten => isEaten;
 
     //==========================================
     [HideInInspector] public Vector2 unscaledPosition;

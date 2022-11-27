@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6314667026061840759}
   - component: {fileID: 6314667026061840758}
   m_Layer: 9
-  m_Name: SpriteInterieur
+  m_Name: Inside Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -223,10 +223,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cd890240ab088d4a890e5ab4627a44b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dureeDeVie: 3
+  insideSpriteRenderer: {fileID: 6314667026061840758}
+  lifetime: 3
   owner: {fileID: 0}
   color: {r: 0, g: 0, b: 0, a: 0}
   gravity: 0
   forceDuRebond: 0
   pourcentageInflige: 0
   knockBackForce: 0
+  ownerVelocityAtLaunch: {x: 0, y: 0}

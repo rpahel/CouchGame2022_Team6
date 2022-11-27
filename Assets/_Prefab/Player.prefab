@@ -446,9 +446,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 0, g: 0, b: 0, a: 0}
-  tailleMax: 2.857
-  tailleMin: 1
-  spriteInterieur: {fileID: 1940364374433954416}
+  maxSize: 2.857
+  minSize: 1
+  insideSprite: {fileID: 1940364374433954416}
 --- !u!114 &3784764394035868593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -473,10 +473,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f89f16d5c35d6746bb3c520b3695ae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vitesseMax: 25
-  dureeAvantArret: 0.1
-  forceDeSaut: 70
-  "echelleDeGravit\xE9": 30
+  maxSpeed: 25
+  stopDuration: 0.1
+  jumpForce: 35
+  gravityScale: 30
   deadZone: 0.25
 --- !u!114 &1293963572987568439
 MonoBehaviour:
@@ -490,11 +490,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f73e76a7818c88142abe5ba9d37e9246, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  remplissage: 50
-  eatCooldown: 0
+  fullness: 50
+  eatCooldown: 0.25
   eatTickrate: 5
   eatDistance: 5
-  tauxRemplissage: 5
+  filling: 10
 --- !u!114 &2990907069813645592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,14 +507,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4092f8f1d6f99e34a91cdadcc1e78d11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pourcentageNecessaire: 12
+  necessaryFood: 12
   cooldown: 0.5
-  forceOpposee: 50
   aimPivot: {fileID: 8009965234519673580}
-  vitesseInitiale: 40
+  initialSpeed: 40
   gravity: 5
-  forceDuRebond: 1
-  pourcentageInflige: 20
+  bounceForce: 1
+  inflictedFoodDamage: 20
   knockBackForce: 50
 --- !u!114 &-3623799545061017393
 MonoBehaviour:
@@ -528,9 +527,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbc7df21e43a6da48966236c26992211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dureeAvantChargeMax: 3
-  distanceMax: 40
-  distanceMin: 10
+  timeToMaxCharge: 3
+  maxDistance: 40
+  minDistance: 10
 --- !u!1 &8273371953776669671
 GameObject:
   m_ObjectHideFlags: 0

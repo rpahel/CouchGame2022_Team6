@@ -331,14 +331,14 @@ MonoBehaviour:
   cubeType: 1
   cube: {fileID: 303830590082189049}
   unscaledPosition: {x: 0, y: 0}
-  restes:
+  leftOvers:
   - {fileID: 2531556312048333293}
   - {fileID: 3530211992881418058}
   - {fileID: 1866652284042003069}
   - {fileID: 5241827266282811671}
-  dureeDeDeplacement: 0.375
-  degresDeRotation: 180
-  dureeDeApparition: 0.5
+  moveDuration: 0.375
+  rotationDegrees: 180
+  apparitionDuration: 0.5
 --- !u!1 &3530211992881418058
 GameObject:
   m_ObjectHideFlags: 0

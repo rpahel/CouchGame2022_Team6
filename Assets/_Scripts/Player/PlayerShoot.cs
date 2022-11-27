@@ -1,3 +1,4 @@
+using CustomMaths;
 using Data;
 using System.Collections;
 using UnityEngine;
@@ -11,41 +12,39 @@ public class PlayerShoot : MonoBehaviour
 
     #region Variables
     //============================
-    [SerializeField, Range(0, 100), Tooltip("Pourcentage de nourriture utilis� pour tirer.")]
-    private int pourcentageNecessaire;
+    [SerializeField, Range(0, 100), Tooltip("Pourcentage de nourriture utilisé pour tirer.")]
+    private int necessaryFood;
     [SerializeField, Range(0, 2), Tooltip("Laps de temps entre chaque tir.")]
     private float cooldown;
     private float cdTimer;
-    [SerializeField, Tooltip("Force de pouss�e arri�re sur ce joueur suite � son propre tir.")]
-    private float forceOpposee;
-    [SerializeField]
+    [SerializeField, Tooltip("Le gameObject AimPivot de ce Prefab.")]
     private Transform aimPivot;
 
     //============================
     [Header("Projectile")]
-    [SerializeField] private float vitesseInitiale;
+    [SerializeField] private float initialSpeed;
     [SerializeField] private float gravity;
-    [SerializeField] private float forceDuRebond;
-    [SerializeField, Range(0, 100), Tooltip("Pourcentage de nourriture retir� au joueur ennemi touch�.")]
-    private int pourcentageInflige;
-    [SerializeField, Tooltip("Force du knockback inflig� au joueur ennemi.")]
+    [SerializeField] private float bounceForce;
+    [SerializeField, Range(0, 100), Tooltip("Pourcentage de nourriture retiré au joueur ennemi touché.")]
+    private int inflictedFoodDamage;
+    [SerializeField, Tooltip("Force du knockback infligé au joueur ennemi.")]
     private float knockBackForce;
 
     //============================
-    private float raycastRange;
+    private float raycastRange; // Utilisé pour voir si y'a assez de place pour tirer
     #endregion
 
     #region Unity_Functions
     private void Start()
     {
-        raycastRange = GameManager.Instance.LevelGenerator.Echelle * 4;
+        raycastRange = GameManager.Instance.LevelGenerator.Scale * 4;
     }
 
     private void FixedUpdate()
     {
         if (PManager.PlayerState == PLAYER_STATE.SHOOTING)
         {
-            aimPivot.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, PManager.AimDirection != Vector2.zero ? PManager.AimDirection : PManager.SensDuRegard) - 90f);
+            aimPivot.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, PManager.AimDirection != Vector2.zero ? PManager.AimDirection : PManager.LookDirection) - 90f);
         }
         else if (aimPivot.gameObject.activeSelf)
         {
@@ -62,7 +61,7 @@ public class PlayerShoot : MonoBehaviour
 
         if (PManager.PlayerState == PLAYER_STATE.STUNNED)
         {
-            Debug.Log("Vous �tes stunned et ne pouvez donc pas tirer.");
+            Debug.Log("Vous etes stunned et ne pouvez donc pas tirer.");
             return;
         }
 
@@ -72,14 +71,14 @@ public class PlayerShoot : MonoBehaviour
             return;
         }
 
-        if(PManager.PEat.Remplissage < pourcentageNecessaire)
+        if(PManager.PEat.fullness < necessaryFood)
         {
             Debug.Log("Pas assez de nourriture pour shoot.");
             return;
         }
 
         if(aimDirection == Vector2.zero)
-            aimDirection = PManager.SensDuRegard;
+            aimDirection = PManager.LookDirection;
 
         if (!IsThereEnoughSpace(aimDirection))
         {
@@ -87,32 +86,36 @@ public class PlayerShoot : MonoBehaviour
             return;
         }
 
+        ShootProjectile(aimDirection);
+
+        PManager.PEat.fullness = Mathf.Clamp(PManager.PEat.fullness - necessaryFood, 0, 100);
+        PManager.UpdatePlayerScale();
+
+        cdTimer = cooldown;
+        StartCoroutine(Cooldown());
+    }
+    
+    private void ShootProjectile(Vector2 aimDirection)
+    {
         Projectile projectile = GameManager.Instance.GetAvailableProjectile();
         projectile.owner = PManager;
         projectile.color = PManager.color;
         projectile.transform.position = transform.position;
         projectile.gravity = gravity;
-        projectile.forceDuRebond = forceDuRebond;
-        projectile.pourcentageInflige = pourcentageInflige;
+        projectile.bounceForce = bounceForce;
+        projectile.percentageDealt = inflictedFoodDamage;
         projectile.knockBackForce = knockBackForce;
         projectile.ownerVelocityAtLaunch = PManager.Rb2D.velocity;
 
         projectile.gameObject.SetActive(true);
-        projectile.Shoot(aimDirection, vitesseInitiale);
-
-        PManager.PEat.Remplissage -= pourcentageNecessaire;
-        PManager.PEat.Remplissage = Mathf.Clamp(PManager.PEat.Remplissage, 0, 100);
-        PManager.UpdatePlayerScale();
-
-        cdTimer = cooldown;
-        StartCoroutine(Cooldown());
+        projectile.Shoot(aimDirection, initialSpeed);
     }
 
     public void HoldShoot()
     {
         if (PManager.PlayerState != PLAYER_STATE.KNOCKBACKED && PManager.PlayerState != PLAYER_STATE.STUNNED)
         {
-            if (PManager.PEat.Remplissage >= pourcentageNecessaire)
+            if (PManager.PEat.fullness >= necessaryFood)
             {
                 PManager.PlayerState = PLAYER_STATE.SHOOTING;
                 aimPivot.gameObject.SetActive(true);
@@ -125,43 +128,43 @@ public class PlayerShoot : MonoBehaviour
         Vector2 rayOrigin = (Vector2)transform.position + (Vector2)(Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, aimDirection) - 90f) * (.5f * Vector2.right));
         RaycastHit2D hit1 = Physics2D.Raycast(rayOrigin, aimDirection, raycastRange);
 
-        //#if UNITY_EDITOR
-        //    if (!hit1)
-        //        Debug.DrawRay(rayOrigin, aimDirection * raycastRange, Color.red, 5f);
-        //    else
-        //        Debug.DrawLine(rayOrigin, hit1.point, Color.red, 5f);
-        //#endif
+        #if UNITY_EDITOR
+            if (!hit1)
+                Debug.DrawRay(rayOrigin, aimDirection * raycastRange, Color.red, 1f);
+            else
+                Debug.DrawLine(rayOrigin, hit1.point, Color.red, 1f);
+        #endif
 
         rayOrigin = (Vector2)transform.position - (Vector2)(Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, aimDirection) - 90f) * (.5f * Vector2.right));
         RaycastHit2D hit2 = Physics2D.Raycast(rayOrigin, aimDirection, raycastRange);
 
-        //#if UNITY_EDITOR
-        //    if(!hit2)
-        //        Debug.DrawRay(rayOrigin, aimDirection * raycastRange, Color.red, 5f);
-        //    else
-        //        Debug.DrawLine(rayOrigin, hit2.point, Color.red, 5f);
-        //#endif
+        #if UNITY_EDITOR
+            if(!hit2)
+                Debug.DrawRay(rayOrigin, aimDirection * raycastRange, Color.red, 1f);
+            else
+                Debug.DrawLine(rayOrigin, hit2.point, Color.red, 1f);
+        #endif
 
-        RaycastHit2D winnerHit;
+        RaycastHit2D closestHit;
 
         if (hit1 && hit2)
         {
             if (hit1.distance < hit2.distance)
-                winnerHit = hit1;
+                closestHit = hit1;
             else
-                winnerHit = hit2;
+                closestHit = hit2;
         }
         else if (hit1)
-            winnerHit = hit1;
+            closestHit = hit1;
         else
-            winnerHit = hit2;
+            closestHit = hit2;
 
-        if (winnerHit)
+        if (closestHit)
         {
-            if (winnerHit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+            if (closestHit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
                 return true;
         
-            RaycastHit2D[] hits = GameManager.Instance.SquareCast((Vector2)winnerHit.transform.position + GameManager.Instance.LevelGenerator.Echelle * winnerHit.normal, GameManager.Instance.LevelGenerator.Echelle * .9f);
+            RaycastHit2D[] hits = CustomPhysics.SquareCast((Vector2)closestHit.transform.position + GameManager.Instance.LevelGenerator.Scale * closestHit.normal, GameManager.Instance.LevelGenerator.Scale * .9f);
         
             foreach(RaycastHit2D hit2D in hits)
             {
