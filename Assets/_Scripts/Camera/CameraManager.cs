@@ -1,6 +1,5 @@
 using Cinemachine;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraManager : MonoBehaviour
@@ -43,7 +42,7 @@ public class CameraManager : MonoBehaviour
     private void Start()
     {
         scale = GameManager.Instance.LevelGenerator.Scale;
-        realImageSize = GameManager.Instance.LevelGenerator.ImageRef.Size();
+        realImageSize = new Vector2(GameManager.Instance.LevelGenerator.ImageRef.width, GameManager.Instance.LevelGenerator.ImageRef.height);
 
         // On converti la taille de l'image pour s'adapter au format de l'écran
         imageSizeToScreenFormat = realImageSize.x > realImageSize.y ?
