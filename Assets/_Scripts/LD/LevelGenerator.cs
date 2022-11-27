@@ -7,9 +7,6 @@ public class LevelGenerator : MonoBehaviour
 {
     #region Variables
     //========================================================
-    public static LevelGenerator Instance { get; private set; }
-
-    //========================================================
     [Header("Image de référence.")]
     [SerializeField] private Texture2D image;
     public Texture2D ImageRef => image;
@@ -59,7 +56,6 @@ public class LevelGenerator : MonoBehaviour
     #region Unity_Functions
     private void Awake()
     {
-        Instance = this;
         cubesArray = new Transform[image.width, image.height];
     }
 
@@ -301,24 +297,25 @@ public class LevelGenerator : MonoBehaviour
         coroutinesRunning--;
     }
 
-    //public void PrintLevelAscii()
-    //{
-    //    string ascii = "";
-    //    for (int i = image.height - 1; i >= 0; i--)
-    //    {
-    //        for (int j = 0; j < image.width; j++)
-    //        {
-    //            if (CubesArray[j, i])
-    //                ascii += "G ";
-    //            else
-    //                ascii += "O ";
-    //        }
-    //
-    //        ascii += "\n";
-    //    }
-    //
-    //    Debug.Log(ascii);
-    //}
+    /*public void PrintLevelAscii()
+    {
+        string ascii = "";
+        for (int i = image.height - 1; i >= 0; i--)
+        {
+            for (int j = 0; j < image.width; j++)
+            {
+                if (CubesArray[j, i])
+                    ascii += "G ";
+                else
+                    ascii += "O ";
+            }
+    
+            ascii += "\n";
+        }
+    
+        Debug.Log(ascii);
+    }*/
+
     #endregion
 }
 

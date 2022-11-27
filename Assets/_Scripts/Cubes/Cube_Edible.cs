@@ -40,7 +40,7 @@ public class Cube_Edible : Cube
             dir = Quaternion.Euler(0, 0, -90 * i) * Vector3.up;
 
             targetPos = unscaledPosition + (Vector2)dir;
-            targetCubeTransform = LevelGenerator.Instance.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
+            targetCubeTransform = GameManager.Instance.LevelGenerator.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
 
             if (targetCubeTransform)
             {

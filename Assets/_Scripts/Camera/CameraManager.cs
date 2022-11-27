@@ -42,10 +42,8 @@ public class CameraManager : MonoBehaviour
 
     private void Start()
     {
-        echelle = LevelGenerator.Instance.Echelle;
-        //echelle = GameManager.Instance.LGenerator.Echelle;
-        realImageSize = LevelGenerator.Instance.ImageRef.Size();
-        //realImageSize = GameManager.Instance.LGenerator.ImageRef.Size();
+        echelle = GameManager.Instance.LevelGenerator.Echelle;
+        realImageSize = GameManager.Instance.LevelGenerator.ImageRef.Size();
         imageSize_16_9 = realImageSize.x > realImageSize.y ?
                          new Vector2(realImageSize.x, realImageSize.x / format) :
                          new Vector2(realImageSize.y * format, realImageSize.y);

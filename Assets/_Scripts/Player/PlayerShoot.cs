@@ -38,7 +38,7 @@ public class PlayerShoot : MonoBehaviour
     #region Unity_Functions
     private void Start()
     {
-        raycastRange = LevelGenerator.Instance.Echelle * 4;
+        raycastRange = GameManager.Instance.LevelGenerator.Echelle * 4;
     }
 
     private void FixedUpdate()
@@ -161,7 +161,7 @@ public class PlayerShoot : MonoBehaviour
             if (winnerHit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
                 return true;
         
-            RaycastHit2D[] hits = GameManager.Instance.SquareCast((Vector2)winnerHit.transform.position + LevelGenerator.Instance.Echelle * winnerHit.normal, LevelGenerator.Instance.Echelle * .9f);
+            RaycastHit2D[] hits = GameManager.Instance.SquareCast((Vector2)winnerHit.transform.position + GameManager.Instance.LevelGenerator.Echelle * winnerHit.normal, GameManager.Instance.LevelGenerator.Echelle * .9f);
         
             foreach(RaycastHit2D hit2D in hits)
             {

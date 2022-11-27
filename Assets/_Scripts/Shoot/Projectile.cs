@@ -77,7 +77,7 @@ public class Projectile : MonoBehaviour
             }
             else if (collider.gameObject.layer == LayerMask.NameToLayer("Destructible") || collider.gameObject.layer == LayerMask.NameToLayer("Indestructible"))
             {
-                if (CanSpawnCubeAt(PositionInNormalDirection(collider.transform.position, transform.position - collider.transform.position, LevelGenerator.Instance.Echelle), owner.transform.position - collider.transform.position))
+                if (CanSpawnCubeAt(PositionInNormalDirection(collider.transform.position, transform.position - collider.transform.position, GameManager.Instance.LevelGenerator.Echelle), owner.transform.position - collider.transform.position))
                     SpawnCube(collider);
                 else
                     Debug.Log("Not enough space to spawn cube.");
@@ -120,7 +120,7 @@ public class Projectile : MonoBehaviour
             }
             else if (collision.gameObject.layer == LayerMask.NameToLayer("Destructible") || collision.gameObject.layer == LayerMask.NameToLayer("Indestructible"))
             {
-                if (CanSpawnCubeAt(PositionInNormalDirection(collision.transform.position, collision.GetContact(0).normal, LevelGenerator.Instance.Echelle), owner.transform.position - collision.transform.position))
+                if (CanSpawnCubeAt(PositionInNormalDirection(collision.transform.position, collision.GetContact(0).normal, GameManager.Instance.LevelGenerator.Echelle), owner.transform.position - collision.transform.position))
                     SpawnCube(collision);
                 else
                     Debug.Log("Not enough space to spawn cube.");
@@ -167,8 +167,8 @@ public class Projectile : MonoBehaviour
     private void SpawnCube(Collision2D collision)
     {
         Vector2 normal = collision.GetContact(0).normal;
-        Vector2 targetPos = PositionInNormalDirection(collision.transform.position / LevelGenerator.Instance.Echelle, normal);
-        Transform targetTransform = LevelGenerator.Instance.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
+        Vector2 targetPos = PositionInNormalDirection(collision.transform.position / GameManager.Instance.LevelGenerator.Echelle, normal);
+        Transform targetTransform = GameManager.Instance.LevelGenerator.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
         Cube_Edible cube;
         if(targetTransform.TryGetComponent(out cube))
         {
@@ -179,8 +179,8 @@ public class Projectile : MonoBehaviour
     private void SpawnCube(Collider2D collider)
     {
         Vector2 normal = ApproxNormal(transform.position - collider.transform.position);
-        Vector2 targetPos = PositionInNormalDirection(collider.transform.position / LevelGenerator.Instance.Echelle, normal);
-        Transform targetTransform = LevelGenerator.Instance.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
+        Vector2 targetPos = PositionInNormalDirection(collider.transform.position / GameManager.Instance.LevelGenerator.Echelle, normal);
+        Transform targetTransform = GameManager.Instance.LevelGenerator.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
         Cube_Edible cube;
         if (targetTransform.TryGetComponent(out cube))
         {
@@ -195,7 +195,7 @@ public class Projectile : MonoBehaviour
 
     bool CanSpawnCubeAt(Vector2 position, Vector2 impactedCubeToOwner)
     {
-        RaycastHit2D[] hits = GameManager.Instance.SquareCast(position, LevelGenerator.Instance.Echelle * .9f, true);
+        RaycastHit2D[] hits = GameManager.Instance.SquareCast(position, GameManager.Instance.LevelGenerator.Echelle * .9f, true);
 
         foreach(RaycastHit2D hit in hits)
         {
@@ -208,13 +208,13 @@ public class Projectile : MonoBehaviour
                     if(ClosestAxis(impactedCubeToOwner, true).x == 0)
                     {
                         Debug.DrawRay((Vector2)owner.transform.position - impactedCubeToOwner, impactedCubeToOwner, Color.blue, 5f);
-                        Vector2 safe = position + (owner.PCollider.bounds.extents.y + .5f * LevelGenerator.Instance.Echelle) * ClosestAxis(impactedCubeToOwner, true);
+                        Vector2 safe = position + (owner.PCollider.bounds.extents.y + .5f * GameManager.Instance.LevelGenerator.Echelle) * ClosestAxis(impactedCubeToOwner, true);
                         owner.PousseToiVers(safe + new Vector2(owner.transform.position.x - safe.x, 0));
                     }
                     else
                     {
                         Debug.DrawRay((Vector2)owner.transform.position - impactedCubeToOwner, impactedCubeToOwner, Color.blue, 5f);
-                        Vector2 safe = position + (owner.PCollider.bounds.extents.x + .5f * LevelGenerator.Instance.Echelle) * ClosestAxis(impactedCubeToOwner, true);
+                        Vector2 safe = position + (owner.PCollider.bounds.extents.x + .5f * GameManager.Instance.LevelGenerator.Echelle) * ClosestAxis(impactedCubeToOwner, true);
                         owner.PousseToiVers(safe + new Vector2(0, owner.transform.position.y - safe.y));
                     }
 

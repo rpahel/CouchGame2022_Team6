@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     //============================
     private PlayerInputManager pInputManager;
     [SerializeField] private CameraManager cManager;
+    [SerializeField] private LevelGenerator levelGenerator;
+    public LevelGenerator LevelGenerator => levelGenerator;
     #endregion
 
     #region Variables
@@ -63,6 +65,9 @@ public class GameManager : MonoBehaviour
 
         if (projectileNombre <= 0)
             Debug.LogError($"ATTENTION t'as mis projectileNombre à {projectile} dans le Game Manager. Aucun projectile ne sera spawné.");
+
+        if(!levelGenerator)
+            levelGenerator = FindObjectOfType<LevelGenerator>();
 
         GenerateProjectilePool(projectileNombre);
     }
