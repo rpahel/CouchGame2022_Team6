@@ -92,7 +92,7 @@ public class PlayerManager : MonoBehaviour
         else if (PlayerState == PLAYER_STATE.SHOOTING)
             insideSprite.color = Color.blue;
         else
-            insideSprite.color = Color.white;
+            insideSprite.color = color;
     }
     #endregion
 

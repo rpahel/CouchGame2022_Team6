@@ -38,7 +38,7 @@ public class Projectile : MonoBehaviour
 
     private void OnEnable()
     {
-        //insideSpriteRenderer.color = Color.black;
+        insideSpriteRenderer.color = color;
         rb.gravityScale = gravity;
         age = lifetime;
         hasHurt = false;

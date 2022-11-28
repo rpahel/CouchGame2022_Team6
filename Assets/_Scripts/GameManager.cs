@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     //============================
     private Transform[] playerTransforms = new Transform[4];
     public  Transform[] PlayerTransforms { get; }
+    [SerializeField] private Color[] playerColors;
 
     //============================
     [HideInInspector] public Transform[] spawnPositions = new Transform[4];
@@ -102,6 +103,7 @@ public class GameManager : MonoBehaviour
 
         pi.transform.position = spawnPositions[pi.playerIndex].position;
         playerTransforms[pi.playerIndex] = pi.transform;
+        pi.GetComponent<PlayerManager>().color = playerColors[pi.playerIndex];
         cManager.UpdatePlayers(pi.transform);
     }
 
