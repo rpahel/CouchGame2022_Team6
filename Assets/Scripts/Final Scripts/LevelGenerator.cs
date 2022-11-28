@@ -230,8 +230,7 @@ public class LevelGenerator : MonoBehaviour
 
 
 
-    void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width, bool visible = true)
-    {
+    GameObject CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width, bool visible = true) {
         GameObject cube = Instantiate(cubeToCreate, new Vector3(width, height, 0) * echelle, Quaternion.identity);
         cube.GetComponent<Cube>().unscaledPosition = new Vector2(width, height);
         cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString() + ", " + height.ToString() + ")";
@@ -240,6 +239,8 @@ public class LevelGenerator : MonoBehaviour
         cubesArray[width, height] = cube.transform;
         if (!visible)
             cube.SetActive(false);
+
+        return cube;
     }
     #endregion
 

@@ -38,7 +38,7 @@ public class PlacePlateform : MonoBehaviour {
         
     }
 
-    public void OnPlace() {
+   /* public void OnPlace() {
         if (playerManager.eatAmount >= playerManager.maxEatValue - (playerManager.maxEatValue - playerManager.maxEatValue * percentageEat)) {
             float maxDistance = 0.2f;
 
@@ -84,5 +84,5 @@ public class PlacePlateform : MonoBehaviour {
             playerManager.eatAmount -= playerManager.eatAmount * percentageEat;
             Mathf.Clamp(playerManager.eatAmount, 0, playerManager.maxEatValue);
         }
-    }
+    }*/
 }
