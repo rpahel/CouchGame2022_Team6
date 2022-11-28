@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     private float stopDuration;
     [SerializeField, Tooltip("La vitesse initial du joueur quand il saute.")]
     private int jumpForce;
-    [SerializeField, Tooltip("Le temps en secondes que le joueur mets à atteindre l'apogée de son saut."), Range(0.1f, 5f)]
+    [SerializeField, Tooltip("Combien de temps en seconde le saut doit il durer ?"), Range(0.1f, 5f)]
     private float jumpDuration;
     [SerializeField]
     private AnimationCurve jumpCurve;
