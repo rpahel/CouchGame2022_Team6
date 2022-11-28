@@ -474,9 +474,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 25
-  stopDuration: 0.1
-  jumpForce: 38
-  gravityScale: 30
+  stopDuration: 0.05
+  jumpForce: 28
+  gravityScale: 15
   deadZone: 0.25
 --- !u!114 &1293963572987568439
 MonoBehaviour:
@@ -491,10 +491,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fullness: 50
-  eatCooldown: 0.15
-  eatTickrate: 5
+  eatCooldown: 0
+  eatTickrate: 10
   eatDistance: 5
-  filling: 8
+  filling: 0
 --- !u!114 &2990907069813645592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,8 +507,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4092f8f1d6f99e34a91cdadcc1e78d11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  necessaryFood: 8
-  cooldown: 0.4
+  necessaryFood: 0
+  cooldown: 0
   aimPivot: {fileID: 8009965234519673580}
   initialSpeed: 50
   gravity: 5
