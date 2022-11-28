@@ -96,7 +96,7 @@ public class PlayerEat : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, eatDistance, 1 << LayerMask.NameToLayer("Destructible"));
         if (hit)
         {
-            hit.transform.parent.GetComponent<Cube_Edible>().GetManged(transform);
+            hit.transform.parent.GetComponent<Cube_Edible>().GetEaten(transform);
             fullness = Mathf.Clamp(fullness + filling, 0, 100);
             PManager.UpdatePlayerScale();
         }
@@ -107,7 +107,7 @@ public class PlayerEat : MonoBehaviour
 
             if (hit)
             {
-                hit.transform.parent.GetComponent<Cube_Edible>().GetManged(transform);
+                hit.transform.parent.GetComponent<Cube_Edible>().GetEaten(transform);
                 fullness = Mathf.Clamp(fullness + filling, 0, 100);
                 PManager.UpdatePlayerScale();
             }

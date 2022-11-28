@@ -544,6 +544,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1228374104199151351}
   - component: {fileID: 8881702519060311405}
+  - component: {fileID: 3896157180011674536}
   m_Layer: 3
   m_Name: Special Trigger
   m_TagString: Untagged
@@ -582,6 +583,19 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.97, y: 1.94}
   m_Direction: 0
+--- !u!114 &3896157180011674536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4317817617938280482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 898ee93813db6ba4797fcf5edb129e4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PManager: {fileID: 4953746572511138207}
 --- !u!1 &8273371953776669671
 GameObject:
   m_ObjectHideFlags: 0

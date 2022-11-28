@@ -145,6 +145,17 @@ public class LevelGenerator : MonoBehaviour
         cubesArray[width, height] = cube.transform;
         if (!visible)
             cube.SetActive(false);
+
+        if(cubeToCreate == cubeBedrock)
+        {
+            if (height <= 0 || height >= image.height - 1 || width <= 0 || width >= image.width - 1)
+            {
+                foreach(Transform square in cube.transform)
+                {
+                    square.gameObject.layer = LayerMask.NameToLayer("Limite");
+                }
+            }
+        }
     }
     #endregion
 

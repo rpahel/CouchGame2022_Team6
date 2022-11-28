@@ -198,7 +198,7 @@ public class Projectile : MonoBehaviour
         Cube_Edible cube;
         if(targetTransform.TryGetComponent(out cube))
         {
-            cube.GetVomited(collision.GetContact(0).point);
+            cube.GetBarfed(collision.GetContact(0).point);
         }
     }
 
@@ -214,7 +214,7 @@ public class Projectile : MonoBehaviour
         Cube_Edible cube;
         if (targetTransform.TryGetComponent(out cube))
         {
-            cube.GetVomited(transform.position);
+            cube.GetBarfed(transform.position);
         }
     }
 

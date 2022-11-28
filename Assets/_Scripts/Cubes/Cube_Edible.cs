@@ -70,7 +70,7 @@ public class Cube_Edible : Cube
 
         if (!gameObject.activeSelf)
         {
-            GetManged(null, false);
+            GetEaten(null, false);
             gameObject.SetActive(true);
         }
     }
@@ -79,7 +79,7 @@ public class Cube_Edible : Cube
     /// Fais disparaitre le mesh du cube et le remplace par des meshs de miettes en fonction des cubes autour.
     /// </summary>
     /// <param name="playerTransform">(facultatif) Le transform du joueur qui mange le cube.</param>
-    public void GetManged(Transform playerTransform = null, bool showRestes = true)
+    public void GetEaten(Transform playerTransform = null, bool showRestes = true)
     {
         isEaten = true;
 
@@ -88,7 +88,7 @@ public class Cube_Edible : Cube
         {
             if (cubesAutour[i] && cubesAutour[i].CubeType == CUBE_TYPE.EDIBLE)
             {
-                (cubesAutour[i] as Cube_Edible).VoisinGotManged((i + 2) % 4);
+                (cubesAutour[i] as Cube_Edible).NeighbourGotEaten((i + 2) % 4);
             }
         }
 
@@ -112,11 +112,11 @@ public class Cube_Edible : Cube
             cube.transform.parent = null;
             cube.GetComponent<Collider2D>().enabled = false;
 
-            StartCoroutine(Aspiration(cube, playerTransform));
+            StartCoroutine(Suck(cube, playerTransform));
         }
     }
 
-    IEnumerator Aspiration(GameObject cube, Transform player)
+    IEnumerator Suck(GameObject cube, Transform player)
     {
         Vector3 cubeStartPos = cube.transform.position;
         Vector3 cubeStartRot = cube.transform.rotation.eulerAngles;
@@ -147,7 +147,7 @@ public class Cube_Edible : Cube
     /// Retire le reste collé au cube voisin qui vient de se faire manger.
     /// </summary>
     /// <param name="indexDuVoisin">L'index du voisin.</param>
-    public void VoisinGotManged(int indexDuVoisin)
+    public void NeighbourGotEaten(int indexDuVoisin)
     {
         if (isEaten)
         {
@@ -158,7 +158,7 @@ public class Cube_Edible : Cube
     /// <summary>
     /// Refais apparaitre ce cube sur la carte.
     /// </summary>
-    public void GetVomited(Vector2 impactPos)
+    public void GetBarfed(Vector2 impactPos)
     {
         foreach(GameObject reste in leftOvers)
         {
@@ -170,10 +170,10 @@ public class Cube_Edible : Cube
         cube.SetActive(true);
         isEaten = false;
 
-        StartCoroutine(VomitedAnimation(impactPos));
+        StartCoroutine(BarfedAnimation(impactPos));
     }
 
-    IEnumerator VomitedAnimation(Vector2 impactPos)
+    IEnumerator BarfedAnimation(Vector2 impactPos)
     {
         Vector3 startScale = Vector3.zero;
         Vector3 endScale = Vector3.one;

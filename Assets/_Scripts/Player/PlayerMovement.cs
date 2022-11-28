@@ -165,7 +165,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (groundCheck && (testlayer == LayerMask.NameToLayer("Destructible")
             || testlayer == LayerMask.NameToLayer("Indestructible")
-            || testlayer == LayerMask.NameToLayer("Trap")))
+            || testlayer == LayerMask.NameToLayer("Trap")
+            || testlayer == LayerMask.NameToLayer("Limite")))
         {
             Jump();
         }
