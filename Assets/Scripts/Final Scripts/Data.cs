@@ -23,6 +23,7 @@ namespace Data
         Falling,
         KNOCKBACKED,
         STUNNED,
+        Dead,
     }
 
     public enum SwitchSizeSkin
@@ -45,5 +46,16 @@ namespace Data
         LOADING,
         PLAYING,
         END
+    }
+    public enum DashType
+    {
+        Normal,
+        Infinite,
+    }
+
+    public enum DashLoading
+    {
+        IncreaseWidth,
+        IncreaseLength,
     }
 }

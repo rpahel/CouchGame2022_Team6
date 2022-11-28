@@ -43,13 +43,8 @@ public class ShootProjectile : MonoBehaviour
             _rb.gravityScale = gravityScale;
             var dir = _playerManager.InputVector;
             if (dir == Vector2.zero)
-            {
-                if(_movement.lookAtRight)
-                    dir = Vector2.right;
-                else
-                    dir = Vector2.left;
-            }
-            
+                dir = _movement.lookAtRight ? Vector2.right : Vector2.left;
+
             _rb.AddForce(dir * Power, ForceMode2D.Impulse);
             
             ResetCooldown();

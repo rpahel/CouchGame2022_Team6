@@ -82,9 +82,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Place"",
+                    ""name"": ""CheatMenu"",
                     ""type"": ""Button"",
-                    ""id"": ""295d1070-89c7-4f51-a58e-be0f6498a8d1"",
+                    ""id"": ""30755abc-fe09-409e-94ea-0dbf08f81551"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -248,23 +248,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""bc9177ec-d811-4abe-b9fd-bdf6fa8b54cc"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""id"": ""c7bb5c6b-f5bb-467e-9d7a-6d333e797708"",
+                    ""path"": ""<Keyboard>/k"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Place"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""50adc7ce-6188-4ea1-8c93-87ee15d226c4"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Place"",
+                    ""action"": ""CheatMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -320,7 +309,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Gameplay_Eat = m_Gameplay.FindAction("Eat", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
         m_Gameplay_Dash = m_Gameplay.FindAction("Dash", throwIfNotFound: true);
-        m_Gameplay_Place = m_Gameplay.FindAction("Place", throwIfNotFound: true);
+        m_Gameplay_CheatMenu = m_Gameplay.FindAction("CheatMenu", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_Select = m_Menu.FindAction("Select", throwIfNotFound: true);
@@ -389,7 +378,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Eat;
     private readonly InputAction m_Gameplay_Jump;
     private readonly InputAction m_Gameplay_Dash;
-    private readonly InputAction m_Gameplay_Place;
+    private readonly InputAction m_Gameplay_CheatMenu;
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
@@ -400,7 +389,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @Eat => m_Wrapper.m_Gameplay_Eat;
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         public InputAction @Dash => m_Wrapper.m_Gameplay_Dash;
-        public InputAction @Place => m_Wrapper.m_Gameplay_Place;
+        public InputAction @CheatMenu => m_Wrapper.m_Gameplay_CheatMenu;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -428,9 +417,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Dash.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
                 @Dash.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
                 @Dash.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
-                @Place.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPlace;
-                @Place.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPlace;
-                @Place.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPlace;
+                @CheatMenu.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCheatMenu;
+                @CheatMenu.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCheatMenu;
+                @CheatMenu.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCheatMenu;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -453,9 +442,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Dash.started += instance.OnDash;
                 @Dash.performed += instance.OnDash;
                 @Dash.canceled += instance.OnDash;
-                @Place.started += instance.OnPlace;
-                @Place.performed += instance.OnPlace;
-                @Place.canceled += instance.OnPlace;
+                @CheatMenu.started += instance.OnCheatMenu;
+                @CheatMenu.performed += instance.OnCheatMenu;
+                @CheatMenu.canceled += instance.OnCheatMenu;
             }
         }
     }
@@ -501,7 +490,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnEat(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
-        void OnPlace(InputAction.CallbackContext context);
+        void OnCheatMenu(InputAction.CallbackContext context);
     }
     public interface IMenuActions
     {

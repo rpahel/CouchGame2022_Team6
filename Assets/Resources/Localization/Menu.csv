@@ -1,0 +1,20 @@
+Key,French,English,Spanish,Italian,Chinese,Japanese,German,Corean,Polonais
+Menu.Start,Commencer,Start,Comenzar,Iniziare,开始,始める,starten,을 시작합니다,Start
+Menu.Pause,Pause,Pause,Pausa,Pausa,休息,休憩,pause,분리,Pauza
+Menu.Color,Choisissez une couleur,Select a color,Elegir un color,Scegliere un colore,选择颜色,色を選択,wählen Sie eine Farbe,색상을 선택합니다,Wybierz kolor
+Menu.Player,Joueur,Player,Jugador,Giocatore,"玩家",プレイヤー,Spieler,게임블러,Gracz
+Menu.Red,Rouge,Red,Rojo,Rosso,红色,赤,Rot,빨간색,Czerwony
+Menu.Purple,Violet,Purple,Violeta,Viola,紫色,紫,Lila,보라색,Fioletowy
+Menu.Orange,Orange,Orange,Naranja,Arancione,橙色,オレンジ,Orange,주황색,Pomarańczowy
+Menu.Blue,Bleu,Bleu,Azul,Blu,蓝色,青,Blau,파란색,Niebieski
+Menu.Ready,Prêt !,Ready!,Listo !,Pronto !,跳吧 !,準備はいい？,bereit?,"
+준비가 된?",Gotowy?
+Menu.ReadyUp,Prêt ?,Ready up,Listo ?,Pronto ?,跳吧 ?,準備できたぞ！,Fertig!,"
+준비 완료!",gotowy!
+Menu.Go,Partez,Go,Go,Go,Go,Go,Go,이동,Idź.
+Menu.Rank,Classement,Rank,Clasificación,Classificazione,分类,ランキング,Rangliste,순위,Klasyfikacja
+Menu.Damage,Dégâts,Damage,Daño,Danni,损坏,損傷,Schaden,손상,Szkody
+Menu.Kill,Tués,Kills,Asesinatos,Uccisi,杀戮,殺し,Getötet,살해당했습니다,Zabitych
+Menu.Death,Morts,Deaths,Muertos,Morti,死亡,死者,Toten,죽었습니다,Martwi
+Menu.Restart,Recommencer,Restart,Volver,Restart,重新开始,また,Wiederholen,다시 시작합니다,Acząć od nowa
+Menu.Menu,Menu,Menu,menú,Menù,菜单,メニュー,Menü,메뉴,Menu

@@ -19,7 +19,7 @@ public class InitializeLevel : MonoBehaviour
     {
         playerSpawns = levelGen.IniSpawns;
 
-        var playerConfigs = PlayerConfigurationManager.Instance.GetPlayerConfigs().ToArray();
+        var playerConfigs = ApplicationManager.Instance.GetPlayerConfigs().ToArray();
         cinemachine.m_Targets = new CinemachineTargetGroup.Target[playerConfigs.Length];
 
         for (int i = 0; i < playerConfigs.Length; i++)

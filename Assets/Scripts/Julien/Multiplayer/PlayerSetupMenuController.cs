@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.SimpleLocalization;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +10,7 @@ public class PlayerSetupMenuController : MonoBehaviour
 {
     private int PlayerIndex;
 
-    [SerializeField] private Text titleText;
+    [SerializeField] private LocalizedText text;
 
     [SerializeField] private GameObject readyPanel;
     [SerializeField] private GameObject menuPanel;
@@ -20,7 +22,8 @@ public class PlayerSetupMenuController : MonoBehaviour
     public void SetPlayerIndex(int pi)
     {
         PlayerIndex = pi;
-        titleText.text = "Player" + (pi + 1).ToString();
+        text.hardText = (pi + 1).ToString();
+        //titleText.text = "Player" + (pi + 1).ToString();
         ignoreInputTime = Time.time + ignoreInputTime;
     }
 
@@ -35,7 +38,7 @@ public class PlayerSetupMenuController : MonoBehaviour
     public void SetColor(Material color)
     {
         if (!inputEnabled) { return;}
-        PlayerConfigurationManager.Instance.SetPlayerColor(PlayerIndex, color);
+        ApplicationManager.Instance.SetPlayerColor(PlayerIndex, color);
         readyPanel.SetActive(true);
         readyButton.Select();
         menuPanel.SetActive(false);
@@ -44,7 +47,7 @@ public class PlayerSetupMenuController : MonoBehaviour
     public void ReadyPlayer()
     {
         if (!inputEnabled) { return;}
-        PlayerConfigurationManager.Instance.ReadyPlayer(PlayerIndex);
+        ApplicationManager.Instance.ReadyPlayer(PlayerIndex);
         readyButton.gameObject.SetActive(false);
     }
 }

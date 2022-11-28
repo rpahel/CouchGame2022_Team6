@@ -9,6 +9,7 @@ TagManager:
   - CubeTrap
   - Jumpable
   - CubeLoot
+  - Canva
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Bedrock
   - DashTrigger
   - Trap
-  - TNT
+  - Projectile
   - 
   - 
   - 

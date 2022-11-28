@@ -60,9 +60,9 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Place",
+                    "name": "CheatMenu",
                     "type": "Button",
-                    "id": "295d1070-89c7-4f51-a58e-be0f6498a8d1",
+                    "id": "30755abc-fe09-409e-94ea-0dbf08f81551",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -226,23 +226,12 @@
                 },
                 {
                     "name": "",
-                    "id": "bc9177ec-d811-4abe-b9fd-bdf6fa8b54cc",
-                    "path": "<Gamepad>/buttonNorth",
+                    "id": "c7bb5c6b-f5bb-467e-9d7a-6d333e797708",
+                    "path": "<Keyboard>/k",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Place",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "50adc7ce-6188-4ea1-8c93-87ee15d226c4",
-                    "path": "<Keyboard>/r",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Place",
+                    "action": "CheatMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

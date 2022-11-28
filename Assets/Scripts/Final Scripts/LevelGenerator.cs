@@ -18,17 +18,16 @@ using Vector3 = UnityEngine.Vector3;
 public class LevelGenerator : MonoBehaviour
 {
     #region Variables
-    
-    [SerializeField] private CinemachineTargetGroup cinemachine;
-    [SerializeField] private GameObject[] playersUI;
-    [SerializeField] private GameObject playerPrefab;
 
     //========================================================
     [Header("Image de r�f�rence.")]
     [SerializeField] private Texture2D image;
     public Texture2D ImageRef => image;
-
-    [SerializeField, Header("Scale des cubes."), Range(1f, 3f)]
+    
+    [Header("Background")]
+    public GameObject background;
+     
+    [SerializeField, Header("Scale des cubes."), Range(1f, 2.857143f)]
     private float echelle = 2.857143f;
     public float Echelle => echelle;
 
@@ -159,11 +158,10 @@ public class LevelGenerator : MonoBehaviour
     {
         if (!image)
         {
-            throw new System.NullReferenceException();
+            throw new System.NullReferenceException("Pas d'image de référence dans le Level Generator.");
         }
 
         levelState = LEVEL_STATE.INITIALISING;
-        GameManager.Instance.SetGameState(GAME_STATE.LOADING);
 
         parentObjCubes = new GameObject("Cubes");
         parentObjCubes.transform.parent = transform;
@@ -175,20 +173,19 @@ public class LevelGenerator : MonoBehaviour
         FindTNTPatterns();
         
 
-        // Check la couleur de chaque pixel dans l'image et fait spawn un cube aux coordonn�es correspondantes
+        // Check la couleur de chaque pixel dans l'image et fait spawn un cube aux coordonnées correspondantes
         int n = 0;
         for (int i = 0; i < image.height; i++)
         {
             for (int j = 0; j < image.width; j++)
             {
                 Color pixColor = image.GetPixel(j, i);
-                
-                
-                if(pixColor != Color.green && pixColor != Color.black && pixColor != Color.red && pixColor != Color.blue && pixColor != Color.white)
-                    Debug.Log("color " + pixColor + " model " + new Color(1,1,0,1f));
-                
-                
-                if (pixColor == Color.green)
+
+                if (pixColor == Color.white)
+                {
+                    CreateCubeOnPlay(cubeEdible, parentObjCubes.transform, i, j, false);
+                }
+                else if (pixColor == Color.green)
                 {
                     CreateCubeOnPlay(cubeEdible, parentObjCubes.transform, i, j);
                 }
@@ -207,9 +204,11 @@ public class LevelGenerator : MonoBehaviour
                 }
                 else if (pixColor == Color.blue)
                 {
-                    if(n >= 4)
+                    CreateCubeOnPlay(cubeEdible, parentObjCubes.transform, i, j, false);
+
+                    if (n >= 4)
                     {
-                        throw new System.Exception("Plus de pixel bleu dans l'image de r�f�rence que le max de spawns autoris�s (4).");
+                        throw new System.Exception("Plus de pixel bleu dans l'image de référence que le max de spawns autorisés (4).");
                     }
 
                     iniSpawns[n] = new GameObject($"Spawn {n + 1}").transform;
@@ -220,23 +219,27 @@ public class LevelGenerator : MonoBehaviour
 
                     n++;
                 }
+                else
+                {
+                    CreateCubeOnPlay(cubeEdible, parentObjCubes.transform, i, j, false);
+                }
             }
         }
         
     }
 
 
-    GameObject CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width)
+
+    void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width, bool visible = true)
     {
         GameObject cube = Instantiate(cubeToCreate, new Vector3(width, height, 0) * echelle, Quaternion.identity);
         cube.GetComponent<Cube>().unscaledPosition = new Vector2(width, height);
         cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString() + ", " + height.ToString() + ")";
         cube.transform.localScale = Vector3.one * echelle;
         cube.transform.parent = parentObj;
-        //cubesArray[height, width] = cube.transform;
         cubesArray[width, height] = cube.transform;
-
-        return cube;
+        if (!visible)
+            cube.SetActive(false);
     }
     #endregion
 
@@ -359,28 +362,13 @@ public class LevelGenerator : MonoBehaviour
                 CubeDestroyable tempCube;
                 if (cubesArray[j, i] != null && cubesArray[j, i].TryGetComponent(out tempCube))
                 {
-                    tempCube.InitCubes();
+                    tempCube.InitCubes(j, i);
                 }
             }
         }
 
         levelState = LEVEL_STATE.LOADED;
-        GameManager.Instance.SetGameState(GAME_STATE.PLAYING);
-        
-        var playerConfigs = PlayerConfigurationManager.Instance.GetPlayerConfigs().ToArray();
-        cinemachine.m_Targets = new CinemachineTargetGroup.Target[playerConfigs.Length];
-
-        for (int i = 0; i < playerConfigs.Length; i++) {
-            var player = Instantiate(playerPrefab, iniSpawns[i].position, iniSpawns[i].rotation,
-                gameObject.transform);
-            playersUI[i].SetActive(true);
-            player.GetComponent<PlayerManager>().imageUI = playersUI[i].transform.GetChild(0).GetComponent<Image>();
-            player.GetComponent<PlayerManager>().textUI = playersUI[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-            player.GetComponent<PlayerInputHandler>().InitializePlayer(playerConfigs[i]);
-            cinemachine.m_Targets[i].target = player.transform;
-            cinemachine.m_Targets[i].weight = 1;
-        }
-
+        GameManager.Instance.SpawnAllPlayers();
         coroutinesRunning--;
     }
 
@@ -402,27 +390,6 @@ public class LevelGenerator : MonoBehaviour
 
         coroutinesRunning--;
     }
-
-    
-
-    //public void PrintLevelAscii()
-    //{
-    //    string ascii = "";
-    //    for (int i = image.height - 1; i >= 0; i--)
-    //    {
-    //        for (int j = 0; j < image.width; j++)
-    //        {
-    //            if (CubesArray[j, i])
-    //                ascii += "G ";
-    //            else
-    //                ascii += "O ";
-    //        }
-    //
-    //        ascii += "\n";
-    //    }
-    //
-    //    Debug.Log(ascii);
-    //}
     #endregion
 }
 
