@@ -478,7 +478,7 @@ MonoBehaviour:
   stopDuration: 0.05
   jumpForce: 28
   gravityScale: 15
-  deadZone: 0.25
+  deadZone: 0.3
 --- !u!114 &1293963572987568439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -492,7 +492,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fullness: 50
-  eatCooldown: 0
+  eatCooldown: 0.05
   eatTickrate: 10
   eatDistance: 5
   filling: 8
@@ -511,10 +511,10 @@ MonoBehaviour:
   necessaryFood: 8
   cooldown: 0.1
   aimPivot: {fileID: 8009965234519673580}
-  initialSpeed: 50
+  initialSpeed: 45
   gravity: 5
   bounceForce: 1
-  inflictedFoodDamage: 40
+  inflictedFoodDamage: 35
   knockBackForce: 30
 --- !u!114 &-3623799545061017393
 MonoBehaviour:
