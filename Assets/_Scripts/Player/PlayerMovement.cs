@@ -2,6 +2,7 @@ using Data;
 using DG.Tweening;
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -17,8 +18,12 @@ public class PlayerMovement : MonoBehaviour
     private float maxSpeed;
     [SerializeField, Range(.01f, .2f), Tooltip("Durée de freinage en seconde.")]
     private float stopDuration;
-    [SerializeField]
+    [SerializeField, Tooltip("La vitesse initial du joueur quand il saute.")]
     private int jumpForce;
+    [SerializeField, Tooltip("Le temps en secondes que le joueur mets à atteindre l'apogée de son saut."), Range(0.1f, 5f)]
+    private float jumpDuration;
+    [SerializeField]
+    private AnimationCurve jumpCurve;
     [SerializeField, Range(0, 100), Tooltip("Multiplicateur de la gravité, 1 = gravité de base d'Unity.")]
     private float gravityScale;
     [SerializeField, Range(0.01f, 1), Tooltip("Valeur à dépasser avec le joystick pour initier le déplacement.")]
@@ -32,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     public RaycastHit2D GroundCheck => groundCheck;
     private float castRadius;
     private float castDistance;
+    private bool isJumping;
 
     //==========================================================================
     private Vector2 inputVectorMove = Vector2.zero;
@@ -75,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
     {
         #if UNITY_EDITOR
         {
-            if(PManager.PlayerState != PLAYER_STATE.DASHING)
+            if (!isJumping && PManager.PlayerState != PLAYER_STATE.DASHING)
                 PManager.Rb2D.gravityScale = gravityScale;
         }
         #endif
@@ -168,7 +174,7 @@ public class PlayerMovement : MonoBehaviour
             || testlayer == LayerMask.NameToLayer("Trap")
             || testlayer == LayerMask.NameToLayer("Limite")))
         {
-            Jump();
+            StartCoroutine(Jump());
         }
         else
         {
@@ -217,9 +223,43 @@ public class PlayerMovement : MonoBehaviour
         PManager.Rb2D.velocity += Time.fixedDeltaTime * 100f * new Vector2(inputVectorMove.x, 0);
     }
 
-    private void Jump()
+    private IEnumerator Jump()
     {
-        PManager.Rb2D.velocity = new Vector2(PManager.Rb2D.velocity.x, jumpForce * Time.fixedDeltaTime * 100f);
+        //PManager.Rb2D.velocity = new Vector2(PManager.Rb2D.velocity.x, jumpForce * Time.fixedDeltaTime * 100f);
+        isJumping = true;
+        float t = 0;
+        PManager.Rb2D.gravityScale = 0;
+        while (t < 1)
+        {
+            if (CheckHeadBonk())
+                break;
+
+            if (PManager.PlayerState == PLAYER_STATE.KNOCKBACKED
+                || PManager.PlayerState == PLAYER_STATE.DASHING
+                || PManager.PlayerState == PLAYER_STATE.SHOOTING)
+                break;
+
+            PManager.Rb2D.velocity = new Vector2(PManager.Rb2D.velocity.x, Mathf.LerpUnclamped(jumpForce, 0, jumpCurve.Evaluate(t)));
+            t += Time.fixedDeltaTime / jumpDuration;
+            yield return new WaitForFixedUpdate();
+        }
+        isJumping = false;
+        yield break;
+    }
+
+    private bool CheckHeadBonk()
+    {
+        RaycastHit2D hit = Physics2D.CircleCast(
+            origin : PManager.PCollider.bounds.center,
+            radius : PManager.PCollider.bounds.extents.x - 0.01f,
+            direction : Vector2.up,
+            distance : (PManager.PCollider.bounds.extents.y - PManager.PCollider.bounds.extents.x) + 0.11f, // 0.10f + 0.01f
+            layerMask : LayerMask.GetMask("Player", "Destructible", "Indestructible", "Trap", "Limite"));;
+
+        if (hit)
+            return true;
+        else
+            return false;
     }
     #endregion
 }

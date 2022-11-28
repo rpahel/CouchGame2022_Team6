@@ -476,7 +476,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 25
   stopDuration: 0.05
-  jumpForce: 28
+  jumpForce: 80
+  jumpDuration: 0.5
+  jumpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2.66468
+      outSlope: 2.66468
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.07116972
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.0043658847
+      outSlope: 0.0043658847
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.66874737
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   gravityScale: 15
   deadZone: 0.3
 --- !u!114 &1293963572987568439
