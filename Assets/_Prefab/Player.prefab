@@ -491,10 +491,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fullness: 50
-  eatCooldown: 0.25
+  eatCooldown: 0.15
   eatTickrate: 5
   eatDistance: 5
-  filling: 10
+  filling: 8
 --- !u!114 &2990907069813645592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,14 +507,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4092f8f1d6f99e34a91cdadcc1e78d11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  necessaryFood: 12
-  cooldown: 0.5
+  necessaryFood: 8
+  cooldown: 0.4
   aimPivot: {fileID: 8009965234519673580}
-  initialSpeed: 40
+  initialSpeed: 50
   gravity: 5
   bounceForce: 1
   inflictedFoodDamage: 20
-  knockBackForce: 50
+  knockBackForce: 35
 --- !u!114 &-3623799545061017393
 MonoBehaviour:
   m_ObjectHideFlags: 0
