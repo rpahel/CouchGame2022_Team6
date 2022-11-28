@@ -245,6 +245,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8582628807759847001, guid: d01234ee6e8ef604cb2828c936c5f8db,
+        type: 3}
+      propertyPath: m_DeadZoneWidth
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8582628807759847001, guid: d01234ee6e8ef604cb2828c936c5f8db,
+        type: 3}
+      propertyPath: m_SoftZoneWidth
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8582628807759847001, guid: d01234ee6e8ef604cb2828c936c5f8db,
+        type: 3}
+      propertyPath: m_DeadZoneHeight
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8582628807759847001, guid: d01234ee6e8ef604cb2828c936c5f8db,
+        type: 3}
+      propertyPath: m_SoftZoneHeight
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8582628807759847001, guid: d01234ee6e8ef604cb2828c936c5f8db,
+        type: 3}
+      propertyPath: m_UnlimitedSoftZone
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8582628807844638284, guid: d01234ee6e8ef604cb2828c936c5f8db,
         type: 3}
       propertyPath: m_Name
