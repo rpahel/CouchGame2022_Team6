@@ -17,6 +17,7 @@ namespace Data
         SHOOTING,
         KNOCKBACKED,
         STUNNED,
+        DASHING
     }
     #endregion
     #region SKIN_SIZE
