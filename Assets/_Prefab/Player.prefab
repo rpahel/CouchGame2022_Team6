@@ -475,7 +475,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 25
   stopDuration: 0.1
-  jumpForce: 35
+  jumpForce: 38
   gravityScale: 30
   deadZone: 0.25
 --- !u!114 &1293963572987568439
