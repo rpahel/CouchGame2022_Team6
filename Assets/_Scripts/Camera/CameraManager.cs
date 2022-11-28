@@ -45,9 +45,10 @@ public class CameraManager : MonoBehaviour
         realImageSize = new Vector2(GameManager.Instance.LevelGenerator.ImageRef.width, GameManager.Instance.LevelGenerator.ImageRef.height);
 
         // On converti la taille de l'image pour s'adapter au format de l'écran
-        imageSizeToScreenFormat = realImageSize.x > realImageSize.y ?
+        /*imageSizeToScreenFormat = realImageSize.x > realImageSize.y ?
                          new Vector2(realImageSize.x, realImageSize.x / screenFormat) :
-                         new Vector2(realImageSize.y * screenFormat, realImageSize.y);
+                         new Vector2(realImageSize.y * screenFormat, realImageSize.y);*/
+        imageSizeToScreenFormat = new Vector2(realImageSize.y * screenFormat, realImageSize.y);
 
         // Ici on setup les tailles min et max de la lentille
         maxLensSizeX = imageSizeToScreenFormat.x * .8f * (scale / 2.857143f);
