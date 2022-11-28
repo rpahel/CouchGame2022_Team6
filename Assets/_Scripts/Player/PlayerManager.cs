@@ -162,7 +162,7 @@ public class PlayerManager : MonoBehaviour
     /// <summary>
     /// Pousse de façon smooth le joueur vers un endroit donné.
     /// </summary>
-    public void PousseToiVers(Vector2 endPosition)
+    public void MoveOverTo(Vector2 endPosition)
     {
 
         #if UNITY_EDITOR
@@ -171,10 +171,10 @@ public class PlayerManager : MonoBehaviour
         }
         #endif
 
-        StartCoroutine(PousseToiAnimation(endPosition));
+        StartCoroutine(MoverOverAnimation(endPosition));
     }
 
-    IEnumerator PousseToiAnimation(Vector2 endPosition)
+    IEnumerator MoverOverAnimation(Vector2 endPosition)
     {
         Vector2 iniPos = transform.position;
         float t = 0;

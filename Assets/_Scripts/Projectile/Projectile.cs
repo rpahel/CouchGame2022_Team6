@@ -256,7 +256,7 @@ public class Projectile : MonoBehaviour
                         #endif
 
                         Vector2 safe = position + (owner.PCollider.bounds.extents.y + .5f * GameManager.Instance.LevelGenerator.Scale) * ClosestAxis(impactedCubeToOwner, true);
-                        owner.PousseToiVers(safe + new Vector2(owner.transform.position.x - safe.x, 0));
+                        owner.MoveOverTo(safe + new Vector2(owner.transform.position.x - safe.x, 0));
                     }
                     else
                     {
@@ -267,7 +267,7 @@ public class Projectile : MonoBehaviour
                         #endif
 
                         Vector2 safe = position + (owner.PCollider.bounds.extents.x + .5f * GameManager.Instance.LevelGenerator.Scale) * ClosestAxis(impactedCubeToOwner, true);
-                        owner.PousseToiVers(safe + new Vector2(0, owner.transform.position.y - safe.y));
+                        owner.MoveOverTo(safe + new Vector2(0, owner.transform.position.y - safe.y));
                     }
                     return true;
                 }

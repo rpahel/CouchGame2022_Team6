@@ -1,4 +1,6 @@
 using Data;
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerSpecial : MonoBehaviour
@@ -16,10 +18,17 @@ public class PlayerSpecial : MonoBehaviour
     private float maxDistance;
     [SerializeField, Range(0, 40), Tooltip("Distance en mètres du special à son minimum (simple press du bouton).")]
     private float minDistance;
+    [SerializeField]
+    private float dashCooldown;
+    [SerializeField]
+    private float dashForce;
+    [SerializeField]
+    private GameObject specialTrigger;
 
     //===================================================
     private float charge; // 0 à 1
     private bool isHolding;
+    private bool canDash = true;
     #endregion
 
     #region Unity_Functions
@@ -51,6 +60,12 @@ public class PlayerSpecial : MonoBehaviour
             #endif
         }
     }
+
+    private void FixedUpdate()
+    {
+        if (PManager.PlayerState == PLAYER_STATE.DASHING)
+            PManager.Rb2D.AddForce(PManager.AimDirection * dashForce, ForceMode2D.Impulse);
+    }
     #endregion
 
     #region Custom_Functions
@@ -59,14 +74,14 @@ public class PlayerSpecial : MonoBehaviour
     {
         if (state)
         {
-            if (PManager.PlayerState != PLAYER_STATE.KNOCKBACKED)
+            if (PManager.PlayerState != PLAYER_STATE.KNOCKBACKED && PManager.PlayerState != PLAYER_STATE.DASHING)
                 PManager.PlayerState = PLAYER_STATE.SHOOTING;
         }
         else
         {
             charge = 0;
 
-            if (PManager.PlayerState != PLAYER_STATE.KNOCKBACKED)
+            if (PManager.PlayerState != PLAYER_STATE.KNOCKBACKED && PManager.PlayerState != PLAYER_STATE.DASHING)
                 PManager.PlayerState = PLAYER_STATE.WALKING;
         }
 
@@ -75,7 +90,35 @@ public class PlayerSpecial : MonoBehaviour
 
     public void UseSpecial()
     {
-        // TODO : REVEILLE TOI RAPHAEL ON FAIT FONCTIONNER SES NEURONES LA UN PEU HOP HOP HOP
+        if (PManager.PlayerState == PLAYER_STATE.STUNNED || PManager.PlayerState == PLAYER_STATE.DASHING)
+            return;
+
+        if (!canDash)
+        {
+            Debug.Log("Wait for dash cooldown.");
+            return;
+        }
+
+        StartCoroutine(DashCoroutine(charge + .1f));
+    }
+    private IEnumerator DashCoroutine(float dashDuration)
+    {
+        PManager.PlayerState = PLAYER_STATE.DASHING;
+        canDash = false;
+        gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
+        specialTrigger.SetActive(true);
+        var originalGravityScale = PManager.Rb2D.gravityScale;
+        PManager.Rb2D.gravityScale = 0;
+        PManager.Rb2D.velocity = Vector2.zero;
+        //_trailRenderer.emitting = true;
+        yield return new WaitForSeconds(dashDuration);
+        PManager.PlayerState = PLAYER_STATE.WALKING;
+        PManager.Rb2D.gravityScale = originalGravityScale;
+        gameObject.layer = LayerMask.NameToLayer("Player");
+        specialTrigger.SetActive(false);
+        //_trailRenderer.emitting = false;
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
     }
     #endregion
 }

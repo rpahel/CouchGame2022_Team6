@@ -75,11 +75,12 @@ public class PlayerMovement : MonoBehaviour
     {
         #if UNITY_EDITOR
         {
-            PManager.Rb2D.gravityScale = gravityScale;
+            if(PManager.PlayerState != PLAYER_STATE.DASHING)
+                PManager.Rb2D.gravityScale = gravityScale;
         }
         #endif
 
-        if (PManager.PlayerState != PLAYER_STATE.STUNNED) // Si le joueur est stun, on fait rien.
+        if (PManager.PlayerState != PLAYER_STATE.STUNNED && PManager.PlayerState != PLAYER_STATE.DASHING) // Si le joueur est stun ou dashing, on fait rien.
         {
             castRadius = transform.localScale.x * .5f - .05f;
             castDistance = (PManager.PCollider as CapsuleCollider2D).size.y * transform.localScale.y * .25f + .3f;
@@ -184,7 +185,7 @@ public class PlayerMovement : MonoBehaviour
         float t = 0;
         while(t < 1f)
         {
-            if (PManager.PlayerState == PLAYER_STATE.KNOCKBACKED)
+            if (PManager.PlayerState == PLAYER_STATE.KNOCKBACKED || PManager.PlayerState == PLAYER_STATE.DASHING)
                 break;
 
                 PManager.Rb2D.velocity = new Vector2(DOVirtual.EasedValue(iniVelocityX, 0, t, Ease.OutCubic), PManager.Rb2D.velocity.y);
@@ -192,7 +193,7 @@ public class PlayerMovement : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        if (PManager.PlayerState != PLAYER_STATE.KNOCKBACKED)
+        if (PManager.PlayerState != PLAYER_STATE.KNOCKBACKED && PManager.PlayerState == PLAYER_STATE.DASHING)
             PManager.Rb2D.velocity = new Vector2(0, PManager.Rb2D.velocity.y);
 
         brakingCoroutine = null;

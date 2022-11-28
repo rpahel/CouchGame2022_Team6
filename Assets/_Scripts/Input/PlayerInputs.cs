@@ -13,11 +13,17 @@ public class PlayerInputs : MonoBehaviour
     //==========================================================================
     public void OnMove(InputAction.CallbackContext input)
     {
+        if (PManager.PlayerState == PLAYER_STATE.STUNNED || PManager.PlayerState == PLAYER_STATE.DASHING)
+            return;
+
         PManager.PMovement.OnMove(input.ReadValue<Vector2>().normalized);
     }
 
     public void OnJump(InputAction.CallbackContext input)
     {
+        if (PManager.PlayerState == PLAYER_STATE.STUNNED || PManager.PlayerState == PLAYER_STATE.DASHING)
+            return;
+
         if (input.started)
             PManager.PMovement.OnJump();
 
@@ -30,6 +36,9 @@ public class PlayerInputs : MonoBehaviour
 
     public void OnEat(InputAction.CallbackContext input)
     {
+        if (PManager.PlayerState == PLAYER_STATE.STUNNED || PManager.PlayerState == PLAYER_STATE.DASHING)
+            return;
+
         if (input.started)
             PManager.PEat.OnEat(PManager.AimDirection);
 
@@ -42,6 +51,9 @@ public class PlayerInputs : MonoBehaviour
 
     public void OnShoot(InputAction.CallbackContext input)
     {
+        if (PManager.PlayerState == PLAYER_STATE.STUNNED || PManager.PlayerState == PLAYER_STATE.DASHING)
+            return;
+
         if (input.performed)
         {
             PManager.PShoot.HoldShoot();
@@ -60,7 +72,7 @@ public class PlayerInputs : MonoBehaviour
 
     public void Special(InputAction.CallbackContext input)
     {
-        if (PManager.PlayerState == PLAYER_STATE.STUNNED)
+        if (PManager.PlayerState == PLAYER_STATE.STUNNED || PManager.PlayerState == PLAYER_STATE.DASHING)
             return;
 
         if (input.performed)
@@ -70,6 +82,7 @@ public class PlayerInputs : MonoBehaviour
 
         if (input.canceled)
         {
+            PManager.PSpecial.UseSpecial();
             PManager.PSpecial.Charge(false);
         }
     }
