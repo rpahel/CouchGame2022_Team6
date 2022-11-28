@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
-public class ProjectileRaph : MonoBehaviour
+public class ProjectileRaph : CoroutineSystem
 {
     #region Variables
     //=============================================
@@ -133,6 +134,17 @@ public class ProjectileRaph : MonoBehaviour
             {
                 Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, collision.GetContact(0).normal).normalized;
                 rb.velocity = currentVelocity.magnitude * forceDuRebond * sensDuRebond;
+            }
+
+
+            if (collision.gameObject.transform.parent.gameObject.TryGetComponent<Cube_TNT>(out Cube_TNT tnt))
+            {
+                gameObject.GetComponentInChildren<MeshRenderer>().enabled = false;
+                RunDelayed(1f, () =>
+                {
+                    tnt.Explode(collision.gameObject.transform.parent.gameObject.transform);
+                    gameObject.SetActive(false);
+                });
             }
         }
         else

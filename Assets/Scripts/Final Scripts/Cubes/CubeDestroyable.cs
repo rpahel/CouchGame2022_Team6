@@ -86,7 +86,7 @@ public class CubeDestroyable : Cube {
         if (rand >= 0.90f && loot != null)
         {
             // Debug.Log($"{gameObject.name}, {rand}.");
-            Instantiate(loot, transform.position, Quaternion.identity);
+            GameObject lootInstance = Instantiate(loot, transform.position, Quaternion.identity);
         }
 
         GetExploded();
@@ -117,7 +117,7 @@ public class CubeDestroyable : Cube {
         // Fais apparaitre les restes en fonction des cubes voisins qui sont toujours là
         for (int i = 0; i < 4; i++)
         {
-            if (cubesAutour[i] && !cubesAutour[i].IsManged)
+            if (cubesAutour[i] && !cubesAutour[i].IsManged && restes.Length > 0)
             {
                 restes[i].SetActive(true);
             }

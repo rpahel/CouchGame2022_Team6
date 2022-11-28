@@ -1001,6 +1001,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8210660276910839728, guid: a852cf6ceb20d7848b071c1dd26654a9,
         type: 3}
+      propertyPath: maxPlayers
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: a852cf6ceb20d7848b071c1dd26654a9,
+        type: 3}
+      propertyPath: minPlayers
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: a852cf6ceb20d7848b071c1dd26654a9,
+        type: 3}
       propertyPath: loadingScreen
       value: 
       objectReference: {fileID: 837855193}

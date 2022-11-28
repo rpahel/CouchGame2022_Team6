@@ -10,6 +10,7 @@ using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor;
 using Quaternion = UnityEngine.Quaternion;
 using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
@@ -95,44 +96,39 @@ public class LevelGenerator : MonoBehaviour
 
         if (tntTimer >= tntDelay) {
             tntTimer = 0f;
-
-            int randX = UnityEngine.Random.Range(1,ImageRef.width - 1);
-            int randY = UnityEngine.Random.Range(1, ImageRef.height - 1);
-
-            Vector3 randomPos = new Vector3(randX, randY, 0);
-            
-            
-            RaycastHit2D hit = Physics2D.CircleCast(randomPos,cubeTNT.transform.localScale.magnitude / 2,Vector3.right,cubeTNT.transform.localScale.magnitude / 2,1 << 3 | 1 << 6 | 1 << 8 | 1 << 10 | 1 << 11);
-
-            int lastArea = FindArea(lastTNTSpawnedPosition, ImageRef.width - 1, ImageRef.height - 1);
-            List<int> areas = new List<int>(){ 0,1,2,3 };
-            areas.Remove(lastArea);
-            int goArea = areas[Random.Range(0, areas.Count)];
-            
-            Debug.Log("goArea " + goArea);
-            
-            while (hit.collider != null && FindArea(randomPos, ImageRef.width - 1, ImageRef.height - 1) == goArea) {
-              randX = UnityEngine.Random.Range(1,ImageRef.width - 1);
-              randY = UnityEngine.Random.Range(1, ImageRef.height - 1);
-
-              randomPos = new Vector3(randX, randY, 0);
-              
-              hit = Physics2D.CircleCast(randomPos,cubeTNT.transform.localScale.magnitude / 2,Vector3.right,cubeTNT.transform.localScale.magnitude / 2,1 << 3 | 1 << 6 | 1 << 8 | 1 << 10 | 1 << 11);
-            }
-                
-            Debug.Log("spawn " + FindArea(randomPos,ImageRef.width - 1,ImageRef.height - 1) + " last " + FindArea(lastTNTSpawnedPosition,ImageRef.width - 1,ImageRef.height - 1));
-            GameObject tnt = Instantiate(cubeTNT, randomPos, Quaternion.identity,parentObjCubes.transform);
-            tnt.transform.localScale = Vector3.one * echelle;
-            AssignRandomPattern(tnt.GetComponent<Cube_TNT>());
-            lastTNTSpawnedPosition = randomPos;
-
+            StartCoroutine(GenerateRandomTNT());
         }
     }
     
     #endregion
 
     #region Custom_Functions
-    
+
+    private IEnumerator GenerateRandomTNT() {
+        int randX = Random.Range((int)cubesArray[0, 0].position.x,(int)cubesArray[image.width - 1,image.height - 1].position.x);
+        int randY = Random.Range((int)cubesArray[0, 0].position.y, (int)cubesArray[image.width - 1,image.height - 1].position.y);
+
+        Vector3 randomPos = new Vector3(randX, randY, 0);
+            
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(randomPos, cubeTNT.transform.localScale.magnitude / 2, 1 << 3 | 1 << 6 | 1 << 8 | 1 << 10 | 1 << 11);
+        
+        while (colliders.Length > 0) {
+            randX = Random.Range((int)cubesArray[0, 0].position.x,(int)cubesArray[image.width - 1,image.height - 1].position.x);
+            randY = Random.Range((int)cubesArray[0, 0].position.y, (int)cubesArray[image.width - 1,image.height - 1].position.y);
+
+            randomPos = new Vector3(randX, randY, 0);
+            
+            if(colliders.Length > 0)
+                colliders = Physics2D.OverlapCircleAll(randomPos, cubeTNT.transform.localScale.magnitude / 2, 1 << 3 | 1 << 6 | 1 << 8 | 1 << 10 | 1 << 11);
+        }
+                
+        GameObject tnt = Instantiate(cubeTNT, randomPos, Quaternion.identity,parentObjCubes.transform);
+        tnt.transform.localScale = Vector3.one * echelle;
+        AssignRandomPattern(tnt.GetComponent<Cube_TNT>());
+        lastTNTSpawnedPosition = randomPos;
+        yield return null;
+    }
+
     private void FindTNTPatterns() {
         foreach (TNT tntComp in GetComponents<TNT>()) 
             allPaterns.Add(tntComp);
@@ -141,18 +137,6 @@ public class LevelGenerator : MonoBehaviour
 
     private void AssignRandomPattern(Cube_TNT cube) => cube.pattern = allPaterns[Random.Range(0, allPaterns.Count)];
 
-    private int FindArea(Vector3 check,int width,int height) {
-        Vector2[] mins = { Vector2.zero,new Vector2(width / 2,0),new Vector2(0,height / 2), new Vector2(width / 2,height / 2) };
-        Vector2[] maxs = { new Vector2(width / 2,height / 2), new Vector2(width,height / 2),new Vector2(width / 2,height), new Vector2(width,height)};
-
-        for (int i = 0; i < mins.Length; i++) {
-            if (check.x >= mins[i].x && check.x <= maxs[i].x && check.y >= mins[i].y && check.y <= maxs[i].y) 
-                return i;
-        }
-
-        return -1;
-    }
-    
     [ContextMenu("Generate level")]
     public void GenerateLevel()
     {
@@ -169,10 +153,7 @@ public class LevelGenerator : MonoBehaviour
         GameObject parentObjSpawns = new GameObject("Initial Spawns");
         parentObjSpawns.transform.parent = transform;
         
-        
         FindTNTPatterns();
-        
-
         // Check la couleur de chaque pixel dans l'image et fait spawn un cube aux coordonnées correspondantes
         int n = 0;
         for (int i = 0; i < image.height; i++)
@@ -234,7 +215,7 @@ public class LevelGenerator : MonoBehaviour
         GameObject cube = Instantiate(cubeToCreate, new Vector3(width, height, 0) * echelle, Quaternion.identity);
         cube.GetComponent<Cube>().unscaledPosition = new Vector2(width, height);
         cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString() + ", " + height.ToString() + ")";
-        cube.transform.localScale = Vector3.one * echelle;
+     //   cube.transform.localScale = Vector3.one * echelle;
         cube.transform.parent = parentObj;
         cubesArray[width, height] = cube.transform;
         if (!visible)

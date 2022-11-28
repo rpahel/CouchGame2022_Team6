@@ -15,7 +15,6 @@ public class Cube_TNT : CubeDestroyable {
         foreach (Vector2 dir in pattern.pattern) {
             if (dir != Vector2.zero) {
                 Vector3 direction = new Vector3(dir.x,dir.y,colParent.position.z);
-
                 foreach (CubeDestroyable c in FindCubeInDirection(direction, FindObjectsOfType<CubeDestroyable>().ToList(), colParent.gameObject)) { 
                     c.OnExploded();
                     
@@ -39,14 +38,18 @@ public class Cube_TNT : CubeDestroyable {
             allPositions.Add(origin.transform.position + direction * i);
 
         List<CubeDestroyable> cubesInDir = new List<CubeDestroyable>();
-
+        
         foreach (Cube cube in cubes) {
-            if(allPositions.Contains(cube.transform.position) && cube is CubeDestroyable)
-                cubesInDir.Add((CubeDestroyable)cube);
+            foreach (Vector3 checkPos in allPositions) {
+                if(cube.GetComponentInChildren<BoxCollider2D>() != null && cube.GetComponentInChildren<BoxCollider2D>().bounds.Contains(checkPos) && cube is CubeDestroyable)
+                    cubesInDir.Add((CubeDestroyable)cube);
+            }
         }
 
         return cubesInDir;
     }
+    
+
     
 
 

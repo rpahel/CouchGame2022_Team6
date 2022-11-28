@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 3333378432680880483}
   - component: {fileID: 2244665003739675122}
   - component: {fileID: 5603943904997600324}
-  - component: {fileID: 6488855553638085339}
+  - component: {fileID: 7998004153679428842}
+  - component: {fileID: 2838207022290884618}
   m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
@@ -84,7 +85,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!61 &6488855553638085339
+--- !u!61 &7998004153679428842
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,8 +109,29 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.99999994, y: 0.99999994}
   m_EdgeRadius: 0
+--- !u!50 &2838207022290884618
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 382355189999240785}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!1 &1774035725699728085
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,6 +350,11 @@ MonoBehaviour:
   cubeType: 4
   cube: {fileID: 382355189999240785}
   unscaledPosition: {x: 0, y: 0}
+  restes:
+  - {fileID: 2474991082133811525}
+  - {fileID: 3568222346686025698}
+  - {fileID: 1774035725699728085}
+  - {fileID: 5316425054776455615}
   loot: {fileID: 0}
   doScaleExplodeTiming: 0.5
   rotateOnExplode: 1

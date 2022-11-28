@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static Unity.Mathematics.math;
 
-public class Projectile : MonoBehaviour {
+public class Projectile : CoroutineSystem {
     
     
     private GameObject _playerGo;
@@ -45,9 +45,10 @@ public class Projectile : MonoBehaviour {
             }
         }
 
-        if (col.gameObject.transform.parent.gameObject.TryGetComponent<Cube_TNT>(out Cube_TNT tnt)) 
-            tnt.Explode(col.gameObject.transform.parent);
-        
+        if (col.gameObject.transform.parent.gameObject.TryGetComponent<Cube_TNT>(out Cube_TNT tnt)) {
+            RunDelayed(1f, () => { tnt.Explode(col.gameObject.transform.parent); });
+        }
+
         Destroy(transform.gameObject);
     }
 
