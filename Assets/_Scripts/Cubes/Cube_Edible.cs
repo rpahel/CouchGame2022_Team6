@@ -27,25 +27,45 @@ public class Cube_Edible : Cube
     /// <summary>
     /// Regarde les cubes qu'il y a autour et les ajoute à la liste cubesAutour
     /// </summary>
-    public void InitCubes(int width, int height)
+    public void InitCubes(int width, int height, int maxWidth, int maxHeight)
     {
-        Vector3 dir;
-        Vector2 targetPos;
+        Vector2Int dir = Vector2Int.zero;
+        Vector2Int targetPos;
         Transform targetCubeTransform;
 
         for (int i = 0; i < 4; i++)
         {
             cubesAutour.Add(null);
 
-            dir = Quaternion.Euler(0, 0, -90 * i) * Vector3.up;
-
-            targetPos = unscaledPosition + (Vector2)dir;
-            targetCubeTransform = GameManager.Instance.LevelGenerator.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
-
-            if (targetCubeTransform)
+            switch (i) // Je peux pas utiliser les Quaternions sur des Vector2Int
             {
-                cubesAutour[i] = targetCubeTransform.GetComponent<Cube>();
+                case 0:
+                    dir = Vector2Int.up;
+                    break;
+
+                case 1:
+                    dir = Vector2Int.right;
+                    break;
+
+                case 2:
+                    dir = Vector2Int.down;
+                    break;
+
+                case 3:
+                    dir = Vector2Int.left;
+                    break;
             }
+
+            targetPos = unscaledPosition + dir;
+
+            // Merci à QUENTIN d'avoir trouvé le bug qui m'a forcé à faire cette vérif
+            if (targetPos.x < 0 || targetPos.x >= maxWidth || targetPos.y < 0 || targetPos.y >= maxHeight)
+            {
+                continue;
+            }
+
+            targetCubeTransform = GameManager.Instance.LevelGenerator.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
+            cubesAutour[i] = targetCubeTransform.GetComponent<Cube>();
         }
 
         if (!gameObject.activeSelf)

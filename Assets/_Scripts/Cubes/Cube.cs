@@ -17,6 +17,6 @@ public abstract class Cube : MonoBehaviour
     public bool IsEaten => isEaten;
 
     //==========================================
-    [HideInInspector] public Vector2 unscaledPosition;
+    [HideInInspector] public Vector2Int unscaledPosition;
     #endregion
 }

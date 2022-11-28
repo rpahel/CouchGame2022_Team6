@@ -138,7 +138,7 @@ public class LevelGenerator : MonoBehaviour
     void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width, bool visible = true)
     {
         GameObject cube = Instantiate(cubeToCreate, new Vector3(width, height, 0) * scale, Quaternion.identity);
-        cube.GetComponent<Cube>().unscaledPosition = new Vector2(width, height);
+        cube.GetComponent<Cube>().unscaledPosition = new Vector2Int(width, height);
         cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString("00") + ", " + height.ToString("00") + ")";
         cube.transform.localScale = Vector3.one * scale;
         cube.transform.parent = parentObj;
@@ -260,6 +260,8 @@ public class LevelGenerator : MonoBehaviour
 
         yield return new WaitUntil(() => coroutinesRunning == 1);
 
+        //PrintLevelAscii();
+
         // Initialisation des cubes
         for (int i = 0; i < image.height; ++i)
         {
@@ -268,7 +270,7 @@ public class LevelGenerator : MonoBehaviour
                 Cube_Edible tempCube;
                 if (cubesArray[j, i] && cubesArray[j, i].TryGetComponent(out tempCube))
                 {
-                    tempCube.InitCubes(j, i);
+                    tempCube.InitCubes(j, i, image.width, image.height);
                 }
             }
         }
@@ -305,7 +307,7 @@ public class LevelGenerator : MonoBehaviour
         {
             for (int j = 0; j < image.width; j++)
             {
-                if (CubesArray[j, i])
+                if (CubesArray[j, i] && CubesArray[j, i].gameObject.activeSelf)
                     ascii += "G ";
                 else
                     ascii += "O ";
