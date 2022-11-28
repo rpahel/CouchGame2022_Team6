@@ -300,11 +300,6 @@ PrefabInstance:
       propertyPath: image
       value: 
       objectReference: {fileID: 2800000, guid: dc58ec1dc479f5c419706fc7e074ed70, type: 3}
-    - target: {fileID: 8582628809070321616, guid: d01234ee6e8ef604cb2828c936c5f8db,
-        type: 3}
-      propertyPath: minLensSize
-      value: 15
-      objectReference: {fileID: 0}
     - target: {fileID: 8582628809077700844, guid: d01234ee6e8ef604cb2828c936c5f8db,
         type: 3}
       propertyPath: m_Name
@@ -368,12 +363,12 @@ PrefabInstance:
     - target: {fileID: 8582628809586381248, guid: d01234ee6e8ef604cb2828c936c5f8db,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.00000004635917
+      value: 0.000000046394966
       objectReference: {fileID: 0}
     - target: {fileID: 8582628809586381248, guid: d01234ee6e8ef604cb2828c936c5f8db,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.12978
+      value: 0.12976
       objectReference: {fileID: 0}
     - target: {fileID: 8582628809586381248, guid: d01234ee6e8ef604cb2828c936c5f8db,
         type: 3}

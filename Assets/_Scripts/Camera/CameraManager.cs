@@ -27,7 +27,10 @@ public class CameraManager : MonoBehaviour
 
     //===============================================
     [SerializeField] private GameObject VCam;
-    [SerializeField] private float minLensSize;
+    [SerializeField, Tooltip("La taille (ou zoom) minimale de la caméra.")]
+    private float minLensSize;
+    [SerializeField, Tooltip("La hauteur, en nombre de cubes, de l'espace libre entre le haut/bas du niveau et les limites de la caméra.")]
+    private int excess;
     #endregion
 
     #region Unity_Functions
@@ -48,7 +51,7 @@ public class CameraManager : MonoBehaviour
         /*imageSizeToScreenFormat = realImageSize.x > realImageSize.y ?
                          new Vector2(realImageSize.x, realImageSize.x / screenFormat) :
                          new Vector2(realImageSize.y * screenFormat, realImageSize.y);*/
-        imageSizeToScreenFormat = new Vector2(realImageSize.y * screenFormat, realImageSize.y);
+        imageSizeToScreenFormat = new Vector2((realImageSize.y + excess * 2) * screenFormat, realImageSize.y + excess * 2);
 
         // Ici on setup les tailles min et max de la lentille
         maxLensSizeX = imageSizeToScreenFormat.x * .8f * (scale / 2.857143f);

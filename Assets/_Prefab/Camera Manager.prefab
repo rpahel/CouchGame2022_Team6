@@ -136,9 +136,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf015fa0d1c9cf546945e651a31d29e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pTransforms: []
   targetGroup: {fileID: 7610548474992255019}
   VCam: {fileID: 7610548474874700848}
-  minLensSize: 8
+  minLensSize: 15
+  excess: 1
 --- !u!60 &7610548474342897317
 PolygonCollider2D:
   m_ObjectHideFlags: 0
