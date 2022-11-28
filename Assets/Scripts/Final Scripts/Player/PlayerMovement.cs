@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private PlayerManager _playerManager;
     private PlayerInputHandler _playerInputHandler;
     #endregion
- 
+
     #region Variables
     //============================
     [Header("Données publiques")]
@@ -29,7 +29,26 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(0.01f, 1), Tooltip("Valeur à dépasser avec le joystick pour initier le déplacement.")]
     private float deadZone;
     [SerializeField] private Transform pointeurTransform;
-    
+
+
+    [Header("Wall Jump")]
+    private float dirPlayerToWall;
+    // private float wallOrientXLeft;
+    public Transform wallCheckRight;
+    // public Transform wallCheckLeft;
+    public bool isPlayerTouchingWall;
+    public bool isSliding;
+    public float wallSlidingSpeedMax;
+    public float wallJumpDuration;
+    private float wallJumpTimer = 0f;
+    public float wallDetectionRadius;
+    public bool wallJumping;
+    public float wallJumpAngle;
+    public float wallJumpForce;
+    private bool facingRight = true;
+    public bool canWallJump;
+
+
     //============================ // Pour le saut
     private bool _isGrounded;
     [SerializeField] private Transform groundCheck;
@@ -41,19 +60,19 @@ public class PlayerMovement : MonoBehaviour
     private CapsuleCollider2D _capsuleCollider; //Serializefield car il y a deux collider sur le player
     //============================
     private Vector2 _inputVectorWithDeadZone;
- 
+
     //============================
     private Coroutine freinage;
-    
+
     //============================
     private bool holdJump;
     public bool HoldJump { set => holdJump = value; }
- 
+
     //============================
 
     [SerializeField] private GameObject meshObj;
     public bool lookAtRight; // à ne pas confondre avec aimDirection
-    
+
     //============================
     [Header("Dash")]
     [SerializeField] private DashType dashType;
@@ -76,15 +95,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(1f, 2f)] private float WidthMultiplier = 2f;
     [SerializeField, Range(1f, 2f)] private float LengthMultiplier = 2f;
     [SerializeField] private BoxCollider2D dashCollider;
-    
+
     //============================
-    [Header("Vfx")] 
+    [Header("Vfx")]
     [SerializeField] private VisualEffect visualEffect;
-    [ColorUsageAttribute(true,true,0f,8f,0.125f,3f), SerializeField]
+    [ColorUsageAttribute(true, true, 0f, 8f, 0.125f, 3f), SerializeField]
     private Color colorVFX1;
-    [ColorUsageAttribute(true,true,0f,8f,0.125f,3f), SerializeField]
+    [ColorUsageAttribute(true, true, 0f, 8f, 0.125f, 3f), SerializeField]
     private Color colorVFX2;
-    [ColorUsageAttribute(true,true,0f,8f,0.125f,3f), SerializeField]
+    [ColorUsageAttribute(true, true, 0f, 8f, 0.125f, 3f), SerializeField]
     private Color colorVFX3;
     #endregion
 
@@ -105,26 +124,27 @@ public class PlayerMovement : MonoBehaviour
         echelleDeGravité = echelleDeGravité != 0 ? echelleDeGravité : _rb.gravityScale;
         visualEffect.Stop();
     }
- 
+
     private void Update()
     {
-        if(dureeAvantArret < 0.01f)
+        if (dureeAvantArret < 0.01f)
             dureeAvantArret = 0.01f;
 
-        if (_playerManager.InputVector == Vector2.zero)
-            pointeurTransform.rotation = Quaternion.Euler(0, 0, lookAtRight ? 0 : 180);
+        /* if (_playerManager.InputVector == Vector2.zero)
+             transform.rotation = Quaternion.Euler(0, 0, lookAtRight ? 0 : 180);*/
 
         CheckHoldValue();
     }
- 
+
     private void FixedUpdate()
     {
-        #if UNITY_EDITOR
-        if(_playerManager.State == PlayerState.Moving)
-            _rb.gravityScale = echelleDeGravité;
-        #endif
 
-        if (_isDashing) 
+#if UNITY_EDITOR
+        if (_playerManager.State == PlayerState.Moving)
+            _rb.gravityScale = echelleDeGravité;
+#endif
+
+        if (_isDashing)
         {
             _rb.AddForce(_playerManager.InputVector * dashForce, ForceMode2D.Impulse);
             return;
@@ -133,7 +153,7 @@ public class PlayerMovement : MonoBehaviour
         _isGrounded = IsGrounded();
 
         if (_playerManager.State == PlayerState.STUNNED) return;
-        
+
         float castRadius = transform.localScale.x * .5f - .05f;
         float castDistance = _capsuleCollider.size.y * transform.localScale.y * .25f + .3f;
 
@@ -157,10 +177,17 @@ public class PlayerMovement : MonoBehaviour
                 _playerManager.SetPlayerState(PlayerState.Moving);
             }
         }*/
+
+
+
+        UpdateWallSliding();
+
+        UpdateWallJump();
+        UpdateDetectWall();
     }
-    
+
     #endregion
- 
+
     #region Custom_Functions
 
     private void OnMove()
@@ -180,35 +207,132 @@ public class PlayerMovement : MonoBehaviour
             _ => lookAtRight
         };
 
-        meshObj.transform.rotation =
-            (lookAtRight == true) ? Quaternion.Euler(0f, 140f, 0f) : Quaternion.Euler(0f, -140f, 0f);
+        gameObject.transform.rotation =
+            (lookAtRight == true) ? Quaternion.Euler(0f, 0f, 0f) : Quaternion.Euler(0f, -140f, 0f);
 
         if (freinage == null) return;
-        
+
         StopCoroutine(freinage);
         freinage = null;
     }
- 
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(wallCheckRight.position, wallDetectionRadius);
+    }
     public void OnJump()
     {
         if (_isGrounded)
             Jump();
-        
+
+        else if (isSliding && !_isGrounded)
+        {
+            WallJump();
+            
+        }
         else
-            Debug.Log("You can't jump, you're not on solid ground.");
-        
+        {
+            Debug.Log("You can't jump, you're not on solid ground or on a WALL.");
+        }
+
+
     }
-    
+
+    private void OnGUI()
+    {
+        GUILayout.Label(_isGrounded ? "On Ground" : "In Air");
+    }
+
+    private void WallJump()
+    {
+        //--------------------WALL JUMP----------------//
+
+      
+        wallJumping = true;
+        wallJumpTimer = 0;
+
+        isSliding = false;
+
+
+
+    }
+
+    void UpdateWallSliding()
+    {
+        if (!isSliding) return;
+        
+
+        float wallSlidingSpeed = _rb.velocity.y;
+
+        if (wallSlidingSpeed < -wallSlidingSpeedMax)
+        {
+            wallSlidingSpeed = -wallSlidingSpeedMax;
+        }
+
+        //TODO: change wall Detach (using timer to detect input)
+        _rb.velocity = new Vector2(_rb.velocity.x, wallSlidingSpeed);
+
+
+    }
+
+    void UpdateWallJump()
+    {
+        if (!wallJumping) return;
+
+        wallJumpTimer += Time.deltaTime; 
+        if(wallJumpTimer >= wallJumpDuration)
+        {
+            wallJumping = false;
+            return;
+        }
+
+        if (isSliding) return;
+
+        Vector2 wallJumpdir;
+
+        wallJumpdir = new Vector2(Mathf.Cos(Mathf.Deg2Rad * wallJumpAngle), Mathf.Sin(Mathf.Deg2Rad * wallJumpAngle));
+        _rb.velocity = new Vector2(wallJumpdir.x * dirPlayerToWall * wallJumpForce, wallJumpdir.y * wallJumpForce);
+        // _rb.velocity = new Vector2(wallJumpdir.x * wallOrientXLeft * wallJumpForce, wallJumpdir.y * wallJumpForce);
+
+
+
+    }
+
+    void UpdateDetectWall()
+    {
+
+        Collider2D detectedCollider = Physics2D.OverlapCircle(wallCheckRight.position, wallDetectionRadius, groundLayer | groundLayer2 | groundLayer3);
+
+
+        isPlayerTouchingWall = (detectedCollider != null);
+
+
+        if (isPlayerTouchingWall && !_isGrounded && !wallJumping)
+        {
+
+            dirPlayerToWall = Mathf.Sign(_rb.position.x - detectedCollider.transform.position.x);
+
+
+            isSliding = true;
+            Debug.Log("je sliiide");
+        }
+        else
+        {
+
+            isSliding = false;
+            Debug.Log("stoopsliding");
+        }
+    }
     private bool IsGrounded()
     {
-        return Physics2D.OverlapCapsule(groundCheck.position, new Vector2(1f, 0.4f), CapsuleDirection2D.Horizontal, 0,groundLayer | groundLayer2 | groundLayer3);
+        return Physics2D.OverlapCapsule(groundCheck.position, new Vector2(1f, 0.4f), CapsuleDirection2D.Horizontal, 0, groundLayer | groundLayer2 | groundLayer3);
     }
- 
+
     IEnumerator Freinage()
     {
         float iniVelocityX = _rb.velocity.x;
         float t = 0;
-        while(t < 1f)
+        while (t < 1f)
         {
             _rb.velocity = new Vector2(DOVirtual.EasedValue(iniVelocityX, 0, t, Ease.OutCubic), _rb.velocity.y);
             t += Time.fixedDeltaTime / dureeAvantArret;
@@ -217,7 +341,7 @@ public class PlayerMovement : MonoBehaviour
         _rb.velocity = new Vector2(0, _rb.velocity.y);
         freinage = null;
     }
- 
+
     private void Deplacement()
     {
         if (_inputVectorWithDeadZone == Vector2.zero)
@@ -227,15 +351,15 @@ public class PlayerMovement : MonoBehaviour
                 freinage = StartCoroutine(Freinage());
             }
         }
- 
+
         if ((_inputVectorWithDeadZone.x / Mathf.Abs(_inputVectorWithDeadZone.x)) + (_rb.velocity.x / Mathf.Abs(_rb.velocity.x)) == 0)
             _rb.velocity = new Vector2(-_rb.velocity.x, _rb.velocity.y);
-        
+
         _rb.velocity += new Vector2(_inputVectorWithDeadZone.x, 0) * (Time.fixedDeltaTime * 100f);
-        
+
         //_rb.velocity = new Vector2(Mathf.Clamp(_rb.velocity.x, -vitesseMax, vitesseMax), _rb.velocity.y);
     }
- 
+
     private void Jump()
     {
         _rb.velocity = new Vector2(_rb.velocity.x, 0);
@@ -247,7 +371,7 @@ public class PlayerMovement : MonoBehaviour
     {
         SetDashWithHold(holdValue);
 
-        if (_dashCoroutine != null) 
+        if (_dashCoroutine != null)
         {
             StopCoroutine(_dashCoroutine);
         }
@@ -293,26 +417,26 @@ public class PlayerMovement : MonoBehaviour
         {
             //Increase Length
             case DashLoading.IncreaseLength:
-            {
-                var holdClamp = Mathf.Clamp(hold, 0f, 2f);
-                var lengthValue = Mathf.Lerp(dashTime, LengthMultiplier * dashTime, holdClamp / 2);
-                dashTimeMultiplier = lengthValue;
-                Debug.Log("DashTime" + dashTimeMultiplier);
-                break;
-            }
+                {
+                    var holdClamp = Mathf.Clamp(hold, 0f, 2f);
+                    var lengthValue = Mathf.Lerp(dashTime, LengthMultiplier * dashTime, holdClamp / 2);
+                    dashTimeMultiplier = lengthValue;
+                    Debug.Log("DashTime" + dashTimeMultiplier);
+                    break;
+                }
             //Increase collider 
             case DashLoading.IncreaseWidth:
-            {
-                dashTimeMultiplier = dashTime;
-                var holdClamp = Mathf.Clamp(hold, 0f, 2f);
-                var sizeValue = Mathf.Lerp(1.5f, WidthMultiplier * 1.5f, holdClamp / 2);           
-                dashCollider.size = new Vector2(sizeValue, sizeValue);
-                Debug.Log("DashSize" + sizeValue);
-                break;
-            }
+                {
+                    dashTimeMultiplier = dashTime;
+                    var holdClamp = Mathf.Clamp(hold, 0f, 2f);
+                    var sizeValue = Mathf.Lerp(1.5f, WidthMultiplier * 1.5f, holdClamp / 2);
+                    dashCollider.size = new Vector2(sizeValue, sizeValue);
+                    Debug.Log("DashSize" + sizeValue);
+                    break;
+                }
         }
     }
-    
+
     private IEnumerator DashCoroutine(float dashDuration)
     {
         _playerManager.DisableInputs();
@@ -358,7 +482,7 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(EndInfiniteDash());
         }
-            
+
     }
 
     private void EndDash()
