@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using CustomMaths;
 
-public class Projectile : MonoBehaviour
+public class ProjectileState : MonoBehaviour
 {
     #region Variables
     //=============================================
@@ -38,7 +38,7 @@ public class Projectile : MonoBehaviour
 
     private void OnEnable()
     {
-        insideSpriteRenderer.color = color;
+        //insideSpriteRenderer.color = Color.black;
         rb.gravityScale = gravity;
         age = lifetime;
         hasHurt = false;
@@ -84,9 +84,7 @@ public class Projectile : MonoBehaviour
                 Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, CustomVectors.ApproxNormal(transform.position - collider.transform.position)).normalized;
                 rb.velocity = currentVelocity.magnitude * bounceForce * sensDuRebond;
             }
-            else if (collider.gameObject.layer == LayerMask.NameToLayer("Destructible")
-                || collider.gameObject.layer == LayerMask.NameToLayer("Indestructible")
-                || collider.gameObject.layer == LayerMask.NameToLayer("Limite"))
+            else if (collider.gameObject.layer == LayerMask.NameToLayer("Destructible") || collider.gameObject.layer == LayerMask.NameToLayer("Indestructible"))
             {
                 if (CanSpawnCubeAt(PositionInNormalDirection(collider.transform.position, transform.position - collider.transform.position, GameManager.Instance.LevelGenerator.Scale), owner.transform.position - collider.transform.position))
                     SpawnCube(collider);
@@ -136,9 +134,7 @@ public class Projectile : MonoBehaviour
                 Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, collision.GetContact(0).normal).normalized;
                 rb.velocity = currentVelocity.magnitude * bounceForce * sensDuRebond;
             }
-            else if (collision.gameObject.layer == LayerMask.NameToLayer("Destructible")
-                || collision.gameObject.layer == LayerMask.NameToLayer("Indestructible")
-                || collision.gameObject.layer == LayerMask.NameToLayer("Limite"))
+            else if (collision.gameObject.layer == LayerMask.NameToLayer("Destructible") || collision.gameObject.layer == LayerMask.NameToLayer("Indestructible"))
             {
                 if (CanSpawnCubeAt(PositionInNormalDirection(collision.transform.position, collision.GetContact(0).normal, GameManager.Instance.LevelGenerator.Scale), owner.transform.position - collision.transform.position))
                     SpawnCube(collision);
@@ -202,7 +198,7 @@ public class Projectile : MonoBehaviour
         Cube_Edible cube;
         if(targetTransform.TryGetComponent(out cube))
         {
-            cube.GetBarfed(collision.GetContact(0).point);
+            cube.GetVomited(collision.GetContact(0).point);
         }
     }
 
@@ -218,7 +214,7 @@ public class Projectile : MonoBehaviour
         Cube_Edible cube;
         if (targetTransform.TryGetComponent(out cube))
         {
-            cube.GetBarfed(transform.position);
+            cube.GetVomited(transform.position);
         }
     }
 
