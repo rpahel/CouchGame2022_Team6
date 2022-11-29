@@ -363,12 +363,12 @@ PrefabInstance:
     - target: {fileID: 8582628809586381248, guid: d01234ee6e8ef604cb2828c936c5f8db,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.000000046394966
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8582628809586381248, guid: d01234ee6e8ef604cb2828c936c5f8db,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.12976
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8582628809586381248, guid: d01234ee6e8ef604cb2828c936c5f8db,
         type: 3}
@@ -388,6 +388,16 @@ PrefabInstance:
     - target: {fileID: 8582628809587477830, guid: d01234ee6e8ef604cb2828c936c5f8db,
         type: 3}
       propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8582628809587477831, guid: d01234ee6e8ef604cb2828c936c5f8db,
+        type: 3}
+      propertyPath: m_Damping
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8582628809587477831, guid: d01234ee6e8ef604cb2828c936c5f8db,
+        type: 3}
+      propertyPath: m_MaxWindowSize
       value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

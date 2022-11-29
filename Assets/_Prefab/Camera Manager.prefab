@@ -256,8 +256,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BoundingShape2D: {fileID: 7610548474342897317}
-  m_Damping: 0.5
-  m_MaxWindowSize: 0
+  m_Damping: 10
+  m_MaxWindowSize: -1
 --- !u!1 &7610548474875803833
 GameObject:
   m_ObjectHideFlags: 0
