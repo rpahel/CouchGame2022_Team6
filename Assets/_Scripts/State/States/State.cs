@@ -10,9 +10,9 @@ public abstract class State
         this.playerSystem = playerSystem;
     }
     
-    public virtual IEnumerator Start()
+    public virtual void Start()
     {
-        yield break;
+        return;
     }
 
     public virtual void Update()

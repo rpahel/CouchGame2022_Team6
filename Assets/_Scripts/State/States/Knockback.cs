@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dashing : State
+public class Knockback : State
 {
-    public Dashing(PlayerSystem playerSystem) : base(playerSystem)
+    public Knockback(PlayerSystem playerSystem) : base(playerSystem)
     {
     }
     

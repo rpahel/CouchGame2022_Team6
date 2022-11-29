@@ -2,12 +2,14 @@ using System.Collections;
 using UnityEngine;
 using System;
 using Data;
+using UnityEditorInternal;
+
 public class Moving : State 
 {
     public Moving(PlayerSystem playerSystem) : base(playerSystem)
     {
     }
-    public override IEnumerator Start()
+    public override void Start()
     {
         //PLAYERMOVEMENT AWAKE
         if(playerSystem.PlayerSystemManager.StopDuration < 0.01f)  playerSystem.PlayerSystemManager.SetStopDuration(0.01f);
@@ -27,8 +29,6 @@ public class Moving : State
             playerSystem.PlayerSystemManager.castDistance = collider2D.size.y * playerSystem.transform.localScale.y * .25f + .3f;
         else
             throw new Exception("PManager.PCollider is not a CapsuleCollider2D. Please update the code.");
-        
-        yield break;
     }
 
     public override void Update()
@@ -111,7 +111,8 @@ public class Moving : State
 
         if (playerSystem.PlayerSystemManager.groundCheck && (testlayer == LayerMask.NameToLayer("Destructible")
             || testlayer == LayerMask.NameToLayer("Indestructible")
-            || testlayer == LayerMask.NameToLayer("Trap")))
+            || testlayer == LayerMask.NameToLayer("Trap")
+            || testlayer == LayerMask.NameToLayer("Limite")))
         {
             Jump();
         }
