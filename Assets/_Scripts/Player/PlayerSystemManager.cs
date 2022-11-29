@@ -4,6 +4,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 
 
@@ -14,7 +15,7 @@ public class PlayerSystemManager : MonoBehaviour
     private Rigidbody2D rb2D;
     private Collider2D coll;
     private PlayerInputs pInputs;
-
+    private PlayerSystem playerSystem;
 
     // Getter
     public Rigidbody2D Rb2D => rb2D; 
@@ -25,6 +26,7 @@ public class PlayerSystemManager : MonoBehaviour
     #region Variables
     //============================
     [HideInInspector] public Color color;
+    [HideInInspector] public PlayerInput playerInput;
 
     // PLAYER MOVEMENT Variables
     public Vector2 LookDirection { get; set; }
@@ -119,6 +121,7 @@ public class PlayerSystemManager : MonoBehaviour
         rb2D = GetComponent<Rigidbody2D>();
         coll = GetComponent<Collider2D>();
         pInputs = GetComponent<PlayerInputs>();
+        playerSystem = GetComponent<PlayerSystem>();
     }
 
     private void Update()
@@ -162,18 +165,22 @@ public class PlayerSystemManager : MonoBehaviour
     /// <typeparam name="T"></typeparam>
     /// <param name="damageDealer">L'objet responsable des d�gats (un joueur, un pi�ge, etc).</param>
     /// <param name="damage">La quantit� de bouffe � retirer.</param>
-    /*public void OnDamage<T>(T damageDealer, int damage, Vector2 knockBackForce)
+    public void OnDamage<T>(T damageDealer, int damage, Vector2 knockBackForce)
     {
-        PEat.fullness = Mathf.Clamp(PEat.fullness - damage, 0, 100);
-        UpdatePlayerScale();
-
-        //rb2D.AddForce(knockBackForce, ForceMode2D.Impulse);
+        fullness = Mathf.Clamp(fullness - damage, 0, 100);
         rb2D.velocity += Time.deltaTime * 100f * knockBackForce;
-        PlayerState = PLAYER_STATE.KNOCKBACKED;
-    }*/
+        UpdatePlayerScale();
+        //PlayerState = PLAYER_STATE.KNOCKBACKED;
+    }
 
     public void UpdatePlayerScale()
     {
+        if (fullness <= 0 && playerSystem.PlayerState is not Dead)
+        {
+            playerSystem.SetState(new Dead(playerSystem));
+            return;
+        }
+
         transform.localScale = Vector3.one * Mathf.Lerp(minSize, maxSize, fullness * .01f);
     }
 

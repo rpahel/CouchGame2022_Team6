@@ -295,6 +295,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 8582628807844638286, guid: d01234ee6e8ef604cb2828c936c5f8db,
+        type: 3}
+      propertyPath: respawnTime
+      value: 3.01
+      objectReference: {fileID: 0}
     - target: {fileID: 8582628807844638287, guid: d01234ee6e8ef604cb2828c936c5f8db,
         type: 3}
       propertyPath: m_PlayerPrefab

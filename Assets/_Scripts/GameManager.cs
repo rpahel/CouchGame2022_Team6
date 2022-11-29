@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CameraManager cManager;
     [SerializeField] private LevelGenerator levelGenerator;
     public LevelGenerator LevelGenerator => levelGenerator;
+    public CameraManager CameraManager => cManager;
     #endregion
 
     #region Variables
@@ -24,6 +25,9 @@ public class GameManager : MonoBehaviour
     private GameObject projectile;
     [SerializeField, Tooltip("Le nombre de projectiles en cache au début du jeu.")]
     private int projectileNumber;
+    [SerializeField, Tooltip("Le nombre de secondes avant de respawn."), Range(0, 5)]
+    private float respawnTime;
+    public float RespawnTime => respawnTime;
 
     //============================
     public  GAME_STATE GameState { get; private set; }
@@ -101,9 +105,15 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"Player {pi.playerIndex} joined!");
 
-        pi.transform.position = spawnPositions[pi.playerIndex].position;
+        RespawnPlayer(pi);
         playerTransforms[pi.playerIndex] = pi.transform;
-        pi.GetComponent<PlayerManager>().color = playerColors[pi.playerIndex];
+        pi.GetComponent<PlayerSystemManager>().color = playerColors[pi.playerIndex];
+        pi.GetComponent<PlayerSystemManager>().playerInput = pi;
+    }
+
+    public void RespawnPlayer(PlayerInput pi)
+    {
+        pi.transform.position = spawnPositions[pi.playerIndex].position;
         cManager.UpdatePlayers(pi.transform);
     }
 
