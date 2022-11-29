@@ -227,8 +227,8 @@ public class PlayerMovement : MonoBehaviour
 
         else if (isSliding && !_isGrounded)
         {
-            WallJump();
             
+            StartCoroutine(timeToCanJump());
         }
         else
         {
@@ -246,10 +246,14 @@ public class PlayerMovement : MonoBehaviour
     private void WallJump()
     {
         //--------------------WALL JUMP----------------//
+        if (isSliding == false) return;
 
-      
         wallJumping = true;
         wallJumpTimer = 0;
+
+        
+
+      
 
         isSliding = false;
 
@@ -306,6 +310,7 @@ public class PlayerMovement : MonoBehaviour
 
         isPlayerTouchingWall = (detectedCollider != null);
 
+        
 
         if (isPlayerTouchingWall && !_isGrounded && !wallJumping)
         {
@@ -496,5 +501,11 @@ public class PlayerMovement : MonoBehaviour
         _playerManager.SetPlayerState(PlayerState.Moving);
         _trailRenderer.emitting = false;
         _playerManager.EnableInputs();
+    }
+
+    private IEnumerator timeToCanJump()
+    {
+        yield return new WaitForSeconds(0.05f);
+        WallJump();
     }
 }
