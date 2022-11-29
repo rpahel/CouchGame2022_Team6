@@ -215,9 +215,9 @@ GameObject:
   - component: {fileID: 3784764394035868595}
   - component: {fileID: 591372657606866412}
   - component: {fileID: 3784764394035868592}
-  - component: {fileID: 4953746572511138207}
-  - component: {fileID: 3784764394035868593}
   - component: {fileID: 9041389100960335044}
+  - component: {fileID: 8237785980924456824}
+  - component: {fileID: -5957723479509861639}
   m_Layer: 3
   m_Name: PlayeState
   m_TagString: Untagged
@@ -320,8 +320,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3784764394035868593}
-        m_TargetAssemblyTypeName: PlayerInputs, Assembly-CSharp
+      - m_Target: {fileID: -5957723479509861639}
+        m_TargetAssemblyTypeName: PlayerInputsState, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
         m_Arguments:
@@ -329,15 +329,15 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: OnMove
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 3bc93035-3e40-4d7a-81f8-4db2a27b6543
     m_ActionName: Game/OnMove
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3784764394035868593}
-        m_TargetAssemblyTypeName: PlayerInputs, Assembly-CSharp
+      - m_Target: {fileID: -5957723479509861639}
+        m_TargetAssemblyTypeName: PlayerInputsState, Assembly-CSharp
         m_MethodName: OnJump
         m_Mode: 0
         m_Arguments:
@@ -364,8 +364,8 @@ MonoBehaviour:
     m_ActionName: Menu/OnCancel
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3784764394035868593}
-        m_TargetAssemblyTypeName: PlayerInputs, Assembly-CSharp
+      - m_Target: {fileID: -5957723479509861639}
+        m_TargetAssemblyTypeName: PlayerInputsState, Assembly-CSharp
         m_MethodName: OnEat
         m_Mode: 0
         m_Arguments:
@@ -380,7 +380,7 @@ MonoBehaviour:
     m_ActionName: Game/Eat[/DualShock4GamepadHID/rightShoulder,/Mouse/rightButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3784764394035868593}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerInputs, Assembly-CSharp
         m_MethodName: Aim
         m_Mode: 0
@@ -396,7 +396,7 @@ MonoBehaviour:
     m_ActionName: Game/Aim[/DualShock4GamepadHID/leftStick]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3784764394035868593}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerInputs, Assembly-CSharp
         m_MethodName: OnShoot
         m_Mode: 0
@@ -411,19 +411,7 @@ MonoBehaviour:
     m_ActionId: fd700e65-f6b9-42f0-b82a-69b23ae65c14
     m_ActionName: Game/Shoot
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3784764394035868593}
-        m_TargetAssemblyTypeName: PlayerInputs, Assembly-CSharp
-        m_MethodName: Special
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: a0bdb637-8780-48c9-ad17-06545e42832d
     m_ActionName: Game/Special[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
@@ -431,34 +419,6 @@ MonoBehaviour:
   m_DefaultActionMap: Game
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &4953746572511138207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3784764394035868596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bc8062102733594883874ee604fef44, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  color: {r: 0, g: 0, b: 0, a: 0}
-  maxSize: 2.857
-  minSize: 1
-  insideSprite: {fileID: 1940364374433954416}
---- !u!114 &3784764394035868593
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3784764394035868596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b252940e54303e345a2cc7e1934a69df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &9041389100960335044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -469,6 +429,51 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 841c3f292530672448975549f468b8b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8237785980924456824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3784764394035868596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2362e10832aa1124387f3862bda7dc21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 0, g: 0, b: 0, a: 0}
+  maxSize: 2.857
+  minSize: 1
+  insideSprite: {fileID: 1940364374433954416}
+  maxSpeed: 25
+  stopDuration: 0.05
+  jumpForce: 28
+  gravityScale: 15
+  deadZone: 0.25
+  castRadius: 0
+  castDistance: 0
+  inputVectorMove: {x: 0, y: 0}
+  holdJump: 0
+  fullness: 50
+  eatCooldown: 0
+  eatTickrate: 10
+  eatDistance: 5
+  filling: 0
+  cooldown: 0
+  tickHoldEat: 0
+  holdEat: 0
+--- !u!114 &-5957723479509861639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3784764394035868596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8edc31067f195d043baa81da19fae901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4317817617938280482

@@ -26,11 +26,11 @@ public class PlayerSystemManager : MonoBehaviour
     //============================
     [HideInInspector] public Color color;
 
-    //============================
+    // PLAYER MOVEMENT Variables
     private PLAYER_STATE playerState;
     public PLAYER_STATE PlayerState
     {
-        get { return playerState; }
+        get => playerState;
         set
         {
             if (PlayerState != value)
@@ -40,12 +40,9 @@ public class PlayerSystemManager : MonoBehaviour
             }
         }
     }
-
     public PLAYER_STATE PreviousPlayerState { get; private set; }
     public Vector2 AimDirection { get; set; }
     public Vector2 LookDirection { get; set; }
-
-    //============================
     [SerializeField] private float maxSize = 2.857f;
     [SerializeField] private float minSize = 1f;
 
@@ -54,19 +51,22 @@ public class PlayerSystemManager : MonoBehaviour
     #endregion
 
     #region Unity_Functions
+    
+
 
 
     #region Variables
     //==========================================================================
+    [Header("PLAYER MOVEMENT Variables")]
     [SerializeField, Range(0, 40f)]
     public float maxSpeed;
-    [SerializeField, Range(.01f, .2f), Tooltip("Durée de freinage en seconde.")]
+    [SerializeField, Range(.01f, .2f), Tooltip("Durï¿½e de freinage en seconde.")]
     public float stopDuration;
     [SerializeField]
     public int jumpForce;
-    [SerializeField, Range(0, 100), Tooltip("Multiplicateur de la gravité, 1 = gravité de base d'Unity.")]
+    [SerializeField, Range(0, 100), Tooltip("Multiplicateur de la gravitï¿½, 1 = gravitï¿½ de base d'Unity.")]
     public float gravityScale;
-    [SerializeField, Range(0.01f, 1), Tooltip("Valeur à dépasser avec le joystick pour initier le déplacement.")]
+    [SerializeField, Range(0.01f, 1), Tooltip("Valeur ï¿½ dï¿½passer avec le joystick pour initier le dï¿½placement.")]
     public float deadZone;
 
     //==========================================================================
@@ -81,10 +81,29 @@ public class PlayerSystemManager : MonoBehaviour
     //==========================================================================
     public Vector2 inputVectorMove = Vector2.zero;
     public Vector2 InputVectorMove => inputVectorMove;
+    
+    public Vector2 inputVectorDirection = Vector2.zero;
 
     //==========================================================================
     public bool holdJump;
     public bool HoldJump { set => holdJump = value; }
+    
+    // EAT EAT EAT EAT 
+    [Header("EAT Variables")]
+    [Range(0, 100), Tooltip("La quantitï¿½ de nourriture dans le corps.")]
+    public int fullness;
+    [SerializeField, Tooltip("La durï¿½e d'attente entre deux inputs de manger."), Range(0f, 1f)]
+    public float eatCooldown;
+    [SerializeField, Tooltip("Le nombre de cubes mangï¿½s par seconde."), Range(2, 10)]
+    public int eatTickrate;
+    [SerializeField, Tooltip("Distance max pour pouvoir manger le cube qu'on vise."), Range(1f, 5f)]
+    public float eatDistance;
+    [SerializeField, Tooltip("Combien de nourriture tu reï¿½ois en mangeant un cube. 100 = Un cube suffit ï¿½ te remplir."), Range(0f, 100f)]
+    public int filling;
+    public float cooldown;
+    public float tickHoldEat;
+    public bool holdEat;
+    public bool HoldEat { set => holdEat = value; }
     #endregion
 
     private void Awake()
@@ -112,25 +131,25 @@ public class PlayerSystemManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-       // UpdatePlayerScale();
+        UpdatePlayerScale();
 
-        // On change la couleur du joueur en fonction de son état
-        if (PlayerState == PLAYER_STATE.KNOCKBACKED)
-            insideSprite.color = Color.red;
-        else if (PlayerState == PLAYER_STATE.SHOOTING)
-            insideSprite.color = Color.blue;
-        else
-            insideSprite.color = Color.white;
+        insideSprite.color = PlayerState switch
+        {
+            // On change la couleur du joueur en fonction de son ï¿½tat
+            PLAYER_STATE.KNOCKBACKED => Color.red,
+            PLAYER_STATE.SHOOTING => Color.blue,
+            _ => Color.white
+        };
     }
     #endregion
 
     /// <summary>
-    /// Réduit la jauge de bouffe et knockback le joueur.
+    /// Rï¿½duit la jauge de bouffe et knockback le joueur.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <param name="damageDealer">L'objet responsable des dégats (un joueur, un piège, etc).</param>
-    /// <param name="damage">La quantité de bouffe à retirer.</param>
-   /* public void OnDamage<T>(T damageDealer, int damage, Vector2 knockBackForce)
+    /// <param name="damageDealer">L'objet responsable des dï¿½gats (un joueur, un piï¿½ge, etc).</param>
+    /// <param name="damage">La quantitï¿½ de bouffe ï¿½ retirer.</param>
+    /*public void OnDamage<T>(T damageDealer, int damage, Vector2 knockBackForce)
     {
         PEat.fullness = Mathf.Clamp(PEat.fullness - damage, 0, 100);
         UpdatePlayerScale();
@@ -138,15 +157,15 @@ public class PlayerSystemManager : MonoBehaviour
         //rb2D.AddForce(knockBackForce, ForceMode2D.Impulse);
         rb2D.velocity += Time.deltaTime * 100f * knockBackForce;
         PlayerState = PLAYER_STATE.KNOCKBACKED;
-    }
+    }*/
 
     public void UpdatePlayerScale()
     {
-        transform.localScale = Vector3.one * Mathf.Lerp(minSize, maxSize, pEat.fullness * .01f);
-    }*/
+        transform.localScale = Vector3.one * Mathf.Lerp(minSize, maxSize, fullness * .01f);
+    }
 
     /// <summary>
-    /// Pousse de façon smooth le joueur vers un endroit donné.
+    /// Pousse de faï¿½on smooth le joueur vers un endroit donnï¿½.
     /// </summary>
     public void MoveOverTo(Vector2 endPosition)
     {
