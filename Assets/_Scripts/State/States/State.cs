@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class State
@@ -35,12 +34,27 @@ public abstract class State
         return;
     }
 
+    public virtual void OnHoldShoot()
+    {
+        return;
+    }
+    
+    public virtual void OnShoot()
+    {
+        return;
+    }
+
     public virtual void OnEat()
     {
         return;
     }
 
     public virtual void OnCollision(Collision2D col)
+    {
+        return;
+    }
+    
+    public virtual void OnTrigger(Collider2D col)
     {
         return;
     }

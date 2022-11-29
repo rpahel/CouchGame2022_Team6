@@ -2,30 +2,26 @@ using System.Collections;
 using UnityEngine;
 using System;
 using Data;
-using DG.Tweening;
 public class Moving : State 
 {
     public Moving(PlayerSystem playerSystem) : base(playerSystem)
     {
     }
-
-    public void Awake()
-    {
-        
-    }
     public override IEnumerator Start()
     {
         //PLAYERMOVEMENT AWAKE
-        playerSystem.PlayerSystemManager.stopDuration = playerSystem.PlayerSystemManager.stopDuration < 0.01f ? 0.01f : playerSystem.PlayerSystemManager.stopDuration;
+        if(playerSystem.PlayerSystemManager.StopDuration < 0.01f)  playerSystem.PlayerSystemManager.SetStopDuration(0.01f);
+        
+        //playerSystem.PlayerSystemManager.st = playerSystem.PlayerSystemManager.StopDuration < 0.01f ? 0.01f : playerSystem.PlayerSystemManager.StopDuration;
         playerSystem.PlayerSystemManager.LookDirection = Vector2.right;
         playerSystem.PlayerSystemManager.castRadius = playerSystem.transform.localScale.x * .5f - .05f;
         
         //EAT AWAKE
-        playerSystem.PlayerSystemManager.cooldown = playerSystem.PlayerSystemManager.eatCooldown;
+        playerSystem.PlayerSystemManager.cooldown = playerSystem.PlayerSystemManager.EatCooldown;
         playerSystem.PlayerSystemManager.tickHoldEat = 1f;
         
         
-        playerSystem.PlayerSystemManager.Rb2D.gravityScale = playerSystem.PlayerSystemManager.gravityScale != 0 ? playerSystem.PlayerSystemManager.gravityScale : playerSystem.PlayerSystemManager.Rb2D.gravityScale;
+        playerSystem.PlayerSystemManager.Rb2D.gravityScale = playerSystem.PlayerSystemManager.GravityScale != 0 ? playerSystem.PlayerSystemManager.GravityScale : playerSystem.PlayerSystemManager.Rb2D.gravityScale;
 
         if (playerSystem.PlayerSystemManager.PCollider is CapsuleCollider2D collider2D)
             playerSystem.PlayerSystemManager.castDistance = collider2D.size.y * playerSystem.transform.localScale.y * .25f + .3f;
@@ -39,8 +35,7 @@ public class Moving : State
     {
         #if UNITY_EDITOR
         {
-            if(playerSystem.PlayerSystemManager.stopDuration < 0.01f)
-                playerSystem.PlayerSystemManager.stopDuration = 0.01f;
+            if(playerSystem.PlayerSystemManager.StopDuration < 0.01f)  playerSystem.PlayerSystemManager.SetStopDuration(0.01f);
         }
         #endif
         
@@ -48,7 +43,7 @@ public class Moving : State
 
     public override void FixedUpdate()
     {
-        playerSystem.PlayerSystemManager.Rb2D.gravityScale = playerSystem.PlayerSystemManager.gravityScale;
+        playerSystem.PlayerSystemManager.Rb2D.gravityScale = playerSystem.PlayerSystemManager.GravityScale;
         
         playerSystem.PlayerSystemManager.castRadius = playerSystem.transform.localScale.x * .5f - .05f;
         playerSystem.PlayerSystemManager.castDistance = (playerSystem.PlayerSystemManager.PCollider as CapsuleCollider2D).size.y * playerSystem.transform.localScale.y * .25f + .3f;
@@ -56,7 +51,7 @@ public class Moving : State
         playerSystem.PlayerSystemManager.groundCheck = Physics2D.CircleCast(playerSystem.transform.position, playerSystem.PlayerSystemManager.castRadius, Vector2.down, playerSystem.PlayerSystemManager.castDistance);
             // Si le joueur n'est pas knockback, il peut bouger.
 
-        playerSystem.PlayerSystemManager.PlayerState = playerSystem.PlayerSystemManager.groundCheck ? PLAYER_STATE.WALKING : PLAYER_STATE.FALLING;
+        //playerSystem.PlayerSystemManager.PlayerState = playerSystem.PlayerSystemManager.groundCheck ? PLAYER_STATE.WALKING : PLAYER_STATE.FALLING;
 
         Movement();
 
@@ -64,10 +59,10 @@ public class Moving : State
             OnJump();
 
         // On limite la vitesse du joueur.
-        playerSystem.PlayerSystemManager.Rb2D.velocity = new Vector2(Mathf.Clamp(playerSystem.PlayerSystemManager.Rb2D.velocity.x, -playerSystem.PlayerSystemManager.maxSpeed, playerSystem.PlayerSystemManager.maxSpeed), playerSystem.PlayerSystemManager.Rb2D.velocity.y);
+        playerSystem.PlayerSystemManager.Rb2D.velocity = new Vector2(Mathf.Clamp(playerSystem.PlayerSystemManager.Rb2D.velocity.x, -playerSystem.PlayerSystemManager.MaxSpeed, playerSystem.PlayerSystemManager.MaxSpeed), playerSystem.PlayerSystemManager.Rb2D.velocity.y);
         
         //EAT FIXED UPDATE
-        playerSystem.PlayerSystemManager.cooldown = Mathf.Clamp(playerSystem.PlayerSystemManager.cooldown + Time.deltaTime, 0, playerSystem.PlayerSystemManager.eatCooldown);
+        playerSystem.PlayerSystemManager.cooldown = Mathf.Clamp(playerSystem.PlayerSystemManager.cooldown + Time.deltaTime, 0, playerSystem.PlayerSystemManager.EatCooldown);
 
         if (!playerSystem.PlayerSystemManager.holdEat) return;
         if (playerSystem.PlayerSystemManager.fullness > 100) return;
@@ -79,13 +74,13 @@ public class Moving : State
         }
         else
         {
-            playerSystem.PlayerSystemManager.tickHoldEat += Time.deltaTime * playerSystem.PlayerSystemManager.eatTickrate;
+            playerSystem.PlayerSystemManager.tickHoldEat += Time.deltaTime * playerSystem.PlayerSystemManager.EatTickrate;
         }
     }
 
     public override void OnMove()
     {
-        if (Mathf.Abs(playerSystem.PlayerSystemManager.inputVectorDirection.x) <= playerSystem.PlayerSystemManager.deadZone)
+        if (Mathf.Abs(playerSystem.PlayerSystemManager.inputVectorDirection.x) <= playerSystem.PlayerSystemManager.DeadZone)
         {
             playerSystem.PlayerSystemManager.inputVectorMove = Vector2.zero;
             return;
@@ -103,7 +98,8 @@ public class Moving : State
 
         if (playerSystem.PlayerSystemManager.brakingCoroutine == null) return;
         
-        playerSystem.PlayerSystemManager.StopCoroutine(playerSystem.PlayerSystemManager.brakingCoroutine);
+        // ERROR COROUTINE CONTINUE FAILURE WHEN STOPPING COROUTINE, WILL APPARENTLY BE FIXED BY UNITY
+       // playerSystem.PlayerSystemManager.StopCoroutine(playerSystem.PlayerSystemManager.brakingCoroutine);
         playerSystem.PlayerSystemManager.brakingCoroutine = null;
     }
 
@@ -128,31 +124,13 @@ public class Moving : State
             #endif
         }
     }
-    IEnumerator Braking()
-    {
-        float iniVelocityX = playerSystem.PlayerSystemManager.Rb2D.velocity.x;
-        float t = 0;
-        while (t < 1f)
-        {
-
-            playerSystem.PlayerSystemManager.Rb2D.velocity = new Vector2(DOVirtual.EasedValue(iniVelocityX, 0, t, Ease.OutCubic), playerSystem.PlayerSystemManager.Rb2D.velocity.y);
-            t += Time.fixedDeltaTime / playerSystem.PlayerSystemManager.stopDuration;
-            yield return new WaitForFixedUpdate();
-        }
-
-        if (playerSystem.PlayerSystemManager.PlayerState != PLAYER_STATE.KNOCKBACKED && playerSystem.PlayerSystemManager.PlayerState == PLAYER_STATE.DASHING) //A quoi sert ca
-            playerSystem.PlayerSystemManager.Rb2D.velocity = new Vector2(0, playerSystem.PlayerSystemManager.Rb2D.velocity.y);
-
-        playerSystem.PlayerSystemManager.brakingCoroutine = null;
-    }
-
     private void Movement()
     {
         if (playerSystem.PlayerSystemManager.inputVectorMove == Vector2.zero)
         {
             if (playerSystem.PlayerSystemManager.brakingCoroutine == null && playerSystem.PlayerSystemManager.Rb2D.velocity.x != 0)
             {
-                playerSystem.PlayerSystemManager.brakingCoroutine = playerSystem.PlayerSystemManager.StartCoroutine(Braking());
+                playerSystem.PlayerSystemManager.brakingCoroutine = playerSystem.CooldownManager.StartCoroutine(playerSystem.CooldownManager.Braking());
             }
         }
 
@@ -165,7 +143,7 @@ public class Moving : State
 
     private void Jump()
     {
-        playerSystem.PlayerSystemManager.Rb2D.velocity = new Vector2(playerSystem.PlayerSystemManager.Rb2D.velocity.x, playerSystem.PlayerSystemManager.jumpForce * Time.fixedDeltaTime * 100f);
+        playerSystem.PlayerSystemManager.Rb2D.velocity = new Vector2(playerSystem.PlayerSystemManager.Rb2D.velocity.x, playerSystem.PlayerSystemManager.JumpForce * Time.fixedDeltaTime * 100f);
     }
     
     /// <summary>
@@ -175,12 +153,10 @@ public class Moving : State
     public override void OnEat()
     {
         var direction = playerSystem.PlayerSystemManager.inputVectorDirection;
-        
-        Debug.Log(direction);
-        
-        if (playerSystem.PlayerSystemManager.cooldown < playerSystem.PlayerSystemManager.eatCooldown)
+
+        if (playerSystem.PlayerSystemManager.cooldown < playerSystem.PlayerSystemManager.EatCooldown)
         {
-            Debug.Log($"Attendez un peu avant de manger ({playerSystem.PlayerSystemManager.cooldown:0.00} / {playerSystem.PlayerSystemManager.eatCooldown:0.00})");
+            Debug.Log($"Attendez un peu avant de manger ({playerSystem.PlayerSystemManager.cooldown:0.00} / {playerSystem.PlayerSystemManager.EatCooldown:0.00})");
             return;
         }
 
@@ -196,30 +172,35 @@ public class Moving : State
         }
 
         #if UNITY_EDITOR
-        Debug.DrawRay(playerSystem.transform.position - Vector3.forward, direction.normalized * playerSystem.PlayerSystemManager.eatDistance, Color.red, playerSystem.PlayerSystemManager.eatCooldown);
+        Debug.DrawRay(playerSystem.transform.position - Vector3.forward, direction.normalized * playerSystem.PlayerSystemManager.EatDistance, Color.red, playerSystem.PlayerSystemManager.EatCooldown);
         #endif
 
-        RaycastHit2D hit = Physics2D.Raycast(playerSystem.transform.position, direction.normalized, playerSystem.PlayerSystemManager.eatDistance, 1 << LayerMask.NameToLayer("Destructible"));
+        RaycastHit2D hit = Physics2D.Raycast(playerSystem.transform.position, direction.normalized, playerSystem.PlayerSystemManager.EatDistance, 1 << LayerMask.NameToLayer("Destructible"));
         if (hit)
         {
             hit.transform.parent.GetComponent<Cube_Edible>().GetManged(playerSystem.transform);
-            playerSystem.PlayerSystemManager.fullness = Mathf.Clamp(playerSystem.PlayerSystemManager.fullness + playerSystem.PlayerSystemManager.filling, 0, 100);
+            playerSystem.PlayerSystemManager.fullness = Mathf.Clamp(playerSystem.PlayerSystemManager.fullness + playerSystem.PlayerSystemManager.Filling, 0, 100);
             playerSystem.PlayerSystemManager.UpdatePlayerScale();
         }
         else if(!(playerSystem.PlayerSystemManager.GroundCheck)) // S'il touche rien et qu'il n'est pas au sol on ressaie de manger dans le sens du regard cette fois
         {
             direction = playerSystem.PlayerSystemManager.LookDirection;
-            hit = Physics2D.Raycast(playerSystem.transform.position, direction.normalized, playerSystem.PlayerSystemManager.eatDistance, 1 << LayerMask.NameToLayer("Destructible"));
+            hit = Physics2D.Raycast(playerSystem.transform.position, direction.normalized, playerSystem.PlayerSystemManager.EatDistance, 1 << LayerMask.NameToLayer("Destructible"));
 
             if (hit)
             {
                 hit.transform.parent.GetComponent<Cube_Edible>().GetManged(playerSystem.transform);
-                playerSystem.PlayerSystemManager.fullness = Mathf.Clamp(playerSystem.PlayerSystemManager.fullness + playerSystem.PlayerSystemManager.filling, 0, 100);
+                playerSystem.PlayerSystemManager.fullness = Mathf.Clamp(playerSystem.PlayerSystemManager.fullness + playerSystem.PlayerSystemManager.Filling, 0, 100);
                 playerSystem.PlayerSystemManager.UpdatePlayerScale();
             }
         }
 
         playerSystem.PlayerSystemManager.cooldown = 0;
+    }
+
+    public override void OnHoldShoot()
+    {
+        playerSystem.SetState(new Aim(playerSystem));
     }
 
     public override void OnCollision(Collision2D col)

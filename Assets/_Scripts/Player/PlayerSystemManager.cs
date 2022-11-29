@@ -17,7 +17,7 @@ public class PlayerSystemManager : MonoBehaviour
 
 
     // Getter
-    public Rigidbody2D Rb2D => rb2D;
+    public Rigidbody2D Rb2D => rb2D; 
     public Collider2D PCollider => coll;
     public PlayerInputs PInputs => pInputs;
     #endregion
@@ -27,47 +27,24 @@ public class PlayerSystemManager : MonoBehaviour
     [HideInInspector] public Color color;
 
     // PLAYER MOVEMENT Variables
-    private PLAYER_STATE playerState;
-    public PLAYER_STATE PlayerState
-    {
-        get => playerState;
-        set
-        {
-            if (PlayerState != value)
-            {
-                PreviousPlayerState = playerState;
-                playerState = value;
-            }
-        }
-    }
-    public PLAYER_STATE PreviousPlayerState { get; private set; }
-    public Vector2 AimDirection { get; set; }
     public Vector2 LookDirection { get; set; }
     [SerializeField] private float maxSize = 2.857f;
     [SerializeField] private float minSize = 1f;
-
-    //============================ TODO : Supprimer
-    public SpriteRenderer insideSprite;
-    #endregion
-
-    #region Unity_Functions
     
-
-
-
-    #region Variables
     //==========================================================================
     [Header("PLAYER MOVEMENT Variables")]
-    [SerializeField, Range(0, 40f)]
-    public float maxSpeed;
-    [SerializeField, Range(.01f, .2f), Tooltip("Dur�e de freinage en seconde.")]
-    public float stopDuration;
-    [SerializeField]
-    public int jumpForce;
-    [SerializeField, Range(0, 100), Tooltip("Multiplicateur de la gravit�, 1 = gravit� de base d'Unity.")]
-    public float gravityScale;
-    [SerializeField, Range(0.01f, 1), Tooltip("Valeur � d�passer avec le joystick pour initier le d�placement.")]
-    public float deadZone;
+    [SerializeField, Range(0, 40f)] private float maxSpeed;
+    [SerializeField, Range(.01f, .2f), Tooltip("Dur�e de freinage en seconde.")] private float stopDuration;
+    [SerializeField] private int jumpForce;
+    [SerializeField, Range(0, 100), Tooltip("Multiplicateur de la gravit�, 1 = gravit� de base d'Unity.")]  private float gravityScale;
+    [SerializeField, Range(0.01f, 1), Tooltip("Valeur � d�passer avec le joystick pour initier le d�placement.")]  private float deadZone;
+
+    //GETTER
+    public float MaxSpeed => maxSpeed;
+    public float StopDuration => stopDuration;
+    public int JumpForce => jumpForce;
+    public float GravityScale => gravityScale;
+    public float DeadZone => deadZone;
 
     //==========================================================================
     public Coroutine brakingCoroutine;
@@ -88,22 +65,53 @@ public class PlayerSystemManager : MonoBehaviour
     public bool holdJump;
     public bool HoldJump { set => holdJump = value; }
     
-    // EAT EAT EAT EAT 
+    // PLAYER EAT VAR
     [Header("EAT Variables")]
-    [Range(0, 100), Tooltip("La quantit� de nourriture dans le corps.")]
-    public int fullness;
-    [SerializeField, Tooltip("La dur�e d'attente entre deux inputs de manger."), Range(0f, 1f)]
-    public float eatCooldown;
-    [SerializeField, Tooltip("Le nombre de cubes mang�s par seconde."), Range(2, 10)]
-    public int eatTickrate;
-    [SerializeField, Tooltip("Distance max pour pouvoir manger le cube qu'on vise."), Range(1f, 5f)]
-    public float eatDistance;
-    [SerializeField, Tooltip("Combien de nourriture tu re�ois en mangeant un cube. 100 = Un cube suffit � te remplir."), Range(0f, 100f)]
-    public int filling;
+    [Range(0, 100), Tooltip("La quantit� de nourriture dans le corps.")] public int fullness;
+    [SerializeField, Tooltip("La dur�e d'attente entre deux inputs de manger."), Range(0f, 1f)] private float eatCooldown;
+    [SerializeField, Tooltip("Le nombre de cubes mang�s par seconde."), Range(2, 10)] private int eatTickrate;
+    [SerializeField, Tooltip("Distance max pour pouvoir manger le cube qu'on vise."), Range(1f, 5f)] private float eatDistance;
+    [SerializeField, Tooltip("Combien de nourriture tu re�ois en mangeant un cube. 100 = Un cube suffit � te remplir."), Range(0f, 100f)] private int filling;
     public float cooldown;
     public float tickHoldEat;
     public bool holdEat;
     public bool HoldEat { set => holdEat = value; }
+    public float EatCooldown => eatCooldown;
+    public int EatTickrate => eatTickrate;
+    public float EatDistance => eatDistance;
+    public int Filling => filling;
+    
+    // PLAYER SHOOT VAR
+    [Header("PLAYER SHOOT Variables")]
+    [SerializeField, Range(0, 100), Tooltip("Pourcentage de nourriture utilisé pour tirer.")]
+    private int necessaryFood;
+    [SerializeField, Range(0, 2), Tooltip("Laps de temps entre chaque tir.")]
+    private float cooldownShoot;
+    public float cdTimer;
+    [SerializeField, Tooltip("Le gameObject AimPivot de ce Prefab.")]
+    private Transform aimPivot;
+
+    public int NecessaryFood => necessaryFood;
+    public float CooldownShoot => cooldownShoot;
+    public Transform AimPivot => aimPivot;
+    //============================
+    [Header("Projectile")]
+    [SerializeField] private float initialSpeed;
+    [SerializeField] private float gravity;
+    [SerializeField] private float bounceForce;
+    [SerializeField, Range(0, 100), Tooltip("Pourcentage de nourriture retiré au joueur ennemi touché.")]
+    private int inflictedFoodDamage;
+    [SerializeField, Tooltip("Force du knockback infligé au joueur ennemi.")]
+    private float knockBackForce;
+
+    public float InitialSpeed => initialSpeed;
+    public float Gravity => gravity;
+    public float BounceForce => gravity;
+    public int InflictedFoodDamage => inflictedFoodDamage;
+    public float KnockBackForce => knockBackForce;
+    
+    //============================
+    public float raycastRange; // Utilisé pour voir si y'a assez de place pour tirer
     #endregion
 
     private void Awake()
@@ -115,33 +123,38 @@ public class PlayerSystemManager : MonoBehaviour
 
     private void Update()
     {
-
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         {
-            Debug.DrawRay(transform.position - Vector3.forward, AimDirection * 5f, Color.cyan, Time.deltaTime);
+            Debug.DrawRay(transform.position - Vector3.forward, inputVectorDirection * 5f, Color.cyan, Time.deltaTime);
         }
-#endif
+        #endif
 
-        // On change LookDirection ici
-        if (AimDirection.x > 0)
-            LookDirection = Vector2.right;
-        else if (AimDirection.x < 0)
-            LookDirection = Vector2.left;
+        LookDirection = inputVectorDirection.x switch
+        {
+            // On change LookDirection ici
+            > 0 => Vector2.right,
+            < 0 => Vector2.left,
+            _ => LookDirection
+        };
     }
 
     private void FixedUpdate()
     {
         UpdatePlayerScale();
 
-        insideSprite.color = PlayerState switch
+       /* insideSprite.color = PlayerState switch
         {
             // On change la couleur du joueur en fonction de son �tat
             PLAYER_STATE.KNOCKBACKED => Color.red,
             PLAYER_STATE.SHOOTING => Color.blue,
             _ => Color.white
-        };
+        };*/
     }
-    #endregion
+
+    public void SetStopDuration(float amount)
+    {
+        stopDuration = amount;
+    }
 
     /// <summary>
     /// R�duit la jauge de bouffe et knockback le joueur.
@@ -170,16 +183,16 @@ public class PlayerSystemManager : MonoBehaviour
     public void MoveOverTo(Vector2 endPosition)
     {
 
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         {
             CustomDebugs.DrawWireSphere(endPosition, .5f, Color.magenta, 5f, 1);
         }
-#endif
+        #endif
 
-        StartCoroutine(MoverOverAnimation(endPosition));
+        //StartCoroutine(MoverOverAnimation(endPosition));
     }
 
-    IEnumerator MoverOverAnimation(Vector2 endPosition)
+    /*IEnumerator MoverOverAnimation(Vector2 endPosition)
     {
         Vector2 iniPos = transform.position;
         float t = 0;
@@ -198,5 +211,5 @@ public class PlayerSystemManager : MonoBehaviour
         {
             transform.position = endPosition;
         }
-    }
+    }*/
 }

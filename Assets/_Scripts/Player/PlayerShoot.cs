@@ -98,7 +98,7 @@ public class PlayerShoot : MonoBehaviour
     private void ShootProjectile(Vector2 aimDirection)
     {
         Projectile projectile = GameManager.Instance.GetAvailableProjectile();
-        projectile.owner = PManager;
+        //projectile.owner = PManager;
         projectile.color = PManager.color;
         projectile.transform.position = transform.position;
         projectile.gravity = gravity;

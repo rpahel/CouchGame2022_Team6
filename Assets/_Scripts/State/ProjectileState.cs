@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using CustomMaths;
 
-public class Projectile : MonoBehaviour
+public class ProjectileState : MonoBehaviour
 {
     #region Variables
     //=============================================

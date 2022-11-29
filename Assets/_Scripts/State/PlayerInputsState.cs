@@ -32,9 +32,6 @@ public class PlayerInputsState : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext input)
     {
-        if (_playerSystem.PlayerState is not Moving)
-            return;
-
         if (input.started)
             _playerSystem.OnJump();
 
@@ -47,9 +44,6 @@ public class PlayerInputsState : MonoBehaviour
 
     public void OnEat(InputAction.CallbackContext input)
     {
-        if (_playerSystem.PlayerState is not Moving)
-            return;
-
         if (input.started)
             _playerSystem.OnEat(); //Was Aim Direction
 
@@ -58,34 +52,24 @@ public class PlayerInputsState : MonoBehaviour
 
         else if (input.canceled)
             _playerSystemManager.HoldEat = false;
-    }/*
+    }
 
     public void OnShoot(InputAction.CallbackContext input)
     {
-        if (PManager.PlayerState == PLAYER_STATE.STUNNED || PManager.PlayerState == PLAYER_STATE.DASHING)
-            return;
-
-        if (input.performed)
+        if (input.started)
         {
-            PManager.PShoot.HoldShoot();
+            _playerSystem.OnHoldSHoot();
         }
 
         if (input.canceled)
         {
-            PManager.PShoot.OnShoot(PManager.AimDirection);
+            _playerSystem.OnShoot();
         }
     }
+    
 
-    public void Aim(InputAction.CallbackContext input)
+    /*public void Special(InputAction.CallbackContext input)
     {
-        PManager.AimDirection = input.ReadValue<Vector2>().normalized;
-    }
-
-    public void Special(InputAction.CallbackContext input)
-    {
-        if (PManager.PlayerState == PLAYER_STATE.STUNNED || PManager.PlayerState == PLAYER_STATE.DASHING)
-            return;
-
         if (input.performed)
         {
             PManager.PSpecial.Charge(true);

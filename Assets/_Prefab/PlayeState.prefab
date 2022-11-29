@@ -218,6 +218,7 @@ GameObject:
   - component: {fileID: 9041389100960335044}
   - component: {fileID: 8237785980924456824}
   - component: {fileID: -5957723479509861639}
+  - component: {fileID: -5276769057875731088}
   m_Layer: 3
   m_Name: PlayeState
   m_TagString: Untagged
@@ -379,25 +380,13 @@ MonoBehaviour:
     m_ActionId: afb9720c-4654-4b17-a906-c0606f61c8a6
     m_ActionName: Game/Eat[/DualShock4GamepadHID/rightShoulder,/Mouse/rightButton]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayerInputs, Assembly-CSharp
-        m_MethodName: Aim
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 9335d564-f3bc-434e-9109-7f530320dc93
     m_ActionName: Game/Aim[/DualShock4GamepadHID/leftStick]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayerInputs, Assembly-CSharp
+      - m_Target: {fileID: -5957723479509861639}
+        m_TargetAssemblyTypeName: PlayerInputsState, Assembly-CSharp
         m_MethodName: OnShoot
         m_Mode: 0
         m_Arguments:
@@ -455,6 +444,7 @@ MonoBehaviour:
   castRadius: 0
   castDistance: 0
   inputVectorMove: {x: 0, y: 0}
+  inputVectorDirection: {x: 0, y: 0}
   holdJump: 0
   fullness: 50
   eatCooldown: 0
@@ -464,6 +454,16 @@ MonoBehaviour:
   cooldown: 0
   tickHoldEat: 0
   holdEat: 0
+  necessaryFood: 0
+  cooldownShoot: 0
+  cdTimer: 0
+  aimPivot: {fileID: 8009965234519673580}
+  initialSpeed: 50
+  gravity: 5
+  bounceForce: 1
+  inflictedFoodDamage: 20
+  knockBackForce: 35
+  raycastRange: 0
 --- !u!114 &-5957723479509861639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -474,6 +474,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8edc31067f195d043baa81da19fae901, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-5276769057875731088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3784764394035868596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b369e27a322a2374c88cf905337bb011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4317817617938280482
