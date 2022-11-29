@@ -84,7 +84,9 @@ public class Projectile : MonoBehaviour
                 Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, CustomVectors.ApproxNormal(transform.position - collider.transform.position)).normalized;
                 rb.velocity = currentVelocity.magnitude * bounceForce * sensDuRebond;
             }
-            else if (collider.gameObject.layer == LayerMask.NameToLayer("Destructible") || collider.gameObject.layer == LayerMask.NameToLayer("Indestructible"))
+            else if (collider.gameObject.layer == LayerMask.NameToLayer("Destructible")
+                || collider.gameObject.layer == LayerMask.NameToLayer("Indestructible")
+                || collider.gameObject.layer == LayerMask.NameToLayer("Limite"))
             {
                 if (CanSpawnCubeAt(PositionInNormalDirection(collider.transform.position, transform.position - collider.transform.position, GameManager.Instance.LevelGenerator.Scale), owner.transform.position - collider.transform.position))
                     SpawnCube(collider);
@@ -134,7 +136,9 @@ public class Projectile : MonoBehaviour
                 Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, collision.GetContact(0).normal).normalized;
                 rb.velocity = currentVelocity.magnitude * bounceForce * sensDuRebond;
             }
-            else if (collision.gameObject.layer == LayerMask.NameToLayer("Destructible") || collision.gameObject.layer == LayerMask.NameToLayer("Indestructible"))
+            else if (collision.gameObject.layer == LayerMask.NameToLayer("Destructible")
+                || collision.gameObject.layer == LayerMask.NameToLayer("Indestructible")
+                || collision.gameObject.layer == LayerMask.NameToLayer("Limite"))
             {
                 if (CanSpawnCubeAt(PositionInNormalDirection(collision.transform.position, collision.GetContact(0).normal, GameManager.Instance.LevelGenerator.Scale), owner.transform.position - collision.transform.position))
                     SpawnCube(collision);

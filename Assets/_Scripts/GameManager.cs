@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
     /// <exception cref="System.Exception"> Erreur quand il y a plus de joueurs que de points de spawn disponibles.</exception>
     public void OnPlayerJoined(PlayerInput pi)
     {
-        if (pi.playerIndex >= 3) // Je ne sais plus pourquoi j'ai mis trois, mais si le quatrième joueur spawn pas c'est sans doute à cause de ça.
+        if (pi.playerIndex >= 4)
             return;
 
         if (!spawnPositions[pi.playerIndex])
