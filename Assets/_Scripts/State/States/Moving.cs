@@ -178,7 +178,7 @@ public class Moving : State
         RaycastHit2D hit = Physics2D.Raycast(playerSystem.transform.position, direction.normalized, playerSystem.PlayerSystemManager.EatDistance, 1 << LayerMask.NameToLayer("Destructible"));
         if (hit)
         {
-            hit.transform.parent.GetComponent<Cube_Edible>().GetManged(playerSystem.transform);
+            hit.transform.parent.GetComponent<Cube_Edible>().GetEaten(playerSystem.transform);
             playerSystem.PlayerSystemManager.fullness = Mathf.Clamp(playerSystem.PlayerSystemManager.fullness + playerSystem.PlayerSystemManager.Filling, 0, 100);
             playerSystem.PlayerSystemManager.UpdatePlayerScale();
         }
@@ -189,7 +189,7 @@ public class Moving : State
 
             if (hit)
             {
-                hit.transform.parent.GetComponent<Cube_Edible>().GetManged(playerSystem.transform);
+                hit.transform.parent.GetComponent<Cube_Edible>().GetEaten(playerSystem.transform);
                 playerSystem.PlayerSystemManager.fullness = Mathf.Clamp(playerSystem.PlayerSystemManager.fullness + playerSystem.PlayerSystemManager.Filling, 0, 100);
                 playerSystem.PlayerSystemManager.UpdatePlayerScale();
             }
