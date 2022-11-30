@@ -31,7 +31,7 @@ public class PlayerSystemManager : MonoBehaviour
     public SpriteRenderer insideSprite;
 
     // PLAYER MOVEMENT Variables
-    public Vector2 LookDirection { get; set; }
+    [HideInInspector] public Vector2 LookDirection { get; set; }
     [SerializeField] private float maxSize = 2.857f;
     [SerializeField] private float minSize = 1f;
     
@@ -51,22 +51,22 @@ public class PlayerSystemManager : MonoBehaviour
     public float DeadZone => deadZone;
 
     //==========================================================================
-    public Coroutine brakingCoroutine;
+    [HideInInspector] public Coroutine brakingCoroutine;
 
     //========================================================================== POUR LE SAUT (DETECTION DE SOL)
-    public RaycastHit2D groundCheck;
+    [HideInInspector] public RaycastHit2D groundCheck;
     public RaycastHit2D GroundCheck => groundCheck;
-    public float castRadius;
-    public float castDistance;
+    [HideInInspector] public float castRadius;
+    [HideInInspector] public float castDistance;
 
     //==========================================================================
-    public Vector2 inputVectorMove = Vector2.zero;
+    [HideInInspector] public Vector2 inputVectorMove = Vector2.zero;
     public Vector2 InputVectorMove => inputVectorMove;
-    
-    public Vector2 inputVectorDirection = Vector2.zero;
+
+    [HideInInspector] public Vector2 inputVectorDirection = Vector2.zero;
 
     //==========================================================================
-    public bool holdJump;
+    [HideInInspector] public bool holdJump;
     public bool HoldJump { set => holdJump = value; }
     
     // PLAYER EAT VAR
@@ -76,9 +76,9 @@ public class PlayerSystemManager : MonoBehaviour
     [SerializeField, Tooltip("Le nombre de cubes mang�s par seconde."), Range(2, 10)] private int eatTickrate;
     [SerializeField, Tooltip("Distance max pour pouvoir manger le cube qu'on vise."), Range(1f, 5f)] private float eatDistance;
     [SerializeField, Tooltip("Combien de nourriture tu re�ois en mangeant un cube. 100 = Un cube suffit � te remplir."), Range(0f, 100f)] private int filling;
-    public float cooldown;
-    public float tickHoldEat;
-    public bool holdEat;
+    [HideInInspector] public float cooldown;
+    [HideInInspector] public float tickHoldEat;
+    [HideInInspector] public bool holdEat;
     public bool HoldEat { set => holdEat = value; }
     public float EatCooldown => eatCooldown;
     public int EatTickrate => eatTickrate;
@@ -91,7 +91,7 @@ public class PlayerSystemManager : MonoBehaviour
     private int necessaryFood;
     [SerializeField, Range(0, 2), Tooltip("Laps de temps entre chaque tir.")]
     private float cooldownShoot;
-    public float cdTimer;
+    [HideInInspector] public float cdTimer;
     [SerializeField, Tooltip("Le gameObject AimPivot de ce Prefab.")]
     private Transform aimPivot;
 
@@ -113,13 +113,13 @@ public class PlayerSystemManager : MonoBehaviour
     public float BounceForce => gravity;
     public int InflictedFoodDamage => inflictedFoodDamage;
     public float KnockBackForce => knockBackForce;
-    
-    //============================
-    public float raycastRange; // Utilisé pour voir si y'a assez de place pour tirer
 
-    [Header("STUN Variables")]
-    [SerializeField] private float cooldownStun;
-    public float CooldownStun => cooldownStun;
+    //==========================================================================
+    [SerializeField] public float raycastRange; // Utilisé pour voir si y'a assez de place pour tirer
+
+    //[Header("STUN Variables")]
+    //[SerializeField] private float cooldownStun;
+    //public float CooldownStun => cooldownStun;
     #endregion
 
     private void Awake()
