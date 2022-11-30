@@ -2,19 +2,21 @@ using System.Collections;
 using UnityEngine;
 using System;
 using Data;
+using UnityEditorInternal;
+
 public class Moving : State 
 {
     public Moving(PlayerSystem playerSystem) : base(playerSystem)
     {
     }
-    public override IEnumerator Start()
+    public override void Start()
     {
         //PLAYERMOVEMENT AWAKE
         if(playerSystem.PlayerSystemManager.StopDuration < 0.01f)  playerSystem.PlayerSystemManager.SetStopDuration(0.01f);
         
         //playerSystem.PlayerSystemManager.st = playerSystem.PlayerSystemManager.StopDuration < 0.01f ? 0.01f : playerSystem.PlayerSystemManager.StopDuration;
         playerSystem.PlayerSystemManager.LookDirection = Vector2.right;
-        playerSystem.PlayerSystemManager.castRadius = playerSystem.transform.localScale.x * .5f - .05f;
+        playerSystem.PlayerSystemManager.castRadius = playerSystem.PlayerSystemManager.PCollider.bounds.extents.x - .05f;
         
         //EAT AWAKE
         playerSystem.PlayerSystemManager.cooldown = playerSystem.PlayerSystemManager.EatCooldown;
@@ -27,8 +29,6 @@ public class Moving : State
             playerSystem.PlayerSystemManager.castDistance = collider2D.size.y * playerSystem.transform.localScale.y * .25f + .3f;
         else
             throw new Exception("PManager.PCollider is not a CapsuleCollider2D. Please update the code.");
-        
-        yield break;
     }
 
     public override void Update()
@@ -111,7 +111,8 @@ public class Moving : State
 
         if (playerSystem.PlayerSystemManager.groundCheck && (testlayer == LayerMask.NameToLayer("Destructible")
             || testlayer == LayerMask.NameToLayer("Indestructible")
-            || testlayer == LayerMask.NameToLayer("Trap")))
+            || testlayer == LayerMask.NameToLayer("Trap")
+            || testlayer == LayerMask.NameToLayer("Limite")))
         {
             Jump();
         }
@@ -168,7 +169,7 @@ public class Moving : State
 
         if (direction == Vector2.zero)
         {
-            direction = !(playerSystem.PlayerSystemManager.GroundCheck) ? Vector2.up : playerSystem.PlayerSystemManager.LookDirection;
+            direction = !(playerSystem.PlayerSystemManager.groundCheck) ? Vector2.up : playerSystem.PlayerSystemManager.LookDirection;
         }
 
         #if UNITY_EDITOR
@@ -182,7 +183,7 @@ public class Moving : State
             playerSystem.PlayerSystemManager.fullness = Mathf.Clamp(playerSystem.PlayerSystemManager.fullness + playerSystem.PlayerSystemManager.Filling, 0, 100);
             playerSystem.PlayerSystemManager.UpdatePlayerScale();
         }
-        else if(!(playerSystem.PlayerSystemManager.GroundCheck)) // S'il touche rien et qu'il n'est pas au sol on ressaie de manger dans le sens du regard cette fois
+        else if(!(playerSystem.PlayerSystemManager.groundCheck)) // S'il touche rien et qu'il n'est pas au sol on ressaie de manger dans le sens du regard cette fois
         {
             direction = playerSystem.PlayerSystemManager.LookDirection;
             hit = Physics2D.Raycast(playerSystem.transform.position, direction.normalized, playerSystem.PlayerSystemManager.EatDistance, 1 << LayerMask.NameToLayer("Destructible"));

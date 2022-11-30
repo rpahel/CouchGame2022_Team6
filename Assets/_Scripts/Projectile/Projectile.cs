@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using CustomMaths;
+using UnityEditor.Rendering;
 
 public class Projectile : MonoBehaviour
 {
@@ -76,13 +77,13 @@ public class Projectile : MonoBehaviour
                 Vector2 sensDuKnockBack = (collider.transform.position - transform.position).x > 0 ? new Vector2(-1, 1f) : new Vector2(1, 1f);
                 sensDuKnockBack.Normalize();
                 collider.gameObject.GetComponent<PlayerSystemManager>().OnDamage(owner, percentageDealt, sensDuKnockBack * knockBackForce);
-                rb.velocity = bounceForce * currentVelocity.magnitude * new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y);
+                rb.velocity = bounceForce * currentVelocity.magnitude * new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y) * Time.fixedDeltaTime;
                 hasHurt = true;
             }
             else if (collider.gameObject.layer == LayerMask.NameToLayer("Trap"))
             {
                 Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, CustomVectors.ApproxNormal(transform.position - collider.transform.position)).normalized;
-                rb.velocity = currentVelocity.magnitude * bounceForce * sensDuRebond;
+                rb.velocity = currentVelocity.magnitude * bounceForce * sensDuRebond * Time.fixedDeltaTime;
             }
             else if (collider.gameObject.layer == LayerMask.NameToLayer("Destructible")
                 || collider.gameObject.layer == LayerMask.NameToLayer("Indestructible")
@@ -98,7 +99,7 @@ public class Projectile : MonoBehaviour
             else if (collider.gameObject.layer == LayerMask.NameToLayer("Projectile"))
             {
                 Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, CustomVectors.ApproxNormal(transform.position - collider.transform.position)).normalized;
-                rb.velocity = currentVelocity.magnitude * bounceForce * sensDuRebond;
+                rb.velocity = currentVelocity.magnitude * bounceForce * sensDuRebond * Time.fixedDeltaTime;
             }
         }
     }
@@ -128,13 +129,13 @@ public class Projectile : MonoBehaviour
                 Vector2 sensDuKnockBack = collision.GetContact(0).normal.x > 0 ? new Vector2(-1, 1f) : new Vector2(1, 1f);
                 sensDuKnockBack.Normalize();
                 collision.gameObject.GetComponent<PlayerSystemManager>().OnDamage(owner, percentageDealt, sensDuKnockBack * knockBackForce);
-                rb.velocity = bounceForce * currentVelocity.magnitude * new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y);
+                rb.velocity = bounceForce * currentVelocity.magnitude * new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y) * Time.fixedDeltaTime;
                 hasHurt = true;
             }
             else if (collision.gameObject.layer == LayerMask.NameToLayer("Trap"))
             {
                 Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, collision.GetContact(0).normal).normalized;
-                rb.velocity = currentVelocity.magnitude * bounceForce * sensDuRebond;
+                rb.velocity = currentVelocity.magnitude * bounceForce * sensDuRebond * Time.fixedDeltaTime;
             }
             else if (collision.gameObject.layer == LayerMask.NameToLayer("Destructible")
                 || collision.gameObject.layer == LayerMask.NameToLayer("Indestructible")
@@ -150,13 +151,13 @@ public class Projectile : MonoBehaviour
             else if (collision.gameObject.layer == LayerMask.NameToLayer("Projectile"))
             {
                 Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, collision.GetContact(0).normal).normalized;
-                rb.velocity = currentVelocity.magnitude * bounceForce * sensDuRebond;
+                rb.velocity = currentVelocity.magnitude * bounceForce * sensDuRebond * Time.fixedDeltaTime;
             }
         }
         else
         {
             Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, collision.GetContact(0).normal).normalized;
-            rb.velocity = sensDuRebond * currentVelocity.magnitude * bounceForce;
+            rb.velocity = sensDuRebond * currentVelocity.magnitude * bounceForce * Time.fixedDeltaTime;
         }
     }
 
