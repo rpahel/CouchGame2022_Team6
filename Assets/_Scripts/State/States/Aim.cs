@@ -9,14 +9,12 @@ public class Aim : State
     {
     }
     
-    public override IEnumerator Start()
+    public override void Start()
     {
-        if (playerSystem.PlayerSystemManager.fullness < playerSystem.PlayerSystemManager.NecessaryFood) yield break;
+        if (playerSystem.PlayerSystemManager.fullness < playerSystem.PlayerSystemManager.NecessaryFood) return;
         
         //playerSystem.PlayerSystemManager.PlayerState = PLAYER_STATE.SHOOTING;
         playerSystem.PlayerSystemManager.AimPivot.gameObject.SetActive(true);
-
-        yield break;
     }
 
     public override void FixedUpdate()

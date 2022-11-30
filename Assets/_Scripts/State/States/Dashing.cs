@@ -8,14 +8,12 @@ public class Dashing : State
     {
     }
     
-    public override IEnumerator Start()
+    public override void Start()
     {
-        yield break;
     }
 
     public override void FixedUpdate()
     {
-        
     }
 
 

@@ -11,11 +11,10 @@ public class Shooting : State
     {
     }
     
-    public override IEnumerator Start()
+    public override void Start()
     {
         playerSystem.PlayerSystemManager.AimPivot.gameObject.SetActive(false);
         Shoot();
-        yield break;
     }
     
     private void Shoot()

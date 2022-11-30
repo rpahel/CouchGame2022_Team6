@@ -10,9 +10,9 @@ public abstract class State
         this.playerSystem = playerSystem;
     }
     
-    public virtual IEnumerator Start()
+    public virtual void Start()
     {
-        yield break;
+        return;
     }
 
     public virtual void Update()
@@ -55,6 +55,16 @@ public abstract class State
     }
     
     public virtual void OnTrigger(Collider2D col)
+    {
+        return;
+    }
+
+    public virtual void OnKnockback(Vector2 knockBackForce)
+    {
+        return;
+    }
+
+    public virtual void OnStun<T>(T damageDealer, int damage, Vector2 knockBackForce)
     {
         return;
     }
