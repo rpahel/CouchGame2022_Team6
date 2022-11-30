@@ -34,17 +34,31 @@ public class PlayerSystemManager : MonoBehaviour
     //==========================================================================
     [Header("PLAYER MOVEMENT Variables")]
     [SerializeField, Range(0, 40f)] private float maxSpeed;
-    [SerializeField, Range(.01f, .2f), Tooltip("Dur�e de freinage en seconde.")] private float stopDuration;
-    [SerializeField] private int jumpForce;
-    [SerializeField, Range(0, 100), Tooltip("Multiplicateur de la gravit�, 1 = gravit� de base d'Unity.")]  private float gravityScale;
-    [SerializeField, Range(0.01f, 1), Tooltip("Valeur � d�passer avec le joystick pour initier le d�placement.")]  private float deadZone;
+    [SerializeField, Range(.01f, .2f), Tooltip("Duree de freinage en seconde.")]
+    private float stopDuration;
+    [SerializeField, Tooltip("La vitesse initial du joueur quand il saute.")]
+    private int jumpForce;
+    [SerializeField, Tooltip("Combien de temps en seconde le saut doit il durer ?"), Range(0.1f, 5f)]
+    private float jumpDuration;
+    [SerializeField]
+    private AnimationCurve jumpCurve;
+    [SerializeField, Range(0, 100), Tooltip("Multiplicateur de la gravite, 1 = gravite de base d'Unity.")]
+    private float gravityScale;
+    [SerializeField, Range(0.01f, 1), Tooltip("Valeur a depasser avec le joystick pour initier le deplacement.")]
+    private float deadZone;
+    private Coroutine jumpCoroutine;
+
 
     //GETTER
     public float MaxSpeed => maxSpeed;
     public float StopDuration => stopDuration;
     public int JumpForce => jumpForce;
+    public float JumpDuration => jumpDuration;
+    public AnimationCurve JumpCurve => jumpCurve;
+    public Coroutine JumpCoroutine { set => jumpCoroutine = value; }
     public float GravityScale => gravityScale;
     public float DeadZone => deadZone;
+
 
     //==========================================================================
     [HideInInspector] public Coroutine brakingCoroutine;
@@ -54,6 +68,7 @@ public class PlayerSystemManager : MonoBehaviour
     public RaycastHit2D GroundCheck => groundCheck;
     [HideInInspector] public float castRadius;
     [HideInInspector] public float castDistance;
+    [HideInInspector] public bool isJumping;
 
     //==========================================================================
     [HideInInspector] public Vector2 inputVectorMove = Vector2.zero;
@@ -67,11 +82,11 @@ public class PlayerSystemManager : MonoBehaviour
     
     // PLAYER EAT VAR
     [Header("EAT Variables")]
-    [Range(0, 100), Tooltip("La quantit� de nourriture dans le corps.")] public int fullness;
-    [SerializeField, Tooltip("La dur�e d'attente entre deux inputs de manger."), Range(0f, 1f)] private float eatCooldown;
+    [Range(0, 100), Tooltip("La quantite de nourriture dans le corps.")] public int fullness;
+    [SerializeField, Tooltip("La duree d'attente entre deux inputs de manger."), Range(0f, 1f)] private float eatCooldown;
     [SerializeField, Tooltip("Le nombre de cubes mang�s par seconde."), Range(2, 10)] private int eatTickrate;
     [SerializeField, Tooltip("Distance max pour pouvoir manger le cube qu'on vise."), Range(1f, 5f)] private float eatDistance;
-    [SerializeField, Tooltip("Combien de nourriture tu re�ois en mangeant un cube. 100 = Un cube suffit � te remplir."), Range(0f, 100f)] private int filling;
+    [SerializeField, Tooltip("Combien de nourriture tu re�ois en mangeant un cube. 100 = Un cube suffit a te remplir."), Range(0f, 100f)] private int filling;
     [HideInInspector] public float cooldown;
     [HideInInspector] public float tickHoldEat;
     [HideInInspector] public bool holdEat;
@@ -158,6 +173,32 @@ public class PlayerSystemManager : MonoBehaviour
             Knockback => Color.red,
             _ => color
         };
+    }
+    #endregion
+
+    #region Jump
+
+    public void Jump()
+    {
+        if (jumpCoroutine != null)
+            return;
+
+        jumpCoroutine = StartCoroutine(cooldownManager.JumpCoroutine());
+    }
+
+    public bool CheckHeadBonk()
+    {
+        RaycastHit2D hit = Physics2D.CircleCast(
+            origin: PCollider.bounds.center,
+            radius: PCollider.bounds.extents.x - 0.01f,
+            direction: Vector2.up,
+            distance: (PCollider.bounds.extents.y - PCollider.bounds.extents.x) + 0.11f, // 0.10f + 0.01f
+            layerMask: LayerMask.GetMask("Player", "Destructible", "Indestructible", "Trap", "Limite")); ;
+
+        if (hit)
+            return true;
+        else
+            return false;
     }
     #endregion
 

@@ -439,11 +439,37 @@ MonoBehaviour:
   minSize: 1
   maxSpeed: 25
   stopDuration: 0.05
-  jumpForce: 28
+  jumpForce: 160
+  jumpDuration: 0.4
+  jumpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.005065918
+      inSlope: 72.196434
+      outSlope: 72.196434
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0
+      outWeight: 0.00826903
+    - serializedVersion: 3
+      time: 0.99102783
+      value: 1
+      inSlope: -0.004515623
+      outSlope: -0.004515623
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   gravityScale: 15
   deadZone: 0.25
   castRadius: 0
   castDistance: 0
+  isJumping: 0
   inputVectorMove: {x: 0, y: 0}
   inputVectorDirection: {x: 0, y: 0}
   holdJump: 0

@@ -64,7 +64,7 @@ public class PlayerSystem : StateMachine
         State?.OnEat();
     }
 
-    public void OnHoldSHoot()
+    public void OnHoldShoot()
     {
         State?.OnHoldShoot();
     }

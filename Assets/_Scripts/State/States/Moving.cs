@@ -98,6 +98,7 @@ public class Moving : State
 
         if (playerSystem.PlayerSystemManager.brakingCoroutine == null) return;
         
+        // TODO 
         // ERROR COROUTINE CONTINUE FAILURE WHEN STOPPING COROUTINE, WILL APPARENTLY BE FIXED BY UNITY
        // playerSystem.PlayerSystemManager.StopCoroutine(playerSystem.PlayerSystemManager.brakingCoroutine);
         playerSystem.PlayerSystemManager.brakingCoroutine = null;
@@ -114,7 +115,7 @@ public class Moving : State
             || testlayer == LayerMask.NameToLayer("Trap")
             || testlayer == LayerMask.NameToLayer("Limite")))
         {
-            Jump();
+            playerSystem.PlayerSystemManager.Jump();
         }
         else
         {
@@ -140,11 +141,6 @@ public class Moving : State
             playerSystem.PlayerSystemManager.Rb2D.velocity = new Vector2(-playerSystem.PlayerSystemManager.Rb2D.velocity.x, playerSystem.PlayerSystemManager.Rb2D.velocity.y);
 
         playerSystem.PlayerSystemManager.Rb2D.velocity += Time.fixedDeltaTime * 100f * new Vector2(playerSystem.PlayerSystemManager.inputVectorMove.x, 0);
-    }
-
-    private void Jump()
-    {
-        playerSystem.PlayerSystemManager.Rb2D.velocity = new Vector2(playerSystem.PlayerSystemManager.Rb2D.velocity.x, playerSystem.PlayerSystemManager.JumpForce * Time.fixedDeltaTime * 100f);
     }
     
     /// <summary>

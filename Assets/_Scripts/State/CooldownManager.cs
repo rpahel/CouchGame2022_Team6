@@ -1,8 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Data;
 using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 
 public class CooldownManager : MonoBehaviour
@@ -61,11 +59,37 @@ public class CooldownManager : MonoBehaviour
         }
     }
 
-    public IEnumerator ActiveInputDelay(float duration)
+    public IEnumerator ActivateInputDelay(float duration)
     {
         playerSystem.PlayerInputsState.SetEnableInput(false);
         yield return new WaitForSeconds(duration);
         playerSystem.PlayerInputsState.SetEnableInput(true);
         playerSystem.SetState(new Moving(playerSystem));
+    }
+
+    public IEnumerator JumpCoroutine()
+    {
+        playerSystemManager.isJumping = true;
+        float t = 0;
+        playerSystemManager.Rb2D.gravityScale = 0;
+        while (t < 1)
+        {
+            if (playerSystemManager.CheckHeadBonk())
+            {
+                break;
+            }
+
+            if (playerSystem.PlayerState is not Moving && playerSystem.PlayerState is not Aim)
+            {
+                break;
+            }
+
+            playerSystemManager.Rb2D.velocity = new Vector2(playerSystemManager.Rb2D.velocity.x, Mathf.LerpUnclamped(playerSystemManager.JumpForce, 0, playerSystemManager.JumpCurve.Evaluate(t)));
+            t += Time.fixedDeltaTime / playerSystemManager.JumpDuration;
+            yield return new WaitForFixedUpdate();
+        }
+        playerSystemManager.isJumping = false;
+        playerSystemManager.JumpCoroutine = null;
+        yield break;
     }
 }
