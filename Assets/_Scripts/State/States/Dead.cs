@@ -9,11 +9,10 @@ public class Dead : State
     private float waitTime;
     private float timeToWait;
 
-    public override IEnumerator Start()
+    public override void Start()
     {
         timeToWait = GameManager.Instance.RespawnTime;
         Die();
-        yield break;
     }
 
     public override void FixedUpdate()

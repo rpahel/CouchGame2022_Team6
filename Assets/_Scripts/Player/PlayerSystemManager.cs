@@ -4,6 +4,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 
 
@@ -13,7 +14,7 @@ public class PlayerSystemManager : MonoBehaviour
     //============================
     private Rigidbody2D rb2D;
     private Collider2D coll;
-    private PlayerInputs pInputs;
+
     private PlayerSystem playerSystem;
     private CooldownManager cooldownManager;
 
@@ -21,12 +22,12 @@ public class PlayerSystemManager : MonoBehaviour
     // Getter
     public Rigidbody2D Rb2D => rb2D; 
     public Collider2D PCollider => coll;
-    public PlayerInputs PInputs => pInputs;
     #endregion
 
     #region Variables
     //============================
     [HideInInspector] public Color color;
+    [HideInInspector] public PlayerInput playerInput;
 
     // PLAYER MOVEMENT Variables
     public Vector2 LookDirection { get; set; }
@@ -124,7 +125,6 @@ public class PlayerSystemManager : MonoBehaviour
     {
         rb2D = GetComponent<Rigidbody2D>();
         coll = GetComponent<Collider2D>();
-        pInputs = GetComponent<PlayerInputs>();
         playerSystem = GetComponent<PlayerSystem>();
         cooldownManager = GetComponent<CooldownManager>();
     }
@@ -157,6 +157,8 @@ public class PlayerSystemManager : MonoBehaviour
             PLAYER_STATE.SHOOTING => Color.blue,
             _ => Color.white
         };*/
+
+
     }
 
     public void SetStopDuration(float amount)
@@ -185,6 +187,12 @@ public class PlayerSystemManager : MonoBehaviour
 
     public void UpdatePlayerScale()
     {
+        if (fullness <= 0 && playerSystem.PlayerState is not Dead)
+        {
+            playerSystem.SetState(new Dead(playerSystem));
+            return;
+        }
+
         transform.localScale = Vector3.one * Mathf.Lerp(minSize, maxSize, fullness * .01f);
     }
 
