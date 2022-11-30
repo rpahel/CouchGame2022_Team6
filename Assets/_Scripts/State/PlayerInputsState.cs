@@ -66,14 +66,17 @@ public class PlayerInputsState : MonoBehaviour
 
         if (_playerSystemManager.fullness < _playerSystemManager.NecessaryFood) return;
 
-        if (input.started)
+        if (input.performed)
         {
-            _playerSystem.OnHoldSHoot();
+            _playerSystem.OnHoldShoot();
         }
 
         if (input.canceled)
         {
-            _playerSystem.OnShoot();
+            if (_playerSystem.PlayerState is Moving)
+                _playerSystem.PlayerSystemManager.Shoot();
+            else if (_playerSystem.PlayerState is Aim)
+                _playerSystem.OnShoot();
         }
     }
     public void SetEnableInput(bool result)

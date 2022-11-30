@@ -19,7 +19,7 @@ public class Stun : State
         playerSystem.PlayerSystemManager.fullness = Mathf.Clamp(playerSystem.PlayerSystemManager.fullness - damage, 0, 100);
         playerSystem.PlayerSystemManager.UpdatePlayerScale();
 
-        playerSystem.CooldownManager.StartCoroutine(playerSystem.CooldownManager.ActiveInputDelay(playerSystem.PlayerSystemManager.CooldownShoot));
+        playerSystem.CooldownManager.StartCoroutine(playerSystem.CooldownManager.ActivateInputDelay(playerSystem.PlayerSystemManager.CooldownShoot));
     }
 
     public override void FixedUpdate()

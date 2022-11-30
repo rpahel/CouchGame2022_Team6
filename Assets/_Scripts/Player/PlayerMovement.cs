@@ -225,7 +225,6 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator Jump()
     {
-        //PManager.Rb2D.velocity = new Vector2(PManager.Rb2D.velocity.x, jumpForce * Time.fixedDeltaTime * 100f);
         isJumping = true;
         float t = 0;
         PManager.Rb2D.gravityScale = 0;
