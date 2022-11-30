@@ -11,29 +11,21 @@ public class Aim : State
     
     public override void Start()
     {
-        if (playerSystem.PlayerSystemManager.fullness < playerSystem.PlayerSystemManager.NecessaryFood) return;
-        
-        //playerSystem.PlayerSystemManager.PlayerState = PLAYER_STATE.SHOOTING;
         playerSystem.PlayerSystemManager.AimPivot.gameObject.SetActive(true);
     }
 
     public override void FixedUpdate()
     {
         playerSystem.PlayerSystemManager.AimPivot.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, playerSystem.PlayerSystemManager.inputVectorDirection != Vector2.zero ? playerSystem.PlayerSystemManager.inputVectorDirection : playerSystem.PlayerSystemManager.LookDirection) - 90f);
-        playerSystem.CooldownManager.StartCoroutine(playerSystem.CooldownManager.Braking());
+        playerSystem.CooldownManager.StartCoroutine(playerSystem.CooldownManager.Braking()); // TODO : Attention au probleme des coroutines
     }
-    
 
     public override void OnShoot()
     {
-        playerSystem.SetState(new Shooting(playerSystem));
+        playerSystem.PlayerSystemManager.AimPivot.gameObject.SetActive(false);
+        playerSystem.PlayerSystemManager.Shoot();
+        playerSystem.SetState(new Moving(playerSystem));
     }
-
-    public override void OnCollision(Collision2D col)
-    {
-        Debug.Log("collision");
-    }
-
 }
 
 

@@ -17,13 +17,9 @@ public class CooldownManager : MonoBehaviour
     
     public IEnumerator CooldownShoot()
     {
-        while (playerSystemManager.cdTimer > 0)
-        {
-            playerSystemManager.cdTimer -= Time.fixedDeltaTime;
-            yield return new WaitForFixedUpdate();
-        }
-
-        playerSystemManager.cdTimer = 0;
+        playerSystemManager.canShoot = false;
+        yield return new WaitForSeconds(playerSystemManager.CooldownShoot);
+        playerSystemManager.canShoot = true;
     }
     
     public IEnumerator Braking()

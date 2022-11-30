@@ -64,6 +64,8 @@ public class PlayerInputsState : MonoBehaviour
     {
         if (!InputIsEnabled) return;
 
+        if (_playerSystemManager.fullness < _playerSystemManager.NecessaryFood) return;
+
         if (input.started)
         {
             _playerSystem.OnHoldSHoot();

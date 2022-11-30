@@ -87,7 +87,8 @@ public class PlayerSystemManager : MonoBehaviour
     private int necessaryFood;
     [SerializeField, Range(0, 2), Tooltip("Laps de temps entre chaque tir.")]
     private float cooldownShoot;
-    [HideInInspector] public float cdTimer;
+    //[HideInInspector] public float cdTimer;
+    [HideInInspector] public bool canShoot = true;
     [SerializeField, Tooltip("Le gameObject AimPivot de ce Prefab.")]
     private Transform aimPivot;
 
@@ -118,6 +119,7 @@ public class PlayerSystemManager : MonoBehaviour
     //public float CooldownStun => cooldownStun;
     #endregion
 
+    #region UNITY_FUNCTIONS
     private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
@@ -157,12 +159,9 @@ public class PlayerSystemManager : MonoBehaviour
             _ => color
         };
     }
+    #endregion
 
-    public void SetStopDuration(float amount)
-    {
-        stopDuration = amount;
-    }
-
+    #region Damage
     /// <summary>
     /// R�duit la jauge de bouffe et knockback le joueur.
     /// </summary>
@@ -187,7 +186,115 @@ public class PlayerSystemManager : MonoBehaviour
         rb2D.velocity += Time.deltaTime * 100f * knockBackForce;
         playerSystem.SetKnockback(knockBackForce);
     }
+    #endregion
 
+    #region Shoot
+    public void Shoot()
+    {
+        var aimDirection = playerSystem.PlayerSystemManager.inputVectorDirection;
+
+        if (!playerSystem.PlayerSystemManager.canShoot)
+        {
+            Debug.Log($"Attendez le cooldown du tir");
+            return;
+        }
+
+        if (playerSystem.PlayerSystemManager.fullness < playerSystem.PlayerSystemManager.NecessaryFood)
+        {
+            Debug.Log("Pas assez de nourriture pour shoot.");
+            return;
+        }
+
+        if (aimDirection == Vector2.zero)
+            aimDirection = playerSystem.PlayerSystemManager.LookDirection;
+
+        if (!IsThereEnoughSpace(aimDirection))
+        {
+            Debug.Log("Not enough space to spawn a cube.");
+            return;
+        }
+
+        ShootProjectile(aimDirection);
+
+        playerSystem.PlayerSystemManager.fullness = Mathf.Clamp(playerSystem.PlayerSystemManager.fullness - playerSystem.PlayerSystemManager.NecessaryFood, 0, 100);
+        playerSystem.PlayerSystemManager.UpdatePlayerScale();
+
+        playerSystem.CooldownManager.StartCoroutine(playerSystem.CooldownManager.CooldownShoot());
+
+        playerSystem.SetState(new Moving(playerSystem));
+    }
+
+    private void ShootProjectile(Vector2 aimDirection)
+    {
+        Projectile projectile = GameManager.Instance.GetAvailableProjectile();
+        projectile.owner = playerSystem.PlayerSystemManager;
+        projectile.color = playerSystem.PlayerSystemManager.color;
+        projectile.transform.position = playerSystem.transform.position;
+        projectile.gravity = playerSystem.PlayerSystemManager.Gravity;
+        projectile.bounceForce = playerSystem.PlayerSystemManager.BounceForce;
+        projectile.percentageDealt = playerSystem.PlayerSystemManager.InflictedFoodDamage;
+        projectile.knockBackForce = playerSystem.PlayerSystemManager.KnockBackForce;
+        projectile.ownerVelocityAtLaunch = playerSystem.PlayerSystemManager.Rb2D.velocity;
+
+        projectile.gameObject.SetActive(true);
+        projectile.Shoot(aimDirection, playerSystem.PlayerSystemManager.InitialSpeed);
+    }
+
+    /// <summary>
+    /// Check si y'a assez d'espace en la direction du tir pour faire pop un cube
+    /// </summary>
+    private bool IsThereEnoughSpace(Vector2 aimDirection)
+    {
+        Vector2 rayOrigin = (Vector2)playerSystem.transform.position + (Vector2)(Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, aimDirection) - 90f) * (.5f * Vector2.right));
+        RaycastHit2D hit1 = Physics2D.Raycast(rayOrigin, aimDirection, playerSystem.PlayerSystemManager.raycastRange);
+
+#if UNITY_EDITOR
+        if (!hit1)
+            Debug.DrawRay(rayOrigin, aimDirection * playerSystem.PlayerSystemManager.raycastRange, Color.red, 1f);
+        else
+            Debug.DrawLine(rayOrigin, hit1.point, Color.red, 1f);
+#endif
+
+        rayOrigin = (Vector2)playerSystem.transform.position - (Vector2)(Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, aimDirection) - 90f) * (.5f * Vector2.right));
+        RaycastHit2D hit2 = Physics2D.Raycast(rayOrigin, aimDirection, playerSystem.PlayerSystemManager.raycastRange);
+
+#if UNITY_EDITOR
+        if (!hit2)
+            Debug.DrawRay(rayOrigin, aimDirection * playerSystem.PlayerSystemManager.raycastRange, Color.red, 1f);
+        else
+            Debug.DrawLine(rayOrigin, hit2.point, Color.red, 1f);
+#endif
+
+        RaycastHit2D closestHit;
+
+        if (hit1 && hit2)
+        {
+            closestHit = hit1.distance < hit2.distance ? hit1 : hit2;
+        }
+
+        else if (hit1)
+            closestHit = hit1;
+        else
+            closestHit = hit2;
+
+        if (!closestHit) return true;
+
+        if (closestHit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+            return true;
+
+        RaycastHit2D[] hits = CustomPhysics.SquareCast((Vector2)closestHit.transform.position + GameManager.Instance.LevelGenerator.Scale * closestHit.normal, GameManager.Instance.LevelGenerator.Scale * .9f);
+
+        foreach (RaycastHit2D hit2D in hits)
+        {
+            if (hit2D)
+                return false;
+        }
+
+        return true;
+    }
+    #endregion
+
+    #region Other
     public void UpdatePlayerScale()
     {
         transform.localScale = Vector3.one * Mathf.Lerp(minSize, maxSize, fullness * .01f);
@@ -199,12 +306,18 @@ public class PlayerSystemManager : MonoBehaviour
     public void MoveOverTo(Vector2 endPosition)
     {
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         {
             CustomDebugs.DrawWireSphere(endPosition, .5f, Color.magenta, 5f, 1);
         }
-        #endif
+#endif
 
         cooldownManager.StartCoroutine(cooldownManager.MoverOverAnimation(endPosition));
     }
+
+    public void SetStopDuration(float amount)
+    {
+        stopDuration = amount;
+    }
+    #endregion
 }
