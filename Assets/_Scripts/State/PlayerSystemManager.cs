@@ -24,7 +24,7 @@ public class PlayerSystemManager : MonoBehaviour
     //============================
     [HideInInspector] public Color color;
     [HideInInspector] public PlayerInput playerInput;
-    public SpriteRenderer insideSprite;
+    public SpriteRenderer insideSprite; // A supprimer quand on aura les assets des GA
 
     // PLAYER MOVEMENT Variables
     [HideInInspector] public Vector2 LookDirection { get; set; }
@@ -107,7 +107,7 @@ public class PlayerSystemManager : MonoBehaviour
 
     public float InitialSpeed => initialSpeed;
     public float Gravity => gravity;
-    public float BounceForce => gravity;
+    public float BounceForce => bounceForce;
     public int InflictedFoodDamage => inflictedFoodDamage;
     public float KnockBackForce => knockBackForce;
 
