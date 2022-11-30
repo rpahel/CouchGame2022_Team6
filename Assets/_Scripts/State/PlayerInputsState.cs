@@ -7,9 +7,10 @@ public class PlayerInputsState : MonoBehaviour
 {
     #region Autres Scripts
     //==========================================================================
-    
+
     private PlayerSystemManager _playerSystemManager;
     private PlayerSystem _playerSystem;
+    public bool InputIsEnabled { get; private set;}
     #endregion
 
     //#region Customs_Functions
@@ -18,13 +19,14 @@ public class PlayerInputsState : MonoBehaviour
     {
         _playerSystem = GetComponent<PlayerSystem>();
         _playerSystemManager = GetComponent<PlayerSystemManager>();
+        InputIsEnabled = true;
     }
 
     public void OnMove(InputAction.CallbackContext input)
     {
         _playerSystem.PlayerSystemManager.inputVectorDirection = input.ReadValue<Vector2>().normalized;
         
-        if (_playerSystem.PlayerState is not Moving)
+        if (_playerSystem.PlayerState is not Moving || !InputIsEnabled)
             return;
 
         _playerSystem.OnMove();
@@ -32,6 +34,8 @@ public class PlayerInputsState : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext input)
     {
+        if (!InputIsEnabled) return;
+
         if (input.started)
             _playerSystem.OnJump();
 
@@ -44,6 +48,8 @@ public class PlayerInputsState : MonoBehaviour
 
     public void OnEat(InputAction.CallbackContext input)
     {
+        if (!InputIsEnabled) return;
+
         if (input.started)
             _playerSystem.OnEat(); //Was Aim Direction
 
@@ -56,6 +62,8 @@ public class PlayerInputsState : MonoBehaviour
 
     public void OnShoot(InputAction.CallbackContext input)
     {
+        if (!InputIsEnabled) return;
+
         if (input.started)
         {
             _playerSystem.OnHoldSHoot();
@@ -66,7 +74,10 @@ public class PlayerInputsState : MonoBehaviour
             _playerSystem.OnShoot();
         }
     }
-    
+    public void SetEnableInput(bool result)
+    {
+        InputIsEnabled = result;
+    }
 
     /*public void Special(InputAction.CallbackContext input)
     {
@@ -81,5 +92,7 @@ public class PlayerInputsState : MonoBehaviour
             PManager.PSpecial.Charge(false);
         }
     }
+
+   
     #endregion*/
 }

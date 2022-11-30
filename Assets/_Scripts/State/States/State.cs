@@ -58,5 +58,15 @@ public abstract class State
     {
         return;
     }
+
+    public virtual void OnKnockback(Vector2 knockBackForce)
+    {
+        return;
+    }
+
+    public virtual void OnStun<T>(T damageDealer, int damage, Vector2 knockBackForce)
+    {
+        return;
+    }
 }
 

@@ -75,7 +75,7 @@ public class Projectile : MonoBehaviour
             {
                 Vector2 sensDuKnockBack = (collider.transform.position - transform.position).x > 0 ? new Vector2(-1, 1f) : new Vector2(1, 1f);
                 sensDuKnockBack.Normalize();
-                collider.gameObject.GetComponent<PlayerManager>().OnDamage(owner, percentageDealt, sensDuKnockBack * knockBackForce);
+                collider.gameObject.GetComponent<PlayerSystemManager>().OnDamage(owner, percentageDealt, sensDuKnockBack * knockBackForce);
                 rb.velocity = bounceForce * currentVelocity.magnitude * new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y);
                 hasHurt = true;
             }
@@ -127,7 +127,7 @@ public class Projectile : MonoBehaviour
             {
                 Vector2 sensDuKnockBack = collision.GetContact(0).normal.x > 0 ? new Vector2(-1, 1f) : new Vector2(1, 1f);
                 sensDuKnockBack.Normalize();
-                collision.gameObject.GetComponent<PlayerManager>().OnDamage(owner, percentageDealt, sensDuKnockBack * knockBackForce);
+                collision.gameObject.GetComponent<PlayerSystemManager>().OnDamage(owner, percentageDealt, sensDuKnockBack * knockBackForce);
                 rb.velocity = bounceForce * currentVelocity.magnitude * new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y);
                 hasHurt = true;
             }

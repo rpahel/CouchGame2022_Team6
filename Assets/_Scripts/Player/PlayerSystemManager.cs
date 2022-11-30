@@ -14,6 +14,8 @@ public class PlayerSystemManager : MonoBehaviour
     private Rigidbody2D rb2D;
     private Collider2D coll;
     private PlayerInputs pInputs;
+    private PlayerSystem playerSystem;
+    private CooldownManager cooldownManager;
 
 
     // Getter
@@ -95,7 +97,7 @@ public class PlayerSystemManager : MonoBehaviour
     public float CooldownShoot => cooldownShoot;
     public Transform AimPivot => aimPivot;
     //============================
-    [Header("Projectile")]
+    [Header("PROJECTILE Variables")]
     [SerializeField] private float initialSpeed;
     [SerializeField] private float gravity;
     [SerializeField] private float bounceForce;
@@ -112,6 +114,10 @@ public class PlayerSystemManager : MonoBehaviour
     
     //============================
     public float raycastRange; // Utilisé pour voir si y'a assez de place pour tirer
+
+    [Header("STUN Variables")]
+    [SerializeField] private float cooldownStun;
+    public float CooldownStun => cooldownStun;
     #endregion
 
     private void Awake()
@@ -119,6 +125,8 @@ public class PlayerSystemManager : MonoBehaviour
         rb2D = GetComponent<Rigidbody2D>();
         coll = GetComponent<Collider2D>();
         pInputs = GetComponent<PlayerInputs>();
+        playerSystem = GetComponent<PlayerSystem>();
+        cooldownManager = GetComponent<CooldownManager>();
     }
 
     private void Update()
@@ -161,16 +169,19 @@ public class PlayerSystemManager : MonoBehaviour
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="damageDealer">L'objet responsable des d�gats (un joueur, un pi�ge, etc).</param>
-    /// <param name="damage">La quantit� de bouffe � retirer.</param>
-    /*public void OnDamage<T>(T damageDealer, int damage, Vector2 knockBackForce)
+    /// <param name="damage">Lra quantit� de bouffe � retirer.</param>
+    public void OnDamage<T>(T damageDeale, int damage, Vector2 knockBackForce)
     {
-        PEat.fullness = Mathf.Clamp(PEat.fullness - damage, 0, 100);
+        if (playerSystem.PlayerState is Dashing) return;
+
+        fullness = Mathf.Clamp(fullness - damage, 0, 100);
         UpdatePlayerScale();
+        //Stats
 
         //rb2D.AddForce(knockBackForce, ForceMode2D.Impulse);
         rb2D.velocity += Time.deltaTime * 100f * knockBackForce;
-        PlayerState = PLAYER_STATE.KNOCKBACKED;
-    }*/
+        playerSystem.SetKnockback(knockBackForce);
+    }
 
     public void UpdatePlayerScale()
     {
@@ -189,27 +200,6 @@ public class PlayerSystemManager : MonoBehaviour
         }
         #endif
 
-        //StartCoroutine(MoverOverAnimation(endPosition));
+        cooldownManager.StartCoroutine(cooldownManager.MoverOverAnimation(endPosition));
     }
-
-    /*IEnumerator MoverOverAnimation(Vector2 endPosition)
-    {
-        Vector2 iniPos = transform.position;
-        float t = 0;
-        while (t < 1)
-        {
-            if (PlayerState == PLAYER_STATE.KNOCKBACKED)
-                break;
-
-            rb2D.velocity = Vector2.zero;
-            transform.position = DOVirtual.EasedValue(iniPos, endPosition, t, Ease.OutBack, 2f);
-            t += Time.deltaTime * 4f;
-            yield return null;
-        }
-
-        if (PlayerState != PLAYER_STATE.KNOCKBACKED)
-        {
-            transform.position = endPosition;
-        }
-    }*/
 }

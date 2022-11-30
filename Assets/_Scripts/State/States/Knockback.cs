@@ -7,19 +7,21 @@ public class Knockback : State
     public Knockback(PlayerSystem playerSystem) : base(playerSystem)
     {
     }
-    
-    public override void Start()
+
+    /// <summary>
+    /// R?duit la jauge de bouffe et knockback le joueur.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="damageDealer">L'objet responsable des d?gats (un joueur, un pi?ge, etc).</param>
+    /// <param name="damage">Lra quantit? de bouffe ? retirer.</param>
+    public override void OnKnockback(Vector2 knockBackForce)
     {
+        //playerSystem.PlayerSystemManager.Rb2D.AddForce(knockBackForce, ForceMode2D.Impulse);
+        playerSystem.PlayerSystemManager.Rb2D.velocity += Time.deltaTime * 100f * knockBackForce;
     }
-
-    public override void FixedUpdate()
-    {
-    }
-
-
 
     public override void OnCollision(Collision2D col)
     {
-        Debug.Log("collision");
+        playerSystem.SetState(new Moving(playerSystem));
     }
 }

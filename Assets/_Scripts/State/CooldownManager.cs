@@ -43,4 +43,33 @@ public class CooldownManager : MonoBehaviour
         
         playerSystem.PlayerSystemManager.brakingCoroutine = null;
     }
+
+    public IEnumerator MoverOverAnimation(Vector2 endPosition)
+    {
+        Vector2 iniPos = transform.position;
+        float t = 0;
+        while (t < 1)
+        {
+            if (playerSystem.PlayerState is Knockback)
+                break;
+
+            playerSystem.PlayerSystemManager.Rb2D.velocity = Vector2.zero;
+            transform.position = DOVirtual.EasedValue(iniPos, endPosition, t, Ease.OutBack, 2f);
+            t += Time.deltaTime * 4f;
+            yield return null;
+        }
+
+        if (playerSystem.PlayerState is not Knockback)
+        {
+            transform.position = endPosition;
+        }
+    }
+
+    public IEnumerator ActiveInputDelay(float duration)
+    {
+        playerSystem.PlayerInputsState.SetEnableInput(false);
+        yield return new WaitForSeconds(duration);
+        playerSystem.PlayerInputsState.SetEnableInput(true);
+        playerSystem.SetState(new Moving(playerSystem));
+    }
 }
