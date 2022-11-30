@@ -1,15 +1,13 @@
-using System;
-using Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInputsState : MonoBehaviour
+public class PlayerInputManager : MonoBehaviour
 {
     #region Autres Scripts
     //==========================================================================
 
-    private PlayerSystemManager _playerSystemManager;
-    private PlayerSystem _playerSystem;
+    private PlayerManager _playerSystemManager;
+    private PlayerStateSystem _playerSystem;
     public bool InputIsEnabled { get; private set;}
     #endregion
 
@@ -17,8 +15,8 @@ public class PlayerInputsState : MonoBehaviour
     //==========================================================================
     private void Awake()
     {
-        _playerSystem = GetComponent<PlayerSystem>();
-        _playerSystemManager = GetComponent<PlayerSystemManager>();
+        _playerSystem = GetComponent<PlayerStateSystem>();
+        _playerSystemManager = GetComponent<PlayerManager>();
         InputIsEnabled = true;
     }
 
@@ -40,10 +38,10 @@ public class PlayerInputsState : MonoBehaviour
             _playerSystem.OnJump();
 
         else if (input.performed)
-            _playerSystemManager.HoldJump = true;
+            _playerSystemManager.holdJump = true;
 
         else if (input.canceled)
-            _playerSystemManager.HoldJump = false;
+            _playerSystemManager.holdJump = false;
     }
 
     public void OnEat(InputAction.CallbackContext input)
@@ -51,13 +49,13 @@ public class PlayerInputsState : MonoBehaviour
         if (!InputIsEnabled) return;
 
         if (input.started)
-            _playerSystem.OnEat(); //Was Aim Direction
+            _playerSystemManager.OnEat();
 
         else if (input.performed)
-            _playerSystemManager.HoldEat = true;
+            _playerSystemManager.holdEat = true;
 
         else if (input.canceled)
-            _playerSystemManager.HoldEat = false;
+            _playerSystemManager.holdEat = false;
     }
 
     public void OnShoot(InputAction.CallbackContext input)

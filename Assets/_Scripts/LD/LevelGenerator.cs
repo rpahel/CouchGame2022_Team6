@@ -1,7 +1,7 @@
-using UnityEngine;
 using Data;
-using System.Collections;
 using DG.Tweening;
+using System.Collections;
+using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -281,7 +281,7 @@ public class LevelGenerator : MonoBehaviour
                 Cube_Edible tempCube;
                 if (cubesArray[j, i] && cubesArray[j, i].TryGetComponent(out tempCube))
                 {
-                    tempCube.InitCubes(j, i, image.width, image.height);
+                    tempCube.InitCubes(image.width, image.height);
                 }
             }
         }

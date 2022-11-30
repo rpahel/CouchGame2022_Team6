@@ -27,7 +27,7 @@ public class Cube_Edible : Cube
     /// <summary>
     /// Regarde les cubes qu'il y a autour et les ajoute à la liste cubesAutour
     /// </summary>
-    public void InitCubes(int width, int height, int maxWidth, int maxHeight)
+    public void InitCubes(int maxWidth, int maxHeight)
     {
         Vector2Int dir = Vector2Int.zero;
         Vector2Int targetPos;

@@ -1,11 +1,7 @@
-using System.Collections;
 using UnityEngine;
-using System;
-using Data;
-using DG.Tweening;
 public class Aim : State 
 {
-    public Aim(PlayerSystem playerSystem) : base(playerSystem)
+    public Aim(PlayerStateSystem playerSystem) : base(playerSystem)
     {
     }
     
@@ -27,5 +23,3 @@ public class Aim : State
         playerSystem.SetState(new Moving(playerSystem));
     }
 }
-
-

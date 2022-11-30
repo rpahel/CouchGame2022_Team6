@@ -215,12 +215,12 @@ GameObject:
   - component: {fileID: 3784764394035868595}
   - component: {fileID: 591372657606866412}
   - component: {fileID: 3784764394035868592}
+  - component: {fileID: -5957723479509861639}
   - component: {fileID: 9041389100960335044}
   - component: {fileID: 8237785980924456824}
-  - component: {fileID: -5957723479509861639}
   - component: {fileID: -5276769057875731088}
   m_Layer: 3
-  m_Name: Player State
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -408,6 +408,18 @@ MonoBehaviour:
   m_DefaultActionMap: Game
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &-5957723479509861639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3784764394035868596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8edc31067f195d043baa81da19fae901, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &9041389100960335044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,13 +447,13 @@ MonoBehaviour:
   color: {r: 0, g: 0, b: 0, a: 0}
   playerInput: {fileID: 0}
   insideSprite: {fileID: 1940364374433954416}
-  maxSize: 2.857
-  minSize: 1
-  maxSpeed: 25
-  stopDuration: 0.05
-  jumpForce: 160
-  jumpDuration: 0.4
-  jumpCurve:
+  _maxSize: 2.857
+  _minSize: 1
+  _maxSpeed: 25
+  _stopDuration: 0.05
+  _jumpForce: 160
+  _jumpDuration: 0.4
+  _jumpCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -465,44 +477,29 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  gravityScale: 15
-  deadZone: 0.25
+  _gravityScale: 15
+  _deadZone: 0.25
   castRadius: 0
   castDistance: 0
   isJumping: 0
-  inputVectorMove: {x: 0, y: 0}
   inputVectorDirection: {x: 0, y: 0}
+  inputVectorMove: {x: 0, y: 0}
   holdJump: 0
   fullness: 50
-  eatCooldown: 0
-  eatTickrate: 10
-  eatDistance: 5
-  filling: 0
-  cooldown: 0
+  _eatTickrate: 10
+  _eatDistance: 5
+  _filling: 0
   tickHoldEat: 0
   holdEat: 0
-  necessaryFood: 0
-  cooldownShoot: 0
+  _necessaryFood: 0
+  _cooldownShoot: 0.2
   canShoot: 1
-  aimPivot: {fileID: 8009965234519673580}
-  initialSpeed: 50
-  gravity: 5
-  bounceForce: 1
-  inflictedFoodDamage: 20
-  knockBackForce: 35
-  raycastRange: 0
---- !u!114 &-5957723479509861639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3784764394035868596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8edc31067f195d043baa81da19fae901, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  _aimPivot: {fileID: 8009965234519673580}
+  _initialSpeed: 45
+  _gravity: 2
+  _bounceForce: 30
+  _inflictedFoodDamage: 20
+  _knockBackForce: 35
 --- !u!114 &-5276769057875731088
 MonoBehaviour:
   m_ObjectHideFlags: 0

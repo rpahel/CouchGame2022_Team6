@@ -1,16 +1,15 @@
-using Data;
 using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 
 public class CooldownManager : MonoBehaviour
 {
-    private PlayerSystemManager playerSystemManager;
-    private PlayerSystem playerSystem;
+    private PlayerManager playerSystemManager;
+    private PlayerStateSystem playerSystem;
     private void Awake()
     {
-        playerSystemManager = GetComponent<PlayerSystemManager>();
-        playerSystem = GetComponent<PlayerSystem>();
+        playerSystemManager = GetComponent<PlayerManager>();
+        playerSystem = GetComponent<PlayerStateSystem>();
     }
     
     public IEnumerator CooldownShoot()
@@ -89,6 +88,7 @@ public class CooldownManager : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         playerSystemManager.isJumping = false;
+        playerSystemManager.Rb2D.gravityScale = playerSystemManager.GravityScale;
         playerSystemManager.JumpCoroutine = null;
         yield break;
     }

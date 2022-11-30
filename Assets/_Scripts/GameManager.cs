@@ -1,14 +1,14 @@
+using Data;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Data;
 
 public class GameManager : MonoBehaviour
 {
     #region Autres_Scripts
     //============================
-    private PlayerInputManager pInputManager;
+    private UnityEngine.InputSystem.PlayerInputManager pInputManager;
     [SerializeField] private CameraManager cManager;
     [SerializeField] private LevelGenerator levelGenerator;
     public LevelGenerator LevelGenerator => levelGenerator;
@@ -107,8 +107,8 @@ public class GameManager : MonoBehaviour
 
         RespawnPlayer(pi);
         playerTransforms[pi.playerIndex] = pi.transform;
-        pi.GetComponent<PlayerSystemManager>().color = playerColors[pi.playerIndex];
-        pi.GetComponent<PlayerSystemManager>().playerInput = pi;
+        pi.GetComponent<PlayerManager>().color = playerColors[pi.playerIndex];
+        pi.GetComponent<PlayerManager>().playerInput = pi;
     }
 
     public void RespawnPlayer(PlayerInput pi)

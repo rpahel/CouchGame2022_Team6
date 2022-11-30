@@ -1,11 +1,10 @@
-using System.Collections;
 using UnityEngine;
 
 public abstract class State
 {
-    protected readonly PlayerSystem playerSystem;
+    protected readonly PlayerStateSystem playerSystem;
 
-    protected State(PlayerSystem playerSystem)
+    protected State(PlayerStateSystem playerSystem)
     {
         this.playerSystem = playerSystem;
     }
@@ -69,4 +68,3 @@ public abstract class State
         return;
     }
 }
-

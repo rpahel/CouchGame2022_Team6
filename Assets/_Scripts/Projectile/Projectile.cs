@@ -1,8 +1,7 @@
+using CustomMaths;
 using System;
 using System.Collections;
 using UnityEngine;
-using CustomMaths;
-using UnityEditor.Rendering;
 
 public class Projectile : MonoBehaviour
 {
@@ -13,7 +12,7 @@ public class Projectile : MonoBehaviour
     private float age;
 
     //=============================================
-    [HideInInspector] public PlayerSystemManager owner;
+    [HideInInspector] public PlayerManager owner;
     private Rigidbody2D rb;
     private Vector2 currentVelocity;
     private Collider2D col;
@@ -76,7 +75,7 @@ public class Projectile : MonoBehaviour
             {
                 Vector2 sensDuKnockBack = (collider.transform.position - transform.position).x > 0 ? new Vector2(-1, 1f) : new Vector2(1, 1f);
                 sensDuKnockBack.Normalize();
-                collider.gameObject.GetComponent<PlayerSystemManager>().OnDamage(owner, percentageDealt, sensDuKnockBack * knockBackForce);
+                collider.gameObject.GetComponent<PlayerManager>().OnDamage(owner, percentageDealt, sensDuKnockBack * knockBackForce);
                 rb.velocity = bounceForce * currentVelocity.magnitude * new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y) * Time.fixedDeltaTime;
                 hasHurt = true;
             }
@@ -128,7 +127,7 @@ public class Projectile : MonoBehaviour
             {
                 Vector2 sensDuKnockBack = collision.GetContact(0).normal.x > 0 ? new Vector2(-1, 1f) : new Vector2(1, 1f);
                 sensDuKnockBack.Normalize();
-                collision.gameObject.GetComponent<PlayerSystemManager>().OnDamage(owner, percentageDealt, sensDuKnockBack * knockBackForce);
+                collision.gameObject.GetComponent<PlayerManager>().OnDamage(owner, percentageDealt, sensDuKnockBack * knockBackForce);
                 rb.velocity = bounceForce * currentVelocity.magnitude * new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y) * Time.fixedDeltaTime;
                 hasHurt = true;
             }
@@ -248,7 +247,7 @@ public class Projectile : MonoBehaviour
         {
             if (hits[i] && hits[i].transform.gameObject.layer != LayerMask.NameToLayer("Projectile"))
             {
-                if(hits[i].transform.GetComponent<PlayerSystemManager>() == owner)
+                if(hits[i].transform.GetComponent<PlayerManager>() == owner)
                 {
                     if (hasHurt) return false;
 

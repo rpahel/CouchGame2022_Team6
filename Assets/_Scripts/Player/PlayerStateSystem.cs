@@ -1,18 +1,18 @@
 using UnityEngine;
 
-public class PlayerSystem : StateMachine
+public class PlayerStateSystem : StateMachine
 {
-    public PlayerSystemManager PlayerSystemManager { get; private set; }
+    public PlayerManager PlayerSystemManager { get; private set; }
     public CooldownManager CooldownManager { get; private set; }
 
-    public PlayerInputsState PlayerInputsState { get; private set; }
+    public PlayerInputManager PlayerInputsState { get; private set; }
     public State PlayerState => State;
 
     private void Awake()
     {
-        PlayerSystemManager = GetComponent<PlayerSystemManager>();
+        PlayerSystemManager = GetComponent<PlayerManager>();
         CooldownManager = GetComponent<CooldownManager>();
-        PlayerInputsState = GetComponent<PlayerInputsState>();
+        PlayerInputsState = GetComponent<PlayerInputManager>();
     }
 
     public void Start()

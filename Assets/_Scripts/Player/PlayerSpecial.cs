@@ -1,13 +1,11 @@
-using Data;
 using System;
-using System.Collections;
 using UnityEngine;
 
 public class PlayerSpecial : MonoBehaviour
 {
     #region Autres Scripts
     //===================================================
-    public PlayerSystemManager PManager { get; set; }
+    public PlayerManager PManager { get; set; }
     #endregion
 
     #region Variables
@@ -44,6 +42,15 @@ public class PlayerSpecial : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, maxDistance);
     }
     #endif
+
+
+
+    // COUCOU J'AI TOUT MIS EN COMMENTAIRES PCQ JAVAIS DES ERREURS
+    // AMUSE TOI BIEN
+
+
+
+
 
     private void Update()
     {

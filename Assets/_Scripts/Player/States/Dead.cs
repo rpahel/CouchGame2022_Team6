@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Dead : State
 {
-    public Dead(PlayerSystem playerSystem) : base(playerSystem){}
+    public Dead(PlayerStateSystem playerSystem) : base(playerSystem){}
 
     private float waitTime;
     private float timeToWait;

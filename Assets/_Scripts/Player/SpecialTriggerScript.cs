@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpecialTriggerScript : MonoBehaviour
 {
-    [SerializeField] private PlayerSystemManager PManager;
+    [SerializeField] private PlayerManager PManager;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

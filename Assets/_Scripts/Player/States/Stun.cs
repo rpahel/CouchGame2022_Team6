@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Stun : State
 {
-    public Stun(PlayerSystem playerSystem) : base(playerSystem)
+    public Stun(PlayerStateSystem playerSystem) : base(playerSystem)
     {
     }
 

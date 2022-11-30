@@ -9,17 +9,6 @@ namespace Data
         BEDROCK
     }
     #endregion
-    #region PLAYER_STATE
-    public enum PLAYER_STATE
-    {
-        WALKING,
-        FALLING,
-        SHOOTING,
-        KNOCKBACKED,
-        STUNNED,
-        DASHING
-    }
-    #endregion
     #region SKIN_SIZE
     public enum SKIN_SIZE
     {
@@ -46,5 +35,4 @@ namespace Data
         END
     }
     #endregion
-
 }
