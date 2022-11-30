@@ -1,6 +1,7 @@
 using Data;
 using DG.Tweening;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
@@ -37,6 +38,19 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField, Range(0f, .1f)] private float betweenLines;
 
     //========================================================
+    [Header("Respawn des cubes.")]
+    [SerializeField, Tooltip("Temps en secondes à attendre avant d'enclencher le respawn des cubes.")]
+    private float _timeBeforeCubeRespawnStart;
+    [SerializeField, Range(0.01f, 2f), Tooltip("Temps en secondes entre deux respawns de cubes.")]
+    private float _respawnCooldown;
+    [SerializeField, Range(0, 5), Tooltip("Temps en secondes avant de faire reapparaitre le premier cube de la liste de respawn, apres le temps d'enclenchement des respawns.")]
+    private float _firstRespawnTime;
+    private bool _canRespawnCube = true;
+    private bool _canRespawnFirstCube;
+    private List<Cube_Edible> _cubeRespawnList = new();
+    private Coroutine _respawnCoroutine;
+
+    //========================================================
     private LEVEL_STATE levelState = LEVEL_STATE.NONE;
     public LEVEL_STATE LevelState => levelState;
 
@@ -63,6 +77,13 @@ public class LevelGenerator : MonoBehaviour
     {
         GenerateLevel();
         StartCoroutine(PlayAnimation());
+    }
+
+    private void FixedUpdate()
+    {
+        _timeBeforeCubeRespawnStart = Mathf.Clamp(_timeBeforeCubeRespawnStart - Time.fixedDeltaTime, 0f, Mathf.Infinity);
+        if(_timeBeforeCubeRespawnStart <= 0 && _respawnCoroutine == null)
+            _respawnCoroutine = StartCoroutine(RespawnCube());
     }
     #endregion
 
@@ -138,13 +159,21 @@ public class LevelGenerator : MonoBehaviour
     void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width, bool visible = true)
     {
         GameObject cube = Instantiate(cubeToCreate, new Vector3(width, height, 0) * scale, Quaternion.identity);
-        cube.GetComponent<Cube>().unscaledPosition = new Vector2Int(width, height);
+        Cube cubeScript = cube.GetComponent<Cube>();
+        cubeScript.unscaledPosition = new Vector2Int(width, height);
+        cubeScript.levelGenerator = this;
         cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString("00") + ", " + height.ToString("00") + ")";
         cube.transform.localScale = Vector3.one * scale;
         cube.transform.parent = parentObj;
         cubesArray[width, height] = cube.transform;
+
         if (!visible)
             cube.SetActive(false);
+        else
+        {
+            if(cubeScript is Cube_Edible cubeEdible)
+                cubeEdible.isOriginalCube = true;
+        }
 
         if (cubeToCreate == cubeBedrock)
         {
@@ -309,6 +338,56 @@ public class LevelGenerator : MonoBehaviour
         cube.localScale = endScale;
 
         coroutinesRunning--;
+    }
+
+    private IEnumerator RespawnCube()
+    {
+        if (!_canRespawnCube) yield break;
+        if (_cubeRespawnList.Count <= 0) yield break;
+
+        Cube_Edible cube = _cubeRespawnList[0];
+        _cubeRespawnList.RemoveAt(0);
+
+        yield return new WaitUntil(() => _canRespawnFirstCube);
+        yield return new WaitUntil(() => !cube.IsInAnimation);
+
+        cube.GetBarfed(cube.transform.position);
+        _canRespawnCube = false;
+        StartCoroutine(CubeRespawnCooldown());
+        _respawnCoroutine = null;
+        yield break;
+    }
+
+    IEnumerator CubeRespawnCooldown()
+    {
+        yield return new WaitForSeconds(_respawnCooldown);
+        _canRespawnCube = true;
+        yield break;
+    }
+
+    IEnumerator RespawnFirstCube()
+    {
+        yield return new WaitForSeconds(_firstRespawnTime);
+        _canRespawnFirstCube = true;
+        yield break;
+    }
+
+    public void AddToRespawnList(Cube_Edible cube)
+    {
+        if (!_cubeRespawnList.Contains(cube))
+            _cubeRespawnList.Add(cube);
+
+        if (_cubeRespawnList.Count == 1)
+        {
+            _canRespawnFirstCube = false;
+            StartCoroutine(RespawnFirstCube());
+        }
+    }
+
+    public void RemoveFromRespawnList(Cube_Edible cube)
+    {
+        if (_cubeRespawnList.Contains(cube))
+            _cubeRespawnList.Remove(cube);
     }
 
     /*public void PrintLevelAscii()

@@ -58,3 +58,6 @@ MonoBehaviour:
   animation: 0.3
   betweenCubes: 0
   betweenLines: 0.05
+  _timeBeforeCubeRespawnStart: 0
+  _respawnCooldown: 0.3
+  _firstRespawnTime: 5

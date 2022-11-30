@@ -18,5 +18,6 @@ public abstract class Cube : MonoBehaviour
 
     //==========================================
     [HideInInspector] public Vector2Int unscaledPosition;
+    [HideInInspector] public LevelGenerator levelGenerator;
     #endregion
 }

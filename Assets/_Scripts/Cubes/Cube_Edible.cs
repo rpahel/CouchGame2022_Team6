@@ -14,6 +14,9 @@ public class Cube_Edible : Cube
     private float rotationDegrees;
     [SerializeField, Range(0.01f, 2f), Tooltip("Le temps que met le cube à apparaitre après être spawné par projectile.")]
     private float apparitionDuration;
+    [HideInInspector]
+    public bool isOriginalCube;
+    public bool IsInAnimation { get; private set; }
 
     //======================================================================
     private List<Cube> cubesAutour = new List<Cube>(4);
@@ -100,6 +103,9 @@ public class Cube_Edible : Cube
 
             StartCoroutine(Suck(cube, playerTransform));
         }
+
+        if (isOriginalCube)
+            levelGenerator.AddToRespawnList(this);
     }
 
     IEnumerator Suck(GameObject cube, Transform player)
@@ -113,6 +119,7 @@ public class Cube_Edible : Cube
 
         while (t < 1f)
         {
+            IsInAnimation = true;
             cube.transform.rotation = Quaternion.Euler(Vector3.Lerp(cubeStartRot, cubeEndRot, t));
             cube.transform.position = Vector3.Lerp(cubeStartPos, player.position, t);
             cube.transform.position = DOVirtual.EasedValue(cubeStartPos, player.position, t, Ease.InBack, 3f);
@@ -127,6 +134,8 @@ public class Cube_Edible : Cube
         cube.transform.localPosition = Vector2.zero;
         cube.GetComponent<Collider2D>().enabled = true;
         cube.SetActive(false);
+
+        IsInAnimation = false;
     }
 
     /// <summary>
@@ -153,6 +162,9 @@ public class Cube_Edible : Cube
         cube.SetActive(true);
         isEaten = false;
 
+        if(isOriginalCube)
+            levelGenerator.RemoveFromRespawnList(this);
+
         StartCoroutine(BarfedAnimation(impactPos));
     }
 
@@ -166,6 +178,7 @@ public class Cube_Edible : Cube
 
         while (t <= 1f)
         {
+            IsInAnimation = true;
             cube.transform.localScale = DOVirtual.EasedValue(startScale, endScale, t, Ease.OutElastic, .5f);
             cube.transform.localPosition = DOVirtual.EasedValue(startPos, endPos, Mathf.InverseLerp(startScale.x, endScale.x, cube.transform.localScale.x), Ease.Linear);
             t += Time.fixedDeltaTime / apparitionDuration;
@@ -174,6 +187,8 @@ public class Cube_Edible : Cube
 
         cube.transform.localScale = endScale;
         cube.transform.localPosition = endPos;
+
+        IsInAnimation = false;
     }
 
     #endregion
