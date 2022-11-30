@@ -310,22 +310,22 @@ public class PlayerManager : MonoBehaviour
     #region Shoot
     public void Shoot()
     {
-        var aimDirection = _playerSystem.PlayerManager.inputVectorDirection;
+        var aimDirection = inputVectorDirection;
 
-        if (!_playerSystem.PlayerManager.canShoot)
+        if (!canShoot)
         {
             Debug.Log($"Attendez le cooldown du tir");
             return;
         }
 
-        if (_playerSystem.PlayerManager.fullness < _playerSystem.PlayerManager.NecessaryFood)
+        if (fullness < _necessaryFood)
         {
             Debug.Log("Pas assez de nourriture pour shoot.");
             return;
         }
 
         if (aimDirection == Vector2.zero)
-            aimDirection = _playerSystem.PlayerManager.LookDirection;
+            aimDirection = LookDirection;
 
         if (!IsThereEnoughSpace(aimDirection))
         {
@@ -335,10 +335,10 @@ public class PlayerManager : MonoBehaviour
 
         ShootProjectile(aimDirection);
 
-        _playerSystem.PlayerManager.fullness = Mathf.Clamp(_playerSystem.PlayerManager.fullness - _playerSystem.PlayerManager.NecessaryFood, 0, 100);
-        _playerSystem.PlayerManager.UpdatePlayerScale();
+        fullness = Mathf.Clamp(fullness - _necessaryFood, 0, 100);
+        UpdatePlayerScale();
 
-        _playerSystem.CooldownManager.StartCoroutine(_playerSystem.CooldownManager.CooldownShoot());
+        _cooldownManager.StartCoroutine(_cooldownManager.CooldownShoot());
 
         _playerSystem.SetState(new Moving(_playerSystem));
     }
@@ -347,16 +347,16 @@ public class PlayerManager : MonoBehaviour
     {
         Projectile projectile = GameManager.Instance.GetAvailableProjectile();
         projectile.owner = _playerSystem.PlayerManager;
-        projectile.color = _playerSystem.PlayerManager.color;
-        projectile.transform.position = _playerSystem.transform.position;
-        projectile.gravity = _playerSystem.PlayerManager._gravity;
-        projectile.bounceForce = _playerSystem.PlayerManager._bounceForce;
-        projectile.percentageDealt = _playerSystem.PlayerManager._inflictedFoodDamage;
-        projectile.knockBackForce = _playerSystem.PlayerManager._knockBackForce;
-        projectile.ownerVelocityAtLaunch = _playerSystem.PlayerManager.Rb2D.velocity;
+        projectile.color = color;
+        projectile.transform.position = transform.position;
+        projectile.gravity = _gravity;
+        projectile.bounceForce = _bounceForce;
+        projectile.percentageDealt = _inflictedFoodDamage;
+        projectile.knockBackForce = _knockBackForce;
+        //projectile.ownerVelocityAtLaunch = Rb2D.velocity;
 
         projectile.gameObject.SetActive(true);
-        projectile.Shoot(aimDirection, _playerSystem.PlayerManager._initialSpeed);
+        projectile.Shoot(aimDirection, _initialSpeed);
     }
 
     /// <summary>

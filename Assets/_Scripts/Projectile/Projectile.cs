@@ -8,16 +8,16 @@ public class Projectile : MonoBehaviour
     #region Variables
     //=============================================
     public SpriteRenderer insideSpriteRenderer; // On devrait plus en avoir besoin une fois qu'on aura les sprites des GA
-    [SerializeField, Range(0, 3)] private float lifetime;
-    private float age;
+    [SerializeField, Range(0, 3)] private float _lifetime;
+    private float _age;
 
     //=============================================
     [HideInInspector] public PlayerManager owner;
-    private Rigidbody2D rb;
-    private Vector2 currentVelocity;
-    private Collider2D col;
-    private Coroutine lifeTimeCoroutine;
-    private bool hasHurt;
+    private Rigidbody2D _rb;
+    private Vector2 _currentVelocity;
+    private Collider2D _col;
+    private Coroutine _lifeTimeCoroutine;
+    private bool _hasHurt;
 
     //=============================================
     [HideInInspector] public Color color;
@@ -25,48 +25,48 @@ public class Projectile : MonoBehaviour
     [HideInInspector] public float bounceForce;
     [HideInInspector] public int percentageDealt;
     [HideInInspector] public float knockBackForce;
-    [HideInInspector] public Vector2 ownerVelocityAtLaunch;
+    //[HideInInspector] public Vector2 ownerVelocityAtLaunch;
     #endregion
 
     #region Unity_Functions
     //=============================================
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
-        col = GetComponent<Collider2D>();
+        _rb = GetComponent<Rigidbody2D>();
+        _col = GetComponent<Collider2D>();
     }
 
     private void OnEnable()
     {
         insideSpriteRenderer.color = color;
-        rb.gravityScale = gravity;
-        age = lifetime;
-        hasHurt = false;
-        lifeTimeCoroutine = StartCoroutine(DecreaseLifetime());
+        _rb.gravityScale = gravity;
+        _age = _lifetime;
+        _hasHurt = false;
+        _lifeTimeCoroutine = StartCoroutine(DecreaseLifetime());
     }
 
     private void OnDisable()
     {
         insideSpriteRenderer.color = Color.white;
-        rb.gravityScale = 0;
-        rb.velocity = Vector2.zero;
-        col.isTrigger = true;
+        _rb.gravityScale = 0;
+        _rb.velocity = Vector2.zero;
+        _col.isTrigger = true;
         transform.position = Vector2.zero;
 
-        if (lifeTimeCoroutine != null)
+        if (_lifeTimeCoroutine != null)
         {
-            StopCoroutine(lifeTimeCoroutine);
-            lifeTimeCoroutine = null;
+            StopCoroutine(_lifeTimeCoroutine);
+            _lifeTimeCoroutine = null;
         }
 
-        age = 0;
-        hasHurt = false;
+        _age = 0;
+        _hasHurt = false;
     }
 
-    // Si le projectile entre dans un joueur, il lui applique des d�gats et rebondit.
-    // S'il entre dans un pi�ge, il rebondit.
+    // Si le projectile entre dans un joueur, il lui applique des degats et rebondit.
+    // S'il entre dans un piege, il rebondit.
     // S'il entre dans un bloc Destructible ou Indestructible, il essaie de spawn un cube et disparait.
-    // S'il entre dans un autre projectile, il rebondit. J'ai s�par� ce cas du pi�ge au cas o� on veut faire d'autres trucs avec.
+    // S'il entre dans un autre projectile, il rebondit. J'ai separe ce cas du piege au cas ou on veut faire d'autres trucs avec.
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject != owner.gameObject)
@@ -76,13 +76,13 @@ public class Projectile : MonoBehaviour
                 Vector2 sensDuKnockBack = (collider.transform.position - transform.position).x > 0 ? new Vector2(-1, 1f) : new Vector2(1, 1f);
                 sensDuKnockBack.Normalize();
                 collider.gameObject.GetComponent<PlayerManager>().OnDamage(owner, percentageDealt, sensDuKnockBack * knockBackForce);
-                rb.velocity = bounceForce * currentVelocity.magnitude * new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y) * Time.fixedDeltaTime;
-                hasHurt = true;
+                _rb.velocity = bounceForce * _currentVelocity.magnitude * new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y) * Time.fixedDeltaTime;
+                _hasHurt = true;
             }
             else if (collider.gameObject.layer == LayerMask.NameToLayer("Trap"))
             {
-                Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, CustomVectors.ApproxNormal(transform.position - collider.transform.position)).normalized;
-                rb.velocity = currentVelocity.magnitude * bounceForce * sensDuRebond * Time.fixedDeltaTime;
+                Vector2 sensDuRebond = Vector2.Reflect(_currentVelocity, CustomVectors.ApproxNormal(transform.position - collider.transform.position)).normalized;
+                _rb.velocity = _currentVelocity.magnitude * bounceForce * sensDuRebond * Time.fixedDeltaTime;
             }
             else if (collider.gameObject.layer == LayerMask.NameToLayer("Destructible")
                 || collider.gameObject.layer == LayerMask.NameToLayer("Indestructible")
@@ -97,8 +97,8 @@ public class Projectile : MonoBehaviour
             }
             else if (collider.gameObject.layer == LayerMask.NameToLayer("Projectile"))
             {
-                Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, CustomVectors.ApproxNormal(transform.position - collider.transform.position)).normalized;
-                rb.velocity = currentVelocity.magnitude * bounceForce * sensDuRebond * Time.fixedDeltaTime;
+                Vector2 sensDuRebond = Vector2.Reflect(_currentVelocity, CustomVectors.ApproxNormal(transform.position - collider.transform.position)).normalized;
+                _rb.velocity = _currentVelocity.magnitude * bounceForce * sensDuRebond * Time.fixedDeltaTime;
             }
         }
     }
@@ -108,17 +108,17 @@ public class Projectile : MonoBehaviour
     {
         if (collision.gameObject == owner.gameObject)
         {
-            col.isTrigger = false;
+            _col.isTrigger = false;
         }
     }
 
     // Si le projectile touche un joueur, il lui applique des d�gats et rebondit.
     // S'il touche un pi�ge, il rebondit.
     // S'il touche un bloc Destructible ou Indestructible, il essaie de spawn un cube et disparait.
-    // S'il touche un autre projectile, il rebondit. J'ai s�par� ce cas du pi�ge au cas o� on veut faire d'autres trucs avec.
-    // S'il touche le joueur qui l'a tir�, il rebondit.
-    // TODO : Quand on tire pile entre deux cubes �a cr�er deux cubes <- faut pas que �a le fasse du coup
-    // Un bool pour savoir si le projectile a d�j� placer un cube devrait faire l'affaire.
+    // S'il touche un autre projectile, il rebondit. J'ai separe ce cas du piege au cas ou on veut faire d'autres trucs avec.
+    // S'il touche le joueur qui l'a tire, il rebondit.
+    // TODO : Quand on tire pile entre deux cubes ca creer deux cubes <- faut pas que ca le fasse du coup
+    // Un bool pour savoir si le projectile a deja placer un cube devrait faire l'affaire.
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject != owner.gameObject)
@@ -128,13 +128,13 @@ public class Projectile : MonoBehaviour
                 Vector2 sensDuKnockBack = collision.GetContact(0).normal.x > 0 ? new Vector2(-1, 1f) : new Vector2(1, 1f);
                 sensDuKnockBack.Normalize();
                 collision.gameObject.GetComponent<PlayerManager>().OnDamage(owner, percentageDealt, sensDuKnockBack * knockBackForce);
-                rb.velocity = bounceForce * currentVelocity.magnitude * new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y) * Time.fixedDeltaTime;
-                hasHurt = true;
+                _rb.velocity = bounceForce * _currentVelocity.magnitude * new Vector2(-sensDuKnockBack.x, sensDuKnockBack.y) * Time.fixedDeltaTime;
+                _hasHurt = true;
             }
             else if (collision.gameObject.layer == LayerMask.NameToLayer("Trap"))
             {
-                Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, collision.GetContact(0).normal).normalized;
-                rb.velocity = currentVelocity.magnitude * bounceForce * sensDuRebond * Time.fixedDeltaTime;
+                Vector2 sensDuRebond = Vector2.Reflect(_currentVelocity, collision.GetContact(0).normal).normalized;
+                _rb.velocity = _currentVelocity.magnitude * bounceForce * sensDuRebond * Time.fixedDeltaTime;
             }
             else if (collision.gameObject.layer == LayerMask.NameToLayer("Destructible")
                 || collision.gameObject.layer == LayerMask.NameToLayer("Indestructible")
@@ -149,20 +149,20 @@ public class Projectile : MonoBehaviour
             }
             else if (collision.gameObject.layer == LayerMask.NameToLayer("Projectile"))
             {
-                Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, collision.GetContact(0).normal).normalized;
-                rb.velocity = currentVelocity.magnitude * bounceForce * sensDuRebond * Time.fixedDeltaTime;
+                Vector2 sensDuRebond = Vector2.Reflect(_currentVelocity, collision.GetContact(0).normal).normalized;
+                _rb.velocity = _currentVelocity.magnitude * bounceForce * sensDuRebond * Time.fixedDeltaTime;
             }
         }
         else
         {
-            Vector2 sensDuRebond = Vector2.Reflect(currentVelocity, collision.GetContact(0).normal).normalized;
-            rb.velocity = sensDuRebond * currentVelocity.magnitude * bounceForce * Time.fixedDeltaTime;
+            Vector2 sensDuRebond = Vector2.Reflect(_currentVelocity, collision.GetContact(0).normal).normalized;
+            _rb.velocity = sensDuRebond * _currentVelocity.magnitude * bounceForce * Time.fixedDeltaTime;
         }
     }
 
     private void LateUpdate()
     {
-        currentVelocity = rb.velocity;
+        _currentVelocity = _rb.velocity;
     }
     #endregion
 
@@ -170,28 +170,28 @@ public class Projectile : MonoBehaviour
     //=============================================
 
     /// <summary>
-    /// Envoie le projectile dans la direction donn�e.
+    /// Envoie le projectile dans la direction donnee.
     /// </summary>
     /// <param name="dir">La direction de tir.</param>
     /// <param name="speed">La vitesse initiale du projectile.</param>
     public void Shoot(Vector2 dir, float speed)
     {
-        rb.velocity = dir * speed;
+        _rb.velocity = dir * speed;
     }
 
     private IEnumerator DecreaseLifetime()
     {
-        while (age > 0)
+        while (_age > 0)
         {
             yield return new WaitForFixedUpdate();
-            age -= Time.deltaTime;
+            _age -= Time.deltaTime;
         }
 
         gameObject.SetActive(false);
     }
 
     /// <summary>
-    /// Spawn un cube en fonction du cube touch� et de la position du projectile.
+    /// Spawn un cube en fonction du cube touche et de la position du projectile.
     /// </summary>
     /// <param name="collision">Les informations de la collision.</param>
     private void SpawnCube(Collision2D collision)
@@ -207,7 +207,7 @@ public class Projectile : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawn un cube en fonction du cube p�n�tr� et de la position du projectile.
+    /// Spawn un cube en fonction du cube penetre et de la position du projectile.
     /// </summary>
     /// <param name="collision">Le collider du pauvre cube.</param>
     private void SpawnCube(Collider2D collider)
@@ -249,7 +249,9 @@ public class Projectile : MonoBehaviour
             {
                 if (hits[i].transform.GetComponent<PlayerManager>() == owner)
                 {
-                    if (hasHurt) return false;
+                    if (_hasHurt) return false;
+
+                    if (owner.Rb2D.velocity.sqrMagnitude <= 0.1f) return false;
 
                     if (ClosestAxis(impactedCubeToOwner, true).x == 0)
                     {
@@ -298,13 +300,12 @@ public class Projectile : MonoBehaviour
 
 #if UNITY_EDITOR
             {
-                Debug.DrawRay(owner.transform.position, ownerVelocityAtLaunch.normalized * 4f, Color.magenta, 5f);
-                //Debug.Log(ownerVelocityAtLaunch);
+                Debug.DrawRay(owner.transform.position, owner.Rb2D.velocity.normalized * 4f, Color.magenta, 5f);
             }
 #endif
 
-            if (ownerVelocityAtLaunch == Vector2.zero) { ownerVelocityAtLaunch = Vector2.down; }
-            Vector2 ownerVelocity = CustomVectors.ClosestAxis(ownerVelocityAtLaunch);
+            if (owner.Rb2D.velocity == Vector2.zero) { owner.Rb2D.velocity = Vector2.down; }
+            Vector2 ownerVelocity = CustomVectors.ClosestAxis(owner.Rb2D.velocity);
 
 #if UNITY_EDITOR
             {
@@ -338,7 +339,7 @@ public class Projectile : MonoBehaviour
                 else if (ownerVelocity == Vector2.down) return Vector2.up;
             }
 
-            // C'est pas cens� arriver l� mais au cas o� je mets �a l�
+            // C'est pas cense arriver la mais au cas ou je mets ca la
             if (ownerVelocity == Vector2.left || ownerVelocity == Vector2.right) return ownerVelocity == Vector2.left ? Vector2.right : Vector2.left;
             else return ownerVelocity == Vector2.down ? Vector2.up : Vector2.down;
         }

@@ -224,11 +224,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   insideSpriteRenderer: {fileID: 6314667026061840758}
-  lifetime: 3
+  _lifetime: 3
   owner: {fileID: 0}
   color: {r: 0, g: 0, b: 0, a: 0}
   gravity: 0
   bounceForce: 0
   percentageDealt: 0
   knockBackForce: 0
-  ownerVelocityAtLaunch: {x: 0, y: 0}
