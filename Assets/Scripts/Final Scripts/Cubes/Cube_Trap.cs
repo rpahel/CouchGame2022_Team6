@@ -27,6 +27,8 @@ public class Cube_Trap : Cube
     public float baseSpeed;
     public int knockForce = 20;
 
+    public float knockLefRightForce;
+
     [SerializeField] private float errorBounds = 0.3f;
 
     [Range(0, 1)] public float takeDmg;
@@ -40,28 +42,16 @@ public class Cube_Trap : Cube
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        /*Debug.Log("Normal of the first point: " + collision.contacts[0].normal);
+        Debug.Log("Normal of the first point: " + collision.contacts[0].normal);
         if (collision.contacts[0].normal == new Vector2(0, -1))
         {
             if (!collision.gameObject.CompareTag("Player") || !canLooseGraille) return;
 
             Debug.Log("up");
-            rb = collision.gameObject.GetComponent<Rigidbody2D>();
-            // beInTrap = true;
-            playerManager = collision.gameObject.GetComponent<PlayerManager>();
-            playerManager.SetPlayerState(PlayerState.KNOCKBACKED); 
-            canLooseGraille = false;
-            movement = collision.gameObject.GetComponent<PlayerMovement>();               
-            collision.rigidbody.AddForce((Vector3.up * knockForce) , ForceMode2D.Impulse);
-            collision.transform.DOShakeScale(duration, strength, vibrato, randomess);
-            transform.DOShakeScale(duration, strength, vibrato, randomess);
-            playerManager.eatAmount -= takeDmg;
-                                 
-            //StartCoroutine(timeToLooseEat());
-            StartCoroutine(timeToStateMoving());
+            KnockbackUp();
 
 
-        }*/
+        }
         
         if (!collision.gameObject.CompareTag("Player") || !canLooseGraille) return;
 
@@ -120,6 +110,16 @@ public class Cube_Trap : Cube
         void KnockbackRight()
         {
             KnockBack(Vector3.left, collision);
+        }
+
+        void KnockbackUp()
+        {
+            var rand = UnityEngine.Random.Range(0, 2);
+
+            if(rand == 0)
+                KnockBack(Vector3.left / knockLefRightForce + Vector3.up, collision);
+            else
+                KnockBack(Vector3.right / knockLefRightForce + Vector3.up, collision);
         }
         
 

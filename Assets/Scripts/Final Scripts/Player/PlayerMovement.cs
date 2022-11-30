@@ -47,6 +47,7 @@ public class PlayerMovement : MonoBehaviour
     public float wallJumpForce;
     private bool facingRight = true;
     public bool canWallJump;
+    bool cantDoubleJump;
 
 
     //============================ // Pour le saut
@@ -116,6 +117,7 @@ public class PlayerMovement : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _trailRenderer = GetComponent<TrailRenderer>();
         _playerInputHandler = GetComponent<PlayerInputHandler>();
+        
     }
 
     private void Start()
@@ -134,6 +136,14 @@ public class PlayerMovement : MonoBehaviour
              transform.rotation = Quaternion.Euler(0, 0, lookAtRight ? 0 : 180);*/
 
         CheckHoldValue();
+
+        if(_rb.velocity.y > 0)       
+            cantDoubleJump = true;
+        
+        else       
+            cantDoubleJump = false;
+        
+            
     }
 
     private void FixedUpdate()
@@ -219,16 +229,17 @@ public class PlayerMovement : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(wallCheckRight.position, wallDetectionRadius);
+       
     }
     public void OnJump()
     {
         if (_isGrounded)
             Jump();
 
-        else if (isSliding && !_isGrounded)
+        else if (isSliding && !_isGrounded && !cantDoubleJump)
         {
-            
-            StartCoroutine(timeToCanJump());
+
+            WallJump();
         }
         else
         {
@@ -241,6 +252,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnGUI()
     {
         GUILayout.Label(_isGrounded ? "On Ground" : "In Air");
+        GUILayout.Label("Velocity = " + _rb.velocity);
     }
 
     private void WallJump()
@@ -506,6 +518,6 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator timeToCanJump()
     {
         yield return new WaitForSeconds(0.05f);
-        WallJump();
+       
     }
 }

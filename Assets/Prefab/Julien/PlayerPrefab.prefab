@@ -746,6 +746,15 @@ MonoBehaviour:
   playerMesh: {fileID: 7366054977546968797}
   _canHoldCooldown: 0
   _eat: {fileID: 3725391769850130967}
+  losInput:
+    m_Name: Los Input
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 3cadfd29-20ad-4b87-b57d-d53df2715c2a
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!114 &8852710062912591228
 MonoBehaviour:
   m_ObjectHideFlags: 0

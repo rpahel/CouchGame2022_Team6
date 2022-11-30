@@ -26,6 +26,7 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerControls _controls;
     private ToolsManager _toolsManager;
 
+    
     private void Awake()
     {
         _playerManager = gameObject.GetComponent<PlayerManager>();
