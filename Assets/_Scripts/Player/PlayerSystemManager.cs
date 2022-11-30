@@ -52,8 +52,7 @@ public class PlayerSystemManager : MonoBehaviour
     public Coroutine brakingCoroutine;
 
     //========================================================================== POUR LE SAUT (DETECTION DE SOL)
-    public RaycastHit2D groundCheck;
-    public RaycastHit2D GroundCheck => groundCheck;
+    [HideInInspector] public RaycastHit2D groundCheck;
     public float castRadius;
     public float castDistance;
 
