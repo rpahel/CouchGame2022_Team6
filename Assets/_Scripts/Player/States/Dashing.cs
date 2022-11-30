@@ -5,7 +5,7 @@ public class Dashing : State
     public Dashing(PlayerStateSystem playerSystem) : base(playerSystem)
     {
     }
-    
+
     public override void Start()
     {
     }

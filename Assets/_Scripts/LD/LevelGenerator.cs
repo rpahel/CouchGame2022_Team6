@@ -146,11 +146,11 @@ public class LevelGenerator : MonoBehaviour
         if (!visible)
             cube.SetActive(false);
 
-        if(cubeToCreate == cubeBedrock)
+        if (cubeToCreate == cubeBedrock)
         {
             if (height <= 0 || height >= image.height - 1 || width <= 0 || width >= image.width - 1)
             {
-                foreach(Transform square in cube.transform)
+                foreach (Transform square in cube.transform)
                 {
                     square.gameObject.layer = LayerMask.NameToLayer("Limite");
                 }
@@ -181,22 +181,22 @@ public class LevelGenerator : MonoBehaviour
         yield return new WaitForSecondsRealtime(beforeStart);
         levelState = LEVEL_STATE.LOADING;
 
-        switch(spawnAnim)
+        switch (spawnAnim)
         {
             case SPAWN_ANIMATION.LEFT_TO_RIGHT:
-                for(int i = 0; i < image.width; ++i)
+                for (int i = 0; i < image.width; ++i)
                 {
-                    for(int j = image.height - 1; j >= 0; --j)
+                    for (int j = image.height - 1; j >= 0; --j)
                     {
-                        if(cubesArray[i, j] != null)
+                        if (cubesArray[i, j] != null)
                         {
                             StartCoroutine(ScaleCubeAnimation(cubesArray[i, j], endScale));
-                            if(betweenCubes != 0)
+                            if (betweenCubes != 0)
                                 yield return new WaitForSecondsRealtime(betweenCubes);
                         }
                     }
 
-                    if(betweenLines != 0)
+                    if (betweenLines != 0)
                         yield return new WaitForSecondsRealtime(betweenLines);
                 }
                 break;
@@ -298,7 +298,7 @@ public class LevelGenerator : MonoBehaviour
 
         float t = 0f;
         float alpha;
-        while(t < 1)
+        while (t < 1)
         {
             alpha = DOVirtual.EasedValue(0, 1, t, smoothType);
             cube.localScale = endScale * alpha;

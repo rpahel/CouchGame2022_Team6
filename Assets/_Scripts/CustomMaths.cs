@@ -38,12 +38,12 @@ namespace CustomMaths
             {
                 hits[i] = Physics2D.Linecast(worldPositions[i], worldPositions[(i + 4) % 8]);
 
-                #if UNITY_EDITOR
+#if UNITY_EDITOR
                 {
                     if (drawDebug)
                         Debug.DrawLine(worldPositions[i], worldPositions[(i + 4) % 8], Color.red, 5f);
                 }
-                #endif
+#endif
             }
 
             return hits;

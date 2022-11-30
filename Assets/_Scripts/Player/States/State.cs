@@ -8,7 +8,7 @@ public abstract class State
     {
         this.playerSystem = playerSystem;
     }
-    
+
     public virtual void Start()
     {
         return;
@@ -18,7 +18,7 @@ public abstract class State
     {
         return;
     }
-    
+
     public virtual void FixedUpdate()
     {
         return;
@@ -27,7 +27,7 @@ public abstract class State
     {
         return;
     }
-    
+
     public virtual void OnJump()
     {
         return;
@@ -37,7 +37,7 @@ public abstract class State
     {
         return;
     }
-    
+
     public virtual void OnShoot()
     {
         return;
@@ -52,7 +52,7 @@ public abstract class State
     {
         return;
     }
-    
+
     public virtual void OnTrigger(Collider2D col)
     {
         return;

@@ -15,7 +15,7 @@ public class PlayerManager : MonoBehaviour
     private CooldownManager _cooldownManager;
 
     // Getter
-    public Rigidbody2D Rb2D => _rb2D; 
+    public Rigidbody2D Rb2D => _rb2D;
     public Collider2D PCollider => _coll;
     #endregion
 
@@ -29,7 +29,7 @@ public class PlayerManager : MonoBehaviour
     public Vector2 LookDirection { get; set; }
     [SerializeField] private float _maxSize = 2.857f;
     [SerializeField] private float _minSize = 1f;
-    
+
     //==========================================================================
     [Header("PLAYER MOVEMENT Variables")]
     [SerializeField, Range(0, 40f)]
@@ -76,7 +76,7 @@ public class PlayerManager : MonoBehaviour
 
     //==========================================================================
     [HideInInspector] public bool holdJump;
-    
+
     // PLAYER EAT VAR
     [Header("EAT Variables")]
     [Range(0, 100), Tooltip("La quantite de nourriture dans le corps.")]
@@ -91,7 +91,7 @@ public class PlayerManager : MonoBehaviour
     public float tickHoldEat;
     [HideInInspector]
     public bool holdEat;
-    
+
     // PLAYER SHOOT VAR
     [Header("PLAYER SHOOT Variables")]
     [SerializeField, Range(0, 100), Tooltip("Pourcentage de nourriture utilise pour tirer.")]
@@ -156,11 +156,11 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         {
             Debug.DrawRay(transform.position - Vector3.forward, inputVectorDirection * 5f, Color.cyan, Time.deltaTime);
         }
-        #endif
+#endif
 
         LookDirection = inputVectorDirection.x switch
         {
@@ -173,7 +173,7 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(!isJumping)
+        if (!isJumping)
             _rb2D.gravityScale = _gravityScale;
 
         insideSprite.color = _playerSystem.PlayerState switch

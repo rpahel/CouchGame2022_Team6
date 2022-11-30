@@ -8,7 +8,7 @@ public class PlayerInputManager : MonoBehaviour
 
     private PlayerManager _playerSystemManager;
     private PlayerStateSystem _playerSystem;
-    public bool InputIsEnabled { get; private set;}
+    public bool InputIsEnabled { get; private set; }
     #endregion
 
     //#region Customs_Functions
@@ -23,7 +23,7 @@ public class PlayerInputManager : MonoBehaviour
     public void OnMove(InputAction.CallbackContext input)
     {
         _playerSystem.PlayerSystemManager.inputVectorDirection = input.ReadValue<Vector2>().normalized;
-        
+
         if (_playerSystem.PlayerState is not Moving || !InputIsEnabled)
             return;
 

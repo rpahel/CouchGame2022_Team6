@@ -30,11 +30,11 @@ public class GameManager : MonoBehaviour
     public float RespawnTime => respawnTime;
 
     //============================
-    public  GAME_STATE GameState { get; private set; }
+    public GAME_STATE GameState { get; private set; }
 
     //============================
     private Transform[] playerTransforms = new Transform[4];
-    public  Transform[] PlayerTransforms { get; }
+    public Transform[] PlayerTransforms { get; }
     [SerializeField] private Color[] playerColors;
 
     //============================
@@ -48,16 +48,16 @@ public class GameManager : MonoBehaviour
     #region Unity_Functions
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
             Instance = this;
 
         GameState = GAME_STATE.NONE;
 
         if (!TryGetComponent(out pInputManager))
         {
-            #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-            #endif
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
             throw new Exception("No PlayerInputManager component found in GameManager game object !");
         }
 
@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
         if (projectileNumber <= 0)
             Debug.LogError($"ATTENTION t'as mis projectileNumber à {projectile} dans le Game Manager. Aucun projectile ne sera spawné.");
 
-        if(!levelGenerator)
+        if (!levelGenerator)
             levelGenerator = FindObjectOfType<LevelGenerator>();
 
         GenerateProjectilePool(projectileNumber);
@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
         parent.name = "Projectile Pool";
         projPoolTransform = parent.transform;
 
-        for(int i = 0; i < number; i++)
+        for (int i = 0; i < number; i++)
         {
             GameObject p = Instantiate(projectile, projPoolTransform);
             p.name = "Projectile " + i.ToString("00");

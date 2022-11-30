@@ -61,16 +61,16 @@ public class CameraManager : MonoBehaviour
 
         Vector2 imageCenterInWorld = .5f * scale * (realImageSize - Vector2.one);
 
-        #if UNITY_EDITOR
-        { 
+#if UNITY_EDITOR
+        {
             Debug.DrawLine(imageCenterInWorld, imageCenterInWorld + Vector2.right * 20, Color.cyan, 5f);
             Debug.DrawLine(imageCenterInWorld, imageCenterInWorld + Vector2.down * 20, Color.cyan, 5f);
         }
-        #endif
+#endif
 
         // On setup les limites du camera confiner
         Vector2[] tempPoints = new Vector2[4];
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             // 0 = 00, 1 = 01, 2 = 10, 3 = 11;
             tempPoints[i] = (new Vector2(((i >> 1) & 1) * imageSizeToScreenFormat.x, (i & 1) * imageSizeToScreenFormat.y) - .5f * Vector2.one) * scale;
@@ -84,7 +84,7 @@ public class CameraManager : MonoBehaviour
         }
 
         Vector2 imageCenterToBoundsCenter = (Vector2)bounds.center - imageCenterInWorld;
-        
+
         // On ajuste le camera confiner pour que le niveau soit bien au centre de l'écran
         for (int i = 0; i < 4; i++)
         {
@@ -102,7 +102,7 @@ public class CameraManager : MonoBehaviour
         cineConfiner.InvalidateCache(); // Refresh le confiner pour prendre en compte les nouveaux points
 
 #if UNITY_EDITOR
-        { 
+        {
             Debug.DrawLine(new Vector3(bounds.min.x, bounds.max.y, -8), new Vector3(bounds.max.x, bounds.min.y, -8), Color.red, 5);
             Debug.DrawLine(bounds.min - Vector3.forward * 8, bounds.max - Vector3.forward * 8, Color.red, 5);
         }
@@ -137,7 +137,7 @@ public class CameraManager : MonoBehaviour
 
         targetGroup.m_Targets = new CinemachineTargetGroup.Target[pTransforms.Count];
 
-        for(int i = 0; i < pTransforms.Count; i++)
+        for (int i = 0; i < pTransforms.Count; i++)
         {
             CinemachineTargetGroup.Target target;
             target.target = pTransforms[i];

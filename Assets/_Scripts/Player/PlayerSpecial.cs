@@ -31,17 +31,17 @@ public class PlayerSpecial : MonoBehaviour
 
     #region Unity_Functions
     //===================================================
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        if(maxDistance < minDistance) maxDistance = minDistance;
+        if (maxDistance < minDistance) maxDistance = minDistance;
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, minDistance);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, maxDistance);
     }
-    #endif
+#endif
 
 
 

@@ -11,14 +11,14 @@ public class CooldownManager : MonoBehaviour
         playerSystemManager = GetComponent<PlayerManager>();
         playerSystem = GetComponent<PlayerStateSystem>();
     }
-    
+
     public IEnumerator CooldownShoot()
     {
         playerSystemManager.canShoot = false;
         yield return new WaitForSeconds(playerSystemManager.CooldownShoot);
         playerSystemManager.canShoot = true;
     }
-    
+
     public IEnumerator Braking()
     {
         float iniVelocityX = playerSystem.PlayerSystemManager.Rb2D.velocity.x;
@@ -32,8 +32,8 @@ public class CooldownManager : MonoBehaviour
         }
 
         //if (playerSystem.PlayerSystemManager.PlayerState != PLAYER_STATE.KNOCKBACKED && playerSystem.PlayerSystemManager.PlayerState == PLAYER_STATE.DASHING) //A quoi sert ca
-           // playerSystem.PlayerSystemManager.Rb2D.velocity = new Vector2(0, playerSystem.PlayerSystemManager.Rb2D.velocity.y);
-        
+        // playerSystem.PlayerSystemManager.Rb2D.velocity = new Vector2(0, playerSystem.PlayerSystemManager.Rb2D.velocity.y);
+
         playerSystem.PlayerSystemManager.brakingCoroutine = null;
     }
 

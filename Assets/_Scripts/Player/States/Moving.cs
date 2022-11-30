@@ -1,16 +1,16 @@
 using UnityEngine;
 
-public class Moving : State 
+public class Moving : State
 {
     public Moving(PlayerStateSystem playerSystem) : base(playerSystem) { }
 
     public override void Update()
     {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         {
-            if(playerSystem.PlayerSystemManager.StopDuration < 0.01f)  playerSystem.PlayerSystemManager.SetStopDuration(0.01f);
+            if (playerSystem.PlayerSystemManager.StopDuration < 0.01f) playerSystem.PlayerSystemManager.SetStopDuration(0.01f);
         }
-        #endif
+#endif
     }
 
     public override void FixedUpdate()

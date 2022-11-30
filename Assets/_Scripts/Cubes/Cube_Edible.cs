@@ -92,7 +92,7 @@ public class Cube_Edible : Cube
             }
         }
 
-        if(!playerTransform)
+        if (!playerTransform)
             cube.SetActive(false);
 
         // Fais apparaitre les restes en fonction des cubes voisins qui sont toujours là
@@ -106,8 +106,8 @@ public class Cube_Edible : Cube
                 }
             }
         }
-        
-        if(playerTransform)
+
+        if (playerTransform)
         {
             cube.transform.parent = null;
             cube.GetComponent<Collider2D>().enabled = false;
@@ -125,7 +125,7 @@ public class Cube_Edible : Cube
         float scaleFactor;
         float t = 0;
 
-        while(t < 1f)
+        while (t < 1f)
         {
             cube.transform.rotation = Quaternion.Euler(Vector3.Lerp(cubeStartRot, cubeEndRot, t));
             cube.transform.position = Vector3.Lerp(cubeStartPos, player.position, t);
@@ -160,7 +160,7 @@ public class Cube_Edible : Cube
     /// </summary>
     public void GetBarfed(Vector2 impactPos)
     {
-        foreach(GameObject reste in leftOvers)
+        foreach (GameObject reste in leftOvers)
         {
             reste.SetActive(false);
         }
@@ -181,7 +181,7 @@ public class Cube_Edible : Cube
         Vector3 endPos = Vector3.zero;
         float t = 0;
 
-        while(t <= 1f)
+        while (t <= 1f)
         {
             cube.transform.localScale = DOVirtual.EasedValue(startScale, endScale, t, Ease.OutElastic, .5f);
             cube.transform.localPosition = DOVirtual.EasedValue(startPos, endPos, Mathf.InverseLerp(startScale.x, endScale.x, cube.transform.localScale.x), Ease.Linear);

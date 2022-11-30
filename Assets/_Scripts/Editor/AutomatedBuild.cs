@@ -35,7 +35,7 @@ public class BuildPlayerExample : MonoBehaviour
 
         if (summary.result == BuildResult.Succeeded)
         {
-            Debug.Log("Build succeeded: " + summary.totalSize/1000000f + " Megabytes");
+            Debug.Log("Build succeeded: " + summary.totalSize / 1000000f + " Megabytes");
         }
 
         if (summary.result == BuildResult.Failed)

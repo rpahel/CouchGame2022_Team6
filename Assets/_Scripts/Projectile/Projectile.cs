@@ -53,7 +53,7 @@ public class Projectile : MonoBehaviour
         col.isTrigger = true;
         transform.position = Vector2.zero;
 
-        if(lifeTimeCoroutine != null)
+        if (lifeTimeCoroutine != null)
         {
             StopCoroutine(lifeTimeCoroutine);
             lifeTimeCoroutine = null;
@@ -117,8 +117,8 @@ public class Projectile : MonoBehaviour
     // S'il touche un bloc Destructible ou Indestructible, il essaie de spawn un cube et disparait.
     // S'il touche un autre projectile, il rebondit. J'ai s�par� ce cas du pi�ge au cas o� on veut faire d'autres trucs avec.
     // S'il touche le joueur qui l'a tir�, il rebondit.
-        // TODO : Quand on tire pile entre deux cubes �a cr�er deux cubes <- faut pas que �a le fasse du coup
-            // Un bool pour savoir si le projectile a d�j� placer un cube devrait faire l'affaire.
+    // TODO : Quand on tire pile entre deux cubes �a cr�er deux cubes <- faut pas que �a le fasse du coup
+    // Un bool pour savoir si le projectile a d�j� placer un cube devrait faire l'affaire.
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject != owner.gameObject)
@@ -181,7 +181,7 @@ public class Projectile : MonoBehaviour
 
     private IEnumerator DecreaseLifetime()
     {
-        while(age > 0)
+        while (age > 0)
         {
             yield return new WaitForFixedUpdate();
             age -= Time.deltaTime;
@@ -200,7 +200,7 @@ public class Projectile : MonoBehaviour
         Vector2 targetPos = PositionInNormalDirection(collision.transform.position / GameManager.Instance.LevelGenerator.Scale, normal);
         Transform targetTransform = GameManager.Instance.LevelGenerator.CubesArray[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y)];
         Cube_Edible cube;
-        if(targetTransform.TryGetComponent(out cube))
+        if (targetTransform.TryGetComponent(out cube))
         {
             cube.GetBarfed(collision.GetContact(0).point);
         }
@@ -243,32 +243,32 @@ public class Projectile : MonoBehaviour
     {
         RaycastHit2D[] hits = CustomPhysics.SquareCast(position, GameManager.Instance.LevelGenerator.Scale * .9f, true);
 
-        for(int i = 0; i < hits.Length; i++)
+        for (int i = 0; i < hits.Length; i++)
         {
             if (hits[i] && hits[i].transform.gameObject.layer != LayerMask.NameToLayer("Projectile"))
             {
-                if(hits[i].transform.GetComponent<PlayerManager>() == owner)
+                if (hits[i].transform.GetComponent<PlayerManager>() == owner)
                 {
                     if (hasHurt) return false;
 
-                    if(ClosestAxis(impactedCubeToOwner, true).x == 0)
+                    if (ClosestAxis(impactedCubeToOwner, true).x == 0)
                     {
-                        #if UNITY_EDITOR
+#if UNITY_EDITOR
                         {
                             Debug.DrawRay((Vector2)owner.transform.position - impactedCubeToOwner, impactedCubeToOwner, Color.blue, 5f);
                         }
-                        #endif
+#endif
 
                         Vector2 safe = position + (owner.PCollider.bounds.extents.y + .5f * GameManager.Instance.LevelGenerator.Scale) * ClosestAxis(impactedCubeToOwner, true);
                         owner.MoveOverTo(safe + new Vector2(owner.transform.position.x - safe.x, 0));
                     }
                     else
                     {
-                        #if UNITY_EDITOR
+#if UNITY_EDITOR
                         {
                             Debug.DrawRay((Vector2)owner.transform.position - impactedCubeToOwner, impactedCubeToOwner, Color.blue, 5f);
                         }
-                        #endif
+#endif
 
                         Vector2 safe = position + (owner.PCollider.bounds.extents.x + .5f * GameManager.Instance.LevelGenerator.Scale) * ClosestAxis(impactedCubeToOwner, true);
                         owner.MoveOverTo(safe + new Vector2(0, owner.transform.position.y - safe.y));
@@ -296,21 +296,21 @@ public class Projectile : MonoBehaviour
         {
             direction = CustomVectors.ApproxNormal(direction);
 
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             {
                 Debug.DrawRay(owner.transform.position, ownerVelocityAtLaunch.normalized * 4f, Color.magenta, 5f);
                 //Debug.Log(ownerVelocityAtLaunch);
             }
-            #endif
+#endif
 
-            if(ownerVelocityAtLaunch == Vector2.zero) { ownerVelocityAtLaunch = Vector2.down; }
+            if (ownerVelocityAtLaunch == Vector2.zero) { ownerVelocityAtLaunch = Vector2.down; }
             Vector2 ownerVelocity = CustomVectors.ClosestAxis(ownerVelocityAtLaunch);
 
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             {
                 Debug.DrawRay(owner.transform.position, ownerVelocity * 4f, Color.yellow, 5f);
             }
-            #endif
+#endif
 
             if (direction == Vector2.up || direction == Vector2.down || direction == Vector2.left || direction == Vector2.right)
             {
@@ -319,20 +319,20 @@ public class Projectile : MonoBehaviour
             }
             else if (direction == Vector2.one)
             {
-                if(ownerVelocity == Vector2.left) return Vector2.right;
-                else if(ownerVelocity == Vector2.down) return Vector2.up;
+                if (ownerVelocity == Vector2.left) return Vector2.right;
+                else if (ownerVelocity == Vector2.down) return Vector2.up;
             }
-            else if(direction == -Vector2.one)
+            else if (direction == -Vector2.one)
             {
                 if (ownerVelocity == Vector2.right) return Vector2.left;
                 else if (ownerVelocity == Vector2.up) return Vector2.down;
             }
-            else if(direction == new Vector2(1, -1))
+            else if (direction == new Vector2(1, -1))
             {
                 if (ownerVelocity == Vector2.left) return Vector2.right;
                 else if (ownerVelocity == Vector2.up) return Vector2.down;
             }
-            else if(direction == new Vector2(-1, 1))
+            else if (direction == new Vector2(-1, 1))
             {
                 if (ownerVelocity == Vector2.right) return Vector2.left;
                 else if (ownerVelocity == Vector2.down) return Vector2.up;

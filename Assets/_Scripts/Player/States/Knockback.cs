@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Knockback : State
 {
-    public Knockback(PlayerStateSystem playerSystem) : base(playerSystem){}
+    public Knockback(PlayerStateSystem playerSystem) : base(playerSystem) { }
 
     /// <summary>
     /// Knockback le joueur
@@ -14,7 +14,7 @@ public class Knockback : State
 
     public override void FixedUpdate()
     {
-        if(playerSystem.PlayerSystemManager.GroundCheck() && playerSystem.PlayerSystemManager.Rb2D.velocity.y == 0)
+        if (playerSystem.PlayerSystemManager.GroundCheck() && playerSystem.PlayerSystemManager.Rb2D.velocity.y == 0)
             playerSystem.SetState((new Moving(playerSystem)));
     }
 }

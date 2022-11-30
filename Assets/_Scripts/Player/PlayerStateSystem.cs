@@ -17,7 +17,7 @@ public class PlayerStateSystem : StateMachine
 
     public void Start()
     {
-        SetState((new Moving(this))); 
+        SetState((new Moving(this)));
     }
 
     public void SetKnockback(Vector2 knockBackForce)
@@ -68,17 +68,17 @@ public class PlayerStateSystem : StateMachine
     {
         State?.OnHoldShoot();
     }
-    
+
     public void OnShoot()
     {
         State?.OnShoot();
     }
-    
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         State?.OnCollision(collision);
     }
-    
+
     private void OnTriggerEnter2D(Collider2D col)
     {
         State?.OnTrigger(col);

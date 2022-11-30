@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Dead : State
 {
-    public Dead(PlayerStateSystem playerSystem) : base(playerSystem){}
+    public Dead(PlayerStateSystem playerSystem) : base(playerSystem) { }
 
     private float waitTime;
     private float timeToWait;
