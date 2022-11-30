@@ -23,7 +23,7 @@ public class Aim : State
     public override void OnShoot()
     {
         playerSystem.PlayerSystemManager.AimPivot.gameObject.SetActive(false);
-        playerSystem.PlayerSystemManager.Shoot();
+        //playerSystem.PlayerSystemManager.Shoot();
         playerSystem.SetState(new Moving(playerSystem));
     }
 }

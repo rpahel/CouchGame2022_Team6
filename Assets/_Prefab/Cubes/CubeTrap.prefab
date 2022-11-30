@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3403455012174948811}
   - component: {fileID: 2566610700557054638}
   - component: {fileID: 4844367436440386211}
+  - component: {fileID: 8651960174860524427}
   m_Layer: 8
   m_Name: Cube
   m_TagString: CubeTrap
@@ -111,6 +112,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &8651960174860524427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303830590082189049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498fd01bcd55df24bb91fc574d2fd29a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 2
+  cube: {fileID: 303830590082189049}
+  unscaledPosition: {x: 0, y: 0}
+  _sideKnockForce: 1
+  _damageAmount: 0
 --- !u!1 &2613636963887001808
 GameObject:
   m_ObjectHideFlags: 0
@@ -120,7 +138,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2613636963887001772}
-  - component: {fileID: -6608917199786195400}
+  - component: {fileID: 478985761459932768}
   m_Layer: 8
   m_Name: CubeTrap
   m_TagString: CubeTrap
@@ -144,7 +162,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-6608917199786195400
+--- !u!114 &478985761459932768
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,3 +177,5 @@ MonoBehaviour:
   cubeType: 2
   cube: {fileID: 303830590082189049}
   unscaledPosition: {x: 0, y: 0}
+  _sideKnockForce: 1
+  _damageAmount: 20
