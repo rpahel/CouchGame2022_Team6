@@ -248,7 +248,7 @@ public class Projectile : MonoBehaviour
         {
             if (hits[i] && hits[i].transform.gameObject.layer != LayerMask.NameToLayer("Projectile"))
             {
-                if(hits[i].transform.GetComponent<PlayerManager>() == owner)
+                if(hits[i].transform.GetComponent<PlayerSystemManager>() == owner)
                 {
                     if (hasHurt) return false;
 

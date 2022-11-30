@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpecialTriggerScript : MonoBehaviour
 {
-    [SerializeField] private PlayerManager PManager;
+    [SerializeField] private PlayerSystemManager PManager;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
