@@ -534,7 +534,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   necessaryFood: 8
-  cooldown: 0.3
+  cooldown: 0.65
   aimPivot: {fileID: 8009965234519673580}
   initialSpeed: 45
   gravity: 5
