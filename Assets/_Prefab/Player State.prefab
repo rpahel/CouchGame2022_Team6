@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: -5957723479509861639}
   - component: {fileID: -5276769057875731088}
   m_Layer: 3
-  m_Name: PlayeState
+  m_Name: Player State
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -433,9 +433,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 0, g: 0, b: 0, a: 0}
+  playerInput: {fileID: 0}
+  insideSprite: {fileID: 1940364374433954416}
   maxSize: 2.857
   minSize: 1
-  insideSprite: {fileID: 1940364374433954416}
   maxSpeed: 25
   stopDuration: 0.05
   jumpForce: 28
@@ -456,7 +457,7 @@ MonoBehaviour:
   holdEat: 0
   necessaryFood: 0
   cooldownShoot: 0
-  cdTimer: 0
+  canShoot: 1
   aimPivot: {fileID: 8009965234519673580}
   initialSpeed: 50
   gravity: 5
