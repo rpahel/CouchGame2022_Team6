@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CameraManager cManager;
     [SerializeField] private LevelGenerator levelGenerator;
     public LevelGenerator LevelGenerator => levelGenerator;
+    public CameraManager CameraManager => cManager;
     #endregion
 
     #region Variables
@@ -19,11 +20,14 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     //============================
-    [Header("Donnï¿½es")]
+    [Header("Données")]
     [SerializeField, Tooltip("Le prefab du projectile.")]
     private GameObject projectile;
-    [SerializeField, Tooltip("Le nombre de projectiles en cache au dï¿½but du jeu.")]
+    [SerializeField, Tooltip("Le nombre de projectiles en cache au début du jeu.")]
     private int projectileNumber;
+    [SerializeField, Tooltip("Le nombre de secondes avant de respawn."), Range(0, 5)]
+    private float respawnTime;
+    public float RespawnTime => respawnTime;
 
     //============================
     public  GAME_STATE GameState { get; private set; }
@@ -58,10 +62,10 @@ public class GameManager : MonoBehaviour
         }
 
         if (!projectile)
-            throw new Exception("Pas de projectile rï¿½fï¿½rencï¿½ dans le Game Manager.");
+            throw new Exception("Pas de projectile référencé dans le Game Manager.");
 
         if (projectileNumber <= 0)
-            Debug.LogError($"ATTENTION t'as mis projectileNumber ï¿½ {projectile} dans le Game Manager. Aucun projectile ne sera spawnï¿½.");
+            Debug.LogError($"ATTENTION t'as mis projectileNumber à {projectile} dans le Game Manager. Aucun projectile ne sera spawné.");
 
         if(!levelGenerator)
             levelGenerator = FindObjectOfType<LevelGenerator>();
@@ -73,13 +77,13 @@ public class GameManager : MonoBehaviour
     #region Custom_Functions
 
     /// <summary>
-    /// Change l'ï¿½tat du jeu. Peut activer des fonctions en fonction de l'ï¿½tat choisit.
+    /// Change l'état du jeu. Peut activer des fonctions en fonction de l'état choisit.
     /// </summary>
-    /// <param name="newState">Le nouvel ï¿½tat du jeu.</param>
+    /// <param name="newState">Le nouvel état du jeu.</param>
     public void ChangeGameState(GAME_STATE newState)
     {
         GameState = newState;
-        switch (GameState) // J'utilise un switch au cas oï¿½ on a besoin de faire d'autres features pour d'autres ï¿½tats
+        switch (GameState) // J'utilise un switch au cas où on a besoin de faire d'autres features pour d'autres états
         {
             case GAME_STATE.PLAYING:
                 pInputManager.EnableJoining();
@@ -88,7 +92,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawn un joueur et le place ï¿½ un spawnPosition. Update la camera pour prendre en compte ce nouveau joueur.
+    /// Spawn un joueur et le place à un spawnPosition. Update la camera pour prendre en compte ce nouveau joueur.
     /// </summary>
     /// <exception cref="System.Exception"> Erreur quand il y a plus de joueurs que de points de spawn disponibles.</exception>
     public void OnPlayerJoined(PlayerInput pi)
@@ -101,16 +105,22 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"Player {pi.playerIndex} joined!");
 
-        pi.transform.position = spawnPositions[pi.playerIndex].position;
+        RespawnPlayer(pi);
         playerTransforms[pi.playerIndex] = pi.transform;
         pi.GetComponent<PlayerSystemManager>().color = playerColors[pi.playerIndex];
+        pi.GetComponent<PlayerSystemManager>().playerInput = pi;
+    }
+
+    public void RespawnPlayer(PlayerInput pi)
+    {
+        pi.transform.position = spawnPositions[pi.playerIndex].position;
         cManager.UpdatePlayers(pi.transform);
     }
 
     /// <summary>
-    /// Gï¿½nï¿½re un cache de projectiles pour ï¿½viter de les Instantiate ï¿½ chaque fois.
+    /// Génère un cache de projectiles pour éviter de les Instantiate à chaque fois.
     /// </summary>
-    /// <param name="number">Nombre de projectiles ï¿½ mettre en cache.</param>
+    /// <param name="number">Nombre de projectiles à mettre en cache.</param>
     private void GenerateProjectilePool(int number)
     {
         GameObject parent = new GameObject();
@@ -129,7 +139,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Ajoute un projectile au cache de projectiles.
     /// </summary>
-    /// <param name="number">Le nombre de projectile ï¿½ ajouter.</param>
+    /// <param name="number">Le nombre de projectile à ajouter.</param>
     private void AddProjectileToPool(int number)
     {
         for (int i = 0; i < number; i++)
@@ -143,7 +153,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Retourne un projectile qui n'est pas actif dans la scï¿½ne. S'il n'y en a pas, ï¿½a en crï¿½er 2 nouveaux.
+    /// Retourne un projectile qui n'est pas actif dans la scène. S'il n'y en a pas, ça en créer 2 nouveaux.
     /// </summary>
     public Projectile GetAvailableProjectile()
     {
@@ -154,7 +164,7 @@ public class GameManager : MonoBehaviour
             AddProjectileToPool(2);
             SetAsLastOfList(projPool, p);
             p.transform.SetAsLastSibling();
-            return GetAvailableProjectile(); // C'est dangereux mais normalement c'est censï¿½ aller qu'ï¿½ une seule profondeur. On devrait pas StackOverflow ï¿½ cause de ï¿½a.
+            return GetAvailableProjectile(); // C'est dangereux mais normalement c'est censé aller qu'à une seule profondeur. On devrait pas StackOverflow à cause de ça.
         }
         else
         {
@@ -165,7 +175,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Dï¿½place un ï¿½lï¿½ment ï¿½ la fin de la liste.
+    /// Déplace un élément à la fin de la liste.
     /// </summary>
     private void SetAsLastOfList<T>(List<T> list, T element)
     {
