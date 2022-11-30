@@ -1,11 +1,7 @@
 using CustomMaths;
-using Data;
-using DG.Tweening;
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
 
 
 public class PlayerSystemManager : MonoBehaviour
@@ -154,16 +150,12 @@ public class PlayerSystemManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        UpdatePlayerScale();
-
        insideSprite.color = playerSystem.PlayerState switch
         {
             // On change la couleur du joueur en fonction de son �tat
             Knockback => Color.red,
             _ => color
         };
-
-
     }
 
     public void SetStopDuration(float amount)
@@ -182,22 +174,22 @@ public class PlayerSystemManager : MonoBehaviour
         if (playerSystem.PlayerState is Dashing) return;
 
         fullness = Mathf.Clamp(fullness - damage, 0, 100);
-        UpdatePlayerScale();
-        //Stats
 
-        //rb2D.AddForce(knockBackForce, ForceMode2D.Impulse);
-        rb2D.velocity += Time.deltaTime * 100f * knockBackForce;
-        playerSystem.SetKnockback(knockBackForce);
-    }
-
-    public void UpdatePlayerScale()
-    {
         if (fullness <= 0 && playerSystem.PlayerState is not Dead)
         {
             playerSystem.SetState(new Dead(playerSystem));
             return;
         }
 
+        UpdatePlayerScale();
+        //Stats
+
+        rb2D.velocity += Time.deltaTime * 100f * knockBackForce;
+        playerSystem.SetKnockback(knockBackForce);
+    }
+
+    public void UpdatePlayerScale()
+    {
         transform.localScale = Vector3.one * Mathf.Lerp(minSize, maxSize, fullness * .01f);
     }
 
