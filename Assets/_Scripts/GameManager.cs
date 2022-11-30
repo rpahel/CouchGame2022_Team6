@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 {
     #region Autres_Scripts
     //============================
-    private UnityEngine.InputSystem.PlayerInputManager pInputManager;
+    private PlayerInputManager pInputManager;
     [SerializeField] private CameraManager cManager;
     [SerializeField] private LevelGenerator levelGenerator;
     public LevelGenerator LevelGenerator => levelGenerator;

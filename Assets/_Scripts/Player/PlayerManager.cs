@@ -152,6 +152,9 @@ public class PlayerManager : MonoBehaviour
             castDistance = (_coll.bounds.extents.y - _coll.bounds.extents.x) + .1f;
         else
             throw new Exception("PManager.PCollider is not a CapsuleCollider2D. Please update the code.");
+
+
+        UpdatePlayerScale();
     }
 
     private void Update()
@@ -307,22 +310,22 @@ public class PlayerManager : MonoBehaviour
     #region Shoot
     public void Shoot()
     {
-        var aimDirection = _playerSystem.PlayerSystemManager.inputVectorDirection;
+        var aimDirection = _playerSystem.PlayerManager.inputVectorDirection;
 
-        if (!_playerSystem.PlayerSystemManager.canShoot)
+        if (!_playerSystem.PlayerManager.canShoot)
         {
             Debug.Log($"Attendez le cooldown du tir");
             return;
         }
 
-        if (_playerSystem.PlayerSystemManager.fullness < _playerSystem.PlayerSystemManager.NecessaryFood)
+        if (_playerSystem.PlayerManager.fullness < _playerSystem.PlayerManager.NecessaryFood)
         {
             Debug.Log("Pas assez de nourriture pour shoot.");
             return;
         }
 
         if (aimDirection == Vector2.zero)
-            aimDirection = _playerSystem.PlayerSystemManager.LookDirection;
+            aimDirection = _playerSystem.PlayerManager.LookDirection;
 
         if (!IsThereEnoughSpace(aimDirection))
         {
@@ -332,8 +335,8 @@ public class PlayerManager : MonoBehaviour
 
         ShootProjectile(aimDirection);
 
-        _playerSystem.PlayerSystemManager.fullness = Mathf.Clamp(_playerSystem.PlayerSystemManager.fullness - _playerSystem.PlayerSystemManager.NecessaryFood, 0, 100);
-        _playerSystem.PlayerSystemManager.UpdatePlayerScale();
+        _playerSystem.PlayerManager.fullness = Mathf.Clamp(_playerSystem.PlayerManager.fullness - _playerSystem.PlayerManager.NecessaryFood, 0, 100);
+        _playerSystem.PlayerManager.UpdatePlayerScale();
 
         _playerSystem.CooldownManager.StartCoroutine(_playerSystem.CooldownManager.CooldownShoot());
 
@@ -343,17 +346,17 @@ public class PlayerManager : MonoBehaviour
     private void ShootProjectile(Vector2 aimDirection)
     {
         Projectile projectile = GameManager.Instance.GetAvailableProjectile();
-        projectile.owner = _playerSystem.PlayerSystemManager;
-        projectile.color = _playerSystem.PlayerSystemManager.color;
+        projectile.owner = _playerSystem.PlayerManager;
+        projectile.color = _playerSystem.PlayerManager.color;
         projectile.transform.position = _playerSystem.transform.position;
-        projectile.gravity = _playerSystem.PlayerSystemManager._gravity;
-        projectile.bounceForce = _playerSystem.PlayerSystemManager._bounceForce;
-        projectile.percentageDealt = _playerSystem.PlayerSystemManager._inflictedFoodDamage;
-        projectile.knockBackForce = _playerSystem.PlayerSystemManager._knockBackForce;
-        projectile.ownerVelocityAtLaunch = _playerSystem.PlayerSystemManager.Rb2D.velocity;
+        projectile.gravity = _playerSystem.PlayerManager._gravity;
+        projectile.bounceForce = _playerSystem.PlayerManager._bounceForce;
+        projectile.percentageDealt = _playerSystem.PlayerManager._inflictedFoodDamage;
+        projectile.knockBackForce = _playerSystem.PlayerManager._knockBackForce;
+        projectile.ownerVelocityAtLaunch = _playerSystem.PlayerManager.Rb2D.velocity;
 
         projectile.gameObject.SetActive(true);
-        projectile.Shoot(aimDirection, _playerSystem.PlayerSystemManager._initialSpeed);
+        projectile.Shoot(aimDirection, _playerSystem.PlayerManager._initialSpeed);
     }
 
     /// <summary>

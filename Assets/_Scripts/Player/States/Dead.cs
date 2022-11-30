@@ -23,7 +23,6 @@ public class Dead : State
 
     private void Die()
     {
-        Debug.Log("Je meurs");
         waitTime = 0;
         GameManager.Instance.CameraManager.UpdatePlayers(playerSystem.transform); // Retire le transform du joueur dans le TargetGroup
         playerSystem.transform.position = new Vector3(-100, -100, 0);
@@ -32,9 +31,9 @@ public class Dead : State
     // Mettre cette fonction direct dans PlayerSystemManager
     private void Respawn()
     {
-        Debug.Log("Je revis");
-        GameManager.Instance.RespawnPlayer(playerSystem.PlayerSystemManager.playerInput);
-        playerSystem.PlayerSystemManager.fullness = 50;
+        GameManager.Instance.RespawnPlayer(playerSystem.PlayerManager.playerInput);
+        playerSystem.PlayerManager.fullness = 50;
+        playerSystem.PlayerManager.UpdatePlayerScale();
         playerSystem.SetState(new Moving(playerSystem));
     }
 }

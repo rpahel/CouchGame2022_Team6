@@ -8,8 +8,6 @@ public class Cube_Edible : Cube
 {
     #region Variables
     //======================================================================
-    [SerializeField, Tooltip("Les restes en enfant ce gameObject.")]
-    private GameObject[] leftOvers = new GameObject[4];
     [SerializeField, Range(0.01f, .5f), Tooltip("Le temps que met le cube a parcourir la distance départ -> joueur")]
     private float moveDuration;
     [SerializeField, Range(-180, 180), Tooltip("Le degré de rotation du cube lors de l'animation quand tu le manges.")]
@@ -95,18 +93,6 @@ public class Cube_Edible : Cube
         if (!playerTransform)
             cube.SetActive(false);
 
-        // Fais apparaitre les restes en fonction des cubes voisins qui sont toujours là
-        if (showRestes)
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                if (cubesAutour[i] && !cubesAutour[i].IsEaten)
-                {
-                    leftOvers[i].SetActive(true);
-                }
-            }
-        }
-
         if (playerTransform)
         {
             cube.transform.parent = null;
@@ -149,10 +135,12 @@ public class Cube_Edible : Cube
     /// <param name="indexDuVoisin">L'index du voisin.</param>
     public void NeighbourGotEaten(int indexDuVoisin)
     {
-        if (isEaten)
-        {
-            leftOvers[indexDuVoisin].SetActive(false);
-        }
+        //if (isEaten)
+        //{
+        //    leftOvers[indexDuVoisin].SetActive(false);
+        //}
+
+        // Changer cette fonction pour update le sprite du cube en fonction des cubes autour
     }
 
     /// <summary>
@@ -160,11 +148,6 @@ public class Cube_Edible : Cube
     /// </summary>
     public void GetBarfed(Vector2 impactPos)
     {
-        foreach (GameObject reste in leftOvers)
-        {
-            reste.SetActive(false);
-        }
-
         cube.transform.localScale = Vector3.one;
         cube.transform.rotation = Quaternion.Euler(Vector3.zero);
         cube.SetActive(true);

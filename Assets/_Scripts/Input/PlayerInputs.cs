@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInputManager : MonoBehaviour
+public class PlayerInputs : MonoBehaviour
 {
     #region Autres Scripts
     //==========================================================================
 
-    private PlayerManager _playerSystemManager;
+    private PlayerManager _playerManager;
     private PlayerStateSystem _playerSystem;
     public bool InputIsEnabled { get; private set; }
     #endregion
@@ -16,13 +16,13 @@ public class PlayerInputManager : MonoBehaviour
     private void Awake()
     {
         _playerSystem = GetComponent<PlayerStateSystem>();
-        _playerSystemManager = GetComponent<PlayerManager>();
+        _playerManager = GetComponent<PlayerManager>();
         InputIsEnabled = true;
     }
 
     public void OnMove(InputAction.CallbackContext input)
     {
-        _playerSystem.PlayerSystemManager.inputVectorDirection = input.ReadValue<Vector2>().normalized;
+        _playerSystem.PlayerManager.inputVectorDirection = input.ReadValue<Vector2>().normalized;
 
         if (_playerSystem.PlayerState is not Moving || !InputIsEnabled)
             return;
@@ -38,10 +38,10 @@ public class PlayerInputManager : MonoBehaviour
             _playerSystem.OnJump();
 
         else if (input.performed)
-            _playerSystemManager.holdJump = true;
+            _playerManager.holdJump = true;
 
         else if (input.canceled)
-            _playerSystemManager.holdJump = false;
+            _playerManager.holdJump = false;
     }
 
     public void OnEat(InputAction.CallbackContext input)
@@ -49,20 +49,20 @@ public class PlayerInputManager : MonoBehaviour
         if (!InputIsEnabled) return;
 
         if (input.started)
-            _playerSystemManager.OnEat();
+            _playerManager.OnEat();
 
         else if (input.performed)
-            _playerSystemManager.holdEat = true;
+            _playerManager.holdEat = true;
 
         else if (input.canceled)
-            _playerSystemManager.holdEat = false;
+            _playerManager.holdEat = false;
     }
 
     public void OnShoot(InputAction.CallbackContext input)
     {
         if (!InputIsEnabled) return;
 
-        if (_playerSystemManager.fullness < _playerSystemManager.NecessaryFood) return;
+        if (_playerManager.fullness < _playerManager.NecessaryFood) return;
 
         if (input.performed)
         {
@@ -72,7 +72,7 @@ public class PlayerInputManager : MonoBehaviour
         if (input.canceled)
         {
             if (_playerSystem.PlayerState is Moving)
-                _playerSystem.PlayerSystemManager.Shoot();
+                _playerSystem.PlayerManager.Shoot();
             else if (_playerSystem.PlayerState is Aim)
                 _playerSystem.OnShoot();
         }

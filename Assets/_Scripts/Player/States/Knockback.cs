@@ -9,12 +9,12 @@ public class Knockback : State
     /// </summary>
     public override void OnKnockback(Vector2 knockBackForce)
     {
-        playerSystem.PlayerSystemManager.Rb2D.velocity += Time.deltaTime * 100f * knockBackForce;
+        playerSystem.PlayerManager.Rb2D.velocity += Time.deltaTime * 100f * knockBackForce;
     }
 
     public override void FixedUpdate()
     {
-        if (playerSystem.PlayerSystemManager.GroundCheck() && playerSystem.PlayerSystemManager.Rb2D.velocity.y == 0)
+        if (playerSystem.PlayerManager.GroundCheck() && playerSystem.PlayerManager.Rb2D.velocity.y == 0)
             playerSystem.SetState((new Moving(playerSystem)));
     }
 }

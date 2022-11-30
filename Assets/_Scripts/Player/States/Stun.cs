@@ -14,10 +14,10 @@ public class Stun : State
     /// <param name="damage">Lra quantit? de bouffe ? retirer.</param>
     public override void OnStun<T>(T damageDealer, int damage, Vector2 knockBackForce)
     {
-        playerSystem.PlayerSystemManager.fullness = Mathf.Clamp(playerSystem.PlayerSystemManager.fullness - damage, 0, 100);
-        playerSystem.PlayerSystemManager.UpdatePlayerScale();
+        playerSystem.PlayerManager.fullness = Mathf.Clamp(playerSystem.PlayerManager.fullness - damage, 0, 100);
+        playerSystem.PlayerManager.UpdatePlayerScale();
 
-        playerSystem.CooldownManager.StartCoroutine(playerSystem.CooldownManager.ActivateInputDelay(playerSystem.PlayerSystemManager.CooldownShoot));
+        playerSystem.CooldownManager.StartCoroutine(playerSystem.CooldownManager.ActivateInputDelay(playerSystem.PlayerManager.CooldownShoot));
     }
 
     public override void FixedUpdate()
