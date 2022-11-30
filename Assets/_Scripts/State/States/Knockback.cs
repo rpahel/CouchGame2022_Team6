@@ -16,12 +16,14 @@ public class Knockback : State
     /// <param name="damage">Lra quantit? de bouffe ? retirer.</param>
     public override void OnKnockback(Vector2 knockBackForce)
     {
+        Debug.Log("knock");
         //playerSystem.PlayerSystemManager.Rb2D.AddForce(knockBackForce, ForceMode2D.Impulse);
         playerSystem.PlayerSystemManager.Rb2D.velocity += Time.deltaTime * 100f * knockBackForce;
     }
 
-    public override void OnCollision(Collision2D col)
+    public override void OnCollisionEnter(Collision2D col)
     {
+        //playerSystem.PlayerSystemManager.Rb2D.velocity = Vector2.zero;
         playerSystem.SetState(new Moving(playerSystem));
     }
 }

@@ -400,7 +400,19 @@ MonoBehaviour:
     m_ActionId: fd700e65-f6b9-42f0-b82a-69b23ae65c14
     m_ActionName: Game/Shoot
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -5957723479509861639}
+        m_TargetAssemblyTypeName: PlayerInputsState, Assembly-CSharp
+        m_MethodName: Special
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: a0bdb637-8780-48c9-ad17-06545e42832d
     m_ActionName: Game/Special[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
@@ -455,7 +467,7 @@ MonoBehaviour:
   cooldown: 0
   tickHoldEat: 0
   holdEat: 0
-  necessaryFood: 0
+  necessaryFoodShoot: 0
   cooldownShoot: 0
   canShoot: 1
   aimPivot: {fileID: 8009965234519673580}
@@ -465,6 +477,17 @@ MonoBehaviour:
   inflictedFoodDamage: 20
   knockBackForce: 35
   raycastRange: 0
+  timeToMaxCharge: 3
+  maxDistance: 40
+  minDistance: 10
+  necessaryFoodSpecial: 0
+  dashCooldown: 2
+  dashForce: 10
+  specialTrigger: {fileID: 4317817617938280482}
+  inputDirectionDash: {x: 0, y: 0}
+  charge: 0
+  isHolding: 0
+  canDash: 1
 --- !u!114 &-5957723479509861639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -499,6 +522,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1228374104199151351}
   - component: {fileID: 8881702519060311405}
+  - component: {fileID: 7388501295175255130}
   m_Layer: 3
   m_Name: Special Trigger
   m_TagString: Untagged
@@ -537,6 +561,18 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.97, y: 1.94}
   m_Direction: 0
+--- !u!114 &7388501295175255130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4317817617938280482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 898ee93813db6ba4797fcf5edb129e4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8273371953776669671
 GameObject:
   m_ObjectHideFlags: 0

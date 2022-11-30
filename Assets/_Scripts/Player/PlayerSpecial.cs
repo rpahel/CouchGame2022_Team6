@@ -12,11 +12,11 @@ public class PlayerSpecial : MonoBehaviour
 
     #region Variables
     //===================================================
-    [SerializeField, Range(1, 3), Tooltip("Durée en secondes avant d'atteindre le niveau de charge max.")]
+    [SerializeField, Range(1, 3), Tooltip("Durï¿½e en secondes avant d'atteindre le niveau de charge max.")]
     private float timeToMaxCharge;
-    [SerializeField, Range(0, 40), Tooltip("Distance en mètres du special à son maximum.")]
+    [SerializeField, Range(0, 40), Tooltip("Distance en mï¿½tres du special ï¿½ son maximum.")]
     private float maxDistance;
-    [SerializeField, Range(0, 40), Tooltip("Distance en mètres du special à son minimum (simple press du bouton).")]
+    [SerializeField, Range(0, 40), Tooltip("Distance en mï¿½tres du special ï¿½ son minimum (simple press du bouton).")]
     private float minDistance;
     [SerializeField]
     private float dashCooldown;
@@ -26,7 +26,7 @@ public class PlayerSpecial : MonoBehaviour
     private GameObject specialTrigger;
 
     //===================================================
-    private float charge; // 0 à 1
+    private float charge; // 0 ï¿½ 1
     private bool isHolding;
     private bool canDash = true;
     #endregion
@@ -103,7 +103,6 @@ public class PlayerSpecial : MonoBehaviour
     }
     private IEnumerator DashCoroutine(float dashDuration)
     {
-        PManager.PlayerState = PLAYER_STATE.DASHING;
         canDash = false;
         gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
         specialTrigger.SetActive(true);

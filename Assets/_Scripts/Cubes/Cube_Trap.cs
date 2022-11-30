@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using UnityEngine;
 
 public class Cube_Trap : Cube
@@ -13,9 +14,21 @@ public class Cube_Trap : Cube
         if (!collision.gameObject.CompareTag("Player")) return;
 
         var playerSystemManager = collision.gameObject.GetComponent<PlayerSystemManager>();
-        var vec = collision.contacts[0].normal;
+        var vec = collision.GetContact(0).normal;
 
-        if (vec == new Vector2(0, -1))
+        if (vec == new Vector2(0, -1) || vec == new Vector2(0, 1))
+        {
+            Debug.Log("Not side");
+            var rand = UnityEngine.Random.Range(0, 2);
+            KnockBack(rand == 0 ? new Vector2(0.5f, -vec.y) : new Vector2(-0.5f, -vec.y), playerSystemManager);
+            return;
+        }
+        
+        Debug.Log("Side");
+        KnockBack(new Vector2(-vec.x, -vec.y), playerSystemManager);
+        
+        
+        /*if (vec == new Vector2(0, -1))
         {
             Debug.Log("up");
             KnockbackRandom(playerSystemManager, Vector3.up);
@@ -31,7 +44,7 @@ public class Cube_Trap : Cube
         {
             Debug.Log("Side");
             KnockBack(new Vector2(-vec.x, -vec.y), playerSystemManager);
-        }
+        }*/
             
     }
 
@@ -55,6 +68,6 @@ public class Cube_Trap : Cube
 
     private void KnockBack(Vector3 vec, PlayerSystemManager playerSystem)
     {
-        playerSystem.OnDamage(this, _damageAmount, vec * 100);
+        playerSystem.OnDamage(this, _damageAmount, vec * 10);
     }
 }

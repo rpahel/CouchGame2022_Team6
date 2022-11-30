@@ -3,9 +3,9 @@ using UnityEngine;
 using System;
 using Data;
 using DG.Tweening;
-public class Aim : State 
+public class AimShoot : State 
 {
-    public Aim(PlayerSystem playerSystem) : base(playerSystem)
+    public AimShoot(PlayerSystem playerSystem) : base(playerSystem)
     {
     }
     
@@ -23,7 +23,7 @@ public class Aim : State
     public override void OnShoot()
     {
         playerSystem.PlayerSystemManager.AimPivot.gameObject.SetActive(false);
-        //playerSystem.PlayerSystemManager.Shoot();
+        playerSystem.PlayerSystemManager.Shoot();
         playerSystem.SetState(new Moving(playerSystem));
     }
 }

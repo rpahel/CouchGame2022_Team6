@@ -84,7 +84,7 @@ public class PlayerSystemManager : MonoBehaviour
     // PLAYER SHOOT VAR
     [Header("PLAYER SHOOT Variables")]
     [SerializeField, Range(0, 100), Tooltip("Pourcentage de nourriture utilisé pour tirer.")]
-    private int necessaryFood;
+    private int necessaryFoodShoot;
     [SerializeField, Range(0, 2), Tooltip("Laps de temps entre chaque tir.")]
     private float cooldownShoot;
     //[HideInInspector] public float cdTimer;
@@ -92,7 +92,7 @@ public class PlayerSystemManager : MonoBehaviour
     [SerializeField, Tooltip("Le gameObject AimPivot de ce Prefab.")]
     private Transform aimPivot;
 
-    public int NecessaryFood => necessaryFood;
+    public int NecessaryFoodShoot => necessaryFoodShoot;
     public float CooldownShoot => cooldownShoot;
     public Transform AimPivot => aimPivot;
     //============================
@@ -117,6 +117,36 @@ public class PlayerSystemManager : MonoBehaviour
     //[Header("STUN Variables")]
     //[SerializeField] private float cooldownStun;
     //public float CooldownStun => cooldownStun;
+    
+    [Header("SPECIAL Variables")]
+    [SerializeField, Range(1, 3), Tooltip("Dur�e en secondes avant d'atteindre le niveau de charge max.")]
+    private float timeToMaxCharge;
+    [SerializeField, Range(0, 40), Tooltip("Distance en m�tres du special � son maximum.")]
+    public float maxDistance;
+    [SerializeField, Range(0, 40), Tooltip("Distance en m�tres du special � son minimum (simple press du bouton).")]
+    private float minDistance;
+    [SerializeField, Range(0, 100), Tooltip("Pourcentage de nourriture utilisé pour special.")]
+    private int necessaryFoodSpecial;
+    [SerializeField]
+    private float dashCooldown;
+    [SerializeField]
+    private float dashForce;
+    [SerializeField]
+    private GameObject specialTrigger;
+
+    public Vector2 inputDirectionDash;
+    public float TimeToMaxCharge => timeToMaxCharge;
+    public float MaxDistance => maxDistance;
+    public float MinDistance => minDistance;
+    public int NecessaryFoodSpecial => necessaryFoodSpecial;
+    public float DashCooldown => dashCooldown; 
+    public float DashForce => dashForce;
+
+    public GameObject SpecialTrigger => specialTrigger;
+    //===================================================
+    public float charge; // 0 � 1
+    public bool isHolding;
+    public bool canDash = true;
     #endregion
 
     #region UNITY_FUNCTIONS
@@ -168,9 +198,9 @@ public class PlayerSystemManager : MonoBehaviour
     /// <typeparam name="T"></typeparam>
     /// <param name="damageDealer">L'objet responsable des d�gats (un joueur, un pi�ge, etc).</param>
     /// <param name="damage">Lra quantit� de bouffe � retirer.</param>
-    public void OnDamage<T>(T damageDeale, int damage, Vector2 knockBackForce)
+    public void OnDamage<T>(T damageDealer, int damage, Vector2 knockBackForce)
     {
-        if (playerSystem.PlayerState is Dashing) return;
+        if (playerSystem.PlayerState is Special) return;
 
         fullness = Mathf.Clamp(fullness - damage, 0, 100);
 
@@ -183,7 +213,7 @@ public class PlayerSystemManager : MonoBehaviour
         UpdatePlayerScale();
         //Stats
 
-        rb2D.velocity += Time.deltaTime * 100f * knockBackForce;
+        //rb2D.velocity += Time.deltaTime * 100f * knockBackForce;
         playerSystem.SetKnockback(knockBackForce);
     }
     #endregion
@@ -199,7 +229,7 @@ public class PlayerSystemManager : MonoBehaviour
             return;
         }
 
-        if (playerSystem.PlayerSystemManager.fullness < playerSystem.PlayerSystemManager.NecessaryFood)
+        if (playerSystem.PlayerSystemManager.fullness < playerSystem.PlayerSystemManager.NecessaryFoodShoot)
         {
             Debug.Log("Pas assez de nourriture pour shoot.");
             return;
@@ -216,7 +246,7 @@ public class PlayerSystemManager : MonoBehaviour
 
         ShootProjectile(aimDirection);
 
-        playerSystem.PlayerSystemManager.fullness = Mathf.Clamp(playerSystem.PlayerSystemManager.fullness - playerSystem.PlayerSystemManager.NecessaryFood, 0, 100);
+        playerSystem.PlayerSystemManager.fullness = Mathf.Clamp(playerSystem.PlayerSystemManager.fullness - playerSystem.PlayerSystemManager.NecessaryFoodShoot, 0, 100);
         playerSystem.PlayerSystemManager.UpdatePlayerScale();
 
         playerSystem.CooldownManager.StartCoroutine(playerSystem.CooldownManager.CooldownShoot());

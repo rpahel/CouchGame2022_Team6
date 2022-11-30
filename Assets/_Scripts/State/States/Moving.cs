@@ -201,11 +201,12 @@ public class Moving : State
 
     public override void OnHoldShoot()
     {
-        playerSystem.SetState(new Aim(playerSystem));
+        playerSystem.SetState(new AimShoot(playerSystem));
     }
 
-    public override void OnCollision(Collision2D col)
+    public override void OnHoldSpecial()
     {
+        playerSystem.SetState(new AimSpecial(playerSystem));
     }
 
 }

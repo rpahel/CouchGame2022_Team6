@@ -64,7 +64,7 @@ public class PlayerInputsState : MonoBehaviour
     {
         if (!InputIsEnabled) return;
 
-        if (_playerSystemManager.fullness < _playerSystemManager.NecessaryFood) return;
+        if (_playerSystemManager.fullness < _playerSystemManager.NecessaryFoodShoot) return;
 
         if (input.started)
         {
@@ -76,25 +76,27 @@ public class PlayerInputsState : MonoBehaviour
             _playerSystem.OnShoot();
         }
     }
+
+    public void Special(InputAction.CallbackContext input)
+    {
+        if (!InputIsEnabled) return;
+
+        if (_playerSystemManager.fullness < _playerSystemManager.NecessaryFoodSpecial) return;
+        
+        if (input.performed)
+        {
+            _playerSystem.OnHoldSpecial();
+        }
+
+        if (input.canceled)
+        {
+            _playerSystem.OnSpecial();
+        }
+    }
+    
     public void SetEnableInput(bool result)
     {
         InputIsEnabled = result;
     }
 
-    /*public void Special(InputAction.CallbackContext input)
-    {
-        if (input.performed)
-        {
-            PManager.PSpecial.Charge(true);
-        }
-
-        if (input.canceled)
-        {
-            PManager.PSpecial.UseSpecial();
-            PManager.PSpecial.Charge(false);
-        }
-    }
-
-   
-    #endregion*/
 }

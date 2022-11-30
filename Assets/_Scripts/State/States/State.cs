@@ -49,12 +49,17 @@ public abstract class State
         return;
     }
 
-    public virtual void OnCollision(Collision2D col)
+    public virtual void OnCollisionEnter(Collision2D col)
     {
         return;
     }
+
+    public virtual void OnCollisionStay(Collision2D col)
+    {
+        
+    }
     
-    public virtual void OnTrigger(Collider2D col)
+    public virtual void OnTriggerEnter(Collider2D col)
     {
         return;
     }
@@ -65,6 +70,15 @@ public abstract class State
     }
 
     public virtual void OnStun<T>(T damageDealer, int damage, Vector2 knockBackForce)
+    {
+        return;
+    }
+    public virtual void OnSpecial()
+    {
+        
+    }
+
+    public virtual void OnHoldSpecial()
     {
         return;
     }
