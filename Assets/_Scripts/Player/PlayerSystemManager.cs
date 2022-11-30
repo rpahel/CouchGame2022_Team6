@@ -28,6 +28,7 @@ public class PlayerSystemManager : MonoBehaviour
     //============================
     [HideInInspector] public Color color;
     [HideInInspector] public PlayerInput playerInput;
+    public SpriteRenderer insideSprite;
 
     // PLAYER MOVEMENT Variables
     public Vector2 LookDirection { get; set; }
@@ -129,6 +130,11 @@ public class PlayerSystemManager : MonoBehaviour
         cooldownManager = GetComponent<CooldownManager>();
     }
 
+    private void Start()
+    {
+        insideSprite.color = color;
+    }
+
     private void Update()
     {
         #if UNITY_EDITOR
@@ -150,13 +156,12 @@ public class PlayerSystemManager : MonoBehaviour
     {
         UpdatePlayerScale();
 
-       /* insideSprite.color = PlayerState switch
+       insideSprite.color = playerSystem.PlayerState switch
         {
             // On change la couleur du joueur en fonction de son �tat
-            PLAYER_STATE.KNOCKBACKED => Color.red,
-            PLAYER_STATE.SHOOTING => Color.blue,
-            _ => Color.white
-        };*/
+            Knockback => Color.red,
+            _ => color
+        };
 
 
     }
