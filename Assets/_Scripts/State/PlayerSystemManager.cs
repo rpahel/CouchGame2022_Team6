@@ -186,6 +186,7 @@ public class PlayerSystemManager : MonoBehaviour
         {
             // On change la couleur du joueur en fonction de son �tat
             Knockback => Color.red,
+            Special => Color.magenta,
             _ => color
         };
     }
