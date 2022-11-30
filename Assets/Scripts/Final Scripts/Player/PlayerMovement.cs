@@ -86,6 +86,10 @@ public class PlayerMovement : MonoBehaviour
     private Color colorVFX2;
     [ColorUsageAttribute(true,true,0f,8f,0.125f,3f), SerializeField]
     private Color colorVFX3;
+
+    //============================
+    [Header("SFX")]
+    private AudioSource audioSource;
     #endregion
 
     #region Unity_Functions
@@ -97,6 +101,7 @@ public class PlayerMovement : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _trailRenderer = GetComponent<TrailRenderer>();
         _playerInputHandler = GetComponent<PlayerInputHandler>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -238,6 +243,7 @@ public class PlayerMovement : MonoBehaviour
  
     private void Jump()
     {
+        audioSource.Play();
         _rb.velocity = new Vector2(_rb.velocity.x, 0);
         _rb.velocity += new Vector2(0, forceDeSaut);
     }
