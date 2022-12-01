@@ -119,11 +119,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /*public void RespawnPlayer(PlayerInput pi)
+    public void RespawnPlayer(GameObject go)
     {
-        pi.transform.position = spawnPositions[pi.playerIndex].position;
-        cManager.UpdatePlayers(pi.transform);
-    }*/
+        var index= GetPlayerIndex(go);
+        go.transform.position = LevelGenerator.IniSpawns[index].position;
+    }
+    
+    public int GetPlayerIndex(GameObject playerGo)
+    {
+        var playerNameLastChar = playerGo.name[^1];
+        var index = Convert.ToInt32(new string(playerNameLastChar, 1));
+        return index;
+    }
 
     public void AddPlayer(GameObject playerGo)
     {

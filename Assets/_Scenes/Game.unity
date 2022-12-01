@@ -152,6 +152,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
+      propertyPath: respawnTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
+        type: 3}
       propertyPath: _cinemachine
       value: 
       objectReference: {fileID: 534852311}
