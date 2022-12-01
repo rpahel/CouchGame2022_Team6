@@ -447,6 +447,28 @@ public class PlayerManager : MonoBehaviour
     public void UpdatePlayerScale()
     {
         transform.localScale = Vector3.one * Mathf.Lerp(_minSize, _maxSize, fullness * .01f);
+        UpdateTextUI();
+    }
+    
+    private void UpdateTextUI()
+    {
+        if (textUI == null) return;
+
+        var text = fullness;
+
+        switch (text)
+        {
+            case 100:
+                textUI.text = text + "%";
+                break;
+            case > 0 and < 10:
+            case < 1:
+                textUI.text = (text.ToString()).Substring(0, 1) + "%";
+                break;
+            default:
+                textUI.text = (text.ToString()).Substring(0, 2) + "%";
+                break;
+        }
     }
 
     /// <summary>
