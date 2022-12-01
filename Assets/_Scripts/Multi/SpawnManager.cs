@@ -32,7 +32,7 @@ public class SpawnManager : MonoBehaviour
             manager.PlayersUI[i].SetActive(true);
             player.GetComponent<PlayerManager>().imageUI = manager.PlayersUI[i].transform.GetChild(0).GetComponent<Image>();
             player.GetComponent<PlayerManager>().textUI = manager.PlayersUI[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-            //player.GetComponent<PlayerInputHandler>().InitializePlayer(playerConfigs[i]);
+            player.GetComponent<PlayerInputsHandler>().InitializePlayer(playerConfigs[i]);
             manager.CinemachineTargetGroup.m_Targets[i].target = player.transform;
             manager.CinemachineTargetGroup.m_Targets[i].weight = 1;
         }

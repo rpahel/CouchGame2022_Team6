@@ -4,14 +4,14 @@ public class PlayerStateSystem : StateMachine
 {
     public PlayerManager PlayerManager { get; private set; }
     public CooldownManager CooldownManager { get; private set; }
-    public PlayerInputs PlayerInputs { get; private set; }
+    public PlayerInputHandler PlayerInputs { get; private set; }
     public State PlayerState => State;
 
     private void Awake()
     {
         PlayerManager = GetComponent<PlayerManager>();
         CooldownManager = GetComponent<CooldownManager>();
-        PlayerInputs = GetComponent<PlayerInputs>();
+        PlayerInputs = GetComponent<PlayerInputHandler>();
     }
 
     public void Start()
@@ -45,6 +45,7 @@ public class PlayerStateSystem : StateMachine
 
     public void OnMove()
     {
+        Debug.Log("Move");
         State?.OnMove();
     }
 

@@ -213,12 +213,10 @@ GameObject:
   - component: {fileID: 3784764394035868597}
   - component: {fileID: 3784764394035868594}
   - component: {fileID: 3784764394035868595}
-  - component: {fileID: 591372657606866412}
-  - component: {fileID: 3784764394035868592}
-  - component: {fileID: -5957723479509861639}
   - component: {fileID: 9041389100960335044}
   - component: {fileID: 8237785980924456824}
   - component: {fileID: -5276769057875731088}
+  - component: {fileID: 3069690724228288900}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -281,157 +279,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &591372657606866412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3784764394035868596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 735ed63dd35c3aa46b825db7d5635874, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3784764394035868592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3784764394035868596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 0a884afb162e91546b2b05e2317cbfaf,
-    type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: -5957723479509861639}
-        m_TargetAssemblyTypeName: PlayerInputsState, Assembly-CSharp
-        m_MethodName: OnMove
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: OnMove
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 3bc93035-3e40-4d7a-81f8-4db2a27b6543
-    m_ActionName: Game/OnMove
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: -5957723479509861639}
-        m_TargetAssemblyTypeName: PlayerInputsState, Assembly-CSharp
-        m_MethodName: OnJump
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 562d1a41-5f32-42ab-9e45-fdb0a77a530e
-    m_ActionName: Game/OnJump
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 08d2c17b-83f7-44f5-9660-607c63602085
-    m_ActionName: Menu/OnNavigate
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: dc4fcc3b-2e14-4332-bf97-bd0b06d48b68
-    m_ActionName: Menu/OnSelect
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: c9659d90-7aa4-4c87-9d63-1f935b63daf9
-    m_ActionName: Menu/OnCancel
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: -5957723479509861639}
-        m_TargetAssemblyTypeName: PlayerInputsState, Assembly-CSharp
-        m_MethodName: OnEat
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: afb9720c-4654-4b17-a906-c0606f61c8a6
-    m_ActionName: Game/Eat[/DualShock4GamepadHID/rightShoulder,/Mouse/rightButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 9335d564-f3bc-434e-9109-7f530320dc93
-    m_ActionName: Game/Aim[/DualShock4GamepadHID/leftStick]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: -5957723479509861639}
-        m_TargetAssemblyTypeName: PlayerInputsState, Assembly-CSharp
-        m_MethodName: OnShoot
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: fd700e65-f6b9-42f0-b82a-69b23ae65c14
-    m_ActionName: Game/Shoot
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: -5957723479509861639}
-        m_TargetAssemblyTypeName: PlayerInputs, Assembly-CSharp
-        m_MethodName: Special
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: a0bdb637-8780-48c9-ad17-06545e42832d
-    m_ActionName: Game/Special[/Keyboard/e]
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: GamePad
-  m_DefaultActionMap: Game
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
---- !u!114 &-5957723479509861639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3784764394035868596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8edc31067f195d043baa81da19fae901, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &9041389100960335044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -461,6 +308,8 @@ MonoBehaviour:
   insideSprite: {fileID: 1940364374433954416}
   _maxSize: 2.857
   _minSize: 1
+  imageUI: {fileID: 0}
+  textUI: {fileID: 0}
   _maxSpeed: 25
   _stopDuration: 0.05
   _jumpForce: 160
@@ -533,6 +382,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b369e27a322a2374c88cf905337bb011, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3069690724228288900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3784764394035868596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d3c0f4d07f636048bb8257cceab2675, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4317817617938280482
