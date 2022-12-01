@@ -6,8 +6,6 @@ using Cinemachine;
 using Data;
 using TMPro;
 
-//using UnityEditor.PackageManager.Requests;
-
 public class GameManager2 : MonoBehaviour
 {
     public static GameManager2 Instance { get; private set; }
@@ -32,7 +30,7 @@ public class GameManager2 : MonoBehaviour
     [SerializeField] private GameObject[] _playersUI;
     [SerializeField] private GameObject _playerPrefab;
 
-    //private SpawnManager _spawnManager;
+    private SpawnManager _spawnManager;
     private ApplicationManager _applicationManager;
     public StatisticsManager StatsManager { get; private set; }
     
@@ -64,7 +62,7 @@ public class GameManager2 : MonoBehaviour
             Instance = this;
         }
         
-        //_spawnManager = GetComponent<SpawnManager>();
+        _spawnManager = GetComponent<SpawnManager>();
         StatsManager = GetComponent<StatisticsManager>();
         _applicationManager = ApplicationManager.Instance;
         _currentGameCooldown = gameDuration;
@@ -95,7 +93,7 @@ public class GameManager2 : MonoBehaviour
 
     public void SpawnAllPlayers()
     {
-        //_spawnManager.SpawnPlayers();
+        _spawnManager.SpawnPlayers();
         if (!skipCountdown)
             animatorUI.SetTrigger("Countdown");
         else
@@ -124,10 +122,11 @@ public class GameManager2 : MonoBehaviour
         }
     }
 
-    public void RespawnPlayer(GameObject playerGo)
+    /*public void RespawnPlayer(PlayerInput pi)
     {
-        //_spawnManager.Respawn2(playerGo);
-    }
+        pi.transform.position = spawnPositions[pi.playerIndex].position;
+        cManager.UpdatePlayers(pi.transform);
+    }*/
 
     public void AddPlayer(GameObject playerGo)
     {

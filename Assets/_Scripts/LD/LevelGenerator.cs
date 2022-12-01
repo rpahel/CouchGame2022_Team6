@@ -8,7 +8,7 @@ public class LevelGenerator : MonoBehaviour
 {
     #region Variables
     //========================================================
-    [Header("Image de référence.")]
+    [Header("Image de rï¿½fï¿½rence.")]
     [SerializeField] private Texture2D image;
     public Texture2D ImageRef => image;
 
@@ -17,7 +17,7 @@ public class LevelGenerator : MonoBehaviour
     public float Scale => scale;
 
     //========================================================
-    [Header("Cubes à utiliser.")]
+    [Header("Cubes ï¿½ utiliser.")]
     [SerializeField] private GameObject cubeEdible;
     public GameObject CubeEdible => cubeEdible;
     [SerializeField] private GameObject cubeBedrock;
@@ -31,7 +31,7 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private Ease smoothType;
 
     //========================================================
-    [Header("Durées de l'animation.")]
+    [Header("Durï¿½es de l'animation.")]
     [SerializeField, Range(0.1f, 2f)] private float beforeStart;
     [SerializeField, Range(.1f, .3f)] private new float animation;
     [SerializeField, Range(0f, .1f)] private float betweenCubes;
@@ -39,7 +39,7 @@ public class LevelGenerator : MonoBehaviour
 
     //========================================================
     [Header("Respawn des cubes.")]
-    [SerializeField, Tooltip("Temps en secondes à attendre avant d'enclencher le respawn des cubes.")]
+    [SerializeField, Tooltip("Temps en secondes ï¿½ attendre avant d'enclencher le respawn des cubes.")]
     private float _timeBeforeCubeRespawnStart;
     [SerializeField, Range(0.01f, 2f), Tooltip("Temps en secondes entre deux respawns de cubes.")]
     private float _respawnCooldown;
@@ -61,7 +61,7 @@ public class LevelGenerator : MonoBehaviour
     public Transform ParentObjCubes => parentObjCubes.transform;
 
     //========================================================
-    private Transform[,] cubesArray; // Représentation en code du niveau.
+    private Transform[,] cubesArray; // Reprï¿½sentation en code du niveau.
     public Transform[,] CubesArray => cubesArray;
 
     private int coroutinesRunning = 0;
@@ -93,7 +93,7 @@ public class LevelGenerator : MonoBehaviour
     {
         if (!image)
         {
-            throw new System.NullReferenceException("Pas d'image de référence dans le Level Generator.");
+            throw new System.NullReferenceException("Pas d'image de rï¿½fï¿½rence dans le Level Generator.");
         }
 
         levelState = LEVEL_STATE.INITIALISING;
@@ -105,7 +105,7 @@ public class LevelGenerator : MonoBehaviour
         GameObject parentObjSpawns = new GameObject("Initial Spawns");
         parentObjSpawns.transform.parent = transform;
 
-        // Check la couleur de chaque pixel dans l'image et fait spawn un cube aux coordonnées correspondantes
+        // Check la couleur de chaque pixel dans l'image et fait spawn un cube aux coordonnï¿½es correspondantes
         int n = 0;
         for (int i = 0; i < image.height; i++)
         {
@@ -135,7 +135,7 @@ public class LevelGenerator : MonoBehaviour
 
                     if (n >= 4)
                     {
-                        throw new System.Exception("Plus de pixel bleu dans l'image de référence que le max de spawns autorisés (4).");
+                        throw new System.Exception("Plus de pixel bleu dans l'image de rï¿½fï¿½rence que le max de spawns autorisï¿½s (4).");
                     }
 
                     iniSpawns[n] = new GameObject($"Spawn {n + 1}").transform;
@@ -316,8 +316,7 @@ public class LevelGenerator : MonoBehaviour
         }
 
         levelState = LEVEL_STATE.LOADED;
-        GameManager.Instance.ChangeGameState(GAME_STATE.PLAYING);
-
+        GameManager2.Instance.SpawnAllPlayers();
         coroutinesRunning--;
     }
 

@@ -1,7 +1,9 @@
 using CustomMaths;
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 
 public class PlayerManager : MonoBehaviour
@@ -29,6 +31,9 @@ public class PlayerManager : MonoBehaviour
     public Vector2 LookDirection { get; set; }
     [SerializeField] private float _maxSize = 2.857f;
     [SerializeField] private float _minSize = 1f;
+
+    [HideInInspector] public Image imageUI;
+    [HideInInspector] public TextMeshProUGUI textUI;
 
     //==========================================================================
     [Header("PLAYER MOVEMENT Variables")]

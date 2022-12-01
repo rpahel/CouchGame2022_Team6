@@ -380,7 +380,8 @@ PrefabInstance:
       propertyPath: playerColors.Array.data[3].r
       value: 0.5045836
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3149515669039331295, guid: 7ab11cdd0c7900b449953bd2c7fc701a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7ab11cdd0c7900b449953bd2c7fc701a, type: 3}
 --- !u!4 &8582628807844638285 stripped
 Transform:

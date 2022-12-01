@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 712403600}
   - component: {fileID: 3525204380141794214}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: GameManager2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,25 +43,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 114055375776213088}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 601c2bf777a9f9942901c2694437f9b7, type: 3}
+  m_Script: {fileID: 11500000, guid: c61e81e310a6cad41bd05777938c19f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameDuration: 120
-  skipCountdown: 1
-  showStatistics: 0
+  gameDuration: 0
+  skipCountdown: 0
+  gameCooldownText: {fileID: 0}
   _levelGenerator: {fileID: 0}
   _cinemachine: {fileID: 0}
-  _playersUI:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _playerPrefab: {fileID: 7366054978402329224, guid: 53f839e78d055ac479a0cf91933107ab,
-    type: 3}
+  _playersUI: []
+  _playerPrefab: {fileID: 0}
   animatorUI: {fileID: 0}
-  projectile: {fileID: 6314667027240828348, guid: d81d0ff3def99a543923d314c9860db9,
-    type: 3}
-  projectileNombre: 30
+  projectile: {fileID: 0}
+  projectileNombre: 0
 --- !u!114 &712403600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,11 +65,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 114055375776213088}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6451146eac4979a43afe46dd245647b9, type: 3}
+  m_Script: {fileID: 11500000, guid: a28d138b0d1c4854eb8cafad84695111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldownRespawn: 3
-  cooldownInvincible: 2
+  cooldownRespawn: 0
+  cooldownInvincible: 0
 --- !u!114 &3525204380141794214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,7 +79,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 114055375776213088}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79d7720891ab915469e63b66de7c0a64, type: 3}
+  m_Script: {fileID: 11500000, guid: de6acfe2319009c489b37937354df816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _arrayStats: []
+  statsGoUI: {fileID: 0}
+  listStatsUI: []
+  listImagePlayer: []
+  listTextDamage: []
+  listKillsDamage: []
+  listDeathDamage: []
