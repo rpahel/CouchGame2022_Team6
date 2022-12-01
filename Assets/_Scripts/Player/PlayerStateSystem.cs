@@ -27,15 +27,10 @@ public class PlayerStateSystem : StateMachine
 
     public void SetStun<T>(T damageDealer, int damage, Vector2 knockBackForce)
     {
-        if (State is Dashing) return;
+        if (State is Special) return;
 
         SetState((new Stun(this)));
         State?.OnStun<T>(damageDealer, damage, knockBackForce);
-    }
-
-    public void SetMoving()
-    {
-        SetState((new Moving(this)));
     }
 
     public void Update()
@@ -72,14 +67,29 @@ public class PlayerStateSystem : StateMachine
     {
         State?.OnShoot();
     }
+    
+    public void OnHoldSpecial()
+    {
+        State?.OnHoldSpecial();
+    }
 
+    public void OnSpecial()
+    {
+        State?.OnSpecial();
+    }
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        State?.OnCollision(collision);
+        State?.OnCollisionEnter(collision);
+    }
+    
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        State?.OnCollisionStay(collision);
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        State?.OnTrigger(col);
+        State?.OnTriggerEnter(col);
     }
 }

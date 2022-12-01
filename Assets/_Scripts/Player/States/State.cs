@@ -48,12 +48,17 @@ public abstract class State
         return;
     }
 
-    public virtual void OnCollision(Collision2D col)
+    public virtual void OnCollisionEnter(Collision2D col)
     {
         return;
     }
 
-    public virtual void OnTrigger(Collider2D col)
+    public virtual void OnCollisionStay(Collision2D col)
+    {
+        return;
+    }
+    
+    public virtual void OnTriggerEnter(Collider2D col)
     {
         return;
     }
@@ -67,4 +72,15 @@ public abstract class State
     {
         return;
     }
+
+    public virtual void OnSpecial()
+    {
+        return;
+    }
+
+    public virtual void OnHoldSpecial()
+    {
+        return;
+    }
 }
+
