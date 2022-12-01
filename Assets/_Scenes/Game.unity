@@ -141,6 +141,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
+      propertyPath: animatorUI
+      value: 
+      objectReference: {fileID: 849024073}
+    - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
+        type: 3}
       propertyPath: projectile
       value: 
       objectReference: {fileID: 6314667027240828348, guid: d81d0ff3def99a543923d314c9860db9,
@@ -784,6 +789,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &849024073 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8651704949188335761, guid: ba290c02f538bfe40869cafec6468d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 1597541483715700196}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &892707926
 GameObject:
   m_ObjectHideFlags: 0

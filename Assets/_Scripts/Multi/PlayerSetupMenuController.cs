@@ -35,10 +35,10 @@ public class PlayerSetupMenuController : MonoBehaviour
         }
     }
 
-    public void SetColor(Material color)
+    public void SetSprite(Sprite sprite)
     {
         if (!inputEnabled) { return;}
-        ApplicationManager.Instance.SetPlayerColor(PlayerIndex, color);
+        ApplicationManager.Instance.SetPlayerSprite(PlayerIndex, sprite);
         readyPanel.SetActive(true);
         readyButton.Select();
         menuPanel.SetActive(false);

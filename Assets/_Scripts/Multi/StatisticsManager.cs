@@ -50,7 +50,7 @@ public class StatisticsManager : MonoBehaviour
         
         foreach (Stats playerStats in sortedArray)
         {
-            listImagePlayer[index].color = playerConfigs[playerStats._playerIndex].PlayerMaterial.color;
+            //listImagePlayer[index].color = playerConfigs[playerStats._playerIndex].sprite;
             listTextDamage[index].text = playerStats._damageDeal.ToString();
             listKillsDamage[index].text = playerStats._kill.ToString();
             listDeathDamage[index].text = playerStats._death.ToString();

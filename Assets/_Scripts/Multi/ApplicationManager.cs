@@ -52,9 +52,9 @@ public class ApplicationManager : MonoBehaviour
         return _playerConfigs;
     }
 
-    public void SetPlayerColor(int index, Material color)
+    public void SetPlayerSprite(int index, Sprite sprite)
     {
-        _playerConfigs[index].PlayerMaterial = color;
+        _playerConfigs[index].PlayerSprite = sprite;
     }
 
     public void ReadyPlayer(int index)
@@ -110,5 +110,5 @@ public class PlayerConfiguration
     public PlayerInput Input { get; set; }
     public int PlayerIndex { get; set; }
     public bool IsReady { get; set; }
-    public Material PlayerMaterial { get; set; }
+    public Sprite PlayerSprite { get; set; }
 }
