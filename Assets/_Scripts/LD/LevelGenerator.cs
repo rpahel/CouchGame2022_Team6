@@ -97,8 +97,7 @@ public class LevelGenerator : MonoBehaviour
         }
 
         levelState = LEVEL_STATE.INITIALISING;
-        GameManager.Instance.ChangeGameState(GAME_STATE.LOADING);
-
+        
         parentObjCubes = new GameObject("Cubes");
         parentObjCubes.transform.parent = transform;
 
@@ -152,8 +151,6 @@ public class LevelGenerator : MonoBehaviour
                 }
             }
         }
-
-        GameManager.Instance.spawnPositions = iniSpawns;
     }
 
     void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width, bool visible = true)
@@ -316,7 +313,7 @@ public class LevelGenerator : MonoBehaviour
         }
 
         levelState = LEVEL_STATE.LOADED;
-        GameManager2.Instance.SpawnAllPlayers();
+        GameManager.Instance.SpawnAllPlayers();
         coroutinesRunning--;
     }
 

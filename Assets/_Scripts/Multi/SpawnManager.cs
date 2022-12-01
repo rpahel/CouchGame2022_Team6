@@ -19,7 +19,7 @@ public class SpawnManager : MonoBehaviour
 
     public void SpawnPlayers()
     {
-        var manager = GameManager2.Instance;
+        var manager = GameManager.Instance;
         var playerConfigs = ApplicationManager.Instance.GetPlayerConfigs().ToArray();
         manager.CinemachineTargetGroup.m_Targets = new CinemachineTargetGroup.Target[playerConfigs.Length];
 
@@ -28,7 +28,7 @@ public class SpawnManager : MonoBehaviour
             var player = Instantiate(manager.PlayerPrefab, manager.LevelGenerator.IniSpawns[i].position, manager.LevelGenerator.IniSpawns[i].rotation,
                 manager.LevelGenerator.transform);
             player.gameObject.name = "Player " + playerConfigs[i].PlayerIndex;
-            GameManager2.Instance.AddPlayer(player);
+            manager.AddPlayer(player);
             manager.PlayersUI[i].SetActive(true);
             player.GetComponent<PlayerManager>().imageUI = manager.PlayersUI[i].transform.GetChild(0).GetComponent<Image>();
             player.GetComponent<PlayerManager>().textUI = manager.PlayersUI[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>();
@@ -88,16 +88,16 @@ public class SpawnManager : MonoBehaviour
 
     private void RespawnPlayerInstantiate(int index)
     {
-        var manager = GameManager2.Instance;
+        var manager = GameManager.Instance;
         var playerConfigs = ApplicationManager.Instance.GetPlayerConfigs().ToArray();
         var player = Instantiate(manager.PlayerPrefab, manager.LevelGenerator.IniSpawns[index].position, Quaternion.identity, manager.LevelGenerator.gameObject.transform); ;
         player.gameObject.name = "Player " + playerConfigs[index].PlayerIndex;
-        //GameManager.Instance.AddPlayer(player);
+        GameManager.Instance.AddPlayer(player);
 
         manager.PlayersUI[index].SetActive(true);
-        //player.GetComponent<PlayerManager>().imageUI = manager.PlayersUI[index].transform.GetChild(0).GetComponent<Image>();
-        //player.GetComponent<PlayerManager>().textUI = manager.PlayersUI[index].transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-        //player.GetComponent<PlayerInputHandler>().InitializePlayer(playerConfigs[index]);
+        player.GetComponent<PlayerManager>().imageUI = manager.PlayersUI[index].transform.GetChild(0).GetComponent<Image>();
+        player.GetComponent<PlayerManager>().textUI = manager.PlayersUI[index].transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        //player.GetComponent<PlayerInputsHandler>().InitializePlayer(playerConfigs[index]);
         manager.CinemachineTargetGroup.m_Targets[index].target = player.transform;
         manager.CinemachineTargetGroup.m_Targets[index].weight = 1;
     }

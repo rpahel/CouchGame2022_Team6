@@ -6,9 +6,9 @@ using Cinemachine;
 using Data;
 using TMPro;
 
-public class GameManager2 : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-    public static GameManager2 Instance { get; private set; }
+    public static GameManager Instance { get; private set; }
     
     private List<GameObject> _listPlayersGo = new List<GameObject>();
     public List<GameObject> ListPlayersGo => _listPlayersGo;

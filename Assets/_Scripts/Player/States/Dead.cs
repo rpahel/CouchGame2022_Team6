@@ -9,7 +9,7 @@ public class Dead : State
 
     public override void Start()
     {
-        timeToWait = GameManager.Instance.RespawnTime;
+        //timeToWait = GameManager.Instance.RespawnTime;
         Die();
     }
 
@@ -24,14 +24,14 @@ public class Dead : State
     private void Die()
     {
         waitTime = 0;
-        GameManager.Instance.CameraManager.UpdatePlayers(playerSystem.transform); // Retire le transform du joueur dans le TargetGroup
+        //GameManager.Instance.CameraManager.UpdatePlayers(playerSystem.transform); // Retire le transform du joueur dans le TargetGroup
         playerSystem.transform.position = new Vector3(-100, -100, 0);
     }
 
     // Mettre cette fonction direct dans PlayerSystemManager
     private void Respawn()
     {
-        GameManager.Instance.RespawnPlayer(playerSystem.PlayerManager.playerInput);
+        //GameManager.Instance.RespawnPlayer(playerSystem.PlayerManager.playerInput);
         playerSystem.PlayerManager.fullness = 50;
         playerSystem.PlayerManager.UpdatePlayerScale();
         playerSystem.SetState(new Moving(playerSystem));
