@@ -47,8 +47,27 @@ public class Cube_Trap : Cube
         {
             if (!collision.gameObject.CompareTag("Player") || !canLooseGraille) return;
 
+            var rand = UnityEngine.Random.Range(0, 2);
+
             Debug.Log("up");
-            KnockbackUp();
+            rb = collision.gameObject.GetComponent<Rigidbody2D>();
+            // beInTrap = true;
+            playerManager = collision.gameObject.GetComponent<PlayerManager>();
+            playerManager.SetPlayerState(PlayerState.KNOCKBACKED);
+            canLooseGraille = false;
+            movement = collision.gameObject.GetComponent<PlayerMovement>();
+            if (rand == 0)
+                collision.rigidbody.AddForce((Vector3.up * knockForce + Vector3.left / 2 * knockForce), ForceMode2D.Impulse);
+            else
+                collision.rigidbody.AddForce((Vector3.up * knockForce + Vector3.right / 2 * knockForce), ForceMode2D.Impulse);
+
+            collision.transform.DOShakeScale(duration, strength, vibrato, randomess);
+            transform.DOShakeScale(duration, strength, vibrato, randomess);
+            playerManager.eatAmount -= takeDmg;
+
+            //StartCoroutine(timeToLooseEat());
+            StartCoroutine(timeToStateMoving());
+            //KnockbackUp();
 
 
         }
