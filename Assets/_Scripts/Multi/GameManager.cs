@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
         if (_currentGameCooldown <= 0f)
         {
             _applicationManager.SetGameState(GAME_STATE.END);
-            DisableAllInputs();
+            SetAllInputs(false);
             StatsManager.ShowStats();
         }
     }
@@ -100,25 +100,17 @@ public class GameManager : MonoBehaviour
             StartGame();
     }
 
-    public void StartGame()
+    private void StartGame()
     {
-        EnableAllInputs();
+        SetAllInputs(true);
         _applicationManager.SetGameState(GAME_STATE.PLAYING);
     }
 
-    private void EnableAllInputs()
+    private void SetAllInputs(bool result)
     {
         foreach (var playerGo in _listPlayersGo)
         {
-            //playerGo.GetComponent<PlayerManager>().EnableInputs();
-        }
-    }
-
-    private void DisableAllInputs()
-    {
-        foreach (var playerGo in _listPlayersGo)
-        {
-            //playerGo.GetComponent<PlayerManager>().DisableInputs();
+            playerGo.GetComponent<PlayerManager>().SetEnableInputs(result);
         }
     }
 

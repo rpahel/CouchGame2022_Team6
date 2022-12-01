@@ -18,6 +18,7 @@ public class PlayerInputsHandler : MonoBehaviour
     {
         _playerSystem = GetComponent<PlayerStateSystem>();
         _playerManager = GetComponent<PlayerManager>();
+        controls = new PlayerInputs();
         InputIsEnabled = true;
     }
     

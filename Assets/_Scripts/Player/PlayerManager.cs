@@ -24,7 +24,7 @@ public class PlayerManager : MonoBehaviour
     #region Variables
     //============================
     [HideInInspector] public Color color;
-    [HideInInspector] public PlayerInput playerInput;
+    [HideInInspector] public PlayerInputsHandler playerInput;
     public SpriteRenderer insideSprite; // TODO : A supprimer quand on aura les assets des GA
 
     // PLAYER MOVEMENT Variables
@@ -163,6 +163,7 @@ public class PlayerManager : MonoBehaviour
         _playerSystem = GetComponent<PlayerStateSystem>();
         _cooldownManager = GetComponent<CooldownManager>();
         _groundChekLayerMask = LayerMask.GetMask("Destructible", "Indestructible", "Limite", "Player");
+        playerInput = GetComponent<PlayerInputsHandler>();
 
         LookDirection = Vector2.right;
         if (StopDuration < 0.01f) SetStopDuration(0.01f);
@@ -466,6 +467,11 @@ public class PlayerManager : MonoBehaviour
     public void SetStopDuration(float amount)
     {
         _stopDuration = amount;
+    }
+
+    public void SetEnableInputs(bool result)
+    {
+        playerInput.SetEnableInput(result);
     }
     #endregion
 }

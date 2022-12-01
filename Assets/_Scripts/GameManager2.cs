@@ -108,7 +108,7 @@ public class GameManager2 : MonoBehaviour
         RespawnPlayer(pi);
         playerTransforms[pi.playerIndex] = pi.transform;
         pi.GetComponent<PlayerManager>().color = playerColors[pi.playerIndex];
-        pi.GetComponent<PlayerManager>().playerInput = pi;
+        //pi.GetComponent<PlayerManager>().playerInput = pi;
     }
 
     public void RespawnPlayer(PlayerInput pi)
