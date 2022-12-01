@@ -11,6 +11,12 @@ public class Moving : State
             if (playerSystem.PlayerManager.StopDuration < 0.01f) playerSystem.PlayerManager.SetStopDuration(0.01f);
         }
 #endif
+
+        if (playerSystem.PlayerManager.Rb2D.velocity.y > 0)
+            playerSystem.PlayerManager.cantDoubleJump = true;
+
+        else
+            playerSystem.PlayerManager.cantDoubleJump = false;
     }
 
     public override void FixedUpdate()
@@ -22,6 +28,10 @@ public class Moving : State
 
         // On limite la vitesse du joueur.
         playerSystem.PlayerManager.Rb2D.velocity = new Vector2(Mathf.Clamp(playerSystem.PlayerManager.Rb2D.velocity.x, -playerSystem.PlayerManager.MaxSpeed, playerSystem.PlayerManager.MaxSpeed), playerSystem.PlayerManager.Rb2D.velocity.y);
+
+        playerSystem.PlayerManager.UpdateDetectWall();
+        playerSystem.PlayerManager.UpdateWallJump();
+        playerSystem.PlayerManager.UpdateWallSliding();
     }
 
     public override void OnMove()
@@ -50,6 +60,9 @@ public class Moving : State
     {
         if(playerSystem.PlayerManager.GroundCheck())
             playerSystem.PlayerManager.Jump();
+        else if(playerSystem.PlayerManager.isSliding && playerSystem.PlayerManager.GroundCheck() == false && playerSystem.PlayerManager.cantDoubleJump == false)        
+            playerSystem.PlayerManager.WallJump();
+        
     }
 
     private void Movement()

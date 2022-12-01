@@ -119,6 +119,23 @@ public class PlayerManager : MonoBehaviour
     [SerializeField, Tooltip("Force du knockback infligé au joueur ennemi.")]
     private float _knockBackForce;
 
+    //============================Wall JUMP============================//
+    [Header("Wall Jump")]
+    [SerializeField] private float wallJumpTimer = 0f;
+    private float dirPlayerToWall;   
+    public Transform wallCheckRight;  
+    public bool isPlayerTouchingWall;
+    public bool isSliding;
+    public float wallSlidingSpeedMax;
+    public float wallJumpDuration;  
+    public float wallDetectionRadius;
+    public bool wallJumping;
+    public float wallJumpAngle;
+    public float wallJumpForce;
+    private bool facingRight = true;
+    public bool canWallJump;
+    public bool cantDoubleJump;
+
     //==========================================================================
 
     //[Header("STUN Variables")]
@@ -278,6 +295,97 @@ public class PlayerManager : MonoBehaviour
             return true;
         else
             return false;
+    }
+    #endregion
+
+    #region WallJump
+    public void WallJump()
+    {
+        //--------------------WALL JUMP----------------//
+       
+
+        wallJumping = true;
+        wallJumpTimer = 0;
+
+        isSliding = false;
+
+
+
+    }
+
+     public void UpdateWallSliding()
+    {
+        if (!isSliding) return;
+
+
+        float wallSlidingSpeed = _rb2D.velocity.y;
+
+        if (wallSlidingSpeed < -wallSlidingSpeedMax)
+        {
+            wallSlidingSpeed = -wallSlidingSpeedMax;
+        }
+
+        //TODO: change wall Detach (using timer to detect input)
+        _rb2D.velocity = new Vector2(_rb2D.velocity.x, wallSlidingSpeed);
+
+
+    }
+
+   public void UpdateWallJump()
+    {
+        if (!wallJumping) return;
+
+        wallJumpTimer += Time.deltaTime;
+        if (wallJumpTimer >= wallJumpDuration)
+        {
+            wallJumping = false;
+            return;
+        }
+
+        if (isSliding) return;
+
+        Vector2 wallJumpdir;
+
+        wallJumpdir = new Vector2(Mathf.Cos(Mathf.Deg2Rad * wallJumpAngle), Mathf.Sin(Mathf.Deg2Rad * wallJumpAngle));
+        _rb2D.velocity = new Vector2(wallJumpdir.x * dirPlayerToWall * wallJumpForce, wallJumpdir.y * wallJumpForce);
+        // _rb.velocity = new Vector2(wallJumpdir.x * wallOrientXLeft * wallJumpForce, wallJumpdir.y * wallJumpForce);
+
+
+
+    }
+
+
+    public void UpdateDetectWall()
+    {
+
+        RaycastHit2D hit = Physics2D.CircleCast(wallCheckRight.position, wallDetectionRadius, Vector2.right , castDistance , _groundChekLayerMask);
+
+
+        isPlayerTouchingWall = (hit != null);
+
+
+
+        if (isPlayerTouchingWall && !GroundCheck() && !wallJumping)
+        {
+
+            dirPlayerToWall = Mathf.Sign(_rb2D.position.x - hit.transform.position.x);
+
+
+            isSliding = true;
+            Debug.Log("je sliiide");
+        }
+        else
+        {
+
+            isSliding = false;
+            Debug.Log("stoopsliding");
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(wallCheckRight.position, wallDetectionRadius);
+
     }
     #endregion
 
