@@ -30,6 +30,7 @@ namespace Data
     public enum GAME_STATE
     {
         NONE,
+        MENU,
         LOADING,
         PLAYING,
         END

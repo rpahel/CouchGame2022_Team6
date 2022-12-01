@@ -43,7 +43,7 @@ public class ApplicationManager : MonoBehaviour
             _playerConfigs = new List<PlayerConfiguration>();
         }
         
-        //GameState = GAME_STATE.MENU;
+        GameState = GAME_STATE.MENU;
         //LocalizationManager.Language = language.ToString();
     }
 
