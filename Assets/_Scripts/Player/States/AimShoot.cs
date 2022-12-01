@@ -1,10 +1,10 @@
 using UnityEngine;
-public class Aim : State
+public class AimShoot : State 
 {
-    public Aim(PlayerStateSystem playerSystem) : base(playerSystem)
+    public AimShoot(PlayerStateSystem playerSystem) : base(playerSystem)
     {
     }
-
+    
     public override void Start()
     {
         playerSystem.PlayerManager.AimPivot.gameObject.SetActive(true);
