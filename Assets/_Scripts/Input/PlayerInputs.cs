@@ -11,7 +11,6 @@ public class PlayerInputs : MonoBehaviour
     public bool InputIsEnabled { get; private set; }
     #endregion
 
-    //#region Customs_Functions
     //==========================================================================
     private void Awake()
     {
@@ -73,7 +72,7 @@ public class PlayerInputs : MonoBehaviour
         {
             if (_playerSystem.PlayerState is Moving)
                 _playerSystem.PlayerManager.Shoot();
-            else if (_playerSystem.PlayerState is Aim)
+            else if (_playerSystem.PlayerState is AimShoot)
                 _playerSystem.OnShoot();
         }
     }
@@ -82,20 +81,20 @@ public class PlayerInputs : MonoBehaviour
         InputIsEnabled = result;
     }
 
-    /*public void Special(InputAction.CallbackContext input)
+    public void Special(InputAction.CallbackContext input)
     {
+        if (!InputIsEnabled) return;
+
+        if (_playerManager.fullness < _playerManager.NecessaryFoodSpecial) return;
+
         if (input.performed)
         {
-            PManager.PSpecial.Charge(true);
+            _playerSystem.OnHoldSpecial();
         }
 
         if (input.canceled)
         {
-            PManager.PSpecial.UseSpecial();
-            PManager.PSpecial.Charge(false);
+            _playerSystem.OnSpecial();
         }
     }
-
-   
-    #endregion*/
 }

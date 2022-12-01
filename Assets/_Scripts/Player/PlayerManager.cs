@@ -138,9 +138,33 @@ public class PlayerManager : MonoBehaviour
 
     //==========================================================================
 
-    //[Header("STUN Variables")]
-    //[SerializeField] private float cooldownStun;
-    //public float CooldownStun => cooldownStun;
+    [Header("SPECIAL Variables")]
+    [SerializeField, Range(1, 3), Tooltip("Dur�e en secondes avant d'atteindre le niveau de charge max.")]
+    private float timeToMaxCharge;
+    [SerializeField, Range(0, 40), Tooltip("Distance en m�tres du special � son maximum.")]
+    public float maxDistance;
+    [SerializeField, Range(0, 40), Tooltip("Distance en m�tres du special � son minimum (simple press du bouton).")]
+    private float minDistance;
+    [SerializeField, Range(0, 100), Tooltip("Pourcentage de nourriture utilisé pour special.")]
+    private int necessaryFoodSpecial;
+    [SerializeField]
+    private float dashCooldown;
+    [SerializeField]
+    private float dashForce;
+    [SerializeField]
+    private GameObject specialTrigger;
+    [HideInInspector] public float charge; // 0 � 1
+    [HideInInspector] public bool isHolding;
+    [HideInInspector] public bool canDash = true;
+
+    [HideInInspector] public Vector2 inputDirectionDash;
+    public float TimeToMaxCharge => timeToMaxCharge;
+    public float MaxDistance => maxDistance;
+    public float MinDistance => minDistance;
+    public int NecessaryFoodSpecial => necessaryFoodSpecial;
+    public float DashCooldown => dashCooldown;
+    public float DashForce => dashForce;
+    public GameObject SpecialTrigger => specialTrigger;
     #endregion
 
     #region UNITY_FUNCTIONS
@@ -398,7 +422,7 @@ public class PlayerManager : MonoBehaviour
     /// <param name="damage">Lra quantit� de bouffe � retirer.</param>
     public void OnDamage<T>(T damageDealer, int damage, Vector2 knockBackForce)
     {
-        if (_playerSystem.PlayerState is Dashing) return;
+        if (_playerSystem.PlayerState is Special) return;
 
         fullness = Mathf.Clamp(fullness - damage, 0, 100);
 
