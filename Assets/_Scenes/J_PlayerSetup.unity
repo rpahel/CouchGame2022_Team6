@@ -768,6 +768,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
         type: 3}
+      propertyPath: minPlayers
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
       propertyPath: loadingScreen
       value: 
       objectReference: {fileID: 837855193}
@@ -781,6 +786,12 @@ PrefabInstance:
       propertyPath: playersLayout
       value: 
       objectReference: {fileID: 688092428}
+    - target: {fileID: 8210660276910839729, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: m_PlayerPrefab
+      value: 
+      objectReference: {fileID: 6086894563923279896, guid: a973e29c73a709d41b01a19ebbabccae,
+        type: 3}
     - target: {fileID: 8210660276910839731, guid: 3237304fc6509974884466c808e01146,
         type: 3}
       propertyPath: m_RootOrder
