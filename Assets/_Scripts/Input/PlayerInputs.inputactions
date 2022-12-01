@@ -228,6 +228,17 @@
                 },
                 {
                     "name": "",
+                    "id": "b33b0530-9fc6-4929-b97b-e589abd4e47a",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "GamePad",
+                    "action": "Eat",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "1efc4d74-16f9-43a0-b652-e0b342c840a0",
                     "path": "<Gamepad>/leftStick",
                     "interactions": "",
@@ -362,7 +373,18 @@
                     "name": "",
                     "id": "15b3488a-86dc-4031-a5f9-c9616998b848",
                     "path": "<Gamepad>/rightShoulder",
-                    "interactions": "Hold",
+                    "interactions": "Hold(duration=0.1)",
+                    "processors": "",
+                    "groups": "GamePad",
+                    "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e4dfdd1b-3214-4330-a38b-f1b76519922e",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "Hold(duration=0.1)",
                     "processors": "",
                     "groups": "GamePad",
                     "action": "Shoot",
