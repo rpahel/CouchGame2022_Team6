@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     [Header("Game Options")]
     [SerializeField, Tooltip("Time of the game, showing stats when 0")] private float gameDuration;
     private float _currentGameCooldown;
+    [SerializeField] private float respawnTime;
+    public float RespawnTime => respawnTime;
 
     [SerializeField] private bool skipCountdown = false;
     //[SerializeField] private bool showStatistics = false;
@@ -27,9 +29,11 @@ public class GameManager : MonoBehaviour
     [Header("Spawn Data")]
     [SerializeField] private LevelGenerator _levelGenerator;
     [SerializeField] private CinemachineTargetGroup _cinemachine;
+    [SerializeField] private CameraManager cameraManager;
     [SerializeField] private GameObject[] _playersUI;
     [SerializeField] private GameObject _playerPrefab;
 
+    public CameraManager CameraManager => cameraManager;
     private SpawnManager _spawnManager;
     private ApplicationManager _applicationManager;
     public StatisticsManager StatsManager { get; private set; }
@@ -49,6 +53,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int projectileNombre;
     private List<Projectile> projPool = new List<Projectile>();
     public List<Projectile> ProjectilePool => projPool;
+
     private Transform projPoolTransform;
     
     private void Awake()
@@ -100,7 +105,7 @@ public class GameManager : MonoBehaviour
             StartGame();
     }
 
-    private void StartGame()
+    public void StartGame()
     {
         SetAllInputs(true);
         _applicationManager.SetGameState(GAME_STATE.PLAYING);

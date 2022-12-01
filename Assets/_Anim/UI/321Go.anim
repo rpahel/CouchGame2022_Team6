@@ -357,11 +357,10 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 3.5
+  - time: 3.0833333
     functionName: StartGame
     data: 
-    objectReferenceParameter: {fileID: 11500000, guid: 2112b8f9293e7db4a9f09ebb2cd0c9bb,
-      type: 3}
+    objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
