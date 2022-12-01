@@ -78,7 +78,7 @@ public class CooldownManager : MonoBehaviour
                 break;
             }
 
-            if (playerSystem.PlayerState is not Moving && playerSystem.PlayerState is not Aim)
+            if (playerSystem.PlayerState is not Moving && playerSystem.PlayerState is not AimShoot)
             {
                 break;
             }
@@ -91,5 +91,29 @@ public class CooldownManager : MonoBehaviour
         playerSystemManager.Rb2D.gravityScale = playerSystemManager.GravityScale;
         playerSystemManager.JumpCoroutine = null;
         yield break;
+    }
+
+    public void SetDashCoroutine()
+    {
+        StartCoroutine(DashCoroutine(playerSystemManager.charge + .1f));
+    }
+
+    private IEnumerator DashCoroutine(float dashDuration)
+    {
+        playerSystemManager.canDash = false;
+        gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
+        playerSystemManager.SpecialTrigger.SetActive(true);
+        var originalGravityScale = playerSystemManager.Rb2D.gravityScale;
+        playerSystemManager.Rb2D.gravityScale = 0;
+        playerSystemManager.Rb2D.velocity = Vector2.zero;
+        //_trailRenderer.emitting = true;
+        yield return new WaitForSeconds(dashDuration);
+        playerSystem.SetState(new Moving(playerSystem));
+        playerSystemManager.Rb2D.gravityScale = originalGravityScale;
+        gameObject.layer = LayerMask.NameToLayer("Player");
+        playerSystemManager.SpecialTrigger.SetActive(false);
+        //_trailRenderer.emitting = false;
+        yield return new WaitForSeconds(playerSystemManager.DashCooldown);
+        playerSystemManager.canDash = true;
     }
 }

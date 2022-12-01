@@ -1,22 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Special : State
 {
-    public Special(PlayerSystem playerSystem) : base(playerSystem)
+    private PlayerManager _playerManager;
+
+    public Special(PlayerStateSystem playerSystem) : base(playerSystem)
     {
     }
 
     public override void Start()
     {
-        playerSystem.PlayerSystemManager.inputDirectionDash = playerSystem.PlayerSystemManager.inputVectorDirection;
+        _playerManager = playerSystem.PlayerManager;
+        _playerManager.inputDirectionDash = _playerManager.inputVectorDirection;
         playerSystem.CooldownManager.SetDashCoroutine();
     }
 
     public override void FixedUpdate()
     {
-        playerSystem.PlayerSystemManager.Rb2D.AddForce(playerSystem.PlayerSystemManager.inputDirectionDash * playerSystem.PlayerSystemManager.DashForce, ForceMode2D.Impulse);
+        _playerManager.Rb2D.AddForce(_playerManager.inputDirectionDash * _playerManager.DashForce, ForceMode2D.Impulse);
     }
-
 }

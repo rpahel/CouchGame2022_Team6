@@ -13,7 +13,7 @@ public class Cube_Trap : Cube
         Debug.Log("Normal of the first point: " + collision.contacts[0].normal);
         if (!collision.gameObject.CompareTag("Player")) return;
 
-        var playerSystemManager = collision.gameObject.GetComponent<PlayerSystemManager>();
+        var playerSystemManager = collision.gameObject.GetComponent<PlayerManager>();
         var vec = collision.GetContact(0).normal;
 
         if (vec == new Vector2(0, -1) || vec == new Vector2(0, 1))
@@ -48,7 +48,7 @@ public class Cube_Trap : Cube
             
     }
 
-    void KnockbackRandom(PlayerSystemManager playerSystem, Vector3 sideDirection)
+    void KnockbackRandom(PlayerManager playerSystem, Vector3 sideDirection)
     {
         var rand = UnityEngine.Random.Range(0, 2);
 
@@ -66,7 +66,7 @@ public class Cube_Trap : Cube
 
     }
 
-    private void KnockBack(Vector3 vec, PlayerSystemManager playerSystem)
+    private void KnockBack(Vector3 vec, PlayerManager playerSystem)
     {
         playerSystem.OnDamage(this, _damageAmount, vec * 10);
     }
