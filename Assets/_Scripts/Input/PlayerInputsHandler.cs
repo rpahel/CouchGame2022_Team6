@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using static UnityEngine.InputSystem.InputAction;
 public class PlayerInputsHandler : MonoBehaviour
 {
     #region Autres Scripts
@@ -29,9 +29,11 @@ public class PlayerInputsHandler : MonoBehaviour
         _playerConfig.Input.onActionTriggered += Input_OnActionTriggered;
     }
 
-    private void Input_OnActionTriggered(InputAction.CallbackContext obj)
+    private void Input_OnActionTriggered(CallbackContext obj)
     {
         if (!InputIsEnabled) return;
+
+        Debug.Log("obj" + obj.action.name);
         
         if (obj.action.name == controls.Game.Move.name)
         {
@@ -55,7 +57,7 @@ public class PlayerInputsHandler : MonoBehaviour
         }
     }
 
-    private void OnMove(InputAction.CallbackContext input)
+    private void OnMove(CallbackContext input)
     {
         _playerSystem.PlayerManager.inputVectorDirection = input.ReadValue<Vector2>().normalized;
 
@@ -65,7 +67,7 @@ public class PlayerInputsHandler : MonoBehaviour
         _playerSystem.OnMove();
     }
 
-    private void OnJump(InputAction.CallbackContext input)
+    private void OnJump(CallbackContext input)
     {
         if (input.started)
             _playerSystem.OnJump();
@@ -77,7 +79,7 @@ public class PlayerInputsHandler : MonoBehaviour
             _playerManager.holdJump = false;
     }
 
-    private void OnEat(InputAction.CallbackContext input)
+    private void OnEat(CallbackContext input)
     {
         if (input.started)
             _playerManager.OnEat();
@@ -89,7 +91,7 @@ public class PlayerInputsHandler : MonoBehaviour
             _playerManager.holdEat = false;
     }
 
-    private void OnShoot(InputAction.CallbackContext input)
+    private void OnShoot(CallbackContext input)
     {
         if (_playerManager.fullness < _playerManager.NecessaryFood) return;
 
@@ -111,7 +113,7 @@ public class PlayerInputsHandler : MonoBehaviour
         }
     }
 
-    private void OnSpecial(InputAction.CallbackContext input)
+    private void OnSpecial(CallbackContext input)
     {
         if (_playerManager.fullness < _playerManager.NecessaryFoodSpecial) return;
 
