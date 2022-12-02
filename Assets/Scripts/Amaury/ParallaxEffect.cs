@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ParallaxEffect : MonoBehaviour {
@@ -43,6 +44,8 @@ public class ParallaxEffect : MonoBehaviour {
             if (backgrounds[i].transform.position.z - camera.position.z > farthestBack)
                 farthestBack = backgrounds[i].transform.position.z - camera.position.z;
         }
+        
+        Debug.Log("farthestBack " + farthestBack);
 
         for (int i = 0; i < backCount; i++) 
             b_speeds[i] = 1 - (backgrounds[i].transform.position.z - camera.position.z) / farthestBack;
@@ -52,10 +55,11 @@ public class ParallaxEffect : MonoBehaviour {
 
     private void LateUpdate() {
         distance = camera.position.x - startPos.x;
-
+        transform.position = new Vector3(camera.position.x, transform.position.y, 0);
+        
         for (int i = 0; i < backgrounds.Length; i++) {
             float speed = b_speeds[i] * parallaxSpeed;
-            b_mats[i].SetTextureOffset("_MainTex", new Vector2(distance,0) * speed);
+            b_mats[i].SetTextureOffset("_MainTex", new Vector2(distance,0) *  speed * 10000);
         }
     }
 }
