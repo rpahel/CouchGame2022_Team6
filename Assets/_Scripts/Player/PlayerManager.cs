@@ -188,14 +188,7 @@ public class PlayerManager : MonoBehaviour
         _raycastRange = GameManager.Instance.LevelGenerator.Scale * 4;
 
         insideSprite.color = color;
-        castRadius = _coll.bounds.extents.x - .05f;
         _rb2D.gravityScale = _gravityScale != 0 ? _gravityScale : _rb2D.gravityScale;
-
-        if (_coll is CapsuleCollider2D)
-            castDistance = (_coll.bounds.extents.y - _coll.bounds.extents.x) + .1f;
-        else
-            throw new Exception("PManager.PCollider is not a CapsuleCollider2D. Please update the code.");
-
 
         UpdatePlayerScale();
     }
@@ -207,6 +200,12 @@ public class PlayerManager : MonoBehaviour
             Debug.DrawRay(transform.position - Vector3.forward, inputVectorDirection * 5f, Color.cyan, Time.deltaTime);
         }
 #endif
+
+        if (_coll is CapsuleCollider2D)
+            castDistance = (_coll.bounds.extents.y - _coll.bounds.extents.x) + .1f;
+        else
+            throw new Exception("PManager.PCollider is not a CapsuleCollider2D. Please update the code.");
+        castRadius = _coll.bounds.extents.x - .05f;
 
         LookDirection = inputVectorDirection.x switch
         {
