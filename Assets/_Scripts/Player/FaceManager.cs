@@ -32,15 +32,14 @@ public class FaceManager : MonoBehaviour
         faceNormal = sprite;
         SetFace(sprite);
     }
-
+    
     public void SetFace(Sprite sprite)
     {
-        if (playerManager.fullness == 100)
-        {
-            playerManager.SetFace(faceFull);
-            return;
-        }
-        
         playerManager.SetFace(sprite);
+    }
+
+    public void ResetFace()
+    {
+        playerManager.SetFace(playerManager.fullness == 100 ? faceFull : faceNormal);
     }
 }

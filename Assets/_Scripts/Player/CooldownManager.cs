@@ -140,6 +140,6 @@ public class CooldownManager : MonoBehaviour
     {
         faceManager.SetFace(sprite);
         yield return new WaitForSeconds(faceManager.CooldownFace);
-        faceManager.SetFace(faceManager.FaceNormal);
+        faceManager.ResetFace();
     }
 }
