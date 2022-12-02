@@ -26,6 +26,9 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector] public Color color;
     [HideInInspector] public PlayerInputsHandler playerInput;
     public SpriteRenderer insideSprite; // TODO : A supprimer quand on aura les assets des GA
+    public SpriteRenderer sprite;
+    [SerializeField] private SpriteRenderer face;
+    public SpriteRenderer Face => face;
 
     // PLAYER MOVEMENT Variables
     public Vector2 LookDirection { get; set; }
@@ -496,4 +499,9 @@ public class PlayerManager : MonoBehaviour
         playerInput.SetEnableInput(result);
     }
     #endregion
+
+    public void SetFace(Sprite sprite)
+    {
+        face.sprite = sprite;
+    }
 }

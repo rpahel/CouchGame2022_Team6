@@ -15,9 +15,22 @@ public class PlayerSetupMenuController : MonoBehaviour
     [SerializeField] private GameObject readyPanel;
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private Button readyButton;
+    [SerializeField] private Image playerImage;
+    [SerializeField] private Image playerFace;
+    [SerializeField] private Image buttonImage;
+    [SerializeField] private Text titleText;
+    private Image menuImage;
 
     private float ignoreInputTime = 0.1f;
     private bool inputEnabled;
+
+    private ApplicationManager manager;
+
+    private void Awake()
+    {
+        menuImage = GetComponent<Image>();
+        manager = ApplicationManager.Instance;
+    }
 
     public void SetPlayerIndex(int pi)
     {
@@ -35,10 +48,24 @@ public class PlayerSetupMenuController : MonoBehaviour
         }
     }
 
-    public void SetSprite(Sprite sprite)
+    public void SetPlayerGFX(int index)
     {
         if (!inputEnabled) { return;}
-        ApplicationManager.Instance.SetPlayerSprite(PlayerIndex, sprite);
+
+        var playerGfx = index switch
+        {
+            0 => manager.ListPlayersGfx[0],
+            1 => manager.ListPlayersGfx[1],
+            2 => manager.ListPlayersGfx[2],
+            3 => manager.ListPlayersGfx[3],
+            _ => new PlayerGfxUI()
+        };
+        
+        ApplicationManager.Instance.SetPlayerGfx(PlayerIndex, playerGfx);
+        playerImage.sprite = playerGfx.player;
+        playerFace.sprite = playerGfx.face;
+        menuImage.sprite = playerGfx.menu;
+        buttonImage.sprite = playerGfx.button;
         readyPanel.SetActive(true);
         readyButton.Select();
         menuPanel.SetActive(false);

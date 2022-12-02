@@ -21,6 +21,10 @@ public class ApplicationManager : MonoBehaviour
     [SerializeField] private int minPlayers = 2;
     [SerializeField] private int maxPlayers = 4;
 
+    [Header("Players GFX ")] [SerializeField]
+    private List<PlayerGfxUI> listPlayersGfx = new List<PlayerGfxUI>();
+
+    public List<PlayerGfxUI> ListPlayersGfx => listPlayersGfx;
     public static ApplicationManager Instance { get; private set; }
     
     public  GAME_STATE GameState { get; private set; }
@@ -52,11 +56,12 @@ public class ApplicationManager : MonoBehaviour
         return _playerConfigs;
     }
 
-    public void SetPlayerSprite(int index, Sprite sprite)
+    public void SetPlayerGfx(int index, PlayerGfxUI playerGfx)
     {
-        _playerConfigs[index].PlayerSprite = sprite;
+        _playerConfigs[index].PlayerSprite = playerGfx.player;
+        _playerConfigs[index].PlayerFaceSprite = playerGfx.face;
+        _playerConfigs[index].PlayerIcon = playerGfx.icon;
     }
-
     public void ReadyPlayer(int index)
     {
         _playerConfigs[index].IsReady = true;
@@ -111,4 +116,16 @@ public class PlayerConfiguration
     public int PlayerIndex { get; set; }
     public bool IsReady { get; set; }
     public Sprite PlayerSprite { get; set; }
+    public Sprite PlayerFaceSprite { get; set; }
+    public Sprite PlayerIcon { get; set; }
+}
+
+[System.Serializable]
+public class PlayerGfxUI
+{
+    public Sprite player;
+    public Sprite face;
+    public Sprite menu;
+    public Sprite button;
+    public Sprite icon;
 }

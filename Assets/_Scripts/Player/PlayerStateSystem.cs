@@ -4,14 +4,14 @@ public class PlayerStateSystem : StateMachine
 {
     public PlayerManager PlayerManager { get; private set; }
     public CooldownManager CooldownManager { get; private set; }
-    public PlayerInputHandler PlayerInputs { get; private set; }
+    public FaceManager FaceManager { get; private set; }
     public State PlayerState => State;
 
     private void Awake()
     {
         PlayerManager = GetComponent<PlayerManager>();
         CooldownManager = GetComponent<CooldownManager>();
-        PlayerInputs = GetComponent<PlayerInputHandler>();
+        FaceManager = GetComponent<FaceManager>();
     }
 
     public void Start()

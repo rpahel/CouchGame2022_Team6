@@ -25,8 +25,10 @@ public class PlayerInputsHandler : MonoBehaviour
     public void InitializePlayer(PlayerConfiguration pc)
     {
         _playerConfig = pc;
-        //playerMesh.material = pc.PlayerMaterial;
-        //_playerManager.imageUI.color = pc.PlayerMaterial.color;
+        _playerManager.sprite.sprite = pc.PlayerSprite;
+        _playerManager.insideSprite.sprite = pc.PlayerSprite;
+        _playerManager.GetComponent<FaceManager>().SetFaceNormal(pc.PlayerFaceSprite);
+        _playerManager.imageUI.sprite = pc.PlayerIcon;
         _playerConfig.Input.onActionTriggered += Input_OnActionTriggered;
     }
 
