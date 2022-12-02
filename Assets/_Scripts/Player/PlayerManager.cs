@@ -57,6 +57,7 @@ public class PlayerManager : MonoBehaviour
     private float _deadZone;
     private Coroutine _jumpCoroutine;
     private int _groundChekLayerMask;
+    private int _groundChekLayerMaskWallJump;
 
 
     //GETTER
@@ -128,6 +129,23 @@ public class PlayerManager : MonoBehaviour
     [SerializeField, Tooltip("Force du knockback infligé au joueur ennemi.")]
     private float _knockBackForce;
 
+    //============================Wall JUMP============================//
+    [Header("Wall Jump")]
+    [SerializeField] private float wallJumpTimer = 0f;
+    private float dirPlayerToWall;   
+    public Transform wallCheckRight;  
+    public bool isPlayerTouchingWall;
+    public bool isSliding;
+    public float wallSlidingSpeedMax;
+    public float wallJumpDuration;  
+    public float wallDetectionRadius;
+    public bool wallJumping;
+    public float wallJumpAngle;
+    public float wallJumpForce;
+    private bool facingRight = true;
+    public bool canWallJump;
+    public bool cantDoubleJump;
+
     //==========================================================================
 
     [Header("SPECIAL Variables")]
@@ -167,9 +185,10 @@ public class PlayerManager : MonoBehaviour
         _playerSystem = GetComponent<PlayerStateSystem>();
         _cooldownManager = GetComponent<CooldownManager>();
         _groundChekLayerMask = LayerMask.GetMask("Destructible", "Indestructible", "Limite", "Player");
+
         playerInput = GetComponent<PlayerInputsHandler>();
         faceManager = GetComponent<FaceManager>();
-        
+        _groundChekLayerMaskWallJump = LayerMask.GetMask("Destructible", "Indestructible", "Limite");
         LookDirection = Vector2.right;
         if (StopDuration < 0.01f) SetStopDuration(0.01f);
         tickHoldEat = 1f;
@@ -178,16 +197,7 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         _raycastRange = GameManager.Instance.LevelGenerator.Scale * 4;
-
-        //insideSprite.color = color;
-        castRadius = _coll.bounds.extents.x - .05f;
         _rb2D.gravityScale = _gravityScale != 0 ? _gravityScale : _rb2D.gravityScale;
-
-        if (_coll is CapsuleCollider2D)
-            castDistance = (_coll.bounds.extents.y - _coll.bounds.extents.x) + .1f;
-        else
-            throw new Exception("PManager.PCollider is not a CapsuleCollider2D. Please update the code.");
-
 
         UpdatePlayerScale();
     }
@@ -200,13 +210,11 @@ public class PlayerManager : MonoBehaviour
         }
 #endif
 
-        LookDirection = inputVectorDirection.x switch
-        {
-            // On change LookDirection ici
-            > 0 => Vector2.right,
-            < 0 => Vector2.left,
-            _ => LookDirection
-        };
+        if (_coll is CapsuleCollider2D)
+            castDistance = (_coll.bounds.extents.y - _coll.bounds.extents.x) + .1f;
+        else
+            throw new Exception("PManager.PCollider is not a CapsuleCollider2D. Please update the code.");
+        castRadius = _coll.bounds.extents.x - .05f;
     }
 
     private void FixedUpdate()
@@ -232,6 +240,15 @@ public class PlayerManager : MonoBehaviour
             {
                 tickHoldEat += Time.deltaTime * _eatTickrate;
             }
+        }
+
+
+        switch (inputVectorDirection.x)
+        {
+            case > 0 when !facingRight:
+            case < 0 when facingRight:
+                Flip();
+                break;
         }
     }
     #endregion
@@ -315,6 +332,107 @@ public class PlayerManager : MonoBehaviour
             return true;
         else
             return false;
+    }
+    #endregion
+
+    #region WallJump
+    public void WallJump()
+    {
+        //--------------------WALL JUMP----------------//
+       
+
+        wallJumping = true;
+        wallJumpTimer = 0;
+
+        isSliding = false;
+
+
+
+    }
+
+     public void UpdateWallSliding()
+    {
+        if (!isSliding) return;
+
+
+        float wallSlidingSpeed = _rb2D.velocity.y;
+
+        if (wallSlidingSpeed < -wallSlidingSpeedMax)
+        {
+            wallSlidingSpeed = -wallSlidingSpeedMax;
+        }
+
+        //TODO: change wall Detach (using timer to detect input)
+        _rb2D.velocity = new Vector2(_rb2D.velocity.x, wallSlidingSpeed);
+
+
+    }
+
+   public void UpdateWallJump()
+    {
+        if (!wallJumping) return;
+
+        wallJumpTimer += Time.deltaTime;
+        if (wallJumpTimer >= wallJumpDuration)
+        {
+            wallJumping = false;
+            return;
+        }
+
+        if (isSliding) return;
+
+        Vector2 wallJumpdir;
+
+        wallJumpdir = new Vector2(Mathf.Cos(Mathf.Deg2Rad * wallJumpAngle), Mathf.Sin(Mathf.Deg2Rad * wallJumpAngle));
+        _rb2D.velocity = new Vector2(wallJumpdir.x * dirPlayerToWall * wallJumpForce, wallJumpdir.y * wallJumpForce);
+        // _rb.velocity = new Vector2(wallJumpdir.x * wallOrientXLeft * wallJumpForce, wallJumpdir.y * wallJumpForce);
+
+
+
+    }
+
+
+    public void UpdateDetectWall()
+    {
+
+        Collider2D hit = Physics2D.OverlapCircle(wallCheckRight.position, wallDetectionRadius , _groundChekLayerMaskWallJump);
+
+       
+        isPlayerTouchingWall = (hit != null);
+
+
+
+        if (isPlayerTouchingWall && !GroundCheck() && !wallJumping && inputVectorDirection.x >= 0.90f || isPlayerTouchingWall && !GroundCheck() && !wallJumping && inputVectorDirection.x <= -0.90f )
+        {
+
+            dirPlayerToWall = Mathf.Sign(_rb2D.position.x - hit.transform.position.x);
+
+
+            isSliding = true;
+            Debug.Log("je sliiide");
+        }
+        else
+        {
+
+            isSliding = false;
+            Debug.Log("stoopsliding");
+        }
+    }
+
+    void Flip()
+    {
+        Vector3 currentScale = gameObject.transform.localScale;
+        currentScale.x *= -1;
+        gameObject.transform.localScale = currentScale;
+
+        facingRight = !facingRight;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(wallCheckRight.position, wallDetectionRadius);
+       
+
     }
     #endregion
 
