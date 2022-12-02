@@ -27,7 +27,7 @@ public class StatisticsManager : MonoBehaviour
         _applicationManager = ApplicationManager.Instance;
     }
 
-    /*public void InitializeStats()
+    public void InitializeStats()
     {
         int count = GameManager.Instance.ListPlayersGo.Count;
         _arrayStats = new Stats[count];
@@ -36,7 +36,7 @@ public class StatisticsManager : MonoBehaviour
         {
             _arrayStats[x] = new Stats(x);
         }
-    }*/
+    }
 
     [ContextMenu("ShowStats")]
     public void ShowStats()
