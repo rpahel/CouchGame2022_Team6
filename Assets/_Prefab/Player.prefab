@@ -435,7 +435,7 @@ MonoBehaviour:
   fullness: 50
   _eatTickrate: 10
   _eatDistance: 5
-  _filling: 0
+  _filling: 14
   tickHoldEat: 0
   holdEat: 0
   _necessaryFood: 0
