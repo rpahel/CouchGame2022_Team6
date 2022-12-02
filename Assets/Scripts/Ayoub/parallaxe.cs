@@ -13,11 +13,15 @@ public class parallaxe: MonoBehaviour
         startPosition = transform.position;
         Debug.Log(gameObject.name + " " + startPosition);
     }
-    
+
     void FixedUpdate()
     {
-        if(startPosition != null)
-            transform.position = new Vector3(startPosition.x + (multiplier * camera.transform.position.x), transform.position.y, transform.position.z);
+        if (startPosition != null)
+        {
+            transform.position = new Vector3(startPosition.x + (multiplier  * camera.transform.position.x),
+                transform.position.y, transform.position.z);
+            Debug.Log("camX " + camera.transform.position.x);
+        }
     }
 
 
