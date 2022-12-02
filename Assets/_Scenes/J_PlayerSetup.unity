@@ -980,6 +980,86 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 189e79c763099b1428c01af98f72a2ec,
         type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[0].color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[0].color.b
+      value: 0.0292809
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[0].color.g
+      value: 0.8867924
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[0].color.r
+      value: 0.059974276
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[1].color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[1].color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[1].color.g
+      value: 0.31725165
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[1].color.r
+      value: 0.0047169924
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[2].color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[2].color.b
+      value: 0.033018887
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[2].color.g
+      value: 0.48487765
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[2].color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[3].color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[3].color.b
+      value: 0.60045624
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[3].color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[3].color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8210660276910839729, guid: 3237304fc6509974884466c808e01146,
         type: 3}
       propertyPath: m_PlayerPrefab

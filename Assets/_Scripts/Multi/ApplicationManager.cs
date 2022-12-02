@@ -61,6 +61,7 @@ public class ApplicationManager : MonoBehaviour
         _playerConfigs[index].PlayerSprite = playerGfx.player;
         _playerConfigs[index].PlayerFaceSprite = playerGfx.face;
         _playerConfigs[index].PlayerIcon = playerGfx.icon;
+        _playerConfigs[index].PlayerColor = playerGfx.color;
     }
     public void ReadyPlayer(int index)
     {
@@ -118,6 +119,8 @@ public class PlayerConfiguration
     public Sprite PlayerSprite { get; set; }
     public Sprite PlayerFaceSprite { get; set; }
     public Sprite PlayerIcon { get; set; }
+    
+    public Color PlayerColor { get; set; }
 }
 
 [System.Serializable]
@@ -128,4 +131,5 @@ public class PlayerGfxUI
     public Sprite menu;
     public Sprite button;
     public Sprite icon;
+    public Color color;
 }

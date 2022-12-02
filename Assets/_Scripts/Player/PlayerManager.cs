@@ -179,7 +179,7 @@ public class PlayerManager : MonoBehaviour
     {
         _raycastRange = GameManager.Instance.LevelGenerator.Scale * 4;
 
-        insideSprite.color = color;
+        //insideSprite.color = color;
         castRadius = _coll.bounds.extents.x - .05f;
         _rb2D.gravityScale = _gravityScale != 0 ? _gravityScale : _rb2D.gravityScale;
 
@@ -490,7 +490,6 @@ public class PlayerManager : MonoBehaviour
             CustomDebugs.DrawWireSphere(endPosition, .5f, Color.magenta, 5f, 1);
         }
 #endif
-
         _cooldownManager.StartCoroutine(_cooldownManager.MoverOverAnimation(endPosition));
     }
 
