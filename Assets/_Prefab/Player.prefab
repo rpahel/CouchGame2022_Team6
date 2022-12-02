@@ -519,7 +519,7 @@ MonoBehaviour:
   isSliding: 0
   wallSlidingSpeedMax: 0.1
   wallJumpDuration: 0.2
-  wallDetectionRadius: 0.83
+  wallDetectionRadius: 0.15
   wallJumping: 0
   wallJumpAngle: 70
   wallJumpForce: 40
@@ -620,7 +620,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8250727704690968795}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.589, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -48,6 +48,7 @@ public class PlayerManager : MonoBehaviour
     private float _deadZone;
     private Coroutine _jumpCoroutine;
     private int _groundChekLayerMask;
+    private int _groundChekLayerMaskWallJump;
 
 
     //GETTER
@@ -175,6 +176,7 @@ public class PlayerManager : MonoBehaviour
         _playerSystem = GetComponent<PlayerStateSystem>();
         _cooldownManager = GetComponent<CooldownManager>();
         _groundChekLayerMask = LayerMask.GetMask("Destructible", "Indestructible", "Limite", "Player");
+        _groundChekLayerMaskWallJump = LayerMask.GetMask("Destructible", "Indestructible", "Limite");
 
         LookDirection = Vector2.right;
         if (StopDuration < 0.01f) SetStopDuration(0.01f);
@@ -238,6 +240,16 @@ public class PlayerManager : MonoBehaviour
             {
                 tickHoldEat += Time.deltaTime * _eatTickrate;
             }
+        }
+
+
+        if (inputVectorDirection.x > 0 && !facingRight)
+        {
+            Flip();
+        }
+        else if (inputVectorDirection.x < 0 && facingRight)
+        {
+            Flip();
         }
     }
     #endregion
@@ -382,14 +394,14 @@ public class PlayerManager : MonoBehaviour
     public void UpdateDetectWall()
     {
 
-        RaycastHit2D hit = Physics2D.CircleCast(wallCheckRight.position, wallDetectionRadius, Vector2.right , castDistance , _groundChekLayerMask);
+        Collider2D hit = Physics2D.OverlapCircle(wallCheckRight.position, wallDetectionRadius , _groundChekLayerMaskWallJump);
 
-
+       
         isPlayerTouchingWall = (hit != null);
 
 
 
-        if (isPlayerTouchingWall && !GroundCheck() && !wallJumping)
+        if (isPlayerTouchingWall && !GroundCheck() && !wallJumping && inputVectorDirection.x >= 0.90f || isPlayerTouchingWall && !GroundCheck() && !wallJumping && inputVectorDirection.x <= -0.90f )
         {
 
             dirPlayerToWall = Mathf.Sign(_rb2D.position.x - hit.transform.position.x);
@@ -406,9 +418,19 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    void Flip()
+    {
+        Vector3 currentScale = gameObject.transform.localScale;
+        currentScale.x *= -1;
+        gameObject.transform.localScale = currentScale;
+
+        facingRight = !facingRight;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(wallCheckRight.position, wallDetectionRadius);
+       
 
     }
     #endregion

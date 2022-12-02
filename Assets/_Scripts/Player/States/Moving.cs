@@ -60,8 +60,14 @@ public class Moving : State
     {
         if(playerSystem.PlayerManager.GroundCheck())
             playerSystem.PlayerManager.Jump();
-        else if(playerSystem.PlayerManager.isSliding && playerSystem.PlayerManager.GroundCheck() == false && playerSystem.PlayerManager.cantDoubleJump == false)        
+        else if(playerSystem.PlayerManager.isSliding && playerSystem.PlayerManager.GroundCheck() == false && playerSystem.PlayerManager.cantDoubleJump == false)
+        {
+            playerSystem.PlayerManager.inputVectorDirection.x = 0f;
             playerSystem.PlayerManager.WallJump();
+            playerSystem.PlayerManager.inputVectorDirection.x = 1f;
+           
+        }
+           
         
     }
 
