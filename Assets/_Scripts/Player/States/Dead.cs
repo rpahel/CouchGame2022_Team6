@@ -31,6 +31,7 @@ public class Dead : State
     // Mettre cette fonction direct dans PlayerSystemManager
     private void Respawn()
     {
+        GameManager.Instance.CameraManager.UpdatePlayers(playerSystem.transform);
         GameManager.Instance.RespawnPlayer(playerSystem.gameObject);
         playerSystem.PlayerManager.fullness = 50;
         playerSystem.PlayerManager.UpdatePlayerScale();

@@ -3,7 +3,7 @@ using UnityEngine;
 public abstract class State
 {
     protected readonly PlayerStateSystem playerSystem;
-
+    
     protected State(PlayerStateSystem playerSystem)
     {
         this.playerSystem = playerSystem;

@@ -14,7 +14,7 @@ public class SpawnManager : MonoBehaviour
     {
         var manager = GameManager.Instance;
         var playerConfigs = ApplicationManager.Instance.GetPlayerConfigs().ToArray();
-        manager.CinemachineTargetGroup.m_Targets = new CinemachineTargetGroup.Target[playerConfigs.Length];
+        //manager.CinemachineTargetGroup.m_Targets = new CinemachineTargetGroup.Target[playerConfigs.Length];
 
         for (int i = 0; i < playerConfigs.Length; i++)
         {
@@ -27,8 +27,10 @@ public class SpawnManager : MonoBehaviour
             player.GetComponent<PlayerManager>().textUI = manager.PlayersUI[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>();
             player.GetComponent<PlayerInputsHandler>().InitializePlayer(playerConfigs[i]);
             player.GetComponent<PlayerInputsHandler>().SetEnableInput(false);
-            manager.CinemachineTargetGroup.m_Targets[i].target = player.transform;
-            manager.CinemachineTargetGroup.m_Targets[i].weight = 1;
+            manager.CameraManager.UpdatePlayers(player.transform);
+            //manager.CinemachineTargetGroup.m_Targets[i].target = player.transform;
+            //manager.CinemachineTargetGroup.m_Targets[i].weight = 1;
+            
         }
         
         //GameManager2.Instance.StatsManager.InitializeStats();

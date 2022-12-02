@@ -750,8 +750,8 @@ MonoBehaviour:
   animation: 0.3
   betweenCubes: 0
   betweenLines: 0.05
-  _timeBeforeCubeRespawnStart: 0
-  _respawnCooldown: 0.3
+  _timeBeforeCubeRespawnStart: 10
+  _respawnCooldown: 1.5
   _firstRespawnTime: 5
 --- !u!1 &847381348
 GameObject:
@@ -1104,8 +1104,8 @@ MonoBehaviour:
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
-  m_XDamping: 1
-  m_YDamping: 20
+  m_XDamping: 4
+  m_YDamping: 11
   m_ZDamping: 1
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5

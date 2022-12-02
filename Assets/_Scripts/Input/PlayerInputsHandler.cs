@@ -36,8 +36,6 @@ public class PlayerInputsHandler : MonoBehaviour
     {
         if (!InputIsEnabled) return;
 
-        Debug.Log("obj" + obj.action.name);
-        
         if (obj.action.name == controls.Game.Move.name)
         {
             OnMove(obj);
