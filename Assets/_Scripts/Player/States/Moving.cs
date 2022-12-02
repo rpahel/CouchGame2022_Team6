@@ -31,17 +31,6 @@ public class Moving : State
             playerSystem.PlayerManager.inputVectorMove = Vector2.zero;
             return;
         }
-        
-        playerSystem.PlayerManager.LookDirection = playerSystem.PlayerManager.inputVectorMove.x switch
-        {
-            // Redondance (x est pas cense valoir 0 mais on sait jamais)
-            > 0 => Vector2.right,
-            < 0 => Vector2.left,
-            _ => playerSystem.PlayerManager.LookDirection
-        };
-
-        //objTransform.rotation = playerSystem.PlayerManager.LookDirection == Vector2.left ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
-
 
         playerSystem.PlayerManager.inputVectorMove = playerSystem.PlayerManager.inputVectorDirection;
 

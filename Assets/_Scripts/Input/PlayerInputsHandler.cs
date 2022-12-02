@@ -10,6 +10,7 @@ public class PlayerInputsHandler : MonoBehaviour
     private PlayerStateSystem _playerSystem;
     private PlayerConfiguration _playerConfig;
     private PlayerInputs controls;
+    private Transform gameObjectTransform;
     public bool InputIsEnabled { get; private set; }
     #endregion
 
@@ -20,6 +21,7 @@ public class PlayerInputsHandler : MonoBehaviour
         _playerManager = GetComponent<PlayerManager>();
         controls = new PlayerInputs();
         InputIsEnabled = true;
+        gameObjectTransform = gameObject.GetComponent<Transform>();
     }
     
     public void InitializePlayer(PlayerConfiguration pc)
@@ -34,12 +36,14 @@ public class PlayerInputsHandler : MonoBehaviour
 
     private void Input_OnActionTriggered(CallbackContext obj)
     {
-        if (!InputIsEnabled) return;
 
         if (obj.action.name == controls.Game.Move.name)
         {
             OnMove(obj);
         }
+        
+        if (!InputIsEnabled) return;
+
         else if (obj.action.name == controls.Game.Jump.name)
         {
             OnJump(obj);
@@ -61,10 +65,18 @@ public class PlayerInputsHandler : MonoBehaviour
     private void OnMove(CallbackContext input)
     {
         _playerSystem.PlayerManager.inputVectorDirection = input.ReadValue<Vector2>().normalized;
+        
+        _playerSystem.PlayerManager.LookDirection = _playerSystem.PlayerManager.inputVectorDirection.x switch
+        {
+            // Redondance (x est pas cense valoir 0 mais on sait jamais)
+            > 0 => Vector2.right,
+            < 0 => Vector2.left,
+            _ => _playerSystem.PlayerManager.LookDirection
+        };
 
-        if (_playerSystem.PlayerState is not Moving || !InputIsEnabled)
-            return;
-
+        gameObjectTransform.rotation = _playerSystem.PlayerManager.LookDirection == Vector2.left ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
+        
+        if (!InputIsEnabled) return;
         _playerSystem.OnMove();
     }
 

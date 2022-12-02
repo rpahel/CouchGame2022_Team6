@@ -7,6 +7,8 @@ public class FaceManager : MonoBehaviour
 {
     private PlayerManager playerManager;
     
+    [SerializeField] private float cooldownFace;
+    
     [SerializeField] private Sprite faceNormal;
     [SerializeField] private Sprite faceEat;
     [SerializeField] private Sprite faceFull;
@@ -18,6 +20,7 @@ public class FaceManager : MonoBehaviour
     public Sprite FaceFull => faceFull;
     public Sprite FaceJump => faceJump;
     public Sprite FaceShoot => faceShoot;
+    public float CooldownFace => cooldownFace;
     
     private void Awake()
     {
@@ -27,10 +30,17 @@ public class FaceManager : MonoBehaviour
     public void SetFaceNormal(Sprite sprite)
     {
         faceNormal = sprite;
+        SetFace(sprite);
     }
 
     public void SetFace(Sprite sprite)
     {
+        if (playerManager.fullness == 100)
+        {
+            playerManager.SetFace(faceFull);
+            return;
+        }
+        
         playerManager.SetFace(sprite);
     }
 }

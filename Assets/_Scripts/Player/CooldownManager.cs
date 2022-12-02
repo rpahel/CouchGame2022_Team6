@@ -1,15 +1,20 @@
 using DG.Tweening;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CooldownManager : MonoBehaviour
 {
     private PlayerManager playerSystemManager;
     private PlayerStateSystem playerSystem;
+    private FaceManager faceManager;
+
+    private Coroutine faceCoroutine;
     private void Awake()
     {
         playerSystemManager = GetComponent<PlayerManager>();
         playerSystem = GetComponent<PlayerStateSystem>();
+        faceManager = GetComponent<FaceManager>();
     }
 
     public IEnumerator CooldownShoot()
@@ -69,6 +74,7 @@ public class CooldownManager : MonoBehaviour
     public IEnumerator JumpCoroutine()
     {
         playerSystemManager.isJumping = true;
+        SetupCoroutine(faceManager.FaceJump);
         float t = 0;
         playerSystemManager.Rb2D.gravityScale = 0;
         while (t < 1)
@@ -115,5 +121,25 @@ public class CooldownManager : MonoBehaviour
         //_trailRenderer.emitting = false;
         yield return new WaitForSeconds(playerSystemManager.DashCooldown);
         playerSystemManager.canDash = true;
+    }
+
+    public void SetupCoroutine(Sprite sprite)
+    {
+        if (faceCoroutine == null)
+        {
+            faceCoroutine = StartCoroutine(FaceCoroutine(sprite));
+        }
+        else
+        {
+            StopCoroutine(faceCoroutine);
+            faceCoroutine = StartCoroutine(FaceCoroutine(sprite));
+        }
+    }
+
+    private IEnumerator FaceCoroutine(Sprite sprite)
+    {
+        faceManager.SetFace(sprite);
+        yield return new WaitForSeconds(faceManager.CooldownFace);
+        faceManager.SetFace(faceManager.FaceNormal);
     }
 }

@@ -45,7 +45,6 @@ public class PlayerStateSystem : StateMachine
 
     public void OnMove()
     {
-        Debug.Log("Move");
         State?.OnMove();
     }
 

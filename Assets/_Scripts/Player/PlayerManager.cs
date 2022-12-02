@@ -15,6 +15,7 @@ public class PlayerManager : MonoBehaviour
 
     private PlayerStateSystem _playerSystem;
     private CooldownManager _cooldownManager;
+    private FaceManager faceManager;
 
     // Getter
     public Rigidbody2D Rb2D => _rb2D;
@@ -167,7 +168,8 @@ public class PlayerManager : MonoBehaviour
         _cooldownManager = GetComponent<CooldownManager>();
         _groundChekLayerMask = LayerMask.GetMask("Destructible", "Indestructible", "Limite", "Player");
         playerInput = GetComponent<PlayerInputsHandler>();
-
+        faceManager = GetComponent<FaceManager>();
+        
         LookDirection = Vector2.right;
         if (StopDuration < 0.01f) SetStopDuration(0.01f);
         tickHoldEat = 1f;
@@ -263,6 +265,7 @@ public class PlayerManager : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, _eatDistance, 1 << LayerMask.NameToLayer("Destructible"));
         if (hit)
         {
+            _cooldownManager.SetupCoroutine(faceManager.FaceEat);
             hit.transform.parent.GetComponent<Cube_Edible>().GetEaten(transform);
             fullness = Mathf.Clamp(fullness + _filling, 0, 100);
             UpdatePlayerScale();
@@ -274,6 +277,7 @@ public class PlayerManager : MonoBehaviour
 
             if (hit)
             {
+                _cooldownManager.SetupCoroutine(faceManager.FaceEat);
                 hit.transform.parent.GetComponent<Cube_Edible>().GetEaten(transform);
                 fullness = Mathf.Clamp(fullness + _filling, 0, 100);
                 UpdatePlayerScale();
@@ -378,6 +382,7 @@ public class PlayerManager : MonoBehaviour
 
     private void ShootProjectile(Vector2 aimDirection)
     {
+        _cooldownManager.SetupCoroutine(faceManager.FaceShoot);
         Projectile projectile = GameManager.Instance.GetAvailableProjectile();
         projectile.owner = _playerSystem.PlayerManager;
         projectile.color = color;
