@@ -232,7 +232,6 @@ public class LevelGenerator : MonoBehaviour
         cubeScript.levelGenerator = this;
         cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString("00") + ", " + height.ToString("00") + ")";
         cube.transform.localScale = Vector3.one * scale;
-        Debug.Log("localScale " + cube.transform.localScale);
         cube.transform.parent = parentObj;
         cubesArray[width, height] = cube.transform;
 
@@ -419,11 +418,11 @@ public class LevelGenerator : MonoBehaviour
         if (cube is Cube_TNT && !respawn)
             yield break;
         
-        Debug.Log("respawned cube");
         cube.GetBarfed(cube.transform.position);
         _canRespawnCube = false;
         StartCoroutine(CubeRespawnCooldown());
         _respawnCoroutine = null;
+        
         yield break;
     }
 
