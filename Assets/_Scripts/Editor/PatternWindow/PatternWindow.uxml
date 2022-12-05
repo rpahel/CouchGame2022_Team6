@@ -1,0 +1,32 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Button text="Save Pattern " display-tooltip-when-elided="true" name="Save" style="position: absolute; left: 25%; width: 50%; height: auto; top: 372px; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0;" />
+    <ui:VisualElement name="SquareParent" style="width: 75%; height: 55%; left: 53px; top: 63px; border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); background-color: rgba(0, 0, 0, 0);">
+        <ui:Button text="&#10;" display-tooltip-when-elided="true" name="Square0" style="background-color: rgb(0, 255, 40); width: 31%; height: 92px; position: absolute;">
+            <ui:Button display-tooltip-when-elided="true" style="background-color: rgba(88, 88, 88, 0); height: 89px; width: 74px; left: 0; top: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; position: absolute;" />
+        </ui:Button>
+        <ui:Button text="&#10;" display-tooltip-when-elided="true" name="Square1" style="background-color: rgb(0, 255, 40); width: 31%; height: 92px; position: absolute; left: 80px; display: flex;">
+            <ui:Button display-tooltip-when-elided="true" style="background-color: rgba(88, 88, 88, 0); height: 89px; width: 74px; left: 0; top: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; position: absolute;" />
+        </ui:Button>
+        <ui:Button text="&#10;" display-tooltip-when-elided="true" name="Square2" style="background-color: rgb(0, 255, 40); width: 31%; height: 92px; position: absolute; left: 160px; display: flex;">
+            <ui:Button display-tooltip-when-elided="true" style="background-color: rgba(88, 88, 88, 0); height: 89px; width: 74px; left: 0; top: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; position: absolute;" />
+        </ui:Button>
+        <ui:Button text="&#10;" display-tooltip-when-elided="true" name="Square3" style="background-color: rgb(0, 255, 40); width: 31%; height: 92px; position: absolute; top: 91px; display: flex;">
+            <ui:Button display-tooltip-when-elided="true" style="background-color: rgba(88, 88, 88, 0); height: 89px; width: 74px; left: 0; top: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; position: absolute;" />
+        </ui:Button>
+        <ui:Button text="&#10;" display-tooltip-when-elided="true" name="Square4" style="background-color: rgb(0, 255, 40); width: 31%; height: 92px; position: absolute; left: 80px; top: 91px; display: flex;">
+            <ui:Button display-tooltip-when-elided="true" style="background-color: rgba(88, 88, 88, 0); height: 89px; width: 74px; left: 0; top: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; position: absolute;" />
+        </ui:Button>
+        <ui:Button text="&#10;" display-tooltip-when-elided="true" name="Square5" style="background-color: rgb(0, 255, 40); width: 31%; height: 92px; position: absolute; left: 160px; top: 91px; display: flex;">
+            <ui:Button display-tooltip-when-elided="true" style="background-color: rgba(88, 88, 88, 0); height: 89px; width: 74px; left: 0; top: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; position: absolute;" />
+        </ui:Button>
+        <ui:Button text="&#10;" display-tooltip-when-elided="true" name="Square6" style="background-color: rgb(0, 255, 40); width: 31%; height: 92px; position: absolute; top: 182px; display: flex;">
+            <ui:Button display-tooltip-when-elided="true" style="background-color: rgba(88, 88, 88, 0); height: 89px; width: 74px; left: 0; top: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; position: absolute;" />
+        </ui:Button>
+        <ui:Button text="&#10;" display-tooltip-when-elided="true" name="Square7" style="background-color: rgb(0, 255, 40); width: 31%; height: 92px; position: absolute; left: 80px; top: 182px; display: flex;">
+            <ui:Button display-tooltip-when-elided="true" style="background-color: rgba(88, 88, 88, 0); height: 89px; width: 74px; left: 0; top: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; position: absolute;" />
+        </ui:Button>
+        <ui:Button text="&#10;" display-tooltip-when-elided="true" name="Square8" style="background-color: rgb(0, 255, 40); width: 31%; height: 92px; position: absolute; left: 160px; top: 182px; display: flex;">
+            <ui:Button display-tooltip-when-elided="true" style="background-color: rgba(88, 88, 88, 0); height: 89px; width: 74px; left: 0; top: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; position: absolute;" />
+        </ui:Button>
+    </ui:VisualElement>
+</ui:UXML>
