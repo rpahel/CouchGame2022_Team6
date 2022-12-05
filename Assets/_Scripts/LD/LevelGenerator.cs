@@ -175,6 +175,7 @@ public class LevelGenerator : MonoBehaviour
         if (cubeToCreate == cubeBedrock)
         {
             cubeToCreate.layer = LayerMask.NameToLayer("Limite");
+            cubeToCreate.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("Limite");
         }
     }
     #endregion
