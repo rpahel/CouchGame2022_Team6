@@ -243,13 +243,6 @@ public class PlayerManager : MonoBehaviour
         }
 
 
-        switch (inputVectorDirection.x)
-        {
-            case > 0 when !facingRight:
-            case < 0 when facingRight:
-                Flip();
-                break;
-        }
     }
     #endregion
 
@@ -419,14 +412,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    void Flip()
-    {
-        Vector3 currentScale = gameObject.transform.localScale;
-        currentScale.x *= 1;
-        gameObject.transform.localScale = currentScale;
 
-        facingRight = !facingRight;
-    }
 
     private void OnDrawGizmos()
     {
