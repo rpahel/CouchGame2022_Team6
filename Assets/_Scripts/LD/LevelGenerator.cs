@@ -24,6 +24,9 @@ public class LevelGenerator : MonoBehaviour
     public GameObject CubeBedrock => cubeBedrock;
     [SerializeField] private GameObject cubeTrap;
     public GameObject CubeTrap => cubeTrap;
+    
+    [SerializeField] private GameObject cubeTNT;
+    public GameObject CubeTNT => cubeTNT;
 
     //========================================================
     [Header("Animation de spawn des cubes.")]
@@ -65,12 +68,17 @@ public class LevelGenerator : MonoBehaviour
     public Transform[,] CubesArray => cubesArray;
 
     private int coroutinesRunning = 0;
+    
+    
+    private List<TNT> allPaterns;
+    
     #endregion
 
     #region Unity_Functions
     private void Awake()
     {
         cubesArray = new Transform[image.width, image.height];
+        allPaterns = new List<TNT>();
     }
 
     private void Start()
@@ -89,6 +97,15 @@ public class LevelGenerator : MonoBehaviour
 
     #region Custom_Functions
     //========================================================
+    
+    private void FindTNTPatterns() {
+        foreach (TNT tntComp in GetComponents<TNT>()) 
+            allPaterns.Add(tntComp);
+        
+    }
+ 
+    private void AssignRandomPattern(Cube_TNT cube) => cube.pattern = allPaterns[Random.Range(0, allPaterns.Count)];
+    
     public void GenerateLevel()
     {
         if (!image)
@@ -103,6 +120,8 @@ public class LevelGenerator : MonoBehaviour
 
         GameObject parentObjSpawns = new GameObject("Initial Spawns");
         parentObjSpawns.transform.parent = transform;
+        
+        FindTNTPatterns();
 
         // Check la couleur de chaque pixel dans l'image et fait spawn un cube aux coordonn�es correspondantes
         int n = 0;
@@ -119,6 +138,11 @@ public class LevelGenerator : MonoBehaviour
                 else if (pixColor == Color.green)
                 {
                     CreateCubeOnPlay(cubeEdible, parentObjCubes.transform, i, j);
+                }
+                else if (pixColor == new Color(1f,1f,0,1f))
+                {
+                    GameObject obj = CreateCubeOnPlay(cubeTNT,parentObjCubes.transform,i,j);
+                    AssignRandomPattern(obj.GetComponent<Cube_TNT>());
                 }
                 else if (pixColor == Color.black)
                 {
@@ -153,7 +177,7 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-    void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width, bool visible = true)
+    GameObject CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width, bool visible = true)
     {
         GameObject cube = Instantiate(cubeToCreate, new Vector3(width, height, 0) * scale, Quaternion.identity);
         Cube cubeScript = cube.GetComponent<Cube>();
@@ -161,6 +185,7 @@ public class LevelGenerator : MonoBehaviour
         cubeScript.levelGenerator = this;
         cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString("00") + ", " + height.ToString("00") + ")";
         cube.transform.localScale = Vector3.one * scale;
+        Debug.Log("localScale " + cube.transform.localScale);
         cube.transform.parent = parentObj;
         cubesArray[width, height] = cube.transform;
 
@@ -177,6 +202,8 @@ public class LevelGenerator : MonoBehaviour
             cubeToCreate.layer = LayerMask.NameToLayer("Limite");
             cubeToCreate.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("Limite");
         }
+
+        return cube;
     }
     #endregion
 

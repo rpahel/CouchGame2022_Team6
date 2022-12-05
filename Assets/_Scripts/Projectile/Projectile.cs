@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class Projectile : CoroutineSystem
 {
     #region Variables
     //=============================================
@@ -152,6 +152,12 @@ public class Projectile : MonoBehaviour
                 Vector2 sensDuRebond = Vector2.Reflect(_currentVelocity, collision.GetContact(0).normal).normalized;
                 _rb.velocity = _currentVelocity.magnitude * bounceForce * sensDuRebond * Time.fixedDeltaTime;
             }
+            
+            if (collision.gameObject.transform.parent.TryGetComponent<Cube_TNT>(out Cube_TNT tnt)) {
+                //gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                tnt.Explode(collision.gameObject.transform.parent.gameObject.transform);
+                gameObject.SetActive(false);
+            }
         }
         else
         {
@@ -159,6 +165,8 @@ public class Projectile : MonoBehaviour
             _rb.velocity = sensDuRebond * _currentVelocity.magnitude * bounceForce * Time.fixedDeltaTime;
         }
     }
+
+
 
     private void LateUpdate()
     {

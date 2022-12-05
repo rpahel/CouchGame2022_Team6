@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &303830590082189049
+--- !u!1 &6785238952771240675
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,38 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3403455012174948811}
-  - component: {fileID: 2566610700557054638}
-  - component: {fileID: 4844367436440386211}
-  m_Layer: 8
+  - component: {fileID: 8441697207057919441}
+  - component: {fileID: 5098136833677738573}
+  - component: {fileID: 101734904912901737}
+  m_Layer: 12
   m_Name: Cube
-  m_TagString: CubeTrap
+  m_TagString: CubeEdible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3403455012174948811
+--- !u!4 &8441697207057919441
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 303830590082189049}
+  m_GameObject: {fileID: 6785238952771240675}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 2613636963887001772}
+  m_Father: {fileID: 9104288708286051510}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &2566610700557054638
+--- !u!212 &5098136833677738573
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 303830590082189049}
+  m_GameObject: {fileID: 6785238952771240675}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -74,8 +74,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 100
-  m_Sprite: {fileID: 21300000, guid: c1a0741996f691b4394911750ae874af, type: 3}
-  m_Color: {r: 0.7169812, g: 0.18533282, b: 0.18533282, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 3576481fff59d2c47a7b59e09e046911, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -85,33 +85,33 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &4844367436440386211
+--- !u!61 &101734904912901737
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 303830590082189049}
+  m_GameObject: {fileID: 6785238952771240675}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 0bbe0a4095b05bc49abda2d661eadaab, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.038621992, y: -0.16000462}
   m_SpriteTilingProperty:
-    border: {x: 0.015625, y: 0.015625, z: 0.015625, w: 0.015625}
+    border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 2.18, y: 2.39}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.0262358, y: 2.0041661}
   m_EdgeRadius: 0
---- !u!1 &2613636963887001808
+--- !u!1 &9104288708286051530
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,68 +119,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2613636963887001772}
-  - component: {fileID: 478985761459932768}
-  - component: {fileID: 7858678033640817199}
-  m_Layer: 8
-  m_Name: CubeTrap
-  m_TagString: CubeTrap
+  - component: {fileID: 9104288708286051510}
+  - component: {fileID: 5229611338921618467}
+  m_Layer: 12
+  m_Name: CubeTNT
+  m_TagString: CubeTNT
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2613636963887001772
+--- !u!4 &9104288708286051510
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2613636963887001808}
+  m_GameObject: {fileID: 9104288708286051530}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.857143, y: 2.857143, z: 2.857143}
-  m_ConstrainProportionsScale: 1
+  m_LocalPosition: {x: -5.13, y: 0.17, z: 0}
+  m_LocalScale: {x: 1.3419143, y: 1.3419143, z: 1.3419143}
+  m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3403455012174948811}
+  - {fileID: 8441697207057919441}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &478985761459932768
+--- !u!114 &5229611338921618467
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2613636963887001808}
+  m_GameObject: {fileID: 9104288708286051530}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 498fd01bcd55df24bb91fc574d2fd29a, type: 3}
+  m_Script: {fileID: 11500000, guid: bdc9a731a66ded740af90068397cf079, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubeType: 3
-  cube: {fileID: 303830590082189049}
+  cubeType: 2
+  cube: {fileID: 6785238952771240675}
   unscaledPosition: {x: 0, y: 0}
   levelGenerator: {fileID: 0}
-  _sideKnockForce: 1
-  _damageAmount: 25
---- !u!50 &7858678033640817199
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2613636963887001808}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7
+  moveDuration: 0.375
+  rotationDegrees: 180
+  pattern: {fileID: 0}
+  damageEat: 15

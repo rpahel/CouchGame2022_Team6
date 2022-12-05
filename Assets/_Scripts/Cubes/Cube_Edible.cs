@@ -4,19 +4,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cube_Edible : Cube
+public class Cube_Edible : CubeDestroyable
 {
     #region Variables
     //======================================================================
-    [SerializeField, Range(0.01f, .5f), Tooltip("Le temps que met le cube a parcourir la distance départ -> joueur")]
-    private float moveDuration;
-    [SerializeField, Range(-180, 180), Tooltip("Le degré de rotation du cube lors de l'animation quand tu le manges.")]
-    private float rotationDegrees;
     [SerializeField, Range(0.01f, 2f), Tooltip("Le temps que met le cube à apparaitre après être spawné par projectile.")]
     private float apparitionDuration;
     [HideInInspector]
     public bool isOriginalCube;
-    public bool IsInAnimation { get; private set; }
 
     //======================================================================
     private List<Cube> cubesAutour = new List<Cube>(4);
@@ -108,35 +103,7 @@ public class Cube_Edible : Cube
             levelGenerator.AddToRespawnList(this);
     }
 
-    IEnumerator Suck(GameObject cube, Transform player)
-    {
-        Vector3 cubeStartPos = cube.transform.position;
-        Vector3 cubeStartRot = cube.transform.rotation.eulerAngles;
-        Vector3 cubeEndRot = cubeStartRot + new Vector3(0, 0, rotationDegrees);
-        cube.transform.position -= Vector3.forward * 0.05f;
-        float scaleFactor;
-        float t = 0;
-
-        while (t < 1f)
-        {
-            IsInAnimation = true;
-            cube.transform.rotation = Quaternion.Euler(Vector3.Lerp(cubeStartRot, cubeEndRot, t));
-            cube.transform.position = Vector3.Lerp(cubeStartPos, player.position, t);
-            cube.transform.position = DOVirtual.EasedValue(cubeStartPos, player.position, t, Ease.InBack, 3f);
-            scaleFactor = DOVirtual.EasedValue(2.857143f, 0, t, Ease.InBack, 2f);
-            cube.transform.localScale = Vector3.one * scaleFactor;
-            t += Time.deltaTime / moveDuration;
-            yield return new WaitForFixedUpdate();
-        }
-
-        cube.transform.parent = this.transform;
-        cube.transform.SetSiblingIndex(0);
-        cube.transform.localPosition = Vector2.zero;
-        cube.GetComponent<Collider2D>().enabled = true;
-        cube.SetActive(false);
-
-        IsInAnimation = false;
-    }
+    
 
     /// <summary>
     /// Retire le reste collé au cube voisin qui vient de se faire manger.
