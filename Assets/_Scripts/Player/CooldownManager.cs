@@ -8,13 +8,14 @@ public class CooldownManager : MonoBehaviour
     private PlayerManager playerSystemManager;
     private PlayerStateSystem playerSystem;
     private FaceManager faceManager;
-
+    private TrailRenderer _trailRenderer;
     private Coroutine faceCoroutine;
     private void Awake()
     {
         playerSystemManager = GetComponent<PlayerManager>();
         playerSystem = GetComponent<PlayerStateSystem>();
         faceManager = GetComponent<FaceManager>();
+        _trailRenderer = GetComponent<TrailRenderer>();
     }
 
     public IEnumerator CooldownShoot()
@@ -113,13 +114,13 @@ public class CooldownManager : MonoBehaviour
         var originalGravityScale = playerSystemManager.Rb2D.gravityScale;
         playerSystemManager.Rb2D.gravityScale = 0;
         playerSystemManager.Rb2D.velocity = Vector2.zero;
-        //_trailRenderer.emitting = true;
+        _trailRenderer.emitting = true;
         yield return new WaitForSeconds(dashDuration);
         playerSystem.SetState(new Moving(playerSystem));
         playerSystemManager.Rb2D.gravityScale = originalGravityScale;
         gameObject.layer = LayerMask.NameToLayer("Player");
         playerSystemManager.SpecialTrigger.SetActive(false);
-        //_trailRenderer.emitting = false;
+        _trailRenderer.emitting = false;
         yield return new WaitForSeconds(playerSystemManager.DashCooldown);
         playerSystemManager.canDash = true;
     }
