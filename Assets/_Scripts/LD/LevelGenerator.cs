@@ -198,13 +198,8 @@ public class LevelGenerator : MonoBehaviour
 
         if (cubeToCreate == cubeBedrock)
         {
-            if (height <= 0 || height >= image.height - 1 || width <= 0 || width >= image.width - 1)
-            {
-                foreach (Transform square in cube.transform)
-                {
-                    square.gameObject.layer = LayerMask.NameToLayer("Limite");
-                }
-            }
+            cubeToCreate.layer = LayerMask.NameToLayer("Limite");
+            cubeToCreate.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("Limite");
         }
 
         return cube;

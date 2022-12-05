@@ -34,6 +34,8 @@ public class Dead : State
         GameManager.Instance.CameraManager.UpdatePlayers(playerSystem.transform);
         GameManager.Instance.RespawnPlayer(playerSystem.gameObject);
         playerSystem.PlayerManager.fullness = 50;
+        playerSystem.PlayerManager.inputVectorDirection = Vector2.zero;
+        playerSystem.PlayerManager.inputVectorMove = Vector2.zero;
         playerSystem.PlayerManager.UpdatePlayerScale();
         playerSystem.SetState(new Moving(playerSystem));
     }
