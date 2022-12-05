@@ -82,7 +82,6 @@ public class PlayerManager : MonoBehaviour
     //==========================================================================
     [HideInInspector] public Vector2 inputVectorDirection = Vector2.zero;
     [HideInInspector] public Vector2 inputVectorMove = Vector2.zero;
-    public Vector2 InputVectorMove => inputVectorMove;
 
     //==========================================================================
     [HideInInspector] public bool holdJump;
