@@ -11,6 +11,12 @@ public class PlayerSetupMenuController : MonoBehaviour
     private int PlayerIndex;
 
     //[SerializeField] private LocalizedText text;
+    
+    [Header("Color button selector")]
+    [SerializeField] private GameObject greenButton;
+    [SerializeField] private GameObject blueButton;
+    [SerializeField] private GameObject orangeButton;
+    [SerializeField] private GameObject pinkButton;
 
     [SerializeField] private GameObject readyPanel;
     [SerializeField] private GameObject menuPanel;
@@ -30,6 +36,29 @@ public class PlayerSetupMenuController : MonoBehaviour
     {
         menuImage = GetComponent<Image>();
         manager = ApplicationManager.Instance;
+        SetupColors();
+    }
+
+    private void SetupColors()
+    {
+        var index = 0;
+        switch (manager.ListColorRemaining.Count)
+        {
+            case 1 or 2:
+                index = -45;
+                break;
+            case 3 or 4:
+                index = -105;
+                break;
+            default:
+                Debug.LogError("Problem in ListColorRemaining.Count");
+                return;
+        }
+
+        for (int x = 0; x < manager.ListColorRemaining.Count; x++)
+        {
+            //var buttonGO = Instantiate()
+        }
     }
 
     public void SetPlayerIndex(int pi)

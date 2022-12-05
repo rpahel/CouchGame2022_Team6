@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8210660276910839731
 Transform:
@@ -45,9 +45,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa4e8e19b323e81438e994d4805f5d0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  language: 0
-  minPlayers: 2
+  language: 14
+  minPlayers: 1
   maxPlayers: 4
+  listPlayersGfx:
+  - player: {fileID: 21300000, guid: f96c7283874a218498cc18a95049d4e3, type: 3}
+    face: {fileID: 21300000, guid: ea8ffbf2d28ba614fbecc3d4a4c35047, type: 3}
+    menu: {fileID: 21300000, guid: b555842b857295d409f3483a43aaa765, type: 3}
+    button: {fileID: 21300000, guid: ea92c648dffd09a47bb3377dc6e7d921, type: 3}
+    icon: {fileID: 21300000, guid: 5aabd9eafde97844db2e52bd8fbf48ee, type: 3}
+    color: {r: 0.059974276, g: 0.8867924, b: 0.0292809, a: 1}
+  - player: {fileID: 21300000, guid: 26c7725f8d95cc14fae6418a50108e03, type: 3}
+    face: {fileID: 21300000, guid: c15737a1c3248d249a0c04628f9e59d9, type: 3}
+    menu: {fileID: 21300000, guid: 5cde8a90827473e4087899100941acc9, type: 3}
+    button: {fileID: 21300000, guid: 2a089836aa44bd84c9d208dea0344cd0, type: 3}
+    icon: {fileID: 21300000, guid: 6d367e2f9719ab4499f38e7f1ef6f006, type: 3}
+    color: {r: 0.0047169924, g: 0.31725165, b: 1, a: 1}
+  - player: {fileID: 21300000, guid: 79beae06d0270134a8089509f4e555fe, type: 3}
+    face: {fileID: 21300000, guid: 6a06180c5916d1d489ba88723ec3853b, type: 3}
+    menu: {fileID: 21300000, guid: 2a55e5d4ee61e0d438f4719c6d74c02a, type: 3}
+    button: {fileID: 21300000, guid: 00f8f7af5cce72547906ce81dbfa60b0, type: 3}
+    icon: {fileID: 21300000, guid: 43969d5d30601294b8ae25cd705adbaa, type: 3}
+    color: {r: 1, g: 0.48487765, b: 0.033018887, a: 1}
+  - player: {fileID: 21300000, guid: 189e79c763099b1428c01af98f72a2ec, type: 3}
+    face: {fileID: 21300000, guid: a468457a6f9bead49b41e9af9b9f703c, type: 3}
+    menu: {fileID: 21300000, guid: 2c6eb36f07f74814e9b1bcc175968127, type: 3}
+    button: {fileID: 21300000, guid: 86053ba954456a344bc6a9d486aa7852, type: 3}
+    icon: {fileID: 21300000, guid: d15a9c6c60b9f564cafcf90cd9d37cec, type: 3}
+    color: {r: 1, g: 0, b: 0.60045624, a: 1}
   loadingScreen: {fileID: 0}
   playersLayout: {fileID: 0}
   loadingSlider: {fileID: 0}
@@ -97,7 +122,7 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 0}
-  m_PlayerPrefab: {fileID: 6086894563923279896, guid: 55e7eb7937fa7b248b4602eee1a67bd0,
+  m_PlayerPrefab: {fileID: 6086894563923279896, guid: a973e29c73a709d41b01a19ebbabccae,
     type: 3}
   m_SplitScreen: 0
   m_MaintainAspectRatioInSplitScreen: 0

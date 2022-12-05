@@ -7,10 +7,20 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
+        private static AudioManager Instance { get; set; }
         public Sound[] sounds;
-
         private void Awake()
         {
+                if (Instance != null)
+                {
+                        Debug.Log("More than one instance of AudioManager");
+                }
+                else
+                {
+                        Instance = this;
+                        DontDestroyOnLoad(Instance);
+                }
+                
                 foreach (var s in sounds) 
                 {
                         s.source = gameObject.AddComponent<AudioSource>();
