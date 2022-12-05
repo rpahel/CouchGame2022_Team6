@@ -16,6 +16,7 @@ public class PlayerManager : MonoBehaviour
     private PlayerStateSystem _playerSystem;
     private CooldownManager _cooldownManager;
     private FaceManager faceManager;
+    private StatisticsManager statsManager;
 
     // Getter
     public Rigidbody2D Rb2D => _rb2D;
@@ -142,7 +143,6 @@ public class PlayerManager : MonoBehaviour
     public bool wallJumping;
     public float wallJumpAngle;
     public float wallJumpForce;
-    private bool facingRight = true;
     public bool canWallJump;
     public bool cantDoubleJump;
 
@@ -188,8 +188,10 @@ public class PlayerManager : MonoBehaviour
 
         playerInput = GetComponent<PlayerInputsHandler>();
         faceManager = GetComponent<FaceManager>();
+        statsManager = GameManager.Instance.GetComponent<StatisticsManager>();
         _groundChekLayerMaskWallJump = LayerMask.GetMask("Destructible", "Indestructible", "Limite");
         LookDirection = Vector2.right;
+        
         if (StopDuration < 0.01f) SetStopDuration(0.01f);
         tickHoldEat = 1f;
     }
@@ -240,15 +242,6 @@ public class PlayerManager : MonoBehaviour
             {
                 tickHoldEat += Time.deltaTime * _eatTickrate;
             }
-        }
-
-
-        switch (inputVectorDirection.x)
-        {
-            case > 0 when !facingRight:
-            case < 0 when facingRight:
-                Flip();
-                break;
         }
     }
     #endregion
@@ -386,9 +379,6 @@ public class PlayerManager : MonoBehaviour
         wallJumpdir = new Vector2(Mathf.Cos(Mathf.Deg2Rad * wallJumpAngle), Mathf.Sin(Mathf.Deg2Rad * wallJumpAngle));
         _rb2D.velocity = new Vector2(wallJumpdir.x * dirPlayerToWall * wallJumpForce, wallJumpdir.y * wallJumpForce);
         // _rb.velocity = new Vector2(wallJumpdir.x * wallOrientXLeft * wallJumpForce, wallJumpdir.y * wallJumpForce);
-
-
-
     }
 
 
@@ -396,11 +386,8 @@ public class PlayerManager : MonoBehaviour
     {
 
         Collider2D hit = Physics2D.OverlapCircle(wallCheckRight.position, wallDetectionRadius , _groundChekLayerMaskWallJump);
-
-       
+        
         isPlayerTouchingWall = (hit != null);
-
-
 
         if (isPlayerTouchingWall && !GroundCheck() && !wallJumping && inputVectorDirection.x >= 0.90f || isPlayerTouchingWall && !GroundCheck() && !wallJumping && inputVectorDirection.x <= -0.90f )
         {
@@ -417,15 +404,6 @@ public class PlayerManager : MonoBehaviour
             isSliding = false;
             Debug.Log("stoopsliding");
         }
-    }
-
-    void Flip()
-    {
-        Vector3 currentScale = gameObject.transform.localScale;
-        currentScale.x *= -1;
-        gameObject.transform.localScale = currentScale;
-
-        facingRight = !facingRight;
     }
 
     private void OnDrawGizmos()
@@ -447,16 +425,37 @@ public class PlayerManager : MonoBehaviour
     {
         if (_playerSystem.PlayerState is Special) return;
 
+        var damageDealerIsAPlayer = false;
+        PlayerManager damager = null;
+        
+        switch(damageDealer)
+        {
+            case PlayerManager playerManager:
+                damager = playerManager; 
+                damageDealerIsAPlayer = true;
+                break;
+            case Cube_Trap:
+                damageDealerIsAPlayer = false;
+                break;
+            default:
+                Debug.Log("Dont know this damage dealer type");
+                break;
+        }
+
         fullness = Mathf.Clamp(fullness - damage, 0, 100);
 
         if (fullness <= 0 && _playerSystem.PlayerState is not Dead)
         {
             _playerSystem.SetState(new Dead(_playerSystem));
+            if(damageDealerIsAPlayer)
+                UpdateStats(damager);
             return;
         }
-
+        
+        if(damageDealerIsAPlayer)
+            UpdateStats(damager, damage);
+            
         UpdatePlayerScale();
-        //Stats
 
         _playerSystem.SetKnockback(knockBackForce);
     }
@@ -625,5 +624,36 @@ public class PlayerManager : MonoBehaviour
     public void SetFace(Sprite sprite)
     {
         face.sprite = sprite;
+    }
+    
+    private void UpdateStats(PlayerManager damageDealer, float damage)
+    {
+        var indexDamageDealer = GameManager.Instance.GetPlayerIndex(damageDealer.gameObject);
+        
+        foreach (var playerStat in statsManager.ArrayStats)
+        {
+            if (playerStat._playerIndex == indexDamageDealer)
+            {
+                playerStat._damageDeal += damage;
+            }
+        }
+    }
+    private void UpdateStats(PlayerManager damageDealer)
+    {
+
+        var indexDamageDealer = GameManager.Instance.GetPlayerIndex(damageDealer.gameObject);
+        var indexDamageReceiver = GameManager.Instance.GetPlayerIndex(this.gameObject);
+        
+        foreach (var playerStat in statsManager.ArrayStats)
+        {
+            if (playerStat._playerIndex == indexDamageDealer)
+            {
+                playerStat._kill++;
+            }
+            else if (playerStat._playerIndex == indexDamageReceiver)
+            {
+                playerStat._death++;
+            }
+        }
     }
 }
