@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1129,6 +1129,32 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3237304fc6509974884466c808e01146, type: 3}
+--- !u!1 &1809764646 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8210660276910839742, guid: 3237304fc6509974884466c808e01146,
+    type: 3}
+  m_PrefabInstance: {fileID: 1809764645}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1809764647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1809764646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53b522e5df52359498505c6ffcb6dcab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Player_Jump
+    clip: {fileID: 8300000, guid: 8f56a1ca4a517fe46b8931d9670a633f, type: 3}
+    audiogroup: {fileID: 0}
+    volume: 0.342
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
 --- !u!1 &1971905394
 GameObject:
   m_ObjectHideFlags: 0
