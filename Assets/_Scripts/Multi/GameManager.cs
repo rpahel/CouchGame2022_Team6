@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (_applicationManager.GameState != GAME_STATE.PLAYING) return;
+        if (_applicationManager?.GameState != GAME_STATE.PLAYING) return;
         
         _currentGameCooldown -= Time.deltaTime;
         gameCooldownText.text = ((int)_currentGameCooldown).ToString();
@@ -108,7 +108,7 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         SetAllInputs(true);
-        _applicationManager.SetGameState(GAME_STATE.PLAYING);
+        _applicationManager?.SetGameState(GAME_STATE.PLAYING);
     }
 
     private void SetAllInputs(bool result)

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3403455012174948811}
   - component: {fileID: 3078427599632889558}
   - component: {fileID: 1383380659694891666}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Cube
   m_TagString: CubeBedrock
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2613636963887001772}
   - component: {fileID: 4237886282905706459}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: CubeBedrock
   m_TagString: CubeBedrock
   m_Icon: {fileID: 0}
@@ -159,3 +159,4 @@ MonoBehaviour:
   cubeType: 3
   cube: {fileID: 303830590082189049}
   unscaledPosition: {x: 0, y: 0}
+  levelGenerator: {fileID: 0}
