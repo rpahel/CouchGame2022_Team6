@@ -40,7 +40,7 @@ public class StatisticsManager : MonoBehaviour
     {
         SetupStatsMenu();
         
-        var sortedArray = _arrayStats.OrderByDescending(x => x._kill);
+        var sortedArray = _arrayStats.OrderByDescending(x => x._damageDeal);
 
         var playerConfigs = applicationManager.GetPlayerConfigs().ToArray();
         byte index = 0;
