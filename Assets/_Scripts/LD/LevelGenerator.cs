@@ -2,6 +2,7 @@ using Data;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
@@ -50,9 +51,16 @@ public class LevelGenerator : MonoBehaviour
     private float _firstRespawnTime;
     private bool _canRespawnCube = true;
     private bool _canRespawnFirstCube;
-    private List<Cube_Edible> _cubeRespawnList = new();
+    private List<CubeDestroyable> _cubeRespawnList = new();
     private Coroutine _respawnCoroutine;
 
+    [Header("TNT")]
+    //========================================================
+    [SerializeField,Range(0f,60f)] private float tntDelay;
+    private float tntTimer;
+    public bool randomSpawn;
+    public bool respawn;
+    
     //========================================================
     private LEVEL_STATE levelState = LEVEL_STATE.NONE;
     public LEVEL_STATE LevelState => levelState;
@@ -71,6 +79,7 @@ public class LevelGenerator : MonoBehaviour
     
     
     private List<TNT> allPaterns;
+    
     
     #endregion
 
@@ -93,10 +102,48 @@ public class LevelGenerator : MonoBehaviour
         if(_timeBeforeCubeRespawnStart <= 0 && _respawnCoroutine == null)
             _respawnCoroutine = StartCoroutine(RespawnCube());
     }
+    
+    private void Update() {
+        if (randomSpawn) {
+            tntTimer += Time.deltaTime;
+ 
+            if (tntTimer >= tntDelay) {
+                tntTimer = 0f;
+                StartCoroutine(GenerateRandomTNT());
+            }
+        }
+    }
+    
+    
     #endregion
 
     #region Custom_Functions
     //========================================================
+    
+    private IEnumerator GenerateRandomTNT() {
+        int randX = Random.Range((int)cubesArray[0, 0].position.x,(int)cubesArray[image.width - 1,image.height - 1].position.x);
+        int randY = Random.Range((int)cubesArray[0, 0].position.y, (int)cubesArray[image.width - 1,image.height - 1].position.y);
+ 
+        Vector3 randomPos = new Vector3(randX, randY, 0);
+            
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(randomPos, cubeTNT.transform.localScale.magnitude / 2, 1 << 3 | 1 << 6 | 1 << 7 | 1 << 8 | 1 << 12);
+        
+        while (colliders.Length > 0) {
+            randX = Random.Range((int)cubesArray[0, 0].position.x,(int)cubesArray[image.width - 1,image.height - 1].position.x);
+            randY = Random.Range((int)cubesArray[0, 0].position.y, (int)cubesArray[image.width - 1,image.height - 1].position.y);
+ 
+            randomPos = new Vector3(randX, randY, 0);
+            
+            if(colliders.Length > 0)
+                colliders = Physics2D.OverlapCircleAll(randomPos, cubeTNT.transform.localScale.magnitude / 2, 1 << 3 | 1 << 6 | 1 << 7 | 1 << 8 | 1 << 12);
+        }
+                
+        GameObject tnt = Instantiate(cubeTNT, randomPos, Quaternion.identity,parentObjCubes.transform);
+        tnt.transform.localScale = Vector3.one * scale;
+        AssignRandomPattern(tnt.GetComponent<Cube_TNT>());
+        yield return null;
+    }
+    
     
     private void FindTNTPatterns() {
         foreach (TNT tntComp in GetComponents<TNT>()) 
@@ -363,12 +410,15 @@ public class LevelGenerator : MonoBehaviour
         if (!_canRespawnCube) yield break;
         if (_cubeRespawnList.Count <= 0) yield break;
 
-        Cube_Edible cube = _cubeRespawnList[0];
+        CubeDestroyable cube = _cubeRespawnList[0];
         _cubeRespawnList.RemoveAt(0);
 
         yield return new WaitUntil(() => _canRespawnFirstCube);
         yield return new WaitUntil(() => !cube.IsInAnimation);
 
+        if (cube is Cube_TNT && !respawn)
+            yield return null;
+        
         cube.GetBarfed(cube.transform.position);
         _canRespawnCube = false;
         StartCoroutine(CubeRespawnCooldown());
@@ -402,7 +452,7 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-    public void RemoveFromRespawnList(Cube_Edible cube)
+    public void RemoveFromRespawnList(CubeDestroyable cube)
     {
         if (_cubeRespawnList.Contains(cube))
             _cubeRespawnList.Remove(cube);

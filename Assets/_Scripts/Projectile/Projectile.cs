@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class Projectile : CoroutineSystem
+public class Projectile : MonoBehaviour
 {
     #region Variables
     //=============================================

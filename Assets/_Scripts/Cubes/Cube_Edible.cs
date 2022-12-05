@@ -8,10 +8,8 @@ public class Cube_Edible : CubeDestroyable
 {
     #region Variables
     //======================================================================
-    [SerializeField, Range(0.01f, 2f), Tooltip("Le temps que met le cube à apparaitre après être spawné par projectile.")]
-    private float apparitionDuration;
-    [HideInInspector]
-    public bool isOriginalCube;
+    
+    
 
     //======================================================================
     private List<Cube> cubesAutour = new List<Cube>(4);
@@ -119,44 +117,6 @@ public class Cube_Edible : CubeDestroyable
         // Changer cette fonction pour update le sprite du cube en fonction des cubes autour
     }
 
-    /// <summary>
-    /// Refais apparaitre ce cube sur la carte.
-    /// </summary>
-    public void GetBarfed(Vector2 impactPos)
-    {
-        cube.transform.localScale = Vector3.one;
-        cube.transform.rotation = Quaternion.Euler(Vector3.zero);
-        cube.SetActive(true);
-        isEaten = false;
-
-        if(isOriginalCube)
-            levelGenerator.RemoveFromRespawnList(this);
-
-        StartCoroutine(BarfedAnimation(impactPos));
-    }
-
-    IEnumerator BarfedAnimation(Vector2 impactPos)
-    {
-        Vector3 startScale = Vector3.zero;
-        Vector3 endScale = Vector3.one;
-        Vector3 startPos = impactPos - (Vector2)transform.position;
-        Vector3 endPos = Vector3.zero;
-        float t = 0;
-
-        while (t <= 1f)
-        {
-            IsInAnimation = true;
-            cube.transform.localScale = DOVirtual.EasedValue(startScale, endScale, t, Ease.OutElastic, .5f);
-            cube.transform.localPosition = DOVirtual.EasedValue(startPos, endPos, Mathf.InverseLerp(startScale.x, endScale.x, cube.transform.localScale.x), Ease.Linear);
-            t += Time.fixedDeltaTime / apparitionDuration;
-            yield return new WaitForFixedUpdate();
-        }
-
-        cube.transform.localScale = endScale;
-        cube.transform.localPosition = endPos;
-
-        IsInAnimation = false;
-    }
 
     #endregion
 }

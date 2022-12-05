@@ -1017,9 +1017,12 @@ MonoBehaviour:
   animation: 0.3
   betweenCubes: 0
   betweenLines: 0.05
-  _timeBeforeCubeRespawnStart: 10000
+  _timeBeforeCubeRespawnStart: 10
   _respawnCooldown: 1.5
   _firstRespawnTime: 5
+  tntDelay: 15
+  randomSpawn: 1
+  respawn: 0
 --- !u!114 &611988395
 MonoBehaviour:
   m_ObjectHideFlags: 0
