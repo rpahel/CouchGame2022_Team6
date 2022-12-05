@@ -11,20 +11,20 @@ public class Cube_TNT : CubeDestroyable {
     [Range(0, 100)] 
     public int damageEat;
 
-    public void Explode(Transform colParent,Transform player) => StartCoroutine(OnExplosion(colParent,player));
+    public void Explode(Transform colParent) => StartCoroutine(OnExplosion(colParent));
     
-    private IEnumerator OnExplosion(Transform colParent,Transform player) {
+    private IEnumerator OnExplosion(Transform colParent) {
         yield return new WaitForSeconds(1f);
         foreach (Vector2 dir in pattern.pattern) {
             if (dir != Vector2.zero) {
                 Vector3 direction = new Vector3(dir.x,dir.y,colParent.position.z);
                 foreach (CubeDestroyable c in FindCubeInDirection(direction, FindObjectsOfType<CubeDestroyable>().ToList(), colParent.gameObject)) {
-                    StartCoroutine(c.Suck(c.gameObject, player));
+                    StartCoroutine(c.Suck(c.transform.GetChild(0).gameObject, colParent));
 
-                    if (c.gameObject != this.gameObject && c is Cube_TNT) {
-                        ((Cube_TNT)c).Explode(c.transform,player);
-                        levelGenerator.AddToRespawnList(c);
-                    }
+                    levelGenerator.AddToRespawnList(c);
+                    
+                    if (c.gameObject != this.gameObject && c is Cube_TNT) 
+                        ((Cube_TNT)c).Explode(c.transform);
                 }
 
                 RaycastHit2D hit = Physics2D.Raycast(colParent.position, direction, 1000, 1 << 3);

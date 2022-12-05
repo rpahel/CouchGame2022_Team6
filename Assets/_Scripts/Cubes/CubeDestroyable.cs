@@ -24,9 +24,14 @@ public class CubeDestroyable : Cube {
         Vector3 cubeStartPos = cube.transform.position;
         Vector3 cubeStartRot = cube.transform.rotation.eulerAngles;
         Vector3 cubeEndRot = cubeStartRot + new Vector3(0, 0, rotationDegrees);
+
+        Vector3 startScale = cube.transform.localScale;
+        
         cube.transform.position -= Vector3.forward * 0.05f;
         float scaleFactor;
         float t = 0;
+        
+        Debug.Log("magnitude " + startScale.x);
 
         while (t < 1f)
         {
@@ -34,7 +39,7 @@ public class CubeDestroyable : Cube {
             cube.transform.rotation = Quaternion.Euler(Vector3.Lerp(cubeStartRot, cubeEndRot, t));
             cube.transform.position = Vector3.Lerp(cubeStartPos, player.position, t);
             cube.transform.position = DOVirtual.EasedValue(cubeStartPos, player.position, t, Ease.InBack, 3f);
-            scaleFactor = DOVirtual.EasedValue(2.857143f, 0, t, Ease.InBack, 2f);
+            scaleFactor = DOVirtual.EasedValue(startScale.x, 0, t, Ease.InBack, 2f);
             cube.transform.localScale = Vector3.one * scaleFactor;
             t += Time.deltaTime / moveDuration;
             yield return new WaitForFixedUpdate();
