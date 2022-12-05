@@ -436,17 +436,17 @@ MonoBehaviour:
   fullness: 50
   _eatTickrate: 10
   _eatDistance: 5
-  _filling: 14
+  _filling: 4
   tickHoldEat: 0
   holdEat: 0
-  _necessaryFood: 0
+  _necessaryFood: 8
   _cooldownShoot: 0.2
   canShoot: 1
   _aimPivot: {fileID: 8009965234519673580}
-  _initialSpeed: 45
+  _initialSpeed: 50
   _gravity: 2
   _bounceForce: 30
-  _inflictedFoodDamage: 20
+  _inflictedFoodDamage: 35
   _knockBackForce: 35
   wallJumpTimer: 0
   wallCheckRight: {fileID: 3605234718721792720}
@@ -460,12 +460,12 @@ MonoBehaviour:
   wallJumpForce: 40
   canWallJump: 0
   cantDoubleJump: 0
-  timeToMaxCharge: 3
+  timeToMaxCharge: 1.5
   maxDistance: 40
   minDistance: 10
-  necessaryFoodSpecial: 0
+  necessaryFoodSpecial: 70
   dashCooldown: 2
-  dashForce: 50
+  dashForce: 20
   specialTrigger: {fileID: 4317817617938280482}
   charge: 0
   isHolding: 0

@@ -162,7 +162,7 @@ MonoBehaviour:
   unscaledPosition: {x: 0, y: 0}
   levelGenerator: {fileID: 0}
   _sideKnockForce: 1
-  _damageAmount: 0
+  _damageAmount: 25
 --- !u!50 &7858678033640817199
 Rigidbody2D:
   serializedVersion: 4
