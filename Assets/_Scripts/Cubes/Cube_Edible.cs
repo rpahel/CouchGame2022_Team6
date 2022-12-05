@@ -122,6 +122,20 @@ public class Cube_Edible : CubeDestroyable
     /// <summary>
     /// Refais apparaitre ce cube sur la carte.
     /// </summary>
+    public void GetBarfed(Vector2 impactPos, Color color)
+    {
+        cube.transform.localScale = Vector3.one;
+        cube.transform.rotation = Quaternion.Euler(Vector3.zero);
+        cube.transform.GetChild(0).GetComponent<SpriteRenderer>().color = color;
+        cube.SetActive(true);
+        isEaten = false;
+
+        if(isOriginalCube)
+            levelGenerator.RemoveFromRespawnList(this);
+
+        StartCoroutine(BarfedAnimation(impactPos));
+    }
+
     public void GetBarfed(Vector2 impactPos)
     {
         cube.transform.localScale = Vector3.one;
@@ -129,7 +143,7 @@ public class Cube_Edible : CubeDestroyable
         cube.SetActive(true);
         isEaten = false;
 
-        if(isOriginalCube)
+        if (isOriginalCube)
             levelGenerator.RemoveFromRespawnList(this);
 
         StartCoroutine(BarfedAnimation(impactPos));

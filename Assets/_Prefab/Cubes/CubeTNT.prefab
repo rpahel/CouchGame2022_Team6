@@ -160,7 +160,7 @@ MonoBehaviour:
   cube: {fileID: 6785238952771240675}
   unscaledPosition: {x: 0, y: 0}
   levelGenerator: {fileID: 0}
-  moveDuration: 0.375
-  rotationDegrees: 180
+  moveDuration: 0.215
+  rotationDegrees: 135
   pattern: {fileID: 0}
-  damageEat: 15
+  damageEat: 100

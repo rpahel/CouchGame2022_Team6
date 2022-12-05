@@ -210,7 +210,7 @@ public class Projectile : CoroutineSystem
         Cube_Edible cube;
         if (targetTransform.TryGetComponent(out cube))
         {
-            cube.GetBarfed(collision.GetContact(0).point);
+            cube.GetBarfed(collision.GetContact(0).point, color);
         }
     }
 
@@ -226,7 +226,7 @@ public class Projectile : CoroutineSystem
         Cube_Edible cube;
         if (targetTransform.TryGetComponent(out cube))
         {
-            cube.GetBarfed(transform.position);
+            cube.GetBarfed(transform.position, color);
         }
     }
 
