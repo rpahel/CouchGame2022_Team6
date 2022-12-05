@@ -13,6 +13,8 @@ public class Special : State
         _playerManager = playerSystem.PlayerManager;
         _playerManager.inputDirectionDash = _playerManager.inputVectorDirection;
         _dashing = true;
+        _playerManager.fullness = Mathf.Clamp(_playerManager.fullness - _playerManager.NecessaryFoodSpecial, 0, 100);
+        _playerManager.UpdatePlayerScale();
         playerSystem.CooldownManager.SetDashCoroutine();
     }
 
