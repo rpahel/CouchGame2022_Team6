@@ -409,13 +409,13 @@ public class PlayerManager : MonoBehaviour
 
 
             isSliding = true;
-            Debug.Log("je sliiide");
+            
         }
         else
         {
 
             isSliding = false;
-            Debug.Log("stoopsliding");
+            
         }
     }
 
