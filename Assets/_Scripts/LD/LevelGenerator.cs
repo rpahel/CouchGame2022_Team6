@@ -405,8 +405,8 @@ public class LevelGenerator : MonoBehaviour
         coroutinesRunning--;
     }
 
-    private IEnumerator RespawnCube()
-    {
+    private IEnumerator RespawnCube() {
+        
         if (!_canRespawnCube) yield break;
         if (_cubeRespawnList.Count <= 0) yield break;
 
@@ -415,10 +415,11 @@ public class LevelGenerator : MonoBehaviour
 
         yield return new WaitUntil(() => _canRespawnFirstCube);
         yield return new WaitUntil(() => !cube.IsInAnimation);
-
-        if (cube is Cube_TNT && !respawn)
-            yield return null;
         
+        if (cube is Cube_TNT && !respawn)
+            yield break;
+        
+        Debug.Log("respawned cube");
         cube.GetBarfed(cube.transform.position);
         _canRespawnCube = false;
         StartCoroutine(CubeRespawnCooldown());
@@ -440,7 +441,7 @@ public class LevelGenerator : MonoBehaviour
         yield break;
     }
 
-    public void AddToRespawnList(Cube_Edible cube)
+    public void AddToRespawnList(CubeDestroyable cube)
     {
         if (!_cubeRespawnList.Contains(cube))
             _cubeRespawnList.Add(cube);

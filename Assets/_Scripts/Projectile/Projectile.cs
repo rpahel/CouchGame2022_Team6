@@ -155,7 +155,7 @@ public class Projectile : MonoBehaviour
             
             if (collision.gameObject.transform.parent.TryGetComponent<Cube_TNT>(out Cube_TNT tnt)) {
                 //gameObject.GetComponent<SpriteRenderer>().enabled = false;
-                tnt.Explode(collision.gameObject.transform.parent.gameObject.transform);
+                tnt.Explode(collision.gameObject.transform.parent.gameObject.transform,owner.gameObject.transform);
                 gameObject.SetActive(false);
             }
         }

@@ -4,6 +4,7 @@ using Data;
 using UnityEngine;
 
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class CubeDestroyable : Cube {
     
@@ -59,6 +60,7 @@ public class CubeDestroyable : Cube {
         cube.transform.localScale = Vector3.one;
         cube.transform.rotation = Quaternion.Euler(Vector3.zero);
         cube.SetActive(true);
+        cube.transform.parent.gameObject.SetActive(true);
         isEaten = false;
 
         if(isOriginalCube)

@@ -1021,8 +1021,8 @@ MonoBehaviour:
   _respawnCooldown: 1.5
   _firstRespawnTime: 5
   tntDelay: 15
-  randomSpawn: 1
-  respawn: 0
+  randomSpawn: 0
+  respawn: 1
 --- !u!114 &611988395
 MonoBehaviour:
   m_ObjectHideFlags: 0

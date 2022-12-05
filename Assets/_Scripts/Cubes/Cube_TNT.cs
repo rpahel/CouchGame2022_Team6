@@ -11,18 +11,20 @@ public class Cube_TNT : CubeDestroyable {
     [Range(0, 100)] 
     public int damageEat;
 
-    public void Explode(Transform colParent) => StartCoroutine(OnExplosion(colParent));
+    public void Explode(Transform colParent,Transform player) => StartCoroutine(OnExplosion(colParent,player));
     
-    private IEnumerator OnExplosion(Transform colParent) {
+    private IEnumerator OnExplosion(Transform colParent,Transform player) {
         yield return new WaitForSeconds(1f);
         foreach (Vector2 dir in pattern.pattern) {
             if (dir != Vector2.zero) {
                 Vector3 direction = new Vector3(dir.x,dir.y,colParent.position.z);
                 foreach (CubeDestroyable c in FindCubeInDirection(direction, FindObjectsOfType<CubeDestroyable>().ToList(), colParent.gameObject)) {
-                    StartCoroutine(c.Suck(c.gameObject, colParent)); // Check si colParent is good 
-                    
-                    if (c.gameObject != this.gameObject && c is Cube_TNT)
-                        ((Cube_TNT)c).Explode(c.transform);
+                    StartCoroutine(c.Suck(c.gameObject, player));
+
+                    if (c.gameObject != this.gameObject && c is Cube_TNT) {
+                        ((Cube_TNT)c).Explode(c.transform,player);
+                        levelGenerator.AddToRespawnList(c);
+                    }
                 }
 
                 RaycastHit2D hit = Physics2D.Raycast(colParent.position, direction, 1000, 1 << 3);
@@ -32,6 +34,8 @@ public class Cube_TNT : CubeDestroyable {
 
             }
         }
+        
+        levelGenerator.AddToRespawnList(colParent.gameObject.GetComponent<CubeDestroyable>());
     }
     
     private List<CubeDestroyable> FindCubeInDirection(Vector3 direction,List<CubeDestroyable> cubes,GameObject origin) {
