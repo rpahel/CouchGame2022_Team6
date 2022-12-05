@@ -38,7 +38,10 @@ public class CubeDestroyable : Cube {
         cube.transform.parent = this.transform;
         cube.transform.SetSiblingIndex(0);
         cube.transform.localPosition = Vector2.zero;
-        cube.GetComponent<Collider2D>().enabled = true;
+        
+        if(cube.GetComponent<Collider2D>() != null)
+            cube.GetComponent<Collider2D>().enabled = true;
+        
         cube.SetActive(false);
 
         IsInAnimation = false;

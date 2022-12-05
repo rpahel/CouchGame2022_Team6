@@ -157,7 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 498fd01bcd55df24bb91fc574d2fd29a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubeType: 2
+  cubeType: 3
   cube: {fileID: 303830590082189049}
   unscaledPosition: {x: 0, y: 0}
   levelGenerator: {fileID: 0}

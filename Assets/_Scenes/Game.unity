@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -968,8 +968,6 @@ GameObject:
   - component: {fileID: 611988393}
   - component: {fileID: 611988394}
   - component: {fileID: 611988395}
-  - component: {fileID: 611988397}
-  - component: {fileID: 611988396}
   m_Layer: 0
   m_Name: LevelGenerator
   m_TagString: Untagged
@@ -1019,54 +1017,10 @@ MonoBehaviour:
   animation: 0.3
   betweenCubes: 0
   betweenLines: 0.05
-  _timeBeforeCubeRespawnStart: 10
+  _timeBeforeCubeRespawnStart: 10000
   _respawnCooldown: 1.5
   _firstRespawnTime: 5
 --- !u!114 &611988395
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 611988391}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6225403ce518e6844806c98bd630b1b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pattern:
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  - {x: 1, y: 1}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  - {x: -1, y: -1}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
---- !u!114 &611988396
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 611988391}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6225403ce518e6844806c98bd630b1b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pattern:
-  - {x: -1, y: 1}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  - {x: 1, y: -1}
---- !u!114 &611988397
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

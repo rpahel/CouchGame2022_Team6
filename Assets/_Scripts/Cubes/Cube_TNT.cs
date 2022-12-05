@@ -11,7 +11,10 @@ public class Cube_TNT : CubeDestroyable {
     [Range(0, 100)] 
     public int damageEat;
 
-    public void Explode(Transform colParent) {
+    public void Explode(Transform colParent) => StartCoroutine(OnExplosion(colParent));
+    
+    private IEnumerator OnExplosion(Transform colParent) {
+        yield return new WaitForSeconds(1f);
         foreach (Vector2 dir in pattern.pattern) {
             if (dir != Vector2.zero) {
                 Vector3 direction = new Vector3(dir.x,dir.y,colParent.position.z);
@@ -19,7 +22,7 @@ public class Cube_TNT : CubeDestroyable {
                     StartCoroutine(c.Suck(c.gameObject, colParent)); // Check si colParent is good 
                     
                     if (c.gameObject != this.gameObject && c is Cube_TNT)
-                      ((Cube_TNT)c).Explode(c.transform);
+                        ((Cube_TNT)c).Explode(c.transform);
                 }
 
                 RaycastHit2D hit = Physics2D.Raycast(colParent.position, direction, 1000, 1 << 3);

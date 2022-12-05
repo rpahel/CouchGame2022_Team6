@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8441697207057919441}
   - component: {fileID: 5098136833677738573}
   - component: {fileID: 101734904912901737}
-  m_Layer: 6
+  m_Layer: 12
   m_Name: Cube
   m_TagString: CubeEdible
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9104288708286051510}
   - component: {fileID: 5229611338921618467}
-  m_Layer: 6
+  m_Layer: 12
   m_Name: CubeTNT
   m_TagString: CubeTNT
   m_Icon: {fileID: 0}

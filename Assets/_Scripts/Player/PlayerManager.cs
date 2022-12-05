@@ -551,7 +551,7 @@ public class PlayerManager : MonoBehaviour
 
         if (!closestHit) return true;
 
-        if (closestHit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if (closestHit.collider.gameObject.layer == LayerMask.NameToLayer("Player") || closestHit.collider.gameObject.layer == LayerMask.NameToLayer("TNT"))
             return true;
 
         RaycastHit2D[] hits = CustomPhysics.SquareCast((Vector2)closestHit.transform.position + GameManager.Instance.LevelGenerator.Scale * closestHit.normal, GameManager.Instance.LevelGenerator.Scale * .9f);
