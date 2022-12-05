@@ -271,8 +271,8 @@ public class PlayerManager : MonoBehaviour
         Debug.DrawRay(transform.position - Vector3.forward, direction.normalized * _eatDistance, Color.red, 0.2f);
 #endif
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, _eatDistance, 1 << LayerMask.NameToLayer("Destructible"));
-        if (hit)
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, _eatDistance, LayerMask.GetMask("Destructible", "Indestructible", "Limite", "Trap"));
+        if (hit && hit.collider.gameObject.layer == LayerMask.NameToLayer("Destructible"))
         {
             _cooldownManager.SetupCoroutine(faceManager.FaceEat);
             hit.transform.parent.GetComponent<Cube_Edible>().GetEaten(transform);
@@ -282,9 +282,9 @@ public class PlayerManager : MonoBehaviour
         else if (!GroundCheck()) // S'il touche rien et qu'il n'est pas au sol on ressaie de manger dans le sens du regard cette fois
         {
             direction = LookDirection;
-            hit = Physics2D.Raycast(transform.position, direction.normalized, _eatDistance, 1 << LayerMask.NameToLayer("Destructible"));
+            hit = Physics2D.Raycast(transform.position, direction.normalized, _eatDistance, LayerMask.GetMask("Destructible", "Indestructible", "Limite", "Trap"));
 
-            if (hit)
+            if (hit && hit.collider.gameObject.layer == LayerMask.NameToLayer("Destructible"))
             {
                 _cooldownManager.SetupCoroutine(faceManager.FaceEat);
                 hit.transform.parent.GetComponent<Cube_Edible>().GetEaten(transform);

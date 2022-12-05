@@ -165,4 +165,4 @@ MonoBehaviour:
   isOriginalCube: 0
   apparitionDuration: 0
   pattern: {fileID: 0}
-  damageEat: 15
+  damageEat: 100
