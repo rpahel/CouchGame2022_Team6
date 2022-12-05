@@ -1150,7 +1150,8 @@ MonoBehaviour:
   sounds:
   - name: Player_Jump
     clip: {fileID: 8300000, guid: 8f56a1ca4a517fe46b8931d9670a633f, type: 3}
-    audiogroup: {fileID: 0}
+    audiogroup: {fileID: -8387766111519321119, guid: 0d661933c9c24da4cb983696574bf95e,
+      type: 2}
     volume: 0.342
     pitch: 1
     loop: 0

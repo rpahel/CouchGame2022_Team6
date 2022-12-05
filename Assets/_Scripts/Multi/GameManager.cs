@@ -84,9 +84,13 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (_applicationManager?.GameState != GAME_STATE.PLAYING) return;
-        
+
         _currentGameCooldown -= Time.deltaTime;
-        gameCooldownText.text = ((int)_currentGameCooldown).ToString();
+        int minutes = Mathf.FloorToInt(_currentGameCooldown / 60F);
+        int seconds = Mathf.FloorToInt(_currentGameCooldown - minutes * 60);
+        string niceTime = string.Format("{0:0}:{1:00}", minutes, seconds);
+        
+        gameCooldownText.text = niceTime.ToString();
             
         if (_currentGameCooldown <= 0f)
         {
