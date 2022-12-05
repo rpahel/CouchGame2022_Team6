@@ -831,7 +831,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: GAME COOLDOWN
+  m_text: TIME
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: eb7f9bdcabc83644fa5793e51e5fccc5, type: 2}
   m_sharedMaterial: {fileID: -5762009022378834756, guid: eb7f9bdcabc83644fa5793e51e5fccc5,
