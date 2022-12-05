@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6610160807039611543}
   - component: {fileID: 5015705595266067853}
   m_Layer: 5
-  m_Name: Purple
+  m_Name: Pink
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -448,7 +448,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'PURPLE
+  m_Text: 'PINK
 
 '
 --- !u!1 &4266929036072316662

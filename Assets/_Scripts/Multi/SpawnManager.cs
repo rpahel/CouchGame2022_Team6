@@ -33,6 +33,6 @@ public class SpawnManager : MonoBehaviour
 
         }
         
-        //GameManager.Instance.StatsManager.InitializeStats();
+        GameManager.Instance.StatsManager.InitializeStats();
     }
 }
