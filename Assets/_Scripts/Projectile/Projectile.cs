@@ -210,6 +210,7 @@ public class Projectile : MonoBehaviour
         Cube_Edible cube;
         if (targetTransform.TryGetComponent(out cube))
         {
+            GameManager.Instance.LevelGenerator.allEmptyPositions.Remove(cube.transform.position);
             cube.GetBarfed(collision.GetContact(0).point, color);
         }
     }

@@ -114,13 +114,31 @@ public class CooldownManager : MonoBehaviour
         var originalGravityScale = playerSystemManager.Rb2D.gravityScale;
         playerSystemManager.Rb2D.gravityScale = 0;
         playerSystemManager.Rb2D.velocity = Vector2.zero;
-        _trailRenderer.emitting = true;
-        yield return new WaitForSeconds(dashDuration);
+        //_trailRenderer.emitting = true;
+
+        float t = 0;
+        while (t < dashDuration)
+        {
+            if (playerSystem.PlayerState is not Special)
+            {
+                StartCoroutine(UndoDash(originalGravityScale));
+                yield break;
+            }
+
+            t += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+
         playerSystem.SetState(new Moving(playerSystem));
+        StartCoroutine(UndoDash(originalGravityScale));
+    }
+
+    private IEnumerator UndoDash(float originalGravityScale)
+    {
         playerSystemManager.Rb2D.gravityScale = originalGravityScale;
         gameObject.layer = LayerMask.NameToLayer("Player");
         playerSystemManager.SpecialTrigger.SetActive(false);
-        _trailRenderer.emitting = false;
+        //_trailRenderer.emitting = false;
         yield return new WaitForSeconds(playerSystemManager.DashCooldown);
         playerSystemManager.canDash = true;
     }

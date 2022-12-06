@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8441697207057919441}
   - component: {fileID: 5098136833677738573}
-  - component: {fileID: 101734904912901737}
+  - component: {fileID: 6256004659840169258}
   m_Layer: 12
   m_Name: Cube
   m_TagString: CubeEdible
@@ -85,8 +85,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &101734904912901737
-BoxCollider2D:
+--- !u!58 &6256004659840169258
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -98,19 +98,9 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.038621992, y: -0.16000462}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.18, y: 2.39}
-    newSize: {x: 2.18, y: 2.39}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: -0.006243297, y: -0.052079033}
   serializedVersion: 2
-  m_Size: {x: 2.0262358, y: 2.0041661}
-  m_EdgeRadius: 0
+  m_Radius: 0.4017742
 --- !u!1 &9104288708286051530
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,6 +10,6 @@ public class SpecialTriggerScript : MonoBehaviour
            // throw new System.Exception("PlayerManager n'est pas r�f�renc� dans le SpecialTriggerScript");
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Destructible"))
-            collision.transform.parent.GetComponent<Cube_Edible>().GetEaten();
+            collision.transform.parent.GetComponent<Cube_Edible>().GetEaten(collision.transform);
     }
 }

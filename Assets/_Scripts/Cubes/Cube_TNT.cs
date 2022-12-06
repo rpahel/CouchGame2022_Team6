@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
+using UnityEngine;
 
 public class Cube_TNT : CubeDestroyable {
     
@@ -48,7 +46,7 @@ public class Cube_TNT : CubeDestroyable {
         
         foreach (Cube cube in cubes) {
             foreach (Vector3 checkPos in allPositions) {
-                if(cube.GetComponentInChildren<BoxCollider2D>() != null && cube.GetComponentInChildren<BoxCollider2D>().bounds.Contains(checkPos) && cube is CubeDestroyable)
+                if(cube.GetComponentInChildren<Collider2D>() != null && cube.GetComponentInChildren<Collider2D>().bounds.Contains(checkPos) && cube is CubeDestroyable)
                     cubesInDir.Add((CubeDestroyable)cube);
             }
         }
