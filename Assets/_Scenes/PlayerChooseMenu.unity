@@ -1143,6 +1143,26 @@ PrefabInstance:
     - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
         type: 3}
       propertyPath: listColorRemaining.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listColorRemaining.Array.data[1].index
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listColorRemaining.Array.data[2].index
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listColorRemaining.Array.data[3].index
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listColorRemainingInspector.Array.size
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
@@ -1165,6 +1185,89 @@ PrefabInstance:
       propertyPath: listColorRemaining.Array.data[3].colorName
       value: PINK
       objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listColorRemaining.Array.data[0].buttonPrefab
+      value: 
+      objectReference: {fileID: 7683444402273745810, guid: dbac25b10e7245b4184951a8acd26117,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listColorRemaining.Array.data[1].buttonPrefab
+      value: 
+      objectReference: {fileID: 463317444067183182, guid: f2f70b8d0ad60354ba6cadc4de895bdb,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listColorRemaining.Array.data[2].buttonPrefab
+      value: 
+      objectReference: {fileID: 626635464728715918, guid: 23f4e6c3363c9d346b4c2e73c736e1e4,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listColorRemaining.Array.data[3].buttonPrefab
+      value: 
+      objectReference: {fileID: 8335536341816902900, guid: 002ed7df669c4ed428e4af4c3a8156ea,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listColorRemainingInspector.Array.data[1].index
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listColorRemainingInspector.Array.data[2].index
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listColorRemainingInspector.Array.data[3].index
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listColorRemainingInspector.Array.data[0].colorName
+      value: GREEN
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listColorRemainingInspector.Array.data[1].colorName
+      value: BLUE
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listColorRemainingInspector.Array.data[2].colorName
+      value: ORANGE
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listColorRemainingInspector.Array.data[3].colorName
+      value: PINK
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listColorRemainingInspector.Array.data[0].buttonPrefab
+      value: 
+      objectReference: {fileID: 7683444402273745810, guid: dbac25b10e7245b4184951a8acd26117,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listColorRemainingInspector.Array.data[1].buttonPrefab
+      value: 
+      objectReference: {fileID: 463317444067183182, guid: f2f70b8d0ad60354ba6cadc4de895bdb,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listColorRemainingInspector.Array.data[2].buttonPrefab
+      value: 
+      objectReference: {fileID: 626635464728715918, guid: 23f4e6c3363c9d346b4c2e73c736e1e4,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listColorRemainingInspector.Array.data[3].buttonPrefab
+      value: 
+      objectReference: {fileID: 8335536341816902900, guid: 002ed7df669c4ed428e4af4c3a8156ea,
+        type: 3}
     - target: {fileID: 8210660276910839731, guid: 3237304fc6509974884466c808e01146,
         type: 3}
       propertyPath: m_RootOrder

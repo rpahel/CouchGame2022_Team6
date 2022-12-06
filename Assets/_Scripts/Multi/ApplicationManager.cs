@@ -26,9 +26,11 @@ public class ApplicationManager : MonoBehaviour
     public List<PlayerGfxUI> ListPlayersGfx => listPlayersGfx;
 
     [Header("PlayerColors remaining"), SerializeField]
+    private List<ColorPlayer> listColorRemainingInspector = new List<ColorPlayer>();
+    
     private List<ColorPlayer> listColorRemaining = new List<ColorPlayer>();
-
     public List<ColorPlayer> ListColorRemaining => listColorRemaining;
+    [HideInInspector] public List<PlayerSetupMenuController> listSetupMenuControllers = new List<PlayerSetupMenuController>();
     public static ApplicationManager Instance { get; private set; }
     
     public  GAME_STATE GameState { get; private set; }
@@ -54,6 +56,7 @@ public class ApplicationManager : MonoBehaviour
         }
         
         GameState = GAME_STATE.MENU;
+        listColorRemaining.AddRange(listColorRemainingInspector);
         //LocalizationManager.Language = language.ToString();
     }
 
@@ -122,6 +125,26 @@ public class ApplicationManager : MonoBehaviour
     {
         GameState = state;
     }
+    
+    public void DeleteColor(int index)
+    {
+        listColorRemaining.Remove(listColorRemaining[index]);
+        RefreshColors();
+    }
+
+    public void BackOnColorSelector(int index)
+    {
+        listColorRemaining.Insert(index, listColorRemainingInspector[index]);
+        RefreshColors();
+    }
+
+    private void RefreshColors()
+    {
+        foreach (PlayerSetupMenuController controller in listSetupMenuControllers)
+        {
+            controller.RefreshColors();
+        }
+    }
 }
 
 public class PlayerConfiguration
@@ -141,6 +164,8 @@ public class PlayerConfiguration
     public Color PlayerColor { get; set; }
 }
 
+
+
 [System.Serializable]
 public class PlayerGfxUI
 {
@@ -156,4 +181,6 @@ public class PlayerGfxUI
 public class ColorPlayer
 {
     public string colorName;
+    public GameObject buttonPrefab;
+    public int index;
 }

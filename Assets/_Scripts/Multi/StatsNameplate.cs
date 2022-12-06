@@ -24,18 +24,22 @@ public class StatsNameplate : MonoBehaviour
         switch (index)
         {
             case 0:
+                textRank.text = "1";
                 imagePlayer.sprite = playerConfigs[0].PlayerSprite;
                 facePlayer.sprite = playerConfigs[0].PlayerFaceSprite;
                 break;
             case 1:
+                textRank.text = "2";
                 imagePlayer.sprite = playerConfigs[1].PlayerSprite;
                 facePlayer.sprite = playerConfigs[1].PlayerFaceSprite;
                 break;
             case 2:
+                textRank.text = "3";
                 imagePlayer.sprite = playerConfigs[2].PlayerSprite;
                 facePlayer.sprite = playerConfigs[2].PlayerFaceSprite;
                 break;
             case 3:
+                textRank.text = "4";
                 imagePlayer.sprite = playerConfigs[3].PlayerSprite;
                 facePlayer.sprite = playerConfigs[3].PlayerFaceSprite;
                 break;
