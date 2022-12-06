@@ -244,7 +244,6 @@ public class PlayerManager : MonoBehaviour
             {
                 if(inputVectorDirection == Vector2.zero)
                 {
-                    Debug.Log(LookDirection);
                     OnEat(Quaternion.Euler(0, 0, Mathf.Sign(LookDirection.x) * ((float)currentImmobileEatAngle / _maxImmobileEatAngle) * _maxImmobileEatAngle) * LookDirection);
                     currentImmobileEatAngle += 30;
                     if (currentImmobileEatAngle > _maxImmobileEatAngle)
