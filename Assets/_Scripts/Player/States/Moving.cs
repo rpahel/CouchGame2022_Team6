@@ -39,9 +39,11 @@ public class Moving : State
         if (Mathf.Abs(playerSystem.PlayerManager.inputVectorDirection.x) <= playerSystem.PlayerManager.DeadZone)
         {
             playerSystem.PlayerManager.inputVectorMove = Vector2.zero;
+            playerSystem.StopSound("Player_Movement");
             return;
         }
 
+        playerSystem.PlaySound("Player_Movement");
         playerSystem.PlayerManager.inputVectorMove = playerSystem.PlayerManager.inputVectorDirection;
 
         if (playerSystem.PlayerManager.brakingCoroutine != null)
@@ -82,11 +84,13 @@ public class Moving : State
 
     public override void OnHoldShoot()
     {
+        playerSystem.StopSound("Player_Movement");
         playerSystem.SetState(new AimShoot(playerSystem));
     }
 
     public override void OnHoldSpecial()
     {
+        playerSystem.StopSound("Player_Movement");
         playerSystem.SetState(new AimSpecial(playerSystem));
     }
 

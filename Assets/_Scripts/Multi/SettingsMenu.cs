@@ -17,6 +17,14 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] private GameObject optionsMenu;
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private EventSystem eventSystem;
+
+    private AudioManager audioManager;
+
+    private void Awake()
+    {
+        audioManager = FindObjectOfType<AudioManager>();
+    }
+
     public void Start()
     {
         resolutions = Screen.resolutions;
@@ -74,6 +82,7 @@ public class SettingsMenu : MonoBehaviour
     
     public void ShowMainMenu()
     {
+        audioManager.Play("Menu_Cancel");
         optionsMenu.SetActive(false);
         mainMenu.SetActive(true);
         buttonPlay.Select();

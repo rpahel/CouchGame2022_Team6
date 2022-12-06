@@ -277,6 +277,7 @@ public class PlayerManager : MonoBehaviour
             _cooldownManager.SetupCoroutine(faceManager.FaceEat);
             hit.transform.parent.GetComponent<Cube_Edible>().GetEaten(transform);
             fullness = Mathf.Clamp(fullness + _filling, 0, 100);
+            _playerSystem.PlaySound("Player_Eat");
             UpdatePlayerScale();
         }
         else if (!GroundCheck()) // S'il touche rien et qu'il n'est pas au sol on ressaie de manger dans le sens du regard cette fois
@@ -289,6 +290,7 @@ public class PlayerManager : MonoBehaviour
                 _cooldownManager.SetupCoroutine(faceManager.FaceEat);
                 hit.transform.parent.GetComponent<Cube_Edible>().GetEaten(transform);
                 fullness = Mathf.Clamp(fullness + _filling, 0, 100);
+                _playerSystem.PlaySound("Player_Eat");
                 UpdatePlayerScale();
             }
         }
@@ -431,9 +433,11 @@ public class PlayerManager : MonoBehaviour
             case PlayerManager playerManager:
                 damager = playerManager; 
                 damageDealerIsAPlayer = true;
+                _playerSystem.PlaySound("Player_HitShoot");
                 break;
             case Cube_Trap:
                 damageDealerIsAPlayer = false;
+                _playerSystem.PlaySound("Game_Trap");
                 break;
             default:
                 Debug.Log("Dont know this damage dealer type");
@@ -486,6 +490,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         ShootProjectile(aimDirection);
+        _playerSystem.PlaySound("Player_Shoot");
 
         fullness = Mathf.Clamp(fullness - _necessaryFood, 0, 100);
         UpdatePlayerScale();

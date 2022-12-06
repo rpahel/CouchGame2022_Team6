@@ -7,10 +7,12 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class PlayerSetupMenuController : MonoBehaviour
 {
     private int PlayerIndex;
+    private AudioManager audioManager;
 
     //[SerializeField] private LocalizedText text;
     
@@ -38,6 +40,7 @@ public class PlayerSetupMenuController : MonoBehaviour
         menuImage = GetComponent<Image>();
         manager = ApplicationManager.Instance;
         manager.listSetupMenuControllers.Add(this);
+        audioManager = FindObjectOfType<AudioManager>();
         SetupColors();
     }
 
@@ -123,7 +126,8 @@ public class PlayerSetupMenuController : MonoBehaviour
             3 => manager.ListPlayersGfx[3],
             _ => new PlayerGfxUI()
         };
-        
+
+        PlayRandomCharacterSound();
         ApplicationManager.Instance.SetPlayerGfx(PlayerIndex, playerGfx);
         playerImage.sprite = playerGfx.player;
         playerFace.sprite = playerGfx.face;
@@ -140,6 +144,7 @@ public class PlayerSetupMenuController : MonoBehaviour
 
     public void Back()
     {
+        audioManager.Play("Menu_Cancel");
         readyPanel.SetActive(false);
         manager.BackOnColorSelector(indexColorTook);
         menuImage.sprite = menuBlack;
@@ -152,5 +157,26 @@ public class PlayerSetupMenuController : MonoBehaviour
         ApplicationManager.Instance.ReadyPlayer(PlayerIndex);
         readyButton.gameObject.SetActive(false);
         buttonBackImage.gameObject.SetActive(false);
+    }
+
+    private void PlayRandomCharacterSound()
+    {
+        var rand = Random.Range(0, 4);
+
+        switch (rand)
+        {
+            case 0:
+                audioManager.Play("Menu_ChoosePlayer0");
+                break;
+            case 1:
+                audioManager.Play("Menu_ChoosePlayer1");
+                break;
+            case 2:
+                audioManager.Play("Menu_ChoosePlayer2");
+                break;
+            case 3:
+                audioManager.Play("Menu_ChoosePlayer3");
+                break;
+        }
     }
 }

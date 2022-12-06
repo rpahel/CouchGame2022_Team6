@@ -55,6 +55,8 @@ public class GameManager : MonoBehaviour
     public List<Projectile> ProjectilePool => projPool;
 
     private Transform projPoolTransform;
+
+    private AudioManager audioManager;
     
     private void Awake()
     {
@@ -70,6 +72,7 @@ public class GameManager : MonoBehaviour
         _spawnManager = GetComponent<SpawnManager>();
         StatsManager = GetComponent<StatisticsManager>();
         _applicationManager = ApplicationManager.Instance;
+        audioManager = FindObjectOfType<AudioManager>();
         _currentGameCooldown = gameDuration;
 
         if (projectile == null)
@@ -95,6 +98,7 @@ public class GameManager : MonoBehaviour
         if (_currentGameCooldown <= 0f)
         {
             _applicationManager.SetGameState(GAME_STATE.END);
+            audioManager.Stop("Game_Music");
             SetAllInputs(false);
             StatsManager.ShowStats();
         }
@@ -112,6 +116,8 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         SetAllInputs(true);
+        audioManager.Stop("Menu_Music");
+        audioManager.Play("Game_Music");
         _applicationManager?.SetGameState(GAME_STATE.PLAYING);
     }
 
