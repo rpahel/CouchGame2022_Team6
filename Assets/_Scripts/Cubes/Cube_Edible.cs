@@ -97,8 +97,11 @@ public class Cube_Edible : CubeDestroyable
             StartCoroutine(Suck(cube, playerTransform));
         }
 
-        if (isOriginalCube)
+        if (isOriginalCube) 
             levelGenerator.AddToRespawnList(this);
+        else
+            levelGenerator.allEmptyPositions.Add(transform.position);
+        
     }
 
     
