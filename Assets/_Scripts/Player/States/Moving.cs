@@ -44,8 +44,17 @@ public class Moving : State
             return;
         }
 
-        playerSystem.PlaySound("Player_Movement");
-        playerSystem.PlayEffect();
+        if (playerSystem.PlayerManager.GroundCheck())
+        {
+            playerSystem.PlaySound("Player_Movement");
+            playerSystem.PlayEffect();
+        }
+        else
+        {
+            playerSystem.StopSound("Player_Movement");
+            playerSystem.StopEffect();
+        }
+
         playerSystem.PlayerManager.inputVectorMove = playerSystem.PlayerManager.inputVectorDirection;
 
         if (playerSystem.PlayerManager.brakingCoroutine != null)
@@ -61,10 +70,7 @@ public class Moving : State
             playerSystem.PlayerManager.inputVectorDirection.x = 0f;
             playerSystem.PlayerManager.WallJump();
             playerSystem.PlayerManager.inputVectorDirection.x = 1f;
-           
         }
-           
-        
     }
 
     private void Movement()
