@@ -40,6 +40,12 @@ public class PlayerStateSystem : StateMachine
     {
         audioManager.Play(name);
     }
+    public void StopSound(string name)
+    {
+        audioManager.Stop(name);
+    }
+
+    
 
     public void Update()
     {

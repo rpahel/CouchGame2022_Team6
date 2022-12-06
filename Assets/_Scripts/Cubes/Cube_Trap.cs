@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -5,9 +6,10 @@ using UnityEngine;
 
 public class Cube_Trap : Cube
 {
-
+    
     [SerializeField] private float _sideKnockForce;
     [SerializeField] private int _damageAmount;
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log("Normal of the first point: " + collision.contacts[0].normal);
@@ -26,26 +28,7 @@ public class Cube_Trap : Cube
         
         Debug.Log("Side");
         KnockBack(new Vector2(-vec.x, -vec.y), playerSystemManager);
-        
-        
-        /*if (vec == new Vector2(0, -1))
-        {
-            Debug.Log("up");
-            KnockbackRandom(playerSystemManager, Vector3.up);
-        }
-            
-        else if (vec == new Vector2(0, 1))
-        {
-            Debug.Log("down");
-            KnockbackRandom(playerSystemManager, Vector3.down);
-        }
-            
-        else if (vec == new Vector2(1, 0) || (vec == new Vector2(-1, 0)))
-        {
-            Debug.Log("Side");
-            KnockBack(new Vector2(-vec.x, -vec.y), playerSystemManager);
-        }*/
-            
+
     }
 
     void KnockbackRandom(PlayerManager playerSystem, Vector3 sideDirection)

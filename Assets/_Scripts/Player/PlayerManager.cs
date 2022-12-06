@@ -227,7 +227,7 @@ public class PlayerManager : MonoBehaviour
         {
             // On change la couleur du joueur en fonction de son etat
             Knockback => Color.red,
-            _ => color
+            _ => Color.white
         };
 
         if (holdEat)
@@ -277,6 +277,7 @@ public class PlayerManager : MonoBehaviour
             _cooldownManager.SetupCoroutine(faceManager.FaceEat);
             hit.transform.parent.GetComponent<Cube_Edible>().GetEaten(transform);
             fullness = Mathf.Clamp(fullness + _filling, 0, 100);
+            _playerSystem.PlaySound("Player_Eat");
             UpdatePlayerScale();
         }
         else if (!GroundCheck()) // S'il touche rien et qu'il n'est pas au sol on ressaie de manger dans le sens du regard cette fois
@@ -289,6 +290,7 @@ public class PlayerManager : MonoBehaviour
                 _cooldownManager.SetupCoroutine(faceManager.FaceEat);
                 hit.transform.parent.GetComponent<Cube_Edible>().GetEaten(transform);
                 fullness = Mathf.Clamp(fullness + _filling, 0, 100);
+                _playerSystem.PlaySound("Player_Eat");
                 UpdatePlayerScale();
             }
         }
@@ -373,6 +375,7 @@ public class PlayerManager : MonoBehaviour
 
         if (isSliding) return;
 
+        _playerSystem.PlaySound("Player_Jump");
         Vector2 wallJumpdir;
 
         wallJumpdir = new Vector2(Mathf.Cos(Mathf.Deg2Rad * wallJumpAngle), Mathf.Sin(Mathf.Deg2Rad * wallJumpAngle));
@@ -431,9 +434,11 @@ public class PlayerManager : MonoBehaviour
             case PlayerManager playerManager:
                 damager = playerManager; 
                 damageDealerIsAPlayer = true;
+                _playerSystem.PlaySound("Player_HitShoot");
                 break;
             case Cube_Trap:
                 damageDealerIsAPlayer = false;
+                _playerSystem.PlaySound("Game_Trap");
                 break;
             default:
                 Debug.Log("Dont know this damage dealer type");
@@ -486,6 +491,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         ShootProjectile(aimDirection);
+        _playerSystem.PlaySound("Player_Shoot");
 
         fullness = Mathf.Clamp(fullness - _necessaryFood, 0, 100);
         UpdatePlayerScale();

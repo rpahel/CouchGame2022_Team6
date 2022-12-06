@@ -8,7 +8,7 @@ using Cinemachine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Data;
-using Unity.VisualScripting;
+using TMPro;
 
 public class ApplicationManager : MonoBehaviour
 {
@@ -23,8 +23,14 @@ public class ApplicationManager : MonoBehaviour
 
     [Header("Players GFX ")] [SerializeField]
     private List<PlayerGfxUI> listPlayersGfx = new List<PlayerGfxUI>();
-
     public List<PlayerGfxUI> ListPlayersGfx => listPlayersGfx;
+
+    [Header("PlayerColors remaining"), SerializeField]
+    private List<ColorPlayer> listColorRemainingInspector = new List<ColorPlayer>();
+    
+    private List<ColorPlayer> listColorRemaining = new List<ColorPlayer>();
+    public List<ColorPlayer> ListColorRemaining => listColorRemaining;
+    [HideInInspector] public List<PlayerSetupMenuController> listSetupMenuControllers = new List<PlayerSetupMenuController>();
     public static ApplicationManager Instance { get; private set; }
     
     public  GAME_STATE GameState { get; private set; }
@@ -33,6 +39,8 @@ public class ApplicationManager : MonoBehaviour
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject playersLayout;
     [SerializeField] private Slider loadingSlider;
+    [SerializeField] private TextMeshProUGUI pressButtonText;
+    [SerializeField] private TextMeshProUGUI indicativeText;
 
     private void Awake()
     {
@@ -48,6 +56,7 @@ public class ApplicationManager : MonoBehaviour
         }
         
         GameState = GAME_STATE.MENU;
+        listColorRemaining.AddRange(listColorRemainingInspector);
         //LocalizationManager.Language = language.ToString();
     }
 
@@ -72,7 +81,14 @@ public class ApplicationManager : MonoBehaviour
             GameState = GAME_STATE.LOADING;
             playersLayout.SetActive(false);
             loadingScreen.SetActive(true);
-            StartCoroutine(LoadAsynchronously(1));
+            StartCoroutine(LoadAsynchronously(2));
+            pressButtonText.text = null;
+            indicativeText.text = null;
+
+        }
+        else if (_playerConfigs.Count < minPlayers)
+        {
+            indicativeText.text = "NEED AT LEAST " + minPlayers + " PLAYER TO START";
         }
     }
 
@@ -98,11 +114,36 @@ public class ApplicationManager : MonoBehaviour
         {
             _playerConfigs.Add(new PlayerConfiguration(pi));
         }
+        
+        if (_playerConfigs.Any(p => p.IsReady != true) && _playerConfigs.Count >= minPlayers)
+        {
+            indicativeText.text = "GERT READY TO START";
+        }
     }
     
     public void SetGameState(GAME_STATE state)
     {
         GameState = state;
+    }
+    
+    public void DeleteColor(int index)
+    {
+        listColorRemaining.Remove(listColorRemaining[index]);
+        RefreshColors();
+    }
+
+    public void BackOnColorSelector(int index)
+    {
+        listColorRemaining.Insert(index, listColorRemainingInspector[index]);
+        RefreshColors();
+    }
+
+    private void RefreshColors()
+    {
+        foreach (PlayerSetupMenuController controller in listSetupMenuControllers)
+        {
+            controller.RefreshColors();
+        }
     }
 }
 
@@ -123,6 +164,8 @@ public class PlayerConfiguration
     public Color PlayerColor { get; set; }
 }
 
+
+
 [System.Serializable]
 public class PlayerGfxUI
 {
@@ -132,4 +175,12 @@ public class PlayerGfxUI
     public Sprite button;
     public Sprite icon;
     public Color color;
+}
+
+[System.Serializable]
+public class ColorPlayer
+{
+    public string colorName;
+    public GameObject buttonPrefab;
+    public int index;
 }
