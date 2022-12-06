@@ -38,5 +38,6 @@ public class Dead : State
         playerSystem.PlayerManager.inputVectorMove = Vector2.zero;
         playerSystem.PlayerManager.UpdatePlayerScale();
         playerSystem.SetState(new Moving(playerSystem));
+        playerSystem.gameObject.layer = LayerMask.NameToLayer("Player");
     }
 }
