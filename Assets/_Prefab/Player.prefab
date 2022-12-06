@@ -546,11 +546,15 @@ MonoBehaviour:
   inputVectorMove: {x: 0, y: 0}
   holdJump: 0
   fullness: 50
+  _eatAngle: 30
+  _eatAngleOffset: 0
+  _maxImmobileEatAngle: 180
   _eatTickrate: 10
   _eatDistance: 5
   _filling: 4
   tickHoldEat: 0
   holdEat: 0
+  currentImmobileEatAngle: 0
   _necessaryFood: 8
   _cooldownShoot: 0.2
   canShoot: 1

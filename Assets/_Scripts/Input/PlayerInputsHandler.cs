@@ -1,6 +1,4 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 public class PlayerInputsHandler : MonoBehaviour
 {
@@ -121,7 +119,7 @@ public class PlayerInputsHandler : MonoBehaviour
     private void OnEat(CallbackContext input)
     {
         if (input.started)
-            _playerManager.OnEat();
+            _playerManager.OnEat(_playerManager.inputVectorDirection);
 
         else if (input.performed)
             _playerManager.holdEat = true;

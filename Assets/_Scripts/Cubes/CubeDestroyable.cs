@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using Data;
-using UnityEngine;
-
 using DG.Tweening;
-using Unity.VisualScripting;
+using System.Collections;
+using UnityEngine;
 
 public class CubeDestroyable : Cube {
     
@@ -30,8 +26,6 @@ public class CubeDestroyable : Cube {
         cube.transform.position -= Vector3.forward * 0.05f;
         float scaleFactor;
         float t = 0;
-        
-        Debug.Log("magnitude " + startScale.x);
 
         while (t < 1f)
         {

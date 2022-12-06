@@ -2,9 +2,7 @@ using CustomMaths;
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
-
 
 public class PlayerManager : MonoBehaviour
 {
@@ -91,6 +89,12 @@ public class PlayerManager : MonoBehaviour
     [Header("EAT Variables")]
     [Range(0, 100), Tooltip("La quantite de nourriture dans le corps.")]
     public int fullness;
+    [SerializeField, Tooltip("L'angle en degres du cone de manger."), Range(0, 90)]
+    private float _eatAngle;
+    [SerializeField, Tooltip("Décalage de la rotation du cone de manger par rapport à la visee et/ou le vecteur droit."), Range(-45, 45)]
+    private float _eatAngleOffset;
+    [SerializeField, Tooltip("L'angle de l'arc de cercle que va faire le mouvement du manger."), Range(0, 180)]
+    private int _maxImmobileEatAngle;
     [SerializeField, Tooltip("Le nombre de cubes manges par seconde."), Range(2, 10)]
     private int _eatTickrate;
     [SerializeField, Tooltip("Distance max pour pouvoir manger le cube qu'on vise."), Range(1f, 5f)]
@@ -101,6 +105,10 @@ public class PlayerManager : MonoBehaviour
     public float tickHoldEat;
     [HideInInspector]
     public bool holdEat;
+    [HideInInspector]
+    public int currentImmobileEatAngle;
+    private bool _hasEaten;
+
 
     // PLAYER SHOOT VAR
     [Header("PLAYER SHOOT Variables")]
@@ -130,7 +138,7 @@ public class PlayerManager : MonoBehaviour
     private float _knockBackForce;
 
     //============================Wall JUMP============================//
-    [Header("Wall Jump")]
+    [Header("WALL JUMP Variables")]
     [SerializeField] private float wallJumpTimer = 0f;
     private float dirPlayerToWall;   
     public Transform wallCheckRight;  
@@ -234,13 +242,27 @@ public class PlayerManager : MonoBehaviour
         {
             if (tickHoldEat >= 1f)
             {
-                OnEat();
+                if(inputVectorDirection == Vector2.zero)
+                {
+                    Debug.Log(LookDirection);
+                    OnEat(Quaternion.Euler(0, 0, Mathf.Sign(LookDirection.x) * ((float)currentImmobileEatAngle / _maxImmobileEatAngle) * _maxImmobileEatAngle) * LookDirection);
+                    currentImmobileEatAngle += 30;
+                    if (currentImmobileEatAngle > _maxImmobileEatAngle)
+                        currentImmobileEatAngle = 0;
+                }
+                else
+                    OnEat(inputVectorDirection);
+
                 tickHoldEat = 0f;
             }
             else
             {
                 tickHoldEat += Time.deltaTime * _eatTickrate;
             }
+        }
+        else
+        {
+            currentImmobileEatAngle = 0;
         }
     }
     #endregion
@@ -249,51 +271,67 @@ public class PlayerManager : MonoBehaviour
     /// <summary>
     /// Essaie de manger ce qui se trouve dans direction.
     /// </summary>
-    public void OnEat()
+    public void OnEat(Vector2 direction)
     {
+        _hasEaten = false;
+
         if (_playerSystem.PlayerState is not Moving)
             return;
-
-        var direction = inputVectorDirection;
-
-        //if (fullness >= 100)
-        //{
-        //    Debug.Log("Tu es plein et ne peut donc plus manger! Vomis.");
-        //    return;
-        //}
 
         if (direction == Vector2.zero)
         {
             direction = !GroundCheck() ? Vector2.up : LookDirection;
         }
 
+        Vector2 offsetDirection = Quaternion.Euler(0, 0, _eatAngleOffset) * direction;
 #if UNITY_EDITOR
-        Debug.DrawRay(transform.position - Vector3.forward, direction.normalized * _eatDistance, Color.red, 0.2f);
+        for(int i = 0; i < 5; i++)
+        {
+            Debug.DrawRay(transform.position - Vector3.forward, _eatDistance * (Quaternion.Euler(0, 0, (-_eatAngle * .5f) + (_eatAngle * ((float)i / 4))) * offsetDirection.normalized), Color.magenta, 0.2f);
+        }
 #endif
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, _eatDistance, LayerMask.GetMask("Destructible", "Indestructible", "Limite", "Trap"));
-        if (hit && hit.collider.gameObject.layer == LayerMask.NameToLayer("Destructible"))
+        for (int i = 0; i < 5; i++)
         {
-            _cooldownManager.SetupCoroutine(faceManager.FaceEat);
-            hit.transform.parent.GetComponent<Cube_Edible>().GetEaten(transform);
-            fullness = Mathf.Clamp(fullness + _filling, 0, 100);
-            _playerSystem.PlaySound("Player_Eat");
-            UpdatePlayerScale();
-        }
-        else if (!GroundCheck()) // S'il touche rien et qu'il n'est pas au sol on ressaie de manger dans le sens du regard cette fois
-        {
-            direction = LookDirection;
-            hit = Physics2D.Raycast(transform.position, direction.normalized, _eatDistance, LayerMask.GetMask("Destructible", "Indestructible", "Limite", "Trap"));
-
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, (Quaternion.Euler(0, 0, (-_eatAngle * .5f) + (_eatAngle * ((float)i / 4))) * offsetDirection.normalized), _eatDistance, LayerMask.GetMask("Destructible", "Indestructible", "Limite", "Trap"));
             if (hit && hit.collider.gameObject.layer == LayerMask.NameToLayer("Destructible"))
             {
                 _cooldownManager.SetupCoroutine(faceManager.FaceEat);
                 hit.transform.parent.GetComponent<Cube_Edible>().GetEaten(transform);
                 fullness = Mathf.Clamp(fullness + _filling, 0, 100);
-                _playerSystem.PlaySound("Player_Eat");
+                _hasEaten = true;
                 UpdatePlayerScale();
             }
+            else if (!holdEat && !GroundCheck()) // S'il touche rien et qu'il n'est pas au sol on ressaie de manger dans le sens du regard cette fois
+            {
+                direction = LookDirection;
+                hit = Physics2D.Raycast(transform.position, direction.normalized, _eatDistance, LayerMask.GetMask("Destructible", "Indestructible", "Limite", "Trap"));
+
+                if (hit && hit.collider.gameObject.layer == LayerMask.NameToLayer("Destructible"))
+                {
+                    _cooldownManager.SetupCoroutine(faceManager.FaceEat);
+                    hit.transform.parent.GetComponent<Cube_Edible>().GetEaten(transform);
+                    fullness = Mathf.Clamp(fullness + _filling, 0, 100);
+                    _hasEaten = true;
+                    UpdatePlayerScale();
+                }
+            }
         }
+
+        if(_hasEaten) _playerSystem.PlaySound("Player_Eat");
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Vector2 _eatAngleOffsetVector = Quaternion.Euler(0, 0, _eatAngleOffset) * Vector2.right;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, _eatDistance * (Quaternion.Euler(0, 0, -_eatAngle / 2) * _eatAngleOffsetVector));
+        Gizmos.DrawRay(transform.position, _eatDistance * (Quaternion.Euler(0, 0, _eatAngle / 2) * _eatAngleOffsetVector));
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawRay(transform.position, _eatDistance * Vector2.right);
+        Gizmos.DrawRay(transform.position, _eatDistance * (Quaternion.Euler(0, 0, _maxImmobileEatAngle) * Vector2.right));
     }
     #endregion
 
@@ -406,12 +444,6 @@ public class PlayerManager : MonoBehaviour
             isSliding = false;
             
         }
-    }
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawWireSphere(wallCheckRight.position, wallDetectionRadius);
-       
-
     }
     #endregion
 
