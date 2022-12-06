@@ -126,15 +126,18 @@ public class ApplicationManager : MonoBehaviour
         GameState = state;
     }
     
-    public void DeleteColor(int index)
+    public void DeleteColor(string name)
     {
+        var index = listColorRemaining.TakeWhile(color => color.colorName != name).Count();
         listColorRemaining.Remove(listColorRemaining[index]);
         RefreshColors();
     }
 
-    public void BackOnColorSelector(int index)
+    public void BackOnColorSelector(ColorPlayer color)
     {
-        listColorRemaining.Insert(index, listColorRemainingInspector[index]);
+        listColorRemaining.Insert(listColorRemaining.Count - 1, color);
+        var listOredered =  listColorRemaining.OrderByDescending(x => -x.index);
+        listColorRemaining = listOredered.ToList();
         RefreshColors();
     }
 

@@ -30,9 +30,10 @@ public class PlayerSetupMenuController : MonoBehaviour
 
     private float ignoreInputTime = 0.1f;
     private bool inputEnabled;
+    private bool isOnReadyPanel;
 
+    private ColorPlayer colorChoose;
     private List<GameObject> listButtonColorGo = new List<GameObject>();
-    private int indexColorTook;
     private ApplicationManager manager;
 
     private void Awake()
@@ -73,11 +74,10 @@ public class PlayerSetupMenuController : MonoBehaviour
             buttonGo.transform.parent = menuPanel.transform;
             buttonGo.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, index);
             index += 60;
-            Debug.Log(manager.ListColorRemaining[currentIndex].colorName + " " + manager.ListColorRemaining[currentIndex].index);
-            buttonGo.GetComponent<Button>().onClick.AddListener(() => { SetPlayerGFX(manager.ListColorRemaining[currentIndex].index);});
+            buttonGo.GetComponent<Button>().onClick.AddListener(() => { SetPlayerGFX(manager.ListColorRemaining[currentIndex]);});
             listButtonColorGo.Add(buttonGo);
             
-            if (i == 1)
+            if (i == 1 && !isOnReadyPanel)
             {
                 eventSystem.SetSelectedGameObject(null);
                 eventSystem.SetSelectedGameObject(buttonGo);
@@ -113,12 +113,12 @@ public class PlayerSetupMenuController : MonoBehaviour
         }
     }
 
-    public void SetPlayerGFX(int index)
+    public void SetPlayerGFX(ColorPlayer colorPlayer)
     {
         if (!inputEnabled) { return;}
 
-        indexColorTook = index;
-        var playerGfx = index switch
+        colorChoose = colorPlayer;
+        var playerGfx = colorChoose.index switch
         {
             0 => manager.ListPlayersGfx[0],
             1 => manager.ListPlayersGfx[1],
@@ -136,17 +136,23 @@ public class PlayerSetupMenuController : MonoBehaviour
         buttonBackImage.sprite = playerGfx.button;
         readyPanel.SetActive(true);
         menuPanel.SetActive(false);
-        
-        manager.DeleteColor(index);
+        isOnReadyPanel = true;
+        manager.DeleteColor(colorChoose.colorName);
+        TargetReadyButton();
+    }
+
+    private void TargetReadyButton()
+    {
         eventSystem.SetSelectedGameObject(null);
         eventSystem.SetSelectedGameObject(readyButton.gameObject);
     }
 
     public void Back()
     {
+        isOnReadyPanel = false;
         audioManager.Play("Menu_Cancel");
         readyPanel.SetActive(false);
-        manager.BackOnColorSelector(indexColorTook);
+        manager.BackOnColorSelector(colorChoose);
         menuImage.sprite = menuBlack;
         menuPanel.SetActive(true);
     }
