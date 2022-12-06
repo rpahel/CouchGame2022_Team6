@@ -8,14 +8,17 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
+    private StatisticsManager statsManager;
     [SerializeField] private Button buttonResume;
-    [SerializeField] private Button buttonRestart;
+    [SerializeField] private Button buttonNextLevel;
+    [SerializeField] private Button buttonMainMenu;
     [SerializeField] private GameObject parentGo;
     private AudioManager audioManager;
     
     private void Awake()
     {
         audioManager = FindObjectOfType<AudioManager>();
+        statsManager = GameManager.Instance.GetComponent<StatisticsManager>();
     }
 
     public void Pause()
@@ -33,7 +36,11 @@ public class PauseMenu : MonoBehaviour
         audioManager.Stop("Game_PauseLoop");
         Time.timeScale = 1;
         parentGo.SetActive(false);
-        buttonRestart.Select();
+        
+        if(statsManager.CanGoToNextLevel)
+            buttonNextLevel.Select();
+        else
+            buttonMainMenu.Select();
     }
     
     public void Restart()
