@@ -126,7 +126,7 @@ public class LevelGenerator : MonoBehaviour
  
         Vector3 randomPos = new Vector3(randX, randY, 0);
             
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(randomPos, cubeTNT.transform.localScale.magnitude / 2, 1 << 3 | 1 << 6 | 1 << 7 | 1 << 8 | 1 << 12);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(randomPos, cubeTNT.transform.localScale.magnitude / 2, 1 << 3 | 1 << 6 | 1 << 7 | 1 << 8 | 1 << 10 | 1 << 12);
         
         while (colliders.Length > 0) {
             randX = Random.Range((int)cubesArray[0, 0].position.x,(int)cubesArray[image.width - 1,image.height - 1].position.x);
@@ -135,7 +135,7 @@ public class LevelGenerator : MonoBehaviour
             randomPos = new Vector3(randX, randY, 0);
             
             if(colliders.Length > 0)
-                colliders = Physics2D.OverlapCircleAll(randomPos, cubeTNT.transform.localScale.magnitude / 2, 1 << 3 | 1 << 6 | 1 << 7 | 1 << 8 | 1 << 12);
+                colliders = Physics2D.OverlapCircleAll(randomPos, cubeTNT.transform.localScale.magnitude / 2, 1 << 3 | 1 << 6 | 1 << 7 | 1 << 8 | 1 << 10 | 1 << 12);
         }
                 
         GameObject tnt = Instantiate(cubeTNT, randomPos, Quaternion.identity,parentObjCubes.transform);
