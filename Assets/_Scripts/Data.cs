@@ -5,6 +5,7 @@ namespace Data
     {
         NONE,
         EDIBLE,
+        TNT,
         TRAP,
         BEDROCK
     }

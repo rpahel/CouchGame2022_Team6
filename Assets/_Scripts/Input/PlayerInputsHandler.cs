@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
@@ -6,12 +7,14 @@ public class PlayerInputsHandler : MonoBehaviour
     #region Autres Scripts
     //==========================================================================
 
+    private PauseMenu pauseMenu;
     private PlayerManager _playerManager;
     private PlayerStateSystem _playerSystem;
     private PlayerConfiguration _playerConfig;
     private PlayerInputs controls;
     private Transform gameObjectTransform;
     public bool InputIsEnabled { get; private set; }
+    public bool isGamePaused;
     #endregion
 
     //==========================================================================
@@ -22,6 +25,7 @@ public class PlayerInputsHandler : MonoBehaviour
         controls = new PlayerInputs();
         InputIsEnabled = true;
         gameObjectTransform = gameObject.GetComponent<Transform>();
+        pauseMenu = FindObjectOfType<PauseMenu>();
     }
     
     public void InitializePlayer(PlayerConfiguration pc)
@@ -37,15 +41,20 @@ public class PlayerInputsHandler : MonoBehaviour
 
     private void Input_OnActionTriggered(CallbackContext obj)
     {
-
+        //Debug.Log(obj.action.name); 
+        
         if (obj.action.name == controls.Game.Move.name)
         {
             OnMove(obj);
         }
+        else if (obj.action.name == controls.Game.Pause.name)
+        {
+            OnPause(obj);
+        }
         
         if (!InputIsEnabled) return;
-
-        else if (obj.action.name == controls.Game.Jump.name)
+        
+        if (obj.action.name == controls.Game.Jump.name)
         {
             OnJump(obj);
         }
@@ -60,6 +69,22 @@ public class PlayerInputsHandler : MonoBehaviour
         else if (obj.action.name == controls.Game.Special.name)
         {
             OnSpecial(obj);
+        }
+        
+    }
+
+    private void OnPause(CallbackContext input)
+    {
+        switch (input.started)
+        {
+            case true when !isGamePaused:
+                isGamePaused = !isGamePaused;
+                pauseMenu.Pause();
+                break;
+            case true when isGamePaused:
+                isGamePaused = !isGamePaused;
+                pauseMenu.Resume();
+                break;
         }
     }
 

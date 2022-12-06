@@ -2,6 +2,7 @@ using Data;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
@@ -24,6 +25,9 @@ public class LevelGenerator : MonoBehaviour
     public GameObject CubeBedrock => cubeBedrock;
     [SerializeField] private GameObject cubeTrap;
     public GameObject CubeTrap => cubeTrap;
+    
+    [SerializeField] private GameObject cubeTNT;
+    public GameObject CubeTNT => cubeTNT;
 
     //========================================================
     [Header("Animation de spawn des cubes.")]
@@ -47,9 +51,16 @@ public class LevelGenerator : MonoBehaviour
     private float _firstRespawnTime;
     private bool _canRespawnCube = true;
     private bool _canRespawnFirstCube;
-    private List<Cube_Edible> _cubeRespawnList = new();
+    private List<CubeDestroyable> _cubeRespawnList = new();
     private Coroutine _respawnCoroutine;
 
+    [Header("TNT")]
+    //========================================================
+    [SerializeField,Range(0f,60f)] private float tntDelay;
+    private float tntTimer;
+    public bool randomSpawn;
+    public bool respawn;
+    
     //========================================================
     private LEVEL_STATE levelState = LEVEL_STATE.NONE;
     public LEVEL_STATE LevelState => levelState;
@@ -65,12 +76,18 @@ public class LevelGenerator : MonoBehaviour
     public Transform[,] CubesArray => cubesArray;
 
     private int coroutinesRunning = 0;
+    
+    
+    private List<TNT> allPaterns;
+    
+    
     #endregion
 
     #region Unity_Functions
     private void Awake()
     {
         cubesArray = new Transform[image.width, image.height];
+        allPaterns = new List<TNT>();
     }
 
     private void Start()
@@ -85,10 +102,57 @@ public class LevelGenerator : MonoBehaviour
         if(_timeBeforeCubeRespawnStart <= 0 && _respawnCoroutine == null)
             _respawnCoroutine = StartCoroutine(RespawnCube());
     }
+    
+    private void Update() {
+        if (randomSpawn) {
+            tntTimer += Time.deltaTime;
+ 
+            if (tntTimer >= tntDelay) {
+                tntTimer = 0f;
+                StartCoroutine(GenerateRandomTNT());
+            }
+        }
+    }
+    
+    
     #endregion
 
     #region Custom_Functions
     //========================================================
+    
+    private IEnumerator GenerateRandomTNT() {
+        int randX = Random.Range((int)cubesArray[0, 0].position.x,(int)cubesArray[image.width - 1,image.height - 1].position.x);
+        int randY = Random.Range((int)cubesArray[0, 0].position.y, (int)cubesArray[image.width - 1,image.height - 1].position.y);
+ 
+        Vector3 randomPos = new Vector3(randX, randY, 0);
+            
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(randomPos, cubeTNT.transform.localScale.magnitude / 2, 1 << 3 | 1 << 6 | 1 << 7 | 1 << 8 | 1 << 12);
+        
+        while (colliders.Length > 0) {
+            randX = Random.Range((int)cubesArray[0, 0].position.x,(int)cubesArray[image.width - 1,image.height - 1].position.x);
+            randY = Random.Range((int)cubesArray[0, 0].position.y, (int)cubesArray[image.width - 1,image.height - 1].position.y);
+ 
+            randomPos = new Vector3(randX, randY, 0);
+            
+            if(colliders.Length > 0)
+                colliders = Physics2D.OverlapCircleAll(randomPos, cubeTNT.transform.localScale.magnitude / 2, 1 << 3 | 1 << 6 | 1 << 7 | 1 << 8 | 1 << 12);
+        }
+                
+        GameObject tnt = Instantiate(cubeTNT, randomPos, Quaternion.identity,parentObjCubes.transform);
+        tnt.transform.localScale = Vector3.one * scale;
+        AssignRandomPattern(tnt.GetComponent<Cube_TNT>());
+        yield return null;
+    }
+    
+    
+    private void FindTNTPatterns() {
+        foreach (TNT tntComp in GetComponents<TNT>()) 
+            allPaterns.Add(tntComp);
+        
+    }
+ 
+    private void AssignRandomPattern(Cube_TNT cube) => cube.pattern = allPaterns[Random.Range(0, allPaterns.Count)];
+    
     public void GenerateLevel()
     {
         if (!image)
@@ -103,6 +167,8 @@ public class LevelGenerator : MonoBehaviour
 
         GameObject parentObjSpawns = new GameObject("Initial Spawns");
         parentObjSpawns.transform.parent = transform;
+        
+        FindTNTPatterns();
 
         // Check la couleur de chaque pixel dans l'image et fait spawn un cube aux coordonn�es correspondantes
         int n = 0;
@@ -119,6 +185,11 @@ public class LevelGenerator : MonoBehaviour
                 else if (pixColor == Color.green)
                 {
                     CreateCubeOnPlay(cubeEdible, parentObjCubes.transform, i, j);
+                }
+                else if (pixColor == new Color(1f,1f,0,1f))
+                {
+                    GameObject obj = CreateCubeOnPlay(cubeTNT,parentObjCubes.transform,i,j);
+                    AssignRandomPattern(obj.GetComponent<Cube_TNT>());
                 }
                 else if (pixColor == Color.black)
                 {
@@ -153,7 +224,7 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-    void CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width, bool visible = true)
+    GameObject CreateCubeOnPlay(GameObject cubeToCreate, Transform parentObj, int height, int width, bool visible = true)
     {
         GameObject cube = Instantiate(cubeToCreate, new Vector3(width, height, 0) * scale, Quaternion.identity);
         Cube cubeScript = cube.GetComponent<Cube>();
@@ -174,14 +245,11 @@ public class LevelGenerator : MonoBehaviour
 
         if (cubeToCreate == cubeBedrock)
         {
-            if (height <= 0 || height >= image.height - 1 || width <= 0 || width >= image.width - 1)
-            {
-                foreach (Transform square in cube.transform)
-                {
-                    square.gameObject.layer = LayerMask.NameToLayer("Limite");
-                }
-            }
+            cubeToCreate.layer = LayerMask.NameToLayer("Limite");
+            cubeToCreate.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("Limite");
         }
+
+        return cube;
     }
     #endregion
 
@@ -336,21 +404,25 @@ public class LevelGenerator : MonoBehaviour
         coroutinesRunning--;
     }
 
-    private IEnumerator RespawnCube()
-    {
+    private IEnumerator RespawnCube() {
+        
         if (!_canRespawnCube) yield break;
         if (_cubeRespawnList.Count <= 0) yield break;
 
-        Cube_Edible cube = _cubeRespawnList[0];
+        CubeDestroyable cube = _cubeRespawnList[0];
         _cubeRespawnList.RemoveAt(0);
 
         yield return new WaitUntil(() => _canRespawnFirstCube);
         yield return new WaitUntil(() => !cube.IsInAnimation);
-
+        
+        if (cube is Cube_TNT && !respawn)
+            yield break;
+        
         cube.GetBarfed(cube.transform.position);
         _canRespawnCube = false;
         StartCoroutine(CubeRespawnCooldown());
         _respawnCoroutine = null;
+        
         yield break;
     }
 
@@ -368,7 +440,7 @@ public class LevelGenerator : MonoBehaviour
         yield break;
     }
 
-    public void AddToRespawnList(Cube_Edible cube)
+    public void AddToRespawnList(CubeDestroyable cube)
     {
         if (!_cubeRespawnList.Contains(cube))
             _cubeRespawnList.Add(cube);
@@ -380,7 +452,7 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-    public void RemoveFromRespawnList(Cube_Edible cube)
+    public void RemoveFromRespawnList(CubeDestroyable cube)
     {
         if (_cubeRespawnList.Contains(cube))
             _cubeRespawnList.Remove(cube);

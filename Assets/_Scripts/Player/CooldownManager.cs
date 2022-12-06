@@ -8,13 +8,14 @@ public class CooldownManager : MonoBehaviour
     private PlayerManager playerSystemManager;
     private PlayerStateSystem playerSystem;
     private FaceManager faceManager;
-
+    private TrailRenderer _trailRenderer;
     private Coroutine faceCoroutine;
     private void Awake()
     {
         playerSystemManager = GetComponent<PlayerManager>();
         playerSystem = GetComponent<PlayerStateSystem>();
         faceManager = GetComponent<FaceManager>();
+        _trailRenderer = GetComponent<TrailRenderer>();
     }
 
     public IEnumerator CooldownShoot()
@@ -74,6 +75,7 @@ public class CooldownManager : MonoBehaviour
     public IEnumerator JumpCoroutine()
     {
         playerSystemManager.isJumping = true;
+        playerSystem.PlaySound("Player_Jump");
         SetupCoroutine(faceManager.FaceJump);
         float t = 0;
         playerSystemManager.Rb2D.gravityScale = 0;
@@ -113,8 +115,26 @@ public class CooldownManager : MonoBehaviour
         playerSystemManager.Rb2D.gravityScale = 0;
         playerSystemManager.Rb2D.velocity = Vector2.zero;
         //_trailRenderer.emitting = true;
-        yield return new WaitForSeconds(dashDuration);
+
+        float t = 0;
+        while (t < dashDuration)
+        {
+            if (playerSystem.PlayerState is not Special)
+            {
+                StartCoroutine(UndoDash(originalGravityScale));
+                yield break;
+            }
+
+            t += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+
         playerSystem.SetState(new Moving(playerSystem));
+        StartCoroutine(UndoDash(originalGravityScale));
+    }
+
+    private IEnumerator UndoDash(float originalGravityScale)
+    {
         playerSystemManager.Rb2D.gravityScale = originalGravityScale;
         gameObject.layer = LayerMask.NameToLayer("Player");
         playerSystemManager.SpecialTrigger.SetActive(false);

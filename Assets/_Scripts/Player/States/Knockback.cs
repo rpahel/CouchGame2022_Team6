@@ -4,6 +4,12 @@ public class Knockback : State
 {
     public Knockback(PlayerStateSystem playerSystem) : base(playerSystem) { }
 
+    public override void Start()
+    {
+        playerSystem.PlayerManager.inputVectorDirection = Vector2.zero;
+        playerSystem.PlayerManager.inputVectorMove = Vector2.zero;
+    }
+
     /// <summary>
     /// Knockback le joueur
     /// </summary>

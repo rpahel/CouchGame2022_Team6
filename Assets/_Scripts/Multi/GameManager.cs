@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     public float RespawnTime => respawnTime;
 
     [SerializeField] private bool skipCountdown = false;
+
+    [SerializeField] private TextMeshProUGUI gameTimeText;
     //[SerializeField] private bool showStatistics = false;
     [SerializeField] private TextMeshProUGUI gameCooldownText;
 
@@ -55,6 +57,8 @@ public class GameManager : MonoBehaviour
     public List<Projectile> ProjectilePool => projPool;
 
     private Transform projPoolTransform;
+
+    private AudioManager audioManager;
     
     private void Awake()
     {
@@ -70,6 +74,7 @@ public class GameManager : MonoBehaviour
         _spawnManager = GetComponent<SpawnManager>();
         StatsManager = GetComponent<StatisticsManager>();
         _applicationManager = ApplicationManager.Instance;
+        audioManager = FindObjectOfType<AudioManager>();
         _currentGameCooldown = gameDuration;
 
         if (projectile == null)
@@ -83,14 +88,19 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (_applicationManager.GameState != GAME_STATE.PLAYING) return;
-        
+        if (_applicationManager?.GameState != GAME_STATE.PLAYING) return;
+
         _currentGameCooldown -= Time.deltaTime;
-        gameCooldownText.text = ((int)_currentGameCooldown).ToString();
+        int minutes = Mathf.FloorToInt(_currentGameCooldown / 60F);
+        int seconds = Mathf.FloorToInt(_currentGameCooldown - minutes * 60);
+        string niceTime = string.Format("{0:0}:{1:00}", minutes, seconds);
+        
+        gameCooldownText.text = niceTime.ToString();
             
         if (_currentGameCooldown <= 0f)
         {
             _applicationManager.SetGameState(GAME_STATE.END);
+            audioManager.Stop("Game_Music");
             SetAllInputs(false);
             StatsManager.ShowStats();
         }
@@ -107,8 +117,11 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        gameTimeText.gameObject.SetActive(true);
         SetAllInputs(true);
-        _applicationManager.SetGameState(GAME_STATE.PLAYING);
+        audioManager.Stop("Menu_Music");
+        audioManager.Play("Game_Music");
+        _applicationManager?.SetGameState(GAME_STATE.PLAYING);
     }
 
     private void SetAllInputs(bool result)

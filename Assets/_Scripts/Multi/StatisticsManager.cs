@@ -13,18 +13,15 @@ public class StatisticsManager : MonoBehaviour
     public Stats[] _arrayStats;
     public Stats[] ArrayStats => _arrayStats;
 
+    [SerializeField] private GameObject prefabStats;
     [SerializeField] private GameObject statsGoUI;
-    [SerializeField] private List<GameObject> listStatsUI= new List<GameObject>();
-    [SerializeField] private List<Image> listImagePlayer = new List<Image>();
-    [SerializeField] private List<TextMeshProUGUI> listTextDamage = new List<TextMeshProUGUI>();
-    [SerializeField] private List<TextMeshProUGUI> listKillsDamage = new List<TextMeshProUGUI>();
-    [SerializeField] private List<TextMeshProUGUI> listDeathDamage = new List<TextMeshProUGUI>();
+    [SerializeField] private List<StatsNameplate> listStatsNameplate = new List<StatsNameplate>();
 
-    private ApplicationManager _applicationManager;
+    private ApplicationManager applicationManager;
 
     private void Awake()
     {
-        _applicationManager = ApplicationManager.Instance;
+        applicationManager = ApplicationManager.Instance;
     }
 
     public void InitializeStats()
@@ -43,17 +40,15 @@ public class StatisticsManager : MonoBehaviour
     {
         SetupStatsMenu();
         
-        var sortedArray = _arrayStats.OrderByDescending(x => x._kill);
+        var sortedArray = _arrayStats.OrderByDescending(x => x._damageDeal);
 
-        var playerConfigs = _applicationManager.GetPlayerConfigs().ToArray();
-        var index = 0;
+        var playerConfigs = applicationManager.GetPlayerConfigs().ToArray();
+        byte index = 0;
         
         foreach (Stats playerStats in sortedArray)
         {
-            //listImagePlayer[index].color = playerConfigs[playerStats._playerIndex].sprite;
-            listTextDamage[index].text = playerStats._damageDeal.ToString();
-            listKillsDamage[index].text = playerStats._kill.ToString();
-            listDeathDamage[index].text = playerStats._death.ToString();
+            
+            listStatsNameplate[index].SetStats(index, playerStats._damageDeal, playerStats._kill, playerStats._death);
             index++;
         }
     }
@@ -71,15 +66,14 @@ public class StatisticsManager : MonoBehaviour
     
     private void SetupStatsMenu()
     {
-        switch (_arrayStats.Length)
+        var posY = 25;
+        for(var x = 0; x < _arrayStats.Length; x++)
         {
-            case 3:
-                listStatsUI[3].SetActive(false);
-                break;
-            case 2:
-                listStatsUI[3].SetActive(false);
-                listStatsUI[2].SetActive(false);
-                break;
+            var stats = Instantiate(prefabStats, transform.position, Quaternion.identity);
+            stats.transform.parent = statsGoUI.transform;
+            stats.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, posY);
+            posY -= 175;
+            listStatsNameplate.Add(stats.GetComponent<StatsNameplate>());
         }
         
         statsGoUI.SetActive(true);

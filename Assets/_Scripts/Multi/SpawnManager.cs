@@ -13,7 +13,10 @@ public class SpawnManager : MonoBehaviour
     public void SpawnPlayers()
     {
         var manager = GameManager.Instance;
-        var playerConfigs = ApplicationManager.Instance.GetPlayerConfigs().ToArray();
+        var playerConfigs = ApplicationManager.Instance?.GetPlayerConfigs().ToArray();
+
+        if (!ApplicationManager.Instance)
+            return;
 
         for (int i = 0; i < playerConfigs.Length; i++)
         {
@@ -30,6 +33,6 @@ public class SpawnManager : MonoBehaviour
 
         }
         
-        //GameManager.Instance.StatsManager.InitializeStats();
+        GameManager.Instance.StatsManager.InitializeStats();
     }
 }

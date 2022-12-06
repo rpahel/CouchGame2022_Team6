@@ -10,6 +10,7 @@ TagManager:
   - Jumpable
   - CubeLoot
   - Canva
+  - CubeTNT
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Projectile
   - Limite
   - PlayerDashing
-  - 
+  - TNT
   - 
   - 
   - 

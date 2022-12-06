@@ -436,17 +436,17 @@ MonoBehaviour:
   fullness: 50
   _eatTickrate: 10
   _eatDistance: 5
-  _filling: 14
+  _filling: 4
   tickHoldEat: 0
   holdEat: 0
-  _necessaryFood: 0
+  _necessaryFood: 8
   _cooldownShoot: 0.2
   canShoot: 1
   _aimPivot: {fileID: 8009965234519673580}
-  _initialSpeed: 45
+  _initialSpeed: 50
   _gravity: 2
   _bounceForce: 30
-  _inflictedFoodDamage: 20
+  _inflictedFoodDamage: 35
   _knockBackForce: 35
   wallJumpTimer: 0
   wallCheckRight: {fileID: 3605234718721792720}
@@ -460,12 +460,12 @@ MonoBehaviour:
   wallJumpForce: 40
   canWallJump: 0
   cantDoubleJump: 0
-  timeToMaxCharge: 3
+  timeToMaxCharge: 1.5
   maxDistance: 40
   minDistance: 10
-  necessaryFoodSpecial: 0
+  necessaryFoodSpecial: 70
   dashCooldown: 2
-  dashForce: 50
+  dashForce: 20
   specialTrigger: {fileID: 4317817617938280482}
   charge: 0
   isHolding: 0
@@ -495,6 +495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d3c0f4d07f636048bb8257cceab2675, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isGamePaused: 0
 --- !u!114 &159401329610904341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -523,6 +524,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1228374104199151351}
   - component: {fileID: 8881702519060311405}
+  - component: {fileID: 291903642433581280}
   m_Layer: 3
   m_Name: Special Trigger
   m_TagString: Untagged
@@ -561,6 +563,18 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.97, y: 1.94}
   m_Direction: 0
+--- !u!114 &291903642433581280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4317817617938280482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 898ee93813db6ba4797fcf5edb129e4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8250727704690968795
 GameObject:
   m_ObjectHideFlags: 0

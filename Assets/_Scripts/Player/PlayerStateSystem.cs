@@ -6,12 +6,15 @@ public class PlayerStateSystem : StateMachine
     public CooldownManager CooldownManager { get; private set; }
     public FaceManager FaceManager { get; private set; }
     public State PlayerState => State;
+    
+    private AudioManager audioManager;
 
     private void Awake()
     {
         PlayerManager = GetComponent<PlayerManager>();
         CooldownManager = GetComponent<CooldownManager>();
         FaceManager = GetComponent<FaceManager>();
+        audioManager = FindObjectOfType<AudioManager>();
     }
 
     public void Start()
@@ -32,6 +35,17 @@ public class PlayerStateSystem : StateMachine
         SetState((new Stun(this)));
         State?.OnStun<T>(damageDealer, damage, knockBackForce);
     }
+
+    public void PlaySound(string name)
+    {
+        audioManager.Play(name);
+    }
+    public void StopSound(string name)
+    {
+        audioManager.Stop(name);
+    }
+
+    
 
     public void Update()
     {
