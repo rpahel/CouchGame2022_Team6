@@ -163,7 +163,7 @@ PrefabInstance:
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
       propertyPath: gameDuration
-      value: 5
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
@@ -1289,6 +1289,9 @@ MonoBehaviour:
   cubeTrap: {fileID: 2613636963887001808, guid: fd8e6153315a70a4c9d48f9614a0b90d,
     type: 3}
   cubeTNT: {fileID: 9104288708286051530, guid: 4da42d8564429d44189b34e58deaa9ee, type: 3}
+  bedrockSprites:
+  - {fileID: 21300000, guid: 4f03109f69fa967468f4a0589b911e48, type: 3}
+  - {fileID: 21300000, guid: b7b39af7a13abd147bab8454caed2cc7, type: 3}
   spawnAnim: 1
   smoothType: 27
   beforeStart: 1
