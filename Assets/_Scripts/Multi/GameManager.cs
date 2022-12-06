@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     public float RespawnTime => respawnTime;
 
     [SerializeField] private bool skipCountdown = false;
+
+    [SerializeField] private TextMeshProUGUI gameTimeText;
     //[SerializeField] private bool showStatistics = false;
     [SerializeField] private TextMeshProUGUI gameCooldownText;
 
@@ -115,6 +117,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        gameTimeText.gameObject.SetActive(true);
         SetAllInputs(true);
         audioManager.Stop("Menu_Music");
         audioManager.Play("Game_Music");

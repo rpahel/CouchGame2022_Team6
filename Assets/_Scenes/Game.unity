@@ -167,6 +167,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
+      propertyPath: gameTimeText
+      value: 
+      objectReference: {fileID: 485350297}
+    - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
+        type: 3}
       propertyPath: _playerPrefab
       value: 
       objectReference: {fileID: 3784764394035868596, guid: 78f09328c610878458cfa7617891c94e,
@@ -1043,7 +1048,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &485350296
 RectTransform:
   m_ObjectHideFlags: 0

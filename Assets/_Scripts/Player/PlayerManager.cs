@@ -227,7 +227,7 @@ public class PlayerManager : MonoBehaviour
         {
             // On change la couleur du joueur en fonction de son etat
             Knockback => Color.red,
-            _ => color
+            _ => Color.white
         };
 
         if (holdEat)
@@ -375,6 +375,7 @@ public class PlayerManager : MonoBehaviour
 
         if (isSliding) return;
 
+        _playerSystem.PlaySound("Player_Jump");
         Vector2 wallJumpdir;
 
         wallJumpdir = new Vector2(Mathf.Cos(Mathf.Deg2Rad * wallJumpAngle), Mathf.Sin(Mathf.Deg2Rad * wallJumpAngle));
