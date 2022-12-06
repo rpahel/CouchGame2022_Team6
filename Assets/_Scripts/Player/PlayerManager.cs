@@ -456,7 +456,8 @@ public class PlayerManager : MonoBehaviour
     public void OnDamage<T>(T damageDealer, int damage, Vector2 knockBackForce)
     {
         if (_playerSystem.PlayerState is Special) return;
-
+        
+        _playerSystem.StopAllEffects();
         var damageDealerIsAPlayer = false;
         PlayerManager damager = null;
         

@@ -10,7 +10,12 @@ public class PlayerStateSystem : StateMachine
     
     private AudioManager audioManager;
 
+    [Header("VFX")]
     [SerializeField] private VisualEffect effect;
+
+    public VisualEffect Effect => effect;
+    [SerializeField] private VisualEffect aimDashEffect;
+    public VisualEffect AimDashEffect => aimDashEffect;
 
 
     private void Awake()
@@ -55,9 +60,25 @@ public class PlayerStateSystem : StateMachine
         effect.Play();
     }
 
+    public void PlayDashEffect()
+    {
+        aimDashEffect.Play();
+    }
+    
+    public void StopDashEffect()
+    {
+        aimDashEffect.Stop();
+    }
+
     public void StopEffect()
     {
         effect.Stop();
+    }
+
+    public void StopAllEffects()
+    {
+        StopEffect();
+        StopDashEffect();
     }
     public void Update()
     {

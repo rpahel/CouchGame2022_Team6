@@ -16,6 +16,7 @@ public class AimSpecial : State
         _playerManager.charge = 0;
             
         _transformPos = playerSystem.transform;
+        playerSystem.PlayDashEffect();
     }
 
     public override void Update()
@@ -67,6 +68,7 @@ public class AimSpecial : State
     public override void OnSpecial()
     {
         _playerManager.AimPivot.gameObject.SetActive(false);
+        playerSystem.StopDashEffect();
         playerSystem.SetState(new Special(playerSystem));
     }
 }

@@ -71,6 +71,8 @@ public class ApplicationManager : MonoBehaviour
         _playerConfigs[index].PlayerFaceSprite = playerGfx.face;
         _playerConfigs[index].PlayerIcon = playerGfx.icon;
         _playerConfigs[index].PlayerColor = playerGfx.color;
+        _playerConfigs[index].PlayerHdrColor = playerGfx.hdrColor;
+        _playerConfigs[index].playerGradient = playerGfx.gradientColor;
     }
     public void ReadyPlayer(int index)
     {
@@ -165,6 +167,9 @@ public class PlayerConfiguration
     public Sprite PlayerIcon { get; set; }
     
     public Color PlayerColor { get; set; }
+    public Color PlayerHdrColor { get; set; }
+    public Gradient playerGradient { get; set; }
+    
 }
 
 
@@ -178,6 +183,9 @@ public class PlayerGfxUI
     public Sprite button;
     public Sprite icon;
     public Color color;
+    [ColorUsage(true, true)]
+    public Color hdrColor;
+    public Gradient gradientColor;
 }
 
 [System.Serializable]
