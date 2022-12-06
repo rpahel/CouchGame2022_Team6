@@ -2,6 +2,7 @@ using Data;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -58,8 +59,13 @@ public class LevelGenerator : MonoBehaviour
     //========================================================
     [SerializeField,Range(0f,60f)] private float tntDelay;
     private float tntTimer;
-    public bool randomSpawn;
-    public bool respawn;
+    [SerializeField,Tooltip("Available or no the random spawn of TNT ")] private bool randomSpawn;
+    [SerializeField,Tooltip("The max TNT possible on the level ")] private int maxTNTCount;
+    private int tntCount;
+    [SerializeField,Tooltip("Count or not the number of tnt when the level is loaded")]private bool countLDTNT;
+    [SerializeField,Tooltip("Available or no the possibility of tnt to respawn after his destruction")] private bool respawn;
+    [HideInInspector] public List<Vector3> allEmptyPositions = new();
+    private List<TNT> allPaterns;
     
     //========================================================
     private LEVEL_STATE levelState = LEVEL_STATE.NONE;
@@ -78,9 +84,6 @@ public class LevelGenerator : MonoBehaviour
     private int coroutinesRunning = 0;
     
     
-    private List<TNT> allPaterns;
-    
-    
     #endregion
 
     #region Unity_Functions
@@ -94,6 +97,8 @@ public class LevelGenerator : MonoBehaviour
     {
         GenerateLevel();
         StartCoroutine(PlayAnimation());
+
+        tntCount = countLDTNT ? FindObjectsOfType<Cube_TNT>().Length : 0;
     }
 
     private void FixedUpdate()
@@ -109,7 +114,7 @@ public class LevelGenerator : MonoBehaviour
  
             if (tntTimer >= tntDelay) {
                 tntTimer = 0f;
-                StartCoroutine(GenerateRandomTNT());
+                GenerateRandomTNT();
             }
         }
     }
@@ -120,28 +125,20 @@ public class LevelGenerator : MonoBehaviour
     #region Custom_Functions
     //========================================================
     
-    private IEnumerator GenerateRandomTNT() {
-        int randX = Random.Range((int)cubesArray[0, 0].position.x,(int)cubesArray[image.width - 1,image.height - 1].position.x);
-        int randY = Random.Range((int)cubesArray[0, 0].position.y, (int)cubesArray[image.width - 1,image.height - 1].position.y);
- 
-        Vector3 randomPos = new Vector3(randX, randY, 0);
-            
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(randomPos, cubeTNT.transform.localScale.magnitude / 2, 1 << 3 | 1 << 6 | 1 << 7 | 1 << 8 | 1 << 12);
+    private void GenerateRandomTNT() {
         
-        while (colliders.Length > 0) {
-            randX = Random.Range((int)cubesArray[0, 0].position.x,(int)cubesArray[image.width - 1,image.height - 1].position.x);
-            randY = Random.Range((int)cubesArray[0, 0].position.y, (int)cubesArray[image.width - 1,image.height - 1].position.y);
- 
-            randomPos = new Vector3(randX, randY, 0);
-            
-            if(colliders.Length > 0)
-                colliders = Physics2D.OverlapCircleAll(randomPos, cubeTNT.transform.localScale.magnitude / 2, 1 << 3 | 1 << 6 | 1 << 7 | 1 << 8 | 1 << 12);
+        if (tntCount >= maxTNTCount) {
+            tntCount = 0;
+            Debug.Log("Can't spawn random TNT. There is too much TNT on level. ");
+            return;
         }
+
+        Vector3 randomPos = allEmptyPositions[Random.Range(0, allEmptyPositions.Count)];
                 
         GameObject tnt = Instantiate(cubeTNT, randomPos, Quaternion.identity,parentObjCubes.transform);
         tnt.transform.localScale = Vector3.one * scale;
         AssignRandomPattern(tnt.GetComponent<Cube_TNT>());
-        yield return null;
+        tntCount++;
     }
     
     
@@ -221,6 +218,13 @@ public class LevelGenerator : MonoBehaviour
                     CreateCubeOnPlay(cubeEdible, parentObjCubes.transform, i, j, false);
                 }
             }
+        }
+
+
+        //allEmptyPositions = FindObjectsOfType<Cube_Edible>().ToList().Where(obj => obj.transform.GetChild(0).gameObject.activeSelf == false);
+
+        foreach (Cube_Edible emptyCube in FindObjectsOfType<Cube_Edible>().ToList().Where(obj => obj.transform.GetChild(0).gameObject.activeSelf == false)) {
+          allEmptyPositions.Add(emptyCube.transform.position);  
         }
     }
 
