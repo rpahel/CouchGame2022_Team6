@@ -41,7 +41,7 @@ public class PlayerInputsHandler : MonoBehaviour
 
     private void Input_OnActionTriggered(CallbackContext obj)
     {
-        Debug.Log(obj.action.name); 
+        //Debug.Log(obj.action.name); 
         
         if (obj.action.name == controls.Game.Move.name)
         {
