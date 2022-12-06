@@ -1276,9 +1276,9 @@ MonoBehaviour:
   betweenCubes: 0
   betweenLines: 0.05
   _timeBeforeCubeRespawnStart: 10
-  _respawnCooldown: 1.5
+  _respawnCooldown: 1
   _firstRespawnTime: 5
-  tntDelay: 15
+  tntDelay: 10
   randomSpawn: 0
   respawn: 1
 --- !u!114 &611988395
