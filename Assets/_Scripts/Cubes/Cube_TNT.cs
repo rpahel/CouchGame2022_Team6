@@ -12,7 +12,9 @@ public class Cube_TNT : CubeDestroyable {
     public void Explode(Transform colParent) => StartCoroutine(OnExplosion(colParent));
     
     private IEnumerator OnExplosion(Transform colParent) {
+        GameManager.Instance.AudioManager.Play("TNT_Trigger");
         yield return new WaitForSeconds(1f);
+        GameManager.Instance.AudioManager.Play("TNT_Explode");
         foreach (Vector2 dir in pattern.pattern) {
             if (dir != Vector2.zero) {
                 Vector3 direction = new Vector3(dir.x,dir.y,colParent.position.z);

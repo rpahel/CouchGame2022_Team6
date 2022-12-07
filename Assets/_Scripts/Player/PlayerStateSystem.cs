@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.VFX;
 
 public class PlayerStateSystem : StateMachine
@@ -10,13 +13,11 @@ public class PlayerStateSystem : StateMachine
     
     private AudioManager audioManager;
 
+    [FormerlySerializedAs("listVFXeffect")]
     [Header("VFX")]
-    [SerializeField] private VisualEffect effect;
+    [SerializeField] private List<VisualEffect> listVfX_effect = new List<VisualEffect>();
 
-    public VisualEffect Effect => effect;
-    [SerializeField] private VisualEffect aimDashEffect;
-    public VisualEffect AimDashEffect => aimDashEffect;
-
+    public List<VisualEffect> ListVfX_effect => listVfX_effect;
 
     private void Awake()
     {
@@ -24,7 +25,6 @@ public class PlayerStateSystem : StateMachine
         CooldownManager = GetComponent<CooldownManager>();
         FaceManager = GetComponent<FaceManager>();
         audioManager = FindObjectOfType<AudioManager>();
-        
     }
 
     public void Start()
@@ -55,30 +55,22 @@ public class PlayerStateSystem : StateMachine
         audioManager.Stop(name);
     }
 
-    public void PlayEffect()
+    public void PlayEffect(int index)
     {
-        effect.Play();
+        listVfX_effect[index].Play();
     }
 
-    public void PlayDashEffect()
+    public void StopEffect(int index)
     {
-        aimDashEffect.Play();
-    }
-    
-    public void StopDashEffect()
-    {
-        aimDashEffect.Stop();
-    }
-
-    public void StopEffect()
-    {
-        effect.Stop();
+        listVfX_effect[index].Stop();
     }
 
     public void StopAllEffects()
     {
-        StopEffect();
-        StopDashEffect();
+        foreach (VisualEffect vfx in listVfX_effect)
+        {
+            vfx.Stop();
+        }
     }
     public void Update()
     {

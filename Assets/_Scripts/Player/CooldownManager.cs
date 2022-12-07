@@ -75,6 +75,7 @@ public class CooldownManager : MonoBehaviour
     public IEnumerator JumpCoroutine()
     {
         playerSystemManager.isJumping = true;
+        playerSystem.PlayEffect(2);
         playerSystem.PlaySound("Player_Jump");
         SetupCoroutine(faceManager.FaceJump);
         float t = 0;

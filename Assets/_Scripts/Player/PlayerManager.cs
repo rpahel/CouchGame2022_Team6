@@ -231,12 +231,17 @@ public class PlayerManager : MonoBehaviour
         if (!isJumping)
             _rb2D.gravityScale = _gravityScale;
 
-        insideSprite.color = _playerSystem.PlayerState switch
+        switch (_playerSystem.PlayerState)
         {
-            // On change la couleur du joueur en fonction de son etat
-            Knockback => Color.red,
-            _ => Color.white
-        };
+            case Knockback:
+                insideSprite.color = Color.red;
+                insideSprite.sortingOrder = 85;
+                break;
+            default:
+                insideSprite.color = Color.white;
+                insideSprite.sortingOrder = 70;
+                break;
+        }
 
         if (holdEat)
         {

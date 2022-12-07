@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
     private Transform projPoolTransform;
 
     private AudioManager audioManager;
+    public AudioManager AudioManager => audioManager;
     
     private void Awake()
     {
