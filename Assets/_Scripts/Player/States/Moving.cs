@@ -3,7 +3,8 @@ using UnityEngine;
 public class Moving : State
 {
     public Moving(PlayerStateSystem playerSystem) : base(playerSystem) { }
-
+    
+    private float lastVelocityY = 0f;
     public override void Update()
     {
 #if UNITY_EDITOR
@@ -41,21 +42,37 @@ public class Moving : State
             playerSystem.PlayerManager.inputVectorMove = Vector2.zero;
             playerSystem.StopSound("Player_Movement");
             playerSystem.StopEffect(0);
+            
+            if (playerSystem.PlayerManager.GroundCheck())
+            {
+                if (lastVelocityY < 0)
+                {
+                    playerSystem.PlayEffect(2);
+                }
+            }
+
+            lastVelocityY = playerSystem.PlayerManager.Rb2D.velocity.y;
             return;
         }
 
         if (playerSystem.PlayerManager.GroundCheck())
         {
+            if (lastVelocityY < 0)
+            {
+                playerSystem.PlayEffect(2);
+            }
+            
             playerSystem.PlaySound("Player_Movement");
             playerSystem.PlayEffect(0);
         }
-        else
+        else 
         {
             playerSystem.StopSound("Player_Movement");
             playerSystem.StopEffect(0);
-            playerSystem.StopEffect(2);
         }
-
+        
+        lastVelocityY = playerSystem.PlayerManager.Rb2D.velocity.y;
+        
         playerSystem.PlayerManager.inputVectorMove = playerSystem.PlayerManager.inputVectorDirection;
 
         if (playerSystem.PlayerManager.brakingCoroutine != null)

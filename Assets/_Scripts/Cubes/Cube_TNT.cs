@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cinemachine;
 using UnityEngine;
 
 public class Cube_TNT : CubeDestroyable {
@@ -9,11 +11,23 @@ public class Cube_TNT : CubeDestroyable {
     [Range(0, 100)] 
     public int damageEat;
 
+    [SerializeField] private MeshRenderer rendererFire;
+    [SerializeField] private MeshRenderer rendererFire2;
+    private CinemachineImpulseSource shakeSource;
+
+    private void Awake()
+    {
+        rendererFire.sortingOrder = 200;
+        rendererFire2.sortingOrder = 200;
+        shakeSource = GetComponent<CinemachineImpulseSource>();
+    }
+
     public void Explode(Transform colParent) => StartCoroutine(OnExplosion(colParent));
     
     private IEnumerator OnExplosion(Transform colParent) {
         GameManager.Instance.AudioManager.Play("TNT_Trigger");
         yield return new WaitForSeconds(1f);
+        shakeSource.GenerateImpulse(2f);
         GameManager.Instance.AudioManager.Play("TNT_Explode");
         foreach (Vector2 dir in pattern.pattern) {
             if (dir != Vector2.zero) {
