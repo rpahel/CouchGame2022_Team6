@@ -1289,7 +1289,10 @@ MonoBehaviour:
   cubeTrap: {fileID: 2613636963887001808, guid: fd8e6153315a70a4c9d48f9614a0b90d,
     type: 3}
   cubeTNT: {fileID: 9104288708286051530, guid: 4da42d8564429d44189b34e58deaa9ee, type: 3}
-  bedrockSprites: []
+  bedrockSprites:
+  - {fileID: 21300000, guid: 2e916accabbf786498a5d353733d6a0e, type: 3}
+  - {fileID: 21300000, guid: 2e916accabbf786498a5d353733d6a0e, type: 3}
+  cubeEdibleDefaultColor: {r: 0, g: 0.8901403, b: 1, a: 1}
   spawnAnim: 1
   smoothType: 27
   beforeStart: 1
