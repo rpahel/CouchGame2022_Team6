@@ -612,6 +612,8 @@ MonoBehaviour:
   wallJumpForce: 40
   canWallJump: 0
   cantDoubleJump: 0
+  _specialDamage: 10
+  _specialInflictedKnockbackForce: 30
   timeToMaxCharge: 1.5
   maxDistance: 40
   minDistance: 10
@@ -623,6 +625,7 @@ MonoBehaviour:
   isHolding: 0
   canDash: 1
   inputDirectionDash: {x: 0, y: 0}
+  specialStopsOnPlayerContact: 1
 --- !u!114 &-5276769057875731088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -840,6 +843,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 898ee93813db6ba4797fcf5edb129e4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerSystem: {fileID: 9041389100960335044}
 --- !u!1 &8009684647553075631
 GameObject:
   m_ObjectHideFlags: 0
