@@ -124,7 +124,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 1
+  m_Constraints: 5
 --- !u!1 &9104288708286051530
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,7 +180,8 @@ MonoBehaviour:
   isOriginalCube: 0
   apparitionDuration: 0.01
   pattern: {fileID: 0}
-  damageEat: 100
+  damageEat: 70
+  startExplode: 0
   rendererFire: {fileID: 7241289056116745730}
   rendererFire2: {fileID: 6306040990056512072}
 --- !u!114 &8080835590631687982
