@@ -1309,7 +1309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7bed8b178ffee44a860348c49002fe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 2800000, guid: 8216e99f2ba03f444818be69165175d0, type: 3}
+  image: {fileID: 2800000, guid: beaff354584e156478a182c7020a41a6, type: 3}
   scale: 2.857143
   cubeEdible: {fileID: 2613636963887001808, guid: 74a185477bf05c94796ad895b5c85abe,
     type: 3}
