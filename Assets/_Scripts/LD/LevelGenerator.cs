@@ -1,9 +1,9 @@
 using Data;
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
@@ -83,7 +83,6 @@ public class LevelGenerator : MonoBehaviour
     //========================================================
     private Transform[,] cubesArray; // Repr�sentation en code du niveau.
     public Transform[,] CubesArray => cubesArray;
-
     private int coroutinesRunning = 0;
     
     
@@ -136,7 +135,7 @@ public class LevelGenerator : MonoBehaviour
             return;
         }
 
-        Vector3 randomPos = allEmptyPositions[Random.Range(0, allEmptyPositions.Count)];
+        Vector3 randomPos = allEmptyPositions[UnityEngine.Random.Range(0, allEmptyPositions.Count)];
                 
         GameObject tnt = Instantiate(cubeTNT, randomPos, Quaternion.identity,parentObjCubes.transform);
         tnt.transform.localScale = Vector3.one * scale;
@@ -151,7 +150,7 @@ public class LevelGenerator : MonoBehaviour
         
     }
  
-    private void AssignRandomPattern(Cube_TNT cube) => cube.pattern = allPaterns[Random.Range(0, allPaterns.Count)];
+    private void AssignRandomPattern(Cube_TNT cube) => cube.pattern = allPaterns[UnityEngine.Random.Range(0, allPaterns.Count)];
     
     public void GenerateLevel()
     {
@@ -274,9 +273,56 @@ public class LevelGenerator : MonoBehaviour
 
         return cube;
     }
-    #endregion
 
-    #region Animations
+    public Vector2 FindSuitableRespawnSpot()
+    {
+        List<CubeDestroyable> list = new List<CubeDestroyable>();
+
+        for(int y = 0; y < image.height; y++)
+        {
+            for(int x = 0; x < image.width; x++)
+            {
+                Transform cube = cubesArray[x, y];
+                if(IsDestroyableAndEaten(cube) && CubeAboveIsEmpty(cube.GetComponent<CubeDestroyable>()))
+                {
+                    list.Add(cube.GetComponent<CubeDestroyable>());
+                }
+            }
+        }
+
+        if (list.Count == 0)
+            return -Vector2.one;
+        else
+            return list[UnityEngine.Random.Range(0, list.Count)].transform.position;
+    }
+
+    private static bool IsDestroyableAndEaten(Transform cube)
+    {
+        if (cube.TryGetComponent(out CubeDestroyable cubeD))
+        {
+            if (cubeD.IsEaten)
+                return true;
+            else
+                return false;
+        }
+        return false;
+    }
+
+    private bool CubeAboveIsEmpty(CubeDestroyable cube)
+    {
+        Vector2 unscaledPos = cube.unscaledPosition;
+
+        if (unscaledPos.y >= image.height)
+            return false;
+
+        if (IsDestroyableAndEaten(cubesArray[Mathf.RoundToInt(unscaledPos.x), Mathf.RoundToInt(unscaledPos.y)]))
+            return true;
+        else
+            return false;
+    }
+        #endregion
+
+        #region Animations
     //=================================================
     IEnumerator PlayAnimation()
     {
