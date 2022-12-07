@@ -40,10 +40,21 @@ public class Moving : State
         {
             playerSystem.PlayerManager.inputVectorMove = Vector2.zero;
             playerSystem.StopSound("Player_Movement");
+            playerSystem.StopEffect();
             return;
         }
 
-        playerSystem.PlaySound("Player_Movement");
+        if (playerSystem.PlayerManager.GroundCheck())
+        {
+            playerSystem.PlaySound("Player_Movement");
+            playerSystem.PlayEffect();
+        }
+        else
+        {
+            playerSystem.StopSound("Player_Movement");
+            playerSystem.StopEffect();
+        }
+
         playerSystem.PlayerManager.inputVectorMove = playerSystem.PlayerManager.inputVectorDirection;
 
         if (playerSystem.PlayerManager.brakingCoroutine != null)
@@ -59,10 +70,7 @@ public class Moving : State
             playerSystem.PlayerManager.inputVectorDirection.x = 0f;
             playerSystem.PlayerManager.WallJump();
             playerSystem.PlayerManager.inputVectorDirection.x = 1f;
-           
         }
-           
-        
     }
 
     private void Movement()
@@ -85,12 +93,14 @@ public class Moving : State
     public override void OnHoldShoot()
     {
         playerSystem.StopSound("Player_Movement");
+        playerSystem.StopEffect();
         playerSystem.SetState(new AimShoot(playerSystem));
     }
 
     public override void OnHoldSpecial()
     {
         playerSystem.StopSound("Player_Movement");
+        playerSystem.StopEffect();
         playerSystem.SetState(new AimSpecial(playerSystem));
     }
 

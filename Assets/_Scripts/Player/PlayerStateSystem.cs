@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class PlayerStateSystem : StateMachine
 {
@@ -9,12 +10,21 @@ public class PlayerStateSystem : StateMachine
     
     private AudioManager audioManager;
 
+    [Header("VFX")]
+    [SerializeField] private VisualEffect effect;
+
+    public VisualEffect Effect => effect;
+    [SerializeField] private VisualEffect aimDashEffect;
+    public VisualEffect AimDashEffect => aimDashEffect;
+
+
     private void Awake()
     {
         PlayerManager = GetComponent<PlayerManager>();
         CooldownManager = GetComponent<CooldownManager>();
         FaceManager = GetComponent<FaceManager>();
         audioManager = FindObjectOfType<AudioManager>();
+        
     }
 
     public void Start()
@@ -45,8 +55,31 @@ public class PlayerStateSystem : StateMachine
         audioManager.Stop(name);
     }
 
-    
+    public void PlayEffect()
+    {
+        effect.Play();
+    }
 
+    public void PlayDashEffect()
+    {
+        aimDashEffect.Play();
+    }
+    
+    public void StopDashEffect()
+    {
+        aimDashEffect.Stop();
+    }
+
+    public void StopEffect()
+    {
+        effect.Stop();
+    }
+
+    public void StopAllEffects()
+    {
+        StopEffect();
+        StopDashEffect();
+    }
     public void Update()
     {
         State?.Update();

@@ -30,6 +30,8 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private GameObject cubeTNT;
     public GameObject CubeTNT => cubeTNT;
 
+
+    [SerializeField] private Sprite[] bedrockSprites;
     //========================================================
     [Header("Animation de spawn des cubes.")]
     [SerializeField] private SPAWN_ANIMATION spawnAnim;
@@ -236,6 +238,7 @@ public class LevelGenerator : MonoBehaviour
         cubeScript.levelGenerator = this;
         cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString("00") + ", " + height.ToString("00") + ")";
         cube.transform.localScale = Vector3.one * scale;
+        Debug.Log("localScale " + cube.transform.localScale);
         cube.transform.parent = parentObj;
         cubesArray[width, height] = cube.transform;
 
@@ -251,6 +254,17 @@ public class LevelGenerator : MonoBehaviour
         {
             cubeToCreate.layer = LayerMask.NameToLayer("Limite");
             cubeToCreate.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("Limite");
+
+            if (height <= 0 || height >= image.height - 1 || width <= 0 || width >= image.width - 1)
+            {
+
+                cube.GetComponentInChildren<SpriteRenderer>().sprite = bedrockSprites[0];
+
+            }
+            else
+            {
+                cube.GetComponentInChildren<SpriteRenderer>().sprite = bedrockSprites[1];
+            }
         }
 
         return cube;

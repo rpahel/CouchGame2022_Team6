@@ -1,6 +1,4 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 public class PlayerInputsHandler : MonoBehaviour
 {
@@ -36,13 +34,13 @@ public class PlayerInputsHandler : MonoBehaviour
         _playerManager.GetComponent<FaceManager>().SetFaceNormal(pc.PlayerFaceSprite);
         _playerManager.imageUI.sprite = pc.PlayerIcon;
         _playerManager.color = pc.PlayerColor;
+        _playerSystem.AimDashEffect.SetVector4("Color",pc.PlayerColor);
+        _playerSystem.Effect.SetGradient("gradient", pc.playerGradient);
         _playerConfig.Input.onActionTriggered += Input_OnActionTriggered;
     }
 
     private void Input_OnActionTriggered(CallbackContext obj)
     {
-        //Debug.Log(obj.action.name); 
-        
         if (obj.action.name == controls.Game.Move.name)
         {
             OnMove(obj);
@@ -121,7 +119,7 @@ public class PlayerInputsHandler : MonoBehaviour
     private void OnEat(CallbackContext input)
     {
         if (input.started)
-            _playerManager.OnEat();
+            _playerManager.OnEat(_playerManager.inputVectorDirection);
 
         else if (input.performed)
             _playerManager.holdEat = true;

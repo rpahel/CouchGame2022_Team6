@@ -27,9 +27,10 @@ public class Cube_TNT : CubeDestroyable {
 
                 RaycastHit2D hit = Physics2D.Raycast(colParent.position, direction, 1000, 1 << 3);
 
-                if (hit.collider != null)
-                    hit.collider.GetComponent<PlayerManager>().fullness -= damageEat;
-
+                if (hit.collider != null && hit.collider.TryGetComponent<PlayerManager>(out PlayerManager playerManager)) {
+                    playerManager.fullness -= damageEat;
+                    playerManager.UpdatePlayerScale();
+                }
             }
         }
         

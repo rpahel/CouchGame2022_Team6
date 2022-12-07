@@ -4,24 +4,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using System.Net.Mail;
 using TMPro;
+using UnityEditor;
 using UnityEngine.SceneManagement;
 using Image = UnityEngine.UI.Image;
 
 public class StatisticsManager : MonoBehaviour
 {
-    public Stats[] _arrayStats;
+    [HideInInspector] public Stats[] _arrayStats;
     public Stats[] ArrayStats => _arrayStats;
 
     [SerializeField] private GameObject prefabStats;
     [SerializeField] private GameObject statsGoUI;
-    [SerializeField] private List<StatsNameplate> listStatsNameplate = new List<StatsNameplate>();
+    [SerializeField] private Button nextLevelGoButton;
+    [SerializeField] private Button mainMenuButton; 
+    private List<StatsNameplate> listStatsNameplate = new List<StatsNameplate>();
 
     private ApplicationManager applicationManager;
+    private bool canGoToNextLevel;
+    
+    public bool CanGoToNextLevel => canGoToNextLevel;
 
     private void Awake()
     {
         applicationManager = ApplicationManager.Instance;
+        CheckLevels();
     }
 
     public void InitializeStats()
@@ -53,9 +61,10 @@ public class StatisticsManager : MonoBehaviour
         }
     }
 
-    public void RestartGame()
+    public void NextLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        int index = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(index + 1);
     }
 
     public void MainMenu()
@@ -77,6 +86,37 @@ public class StatisticsManager : MonoBehaviour
         }
         
         statsGoUI.SetActive(true);
+    }
+
+    [ContextMenu("CheckLevels")]
+    public void CheckLevels()
+    {
+        int index = SceneManager.GetActiveScene().buildIndex;
+        string[] scenes = EditorBuildSettings.scenes
+            .Select( scene => scene.path )
+            .ToArray();
+
+        var numbersOfScene = scenes.Length - 1;
+
+        if (numbersOfScene > index)
+        {
+            canGoToNextLevel = true;
+            nextLevelGoButton.Select();
+        }
+        else
+        {
+            canGoToNextLevel = false;
+            UpdateStatsButton();
+        }
+            
+    }
+
+    private void UpdateStatsButton()
+    {
+        nextLevelGoButton.gameObject.SetActive(false);
+        var rectTranform = mainMenuButton.gameObject.GetComponent<RectTransform>();
+        rectTranform.anchoredPosition = new Vector2(0,  rectTranform.anchoredPosition.y);
+        mainMenuButton.Select();
     }
 }
 

@@ -288,10 +288,30 @@ PrefabInstance:
       objectReference: {fileID: 7942832776920476179}
     - target: {fileID: 3525204380141794214, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
+      propertyPath: mainMenuGo
+      value: 
+      objectReference: {fileID: 7942832775611704673}
+    - target: {fileID: 3525204380141794214, guid: 4384a1065cac4ca46b4d552908158bbe,
+        type: 3}
+      propertyPath: nextLevelGo
+      value: 
+      objectReference: {fileID: 7942832776501488203}
+    - target: {fileID: 3525204380141794214, guid: 4384a1065cac4ca46b4d552908158bbe,
+        type: 3}
       propertyPath: prefabStats
       value: 
       objectReference: {fileID: 1770357474210611636, guid: 5986d36b2e570ba44abb7aa46a8df17b,
         type: 3}
+    - target: {fileID: 3525204380141794214, guid: 4384a1065cac4ca46b4d552908158bbe,
+        type: 3}
+      propertyPath: mainMenuButton
+      value: 
+      objectReference: {fileID: 7942832775611704675}
+    - target: {fileID: 3525204380141794214, guid: 4384a1065cac4ca46b4d552908158bbe,
+        type: 3}
+      propertyPath: nextLevelGoButton
+      value: 
+      objectReference: {fileID: 7942832776501488197}
     - target: {fileID: 3525204380141794214, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
       propertyPath: listStatsUI.Array.size
@@ -1269,6 +1289,7 @@ MonoBehaviour:
   cubeTrap: {fileID: 2613636963887001808, guid: fd8e6153315a70a4c9d48f9614a0b90d,
     type: 3}
   cubeTNT: {fileID: 9104288708286051530, guid: 4da42d8564429d44189b34e58deaa9ee, type: 3}
+  bedrockSprites: []
   spawnAnim: 1
   smoothType: 27
   beforeStart: 1
@@ -1280,7 +1301,10 @@ MonoBehaviour:
   _firstRespawnTime: 5
   tntDelay: 10
   randomSpawn: 0
+  maxTNTCount: 0
+  countLDTNT: 0
   respawn: 1
+  allEmptyPositions: []
 --- !u!114 &611988395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1713,7 +1737,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonResume: {fileID: 1132729126}
-  buttonRestart: {fileID: 7942832776501488197}
+  buttonNextLevel: {fileID: 7942832776501488197}
+  buttonMainMenu: {fileID: 7942832775611704675}
   parentGo: {fileID: 397157387}
 --- !u!1 &1132729124
 GameObject:
@@ -2013,7 +2038,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 7942832776501488203}
+  m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &1196570029
@@ -3003,7 +3028,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 294, y: -464}
+  m_AnchoredPosition: {x: 300, y: -464}
   m_SizeDelta: {x: 320, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7942832775611704673
@@ -3178,14 +3203,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 93533df422f2e914ea3b6045c36e8f10, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4305,7 +4330,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 31369559}
         m_TargetAssemblyTypeName: StatisticsManager, Assembly-CSharp
-        m_MethodName: RestartGame
+        m_MethodName: NextLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4341,7 +4366,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -289, y: -464}
+  m_AnchoredPosition: {x: -300, y: -464}
   m_SizeDelta: {x: 320, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7942832776501488203
@@ -4357,7 +4382,7 @@ GameObject:
   - component: {fileID: 7942832776501488196}
   - component: {fileID: 7942832776501488197}
   m_Layer: 5
-  m_Name: ButtonRestart
+  m_Name: ButtonNextLevel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4429,7 +4454,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: RESTART
+  m_text: NEXT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: eb7f9bdcabc83644fa5793e51e5fccc5, type: 2}
   m_sharedMaterial: {fileID: -5762009022378834756, guid: eb7f9bdcabc83644fa5793e51e5fccc5,

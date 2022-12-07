@@ -71,6 +71,8 @@ public class ApplicationManager : MonoBehaviour
         _playerConfigs[index].PlayerFaceSprite = playerGfx.face;
         _playerConfigs[index].PlayerIcon = playerGfx.icon;
         _playerConfigs[index].PlayerColor = playerGfx.color;
+        _playerConfigs[index].PlayerHdrColor = playerGfx.hdrColor;
+        _playerConfigs[index].playerGradient = playerGfx.gradientColor;
     }
     public void ReadyPlayer(int index)
     {
@@ -126,15 +128,18 @@ public class ApplicationManager : MonoBehaviour
         GameState = state;
     }
     
-    public void DeleteColor(int index)
+    public void DeleteColor(string name)
     {
+        var index = listColorRemaining.TakeWhile(color => color.colorName != name).Count();
         listColorRemaining.Remove(listColorRemaining[index]);
         RefreshColors();
     }
 
-    public void BackOnColorSelector(int index)
+    public void BackOnColorSelector(ColorPlayer color)
     {
-        listColorRemaining.Insert(index, listColorRemainingInspector[index]);
+        listColorRemaining.Insert(listColorRemaining.Count - 1, color);
+        var listOredered =  listColorRemaining.OrderByDescending(x => -x.index);
+        listColorRemaining = listOredered.ToList();
         RefreshColors();
     }
 
@@ -162,6 +167,9 @@ public class PlayerConfiguration
     public Sprite PlayerIcon { get; set; }
     
     public Color PlayerColor { get; set; }
+    public Color PlayerHdrColor { get; set; }
+    public Gradient playerGradient { get; set; }
+    
 }
 
 
@@ -175,6 +183,9 @@ public class PlayerGfxUI
     public Sprite button;
     public Sprite icon;
     public Color color;
+    [ColorUsage(true, true)]
+    public Color hdrColor;
+    public Gradient gradientColor;
 }
 
 [System.Serializable]
