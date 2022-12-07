@@ -32,6 +32,7 @@ public class LevelGenerator : MonoBehaviour
 
 
     [SerializeField] private Sprite[] bedrockSprites;
+    [SerializeField] private Color cubeEdibleDefaultColor;
     //========================================================
     [Header("Animation de spawn des cubes.")]
     [SerializeField] private SPAWN_ANIMATION spawnAnim;
@@ -247,6 +248,11 @@ public class LevelGenerator : MonoBehaviour
         {
             if(cubeScript is Cube_Edible cubeEdible)
                 cubeEdible.isOriginalCube = true;
+
+        }
+        if(cubeToCreate == cubeEdible)
+        {
+            cube.GetComponentInChildren<SpriteRenderer>().color = cubeEdibleDefaultColor;
         }
 
         if (cubeToCreate == cubeBedrock)
