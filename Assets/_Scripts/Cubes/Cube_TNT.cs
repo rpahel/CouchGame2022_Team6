@@ -11,6 +11,7 @@ public class Cube_TNT : CubeDestroyable {
     [Range(0, 100)] 
     public int damageEat;
 
+    [HideInInspector] public bool startExplode;
     [SerializeField] private MeshRenderer rendererFire;
     [SerializeField] private MeshRenderer rendererFire2;
     private CinemachineImpulseSource shakeSource;
@@ -24,7 +25,9 @@ public class Cube_TNT : CubeDestroyable {
 
     public void Explode(Transform colParent) => StartCoroutine(OnExplosion(colParent));
     
-    private IEnumerator OnExplosion(Transform colParent) {
+    private IEnumerator OnExplosion(Transform colParent)
+    {
+        startExplode = true;
         GameManager.Instance.AudioManager.Play("TNT_Trigger");
         yield return new WaitForSeconds(1f);
         shakeSource.GenerateImpulse(2f);
@@ -48,7 +51,7 @@ public class Cube_TNT : CubeDestroyable {
             }
         }
 
-        explosionTimer = false;
+        startExplode = false;
         levelGenerator.AddToRespawnList(colParent.gameObject.GetComponent<CubeDestroyable>());
     }
     
