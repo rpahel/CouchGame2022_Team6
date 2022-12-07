@@ -1,6 +1,7 @@
 using CustomMaths;
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -152,12 +153,6 @@ public class Projectile : MonoBehaviour
                 Vector2 sensDuRebond = Vector2.Reflect(_currentVelocity, collision.GetContact(0).normal).normalized;
                 _rb.velocity = _currentVelocity.magnitude * bounceForce * sensDuRebond * Time.fixedDeltaTime;
             }
-            
-            if (collision.gameObject.transform.parent.TryGetComponent<Cube_TNT>(out Cube_TNT tnt)) {
-                //gameObject.GetComponent<SpriteRenderer>().enabled = false;
-                tnt.Explode(collision.gameObject.transform.parent.gameObject.transform);
-                gameObject.SetActive(false);
-            }
         }
         else
         {
@@ -166,6 +161,17 @@ public class Projectile : MonoBehaviour
         }
     }
 
+
+    private void OnTriggerStay2D(Collider2D collision) {
+        Debug.Log("OnTriggerStay " + collision.gameObject.transform.parent.name);
+        if (collision.gameObject.transform.parent.TryGetComponent<Cube_TNT>(out Cube_TNT tnt)) {
+           // Debug.Log("enter on TNT");
+            if (!tnt.startExplode) {
+                tnt.Explode(collision.gameObject.transform.parent.gameObject.transform);
+                gameObject.SetActive(false);
+            }
+        }
+    }
 
 
     private void LateUpdate()

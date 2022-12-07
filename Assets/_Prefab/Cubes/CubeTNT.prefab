@@ -153,6 +153,8 @@ MonoBehaviour:
   moveDuration: 0.375
   rotationDegrees: 180
   isOriginalCube: 0
-  apparitionDuration: 0
+  apparitionDuration: 0.01
   pattern: {fileID: 0}
   damageEat: 100
+  startExplode: 0
+  maxTimer: 2
