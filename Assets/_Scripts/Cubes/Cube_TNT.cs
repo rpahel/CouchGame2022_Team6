@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cinemachine;
 using UnityEngine;
 
 public class Cube_TNT : CubeDestroyable {
@@ -10,38 +11,24 @@ public class Cube_TNT : CubeDestroyable {
     [Range(0, 100)] 
     public int damageEat;
 
-    private bool explosionTimer;
-    [HideInInspector] public bool startExplode;
-    private float timer;
-    private float stepTimer = 0.7f;
-    [SerializeField,Tooltip("Set the time of the tnt to explode ")]private float maxTimer;
+    [SerializeField] private MeshRenderer rendererFire;
+    [SerializeField] private MeshRenderer rendererFire2;
+    private CinemachineImpulseSource shakeSource;
 
-    private SpriteRenderer sprite;
-
-    private void Awake() => sprite = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
-
-    public void Update() {
-        if (startExplode) {
-            timer += Time.deltaTime;
-
-            if (timer >= stepTimer) {
-                stepTimer /= 1.2f;
-               // sprite.color = sprite.color == Color.white ? Color.red : Color.white;
-            }
-            
-            if (timer >= maxTimer) {
-                timer = 0;
-                explosionTimer = true;
-                startExplode = false;
-            }
-        }
+    private void Awake()
+    {
+        rendererFire.sortingOrder = 200;
+        rendererFire2.sortingOrder = 200;
+        shakeSource = GetComponent<CinemachineImpulseSource>();
     }
-    
+
     public void Explode(Transform colParent) => StartCoroutine(OnExplosion(colParent));
     
     private IEnumerator OnExplosion(Transform colParent) {
-        startExplode = true;
-        yield return new WaitUntil(() => explosionTimer);
+        GameManager.Instance.AudioManager.Play("TNT_Trigger");
+        yield return new WaitForSeconds(1f);
+        shakeSource.GenerateImpulse(2f);
+        GameManager.Instance.AudioManager.Play("TNT_Explode");
         foreach (Vector2 dir in pattern.pattern) {
             if (dir != Vector2.zero) {
                 Vector3 direction = new Vector3(dir.x,dir.y,colParent.position.z);

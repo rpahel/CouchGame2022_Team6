@@ -1280,7 +1280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7bed8b178ffee44a860348c49002fe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 2800000, guid: d9a2ba92e27b8a24aa049ad4fcce5f7c, type: 3}
+  image: {fileID: 2800000, guid: a69b09f03ef449b4ebf9af39452ca35a, type: 3}
   scale: 2.857143
   cubeEdible: {fileID: 2613636963887001808, guid: 74a185477bf05c94796ad895b5c85abe,
     type: 3}
@@ -1289,7 +1289,10 @@ MonoBehaviour:
   cubeTrap: {fileID: 2613636963887001808, guid: fd8e6153315a70a4c9d48f9614a0b90d,
     type: 3}
   cubeTNT: {fileID: 9104288708286051530, guid: 4da42d8564429d44189b34e58deaa9ee, type: 3}
-  bedrockSprites: []
+  bedrockSprites:
+  - {fileID: 21300000, guid: 86a58edabf4da6c40a357eae712c8a92, type: 3}
+  - {fileID: 21300000, guid: 86a58edabf4da6c40a357eae712c8a92, type: 3}
+  cubeEdibleDefaultColor: {r: 0.39607847, g: 1, b: 0.9824635, a: 1}
   spawnAnim: 1
   smoothType: 27
   beforeStart: 1

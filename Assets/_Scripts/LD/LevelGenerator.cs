@@ -32,6 +32,7 @@ public class LevelGenerator : MonoBehaviour
 
 
     [SerializeField] private Sprite[] bedrockSprites;
+    [SerializeField] private Color cubeEdibleDefaultColor;
     //========================================================
     [Header("Animation de spawn des cubes.")]
     [SerializeField] private SPAWN_ANIMATION spawnAnim;
@@ -238,7 +239,6 @@ public class LevelGenerator : MonoBehaviour
         cubeScript.levelGenerator = this;
         cube.name = "Cube " + cube.GetComponent<Cube>().CubeType + " (" + width.ToString("00") + ", " + height.ToString("00") + ")";
         cube.transform.localScale = Vector3.one * scale;
-        Debug.Log("localScale " + cube.transform.localScale);
         cube.transform.parent = parentObj;
         cubesArray[width, height] = cube.transform;
 
@@ -248,6 +248,11 @@ public class LevelGenerator : MonoBehaviour
         {
             if(cubeScript is Cube_Edible cubeEdible)
                 cubeEdible.isOriginalCube = true;
+
+        }
+        if(cubeToCreate == cubeEdible)
+        {
+            cube.GetComponentInChildren<SpriteRenderer>().color = cubeEdibleDefaultColor;
         }
 
         if (cubeToCreate == cubeBedrock)
@@ -428,14 +433,22 @@ public class LevelGenerator : MonoBehaviour
         if (_cubeRespawnList.Count <= 0) yield break;
 
         CubeDestroyable cube = _cubeRespawnList[0];
-        _cubeRespawnList.RemoveAt(0);
+        RemoveFromRespawnList(cube);
+
+        if(!GameManager.Instance.CanSpawnCubeAt(cube.transform.position))
+        {
+            AddToRespawnList(cube);
+            _canRespawnFirstCube = false;
+            StartCoroutine(RespawnFirstCube());
+            yield break;
+        }
 
         yield return new WaitUntil(() => _canRespawnFirstCube);
         yield return new WaitUntil(() => !cube.IsInAnimation);
         
         if (cube is Cube_TNT && !respawn)
             yield break;
-        
+
         cube.GetBarfed(cube.transform.position);
         _canRespawnCube = false;
         StartCoroutine(CubeRespawnCooldown());

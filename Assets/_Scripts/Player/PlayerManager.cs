@@ -97,7 +97,7 @@ public class PlayerManager : MonoBehaviour
     private int _maxImmobileEatAngle;
     [SerializeField, Tooltip("Le nombre de cubes manges par seconde."), Range(2, 10)]
     private int _eatTickrate;
-    [SerializeField, Tooltip("Distance max pour pouvoir manger le cube qu'on vise."), Range(1f, 5f)]
+    [SerializeField, Tooltip("Distance max pour pouvoir manger le cube qu'on vise."), Range(1f, 20f)]
     private float _eatDistance;
     [SerializeField, Tooltip("Combien de nourriture tu recois en mangeant un cube. 100 = Un cube suffit a te remplir."), Range(0f, 100f)]
     private int _filling;
@@ -156,6 +156,10 @@ public class PlayerManager : MonoBehaviour
     //==========================================================================
 
     [Header("SPECIAL Variables")]
+    [SerializeField, Range(0, 100)]
+    private int _specialDamage;
+    [SerializeField, Range(0, 100), Tooltip("Force du knockback que subit l'ennemi quand il se fait toucher par un special.")]
+    private float _specialInflictedKnockbackForce;
     [SerializeField, Range(1, 3), Tooltip("Dur�e en secondes avant d'atteindre le niveau de charge max.")]
     private float timeToMaxCharge;
     [SerializeField, Range(0, 40), Tooltip("Distance en m�tres du special � son maximum.")]
@@ -170,11 +174,16 @@ public class PlayerManager : MonoBehaviour
     private float dashForce;
     [SerializeField]
     private GameObject specialTrigger;
-    [HideInInspector] public float charge; // 0 � 1
+    [HideInInspector] public float charge; // 0 a 1
     [HideInInspector] public bool isHolding;
     [HideInInspector] public bool canDash = true;
-
     [HideInInspector] public Vector2 inputDirectionDash;
+
+    [Header("SPECIAL TEST Variables")]
+    public bool specialStopsOnPlayerContact;
+
+    public int SpecialDamage => _specialDamage;
+    public float SpecialInflictedKnockbackForce => _specialInflictedKnockbackForce;
     public float TimeToMaxCharge => timeToMaxCharge;
     public float MaxDistance => maxDistance;
     public float MinDistance => minDistance;
@@ -191,7 +200,7 @@ public class PlayerManager : MonoBehaviour
         _coll = GetComponent<Collider2D>();
         _playerSystem = GetComponent<PlayerStateSystem>();
         _cooldownManager = GetComponent<CooldownManager>();
-        _groundChekLayerMask = LayerMask.GetMask("Destructible", "Indestructible", "Limite", "Player");
+        _groundChekLayerMask = LayerMask.GetMask("Destructible", "Indestructible", "Limite", "Player", "TNT");
 
         playerInput = GetComponent<PlayerInputsHandler>();
         faceManager = GetComponent<FaceManager>();
@@ -231,12 +240,17 @@ public class PlayerManager : MonoBehaviour
         if (!isJumping)
             _rb2D.gravityScale = _gravityScale;
 
-        insideSprite.color = _playerSystem.PlayerState switch
+        switch (_playerSystem.PlayerState)
         {
-            // On change la couleur du joueur en fonction de son etat
-            Knockback => Color.red,
-            _ => Color.white
-        };
+            case Knockback:
+                insideSprite.color = Color.red;
+                insideSprite.sortingOrder = 85;
+                break;
+            default:
+                insideSprite.color = Color.white;
+                insideSprite.sortingOrder = 70;
+                break;
+        }
 
         if (holdEat)
         {

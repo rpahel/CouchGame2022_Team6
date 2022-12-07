@@ -37,9 +37,6 @@ public class CooldownManager : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        //if (playerSystem.PlayerSystemManager.PlayerState != PLAYER_STATE.KNOCKBACKED && playerSystem.PlayerSystemManager.PlayerState == PLAYER_STATE.DASHING) //A quoi sert ca
-        // playerSystem.PlayerSystemManager.Rb2D.velocity = new Vector2(0, playerSystem.PlayerSystemManager.Rb2D.velocity.y);
-
         playerSystem.PlayerManager.brakingCoroutine = null;
     }
 
@@ -75,6 +72,7 @@ public class CooldownManager : MonoBehaviour
     public IEnumerator JumpCoroutine()
     {
         playerSystemManager.isJumping = true;
+        
         playerSystem.PlaySound("Player_Jump");
         SetupCoroutine(faceManager.FaceJump);
         float t = 0;
@@ -114,7 +112,6 @@ public class CooldownManager : MonoBehaviour
         var originalGravityScale = playerSystemManager.Rb2D.gravityScale;
         playerSystemManager.Rb2D.gravityScale = 0;
         playerSystemManager.Rb2D.velocity = Vector2.zero;
-        //_trailRenderer.emitting = true;
 
         float t = 0;
         while (t < dashDuration)
@@ -130,7 +127,10 @@ public class CooldownManager : MonoBehaviour
         }
 
         playerSystem.SetState(new Moving(playerSystem));
-        StartCoroutine(UndoDash(originalGravityScale));
+        if (playerSystem.PlayerState is Dead)
+            UndoDashButImDead(originalGravityScale);
+        else
+            StartCoroutine(UndoDash(originalGravityScale));
     }
 
     private IEnumerator UndoDash(float originalGravityScale)
@@ -138,8 +138,15 @@ public class CooldownManager : MonoBehaviour
         playerSystemManager.Rb2D.gravityScale = originalGravityScale;
         gameObject.layer = LayerMask.NameToLayer("Player");
         playerSystemManager.SpecialTrigger.SetActive(false);
-        //_trailRenderer.emitting = false;
         yield return new WaitForSeconds(playerSystemManager.DashCooldown);
+        playerSystemManager.canDash = true;
+    }
+
+    private void UndoDashButImDead(float originalGravityScale)
+    {
+        playerSystemManager.Rb2D.gravityScale = originalGravityScale;
+        gameObject.layer = LayerMask.NameToLayer("Player");
+        playerSystemManager.SpecialTrigger.SetActive(false);
         playerSystemManager.canDash = true;
     }
 

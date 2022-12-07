@@ -51,8 +51,8 @@ MonoBehaviour:
   levelGenerator: {fileID: 0}
   moveDuration: 0.375
   rotationDegrees: 180
-  apparitionDuration: 0.5
   isOriginalCube: 0
+  apparitionDuration: 0.5
 --- !u!1001 &6728527773235854279
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -60,10 +60,35 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2613636963887001772}
     m_Modifications:
+    - target: {fileID: 431449932179203256, guid: 07e2092bd2c84424383a22f182ac4b33,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.83137256
+      objectReference: {fileID: 0}
     - target: {fileID: 435375957722552966, guid: 07e2092bd2c84424383a22f182ac4b33,
         type: 3}
       propertyPath: m_Name
       value: Cube_GFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 4384235204525828891, guid: 07e2092bd2c84424383a22f182ac4b33,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.8784314
+      objectReference: {fileID: 0}
+    - target: {fileID: 6188441094156065805, guid: 07e2092bd2c84424383a22f182ac4b33,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6188441094156065805, guid: 07e2092bd2c84424383a22f182ac4b33,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.79404247
+      objectReference: {fileID: 0}
+    - target: {fileID: 6188441094156065805, guid: 07e2092bd2c84424383a22f182ac4b33,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7257825274710349701, guid: 07e2092bd2c84424383a22f182ac4b33,
         type: 3}
