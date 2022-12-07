@@ -586,7 +586,7 @@ MonoBehaviour:
   _eatAngleOffset: 0
   _maxImmobileEatAngle: 180
   _eatTickrate: 10
-  _eatDistance: 5
+  _eatDistance: 7.5
   _filling: 4
   tickHoldEat: 0
   holdEat: 0
@@ -612,12 +612,12 @@ MonoBehaviour:
   wallJumpForce: 40
   canWallJump: 0
   cantDoubleJump: 0
-  _specialDamage: 10
-  _specialInflictedKnockbackForce: 30
+  _specialDamage: 60
+  _specialInflictedKnockbackForce: 20
   timeToMaxCharge: 1.5
-  maxDistance: 40
+  maxDistance: 30
   minDistance: 10
-  necessaryFoodSpecial: 70
+  necessaryFoodSpecial: 65
   dashCooldown: 2
   dashForce: 20
   specialTrigger: {fileID: 4317817617938280482}
