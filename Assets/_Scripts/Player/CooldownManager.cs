@@ -39,7 +39,6 @@ public class CooldownManager : MonoBehaviour
 
         //if (playerSystem.PlayerSystemManager.PlayerState != PLAYER_STATE.KNOCKBACKED && playerSystem.PlayerSystemManager.PlayerState == PLAYER_STATE.DASHING) //A quoi sert ca
         // playerSystem.PlayerSystemManager.Rb2D.velocity = new Vector2(0, playerSystem.PlayerSystemManager.Rb2D.velocity.y);
-
         playerSystem.PlayerManager.brakingCoroutine = null;
     }
 
