@@ -44,5 +44,6 @@ public class Dead : State
 
         playerSystem.SetState(new Moving(playerSystem));
         playerSystem.gameObject.layer = LayerMask.NameToLayer("Player");
+        playerSystem.PlayerManager.IsInvincible = true;
     }
 }

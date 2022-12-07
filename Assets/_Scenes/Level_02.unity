@@ -208,6 +208,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
+      propertyPath: invincibilityCooldown
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
+        type: 3}
       propertyPath: _playersUI.Array.data[0]
       value: 
       objectReference: {fileID: 7942832776584221746}

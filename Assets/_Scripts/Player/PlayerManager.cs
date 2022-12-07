@@ -1,7 +1,7 @@
 using CustomMaths;
 using System;
+using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,6 +30,16 @@ public class PlayerManager : MonoBehaviour
     public SpriteRenderer sprite;
     [SerializeField] private SpriteRenderer face;
     public SpriteRenderer Face => face;
+    private bool _isInvincible = false;
+    public bool IsInvincible
+    { 
+        set {   
+                _isInvincible = value;
+                if (value) { StartCoroutine(InvincibilityCoroutine()); }
+            }
+    }
+
+    private float _invincibleCd;
 
     // PLAYER MOVEMENT Variables
     public Vector2 LookDirection { get; set; }
@@ -217,6 +227,7 @@ public class PlayerManager : MonoBehaviour
     {
         _raycastRange = GameManager.Instance.LevelGenerator.Scale * 4;
         _rb2D.gravityScale = _gravityScale != 0 ? _gravityScale : _rb2D.gravityScale;
+        _invincibleCd = GameManager.Instance.invincibilityCooldown;
 
         UpdatePlayerScale();
     }
@@ -241,6 +252,17 @@ public class PlayerManager : MonoBehaviour
         if (!isJumping)
             _rb2D.gravityScale = _gravityScale;
 
+        if (_isInvincible)
+        {
+            sprite.color = new Color(1, 1, 1, Mathf.Sin(Time.time * 20));
+            insideSprite.color = sprite.color;
+        }
+        else
+        {
+            sprite.color = Color.white;
+            insideSprite.color = sprite.color;
+        }
+
         switch (_playerSystem.PlayerState)
         {
             case Knockback:
@@ -248,7 +270,6 @@ public class PlayerManager : MonoBehaviour
                 insideSprite.sortingOrder = 85;
                 break;
             default:
-                insideSprite.color = Color.white;
                 insideSprite.sortingOrder = 70;
                 break;
         }
@@ -470,7 +491,7 @@ public class PlayerManager : MonoBehaviour
     /// <param name="damage">Lra quantit� de bouffe � retirer.</param>
     public void OnDamage<T>(T damageDealer, int damage, Vector2 knockBackForce)
     {
-        if (_playerSystem.PlayerState is Special) return;
+        if (_playerSystem.PlayerState is Special || _isInvincible) return;
         
         _playerSystem.StopAllEffects();
         var damageDealerIsAPlayer = false;
@@ -517,6 +538,8 @@ public class PlayerManager : MonoBehaviour
     public void Shoot()
     {
         var aimDirection = inputVectorDirection;
+
+        _isInvincible = false;
 
         if (!canShoot)
         {
@@ -672,7 +695,6 @@ public class PlayerManager : MonoBehaviour
     {
         playerInput.SetEnableInput(result);
     }
-    #endregion
 
     public void SetFace(Sprite sprite)
     {
@@ -709,4 +731,20 @@ public class PlayerManager : MonoBehaviour
             }
         }
     }
+
+    private IEnumerator InvincibilityCoroutine()
+    {
+        float t = 0;
+        while(t < _invincibleCd)
+        {
+            if (!_isInvincible)
+                break;
+
+            yield return new WaitForFixedUpdate();
+            t += Time.fixedDeltaTime;
+        }
+
+        _isInvincible = false;
+    }
+#endregion
 }

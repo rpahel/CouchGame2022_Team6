@@ -169,8 +169,8 @@ public class Projectile : MonoBehaviour
     }
 
 
-    private void OnTriggerStay2D(Collider2D collision) {
-        Debug.Log("OnTriggerStay " + collision.gameObject.transform.parent.name);
+    private void OnTriggerStay2D(Collider2D collision)
+    {
         if (collision.gameObject.transform.parent.TryGetComponent<Cube_TNT>(out Cube_TNT tnt)) {
            // Debug.Log("enter on TNT");
             if (!tnt.startExplode) {

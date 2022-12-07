@@ -283,9 +283,13 @@ public class LevelGenerator : MonoBehaviour
             for(int x = 0; x < image.width; x++)
             {
                 Transform cube = cubesArray[x, y];
-                if(IsDestroyableAndEaten(cube) && CubeAboveIsEmpty(cube.GetComponent<CubeDestroyable>()))
+                if(IsDestroyableAndEaten(cube))
                 {
-                    list.Add(cube.GetComponent<CubeDestroyable>());
+                    var cucube = cube.GetComponent<CubeDestroyable>();
+                    if(CubeAboveIsEmpty(cucube))
+                    {
+                        list.Add(cucube);
+                    }
                 }
             }
         }
@@ -310,12 +314,12 @@ public class LevelGenerator : MonoBehaviour
 
     private bool CubeAboveIsEmpty(CubeDestroyable cube)
     {
-        Vector2 unscaledPos = cube.unscaledPosition;
+        Vector2Int unscaledPos = cube.unscaledPosition;
 
         if (unscaledPos.y >= image.height)
             return false;
 
-        if (IsDestroyableAndEaten(cubesArray[Mathf.RoundToInt(unscaledPos.x), Mathf.RoundToInt(unscaledPos.y)]))
+        if (IsDestroyableAndEaten(cubesArray[unscaledPos.x, unscaledPos.y]))
             return true;
         else
             return false;

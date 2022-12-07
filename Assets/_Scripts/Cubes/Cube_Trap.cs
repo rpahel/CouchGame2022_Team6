@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Dynamic;
 using UnityEngine;
 
 public class Cube_Trap : Cube
@@ -12,7 +8,6 @@ public class Cube_Trap : Cube
     
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Normal of the first point: " + collision.contacts[0].normal);
         if (!collision.gameObject.CompareTag("Player")) return;
 
         var playerSystemManager = collision.gameObject.GetComponent<PlayerManager>();
@@ -26,7 +21,6 @@ public class Cube_Trap : Cube
             return;
         }
         
-        Debug.Log("Side");
         KnockBack(new Vector2(-vec.x, -vec.y), playerSystemManager);
 
     }
