@@ -5,6 +5,7 @@ using UnityEngine;
 using Cinemachine;
 using Data;
 using TMPro;
+using CustomMaths;
 
 public class GameManager : MonoBehaviour
 {
@@ -244,6 +245,24 @@ public class GameManager : MonoBehaviour
 
         return hits;
     }
-    
+
+    /// <summary>
+    /// A pas confondre avec CanSpawnCubeAt du Projectile
+    /// </summary>
+    public bool CanSpawnCubeAt(Vector2 position)
+    {
+        RaycastHit2D[] hits = CustomPhysics.SquareCast(position, GameManager.Instance.LevelGenerator.Scale * .98f, true);
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            if (hits[i] && (hits[i].transform.gameObject.layer == LayerMask.NameToLayer("Player") || hits[i].transform.gameObject.layer == LayerMask.NameToLayer("PlayerDashing")))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     #endregion Projectile
 }

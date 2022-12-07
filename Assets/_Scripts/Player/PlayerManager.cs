@@ -200,7 +200,7 @@ public class PlayerManager : MonoBehaviour
         _coll = GetComponent<Collider2D>();
         _playerSystem = GetComponent<PlayerStateSystem>();
         _cooldownManager = GetComponent<CooldownManager>();
-        _groundChekLayerMask = LayerMask.GetMask("Destructible", "Indestructible", "Limite", "Player");
+        _groundChekLayerMask = LayerMask.GetMask("Destructible", "Indestructible", "Limite", "Player", "TNT");
 
         playerInput = GetComponent<PlayerInputsHandler>();
         faceManager = GetComponent<FaceManager>();
