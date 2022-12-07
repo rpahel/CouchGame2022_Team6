@@ -11,6 +11,7 @@ public class Cube_TNT : CubeDestroyable {
     [Range(0, 100)] 
     public int damageEat;
 
+    [HideInInspector] public bool startExplode;
     [SerializeField] private MeshRenderer rendererFire;
     [SerializeField] private MeshRenderer rendererFire2;
     private CinemachineImpulseSource shakeSource;
@@ -24,7 +25,9 @@ public class Cube_TNT : CubeDestroyable {
 
     public void Explode(Transform colParent) => StartCoroutine(OnExplosion(colParent));
     
-    private IEnumerator OnExplosion(Transform colParent) {
+    private IEnumerator OnExplosion(Transform colParent)
+    {
+        startExplode = true;
         GameManager.Instance.AudioManager.Play("TNT_Trigger");
         yield return new WaitForSeconds(1f);
         shakeSource.GenerateImpulse(2f);
@@ -43,13 +46,12 @@ public class Cube_TNT : CubeDestroyable {
 
                 RaycastHit2D hit = Physics2D.Raycast(colParent.position, direction, 1000, 1 << 3);
 
-                if (hit.collider != null && hit.collider.TryGetComponent<PlayerManager>(out PlayerManager playerManager)) {
-                    playerManager.fullness -= damageEat;
-                    playerManager.UpdatePlayerScale();
-                }
+                if (hit.collider != null && hit.collider.TryGetComponent<PlayerManager>(out PlayerManager playerManager)) 
+                    playerManager.OnDamage(this,damageEat,Vector3.zero);
             }
         }
-        
+
+        startExplode = false;
         levelGenerator.AddToRespawnList(colParent.gameObject.GetComponent<CubeDestroyable>());
     }
     

@@ -163,7 +163,7 @@ PrefabInstance:
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
       propertyPath: gameDuration
-      value: 200
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
@@ -1314,8 +1314,9 @@ MonoBehaviour:
     type: 3}
   cubeTNT: {fileID: 9104288708286051530, guid: 4da42d8564429d44189b34e58deaa9ee, type: 3}
   bedrockSprites:
-  - {fileID: 21300000, guid: 4f03109f69fa967468f4a0589b911e48, type: 3}
-  - {fileID: 21300000, guid: b7b39af7a13abd147bab8454caed2cc7, type: 3}
+  - {fileID: 21300000, guid: 757fb5cecfcda79488d1ac6d580477fa, type: 3}
+  - {fileID: 21300000, guid: 757fb5cecfcda79488d1ac6d580477fa, type: 3}
+  cubeEdibleDefaultColor: {r: 1, g: 0.5779841, b: 0, a: 1}
   spawnAnim: 1
   smoothType: 27
   beforeStart: 1
@@ -1323,11 +1324,11 @@ MonoBehaviour:
   betweenCubes: 0
   betweenLines: 0.05
   _timeBeforeCubeRespawnStart: 10
-  _respawnCooldown: 1
+  _respawnCooldown: 0.4
   _firstRespawnTime: 5
   tntDelay: 10
   randomSpawn: 0
-  maxTNTCount: 0
+  maxTNTCount: 5
   countLDTNT: 0
   respawn: 1
   allEmptyPositions: []
@@ -1347,9 +1348,9 @@ MonoBehaviour:
   - {x: 0, y: 0}
   - {x: 0, y: 1}
   - {x: 0, y: 0}
+  - {x: -1, y: 0}
   - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
+  - {x: 1, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: -1}
   - {x: 0, y: 0}
@@ -2302,7 +2303,7 @@ MonoBehaviour:
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
   m_XDamping: 4
-  m_YDamping: 11
+  m_YDamping: 5
   m_ZDamping: 1
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5

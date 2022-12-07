@@ -157,6 +157,10 @@ public class PlayerManager : MonoBehaviour
     //==========================================================================
 
     [Header("SPECIAL Variables")]
+    [SerializeField, Range(0, 100)]
+    private int _specialDamage;
+    [SerializeField, Range(0, 100), Tooltip("Force du knockback que subit l'ennemi quand il se fait toucher par un special.")]
+    private float _specialInflictedKnockbackForce;
     [SerializeField, Range(1, 3), Tooltip("Dur�e en secondes avant d'atteindre le niveau de charge max.")]
     private float timeToMaxCharge;
     [SerializeField, Range(0, 40), Tooltip("Distance en m�tres du special � son maximum.")]
@@ -171,11 +175,16 @@ public class PlayerManager : MonoBehaviour
     private float dashForce;
     [SerializeField]
     private GameObject specialTrigger;
-    [HideInInspector] public float charge; // 0 � 1
+    [HideInInspector] public float charge; // 0 a 1
     [HideInInspector] public bool isHolding;
     [HideInInspector] public bool canDash = true;
-
     [HideInInspector] public Vector2 inputDirectionDash;
+
+    [Header("SPECIAL TEST Variables")]
+    public bool specialStopsOnPlayerContact;
+
+    public int SpecialDamage => _specialDamage;
+    public float SpecialInflictedKnockbackForce => _specialInflictedKnockbackForce;
     public float TimeToMaxCharge => timeToMaxCharge;
     public float MaxDistance => maxDistance;
     public float MinDistance => minDistance;
@@ -192,7 +201,7 @@ public class PlayerManager : MonoBehaviour
         _coll = GetComponent<Collider2D>();
         _playerSystem = GetComponent<PlayerStateSystem>();
         _cooldownManager = GetComponent<CooldownManager>();
-        _groundChekLayerMask = LayerMask.GetMask("Destructible", "Indestructible", "Limite", "Player");
+        _groundChekLayerMask = LayerMask.GetMask("Destructible", "Indestructible", "Limite", "Player", "TNT");
 
         playerInput = GetComponent<PlayerInputsHandler>();
         faceManager = GetComponent<FaceManager>();
@@ -477,6 +486,8 @@ public class PlayerManager : MonoBehaviour
             case Cube_Trap:
                 damageDealerIsAPlayer = false;
                 _playerSystem.PlaySound("Game_Trap");
+                break;
+            case Cube_TNT:
                 break;
             default:
                 Debug.Log("Dont know this damage dealer type");
