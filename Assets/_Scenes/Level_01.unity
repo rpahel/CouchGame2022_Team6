@@ -1316,7 +1316,7 @@ MonoBehaviour:
   bedrockSprites:
   - {fileID: 21300000, guid: 757fb5cecfcda79488d1ac6d580477fa, type: 3}
   - {fileID: 21300000, guid: 757fb5cecfcda79488d1ac6d580477fa, type: 3}
-  cubeEdibleDefaultColor: {r: 1, g: 0.5779841, b: 0, a: 1}
+  cubeEdibleDefaultColor: {r: 1, g: 0.8389567, b: 0, a: 1}
   spawnAnim: 1
   smoothType: 27
   beforeStart: 1
