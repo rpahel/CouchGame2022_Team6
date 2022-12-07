@@ -97,7 +97,7 @@ public class PlayerManager : MonoBehaviour
     private int _maxImmobileEatAngle;
     [SerializeField, Tooltip("Le nombre de cubes manges par seconde."), Range(2, 10)]
     private int _eatTickrate;
-    [SerializeField, Tooltip("Distance max pour pouvoir manger le cube qu'on vise."), Range(1f, 5f)]
+    [SerializeField, Tooltip("Distance max pour pouvoir manger le cube qu'on vise."), Range(1f, 20f)]
     private float _eatDistance;
     [SerializeField, Tooltip("Combien de nourriture tu recois en mangeant un cube. 100 = Un cube suffit a te remplir."), Range(0f, 100f)]
     private int _filling;
