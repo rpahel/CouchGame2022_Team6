@@ -526,7 +526,8 @@ public class PlayerManager : MonoBehaviour
         if (fullness <= 0 && _playerSystem.PlayerState is not Dead)
         {
             _playerSystem.SetState(new Dead(_playerSystem));
-            return;
+            _playerSystem.PlaySound("Menu_ChoosePlayer3");
+                return;
         }
         
         UpdatePlayerScale();
@@ -545,12 +546,14 @@ public class PlayerManager : MonoBehaviour
         if (!canShoot)
         {
             Debug.Log($"Attendez le cooldown du tir");
+            _playerSystem.PlaySound("Menu_ChoosePlayer1");
             return;
         }
 
         if (fullness < _necessaryFood)
         {
             Debug.Log("Pas assez de nourriture pour shoot.");
+            _playerSystem.PlaySound("Menu_ChoosePlayer1");
             return;
         }
 
@@ -560,6 +563,7 @@ public class PlayerManager : MonoBehaviour
         if (!IsThereEnoughSpace(aimDirection))
         {
             Debug.Log("Not enough space to spawn a cube.");
+            _playerSystem.PlaySound("Menu_ChoosePlayer1");
             return;
         }
 
