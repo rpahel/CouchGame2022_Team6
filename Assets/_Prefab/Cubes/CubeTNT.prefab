@@ -180,12 +180,12 @@ MonoBehaviour:
   unscaledPosition: {x: 0, y: 0}
   levelGenerator: {fileID: 0}
   moveDuration: 0.375
-  rotationDegrees: 180
+  rotationDegrees: 0
   isOriginalCube: 0
   apparitionDuration: 0.01
   pattern: {fileID: 0}
   damageEat: 70
-  timeBeforeExplosion: 2
+  timeBeforeExplosion: 1
   timeBeforeAnimDissapear: 0.7
   spriteBomb: {fileID: 5098136833677738573}
   startExplode: 0
