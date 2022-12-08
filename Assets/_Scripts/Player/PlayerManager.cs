@@ -408,16 +408,10 @@ public class PlayerManager : MonoBehaviour
     #region WallJump
     public void WallJump()
     {
-        //--------------------WALL JUMP----------------//
-       
-
+        playerInput.SetEnableInput(false);
         wallJumping = true;
         wallJumpTimer = 0;
-
         isSliding = false;
-
-
-
     }
 
      public void UpdateWallSliding()
@@ -456,6 +450,7 @@ public class PlayerManager : MonoBehaviour
 
         wallJumpdir = new Vector2(Mathf.Cos(Mathf.Deg2Rad * wallJumpAngle), Mathf.Sin(Mathf.Deg2Rad * wallJumpAngle));
         _rb2D.velocity = new Vector2(wallJumpdir.x * dirPlayerToWall * wallJumpForce, wallJumpdir.y * wallJumpForce);
+        playerInput.SetEnableInput(true);
         // _rb.velocity = new Vector2(wallJumpdir.x * wallOrientXLeft * wallJumpForce, wallJumpdir.y * wallJumpForce);
     }
 
