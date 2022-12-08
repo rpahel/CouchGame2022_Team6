@@ -519,6 +519,7 @@ public class LevelGenerator : MonoBehaviour
         }
 
         cube.GetBarfed(cube.transform.position);
+        cube.GetComponentInChildren<SpriteRenderer>().color = cubeEdibleDefaultColor;
         _canRespawnCube = false;
         StartCoroutine(CubeRespawnCooldown());
         _respawnCoroutine = null;

@@ -47,7 +47,6 @@ public class CubeDestroyable : Cube {
             cube.GetComponent<Collider2D>().enabled = true;
         
         cube.SetActive(false);
-
         IsInAnimation = false;
     }
     

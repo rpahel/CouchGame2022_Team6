@@ -55,7 +55,6 @@ public class StatisticsManager : MonoBehaviour
         
         foreach (Stats playerStats in sortedArray)
         {
-            
             listStatsNameplate[index].SetStats(index, playerStats._damageDeal, playerStats._kill, playerStats._death);
             index++;
         }
@@ -64,7 +63,8 @@ public class StatisticsManager : MonoBehaviour
     public void NextLevel()
     {
         int index = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(index + 1);
+        //SceneManager.LoadScene(index + 1);
+        applicationManager.StartCoroutine(applicationManager.LoadAsynchronously(index + 1));
     }
 
     public void MainMenu()
