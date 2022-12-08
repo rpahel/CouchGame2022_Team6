@@ -526,7 +526,7 @@ public class PlayerManager : MonoBehaviour
         if (fullness <= 0 && _playerSystem.PlayerState is not Dead)
         {
             _playerSystem.SetState(new Dead(_playerSystem));
-            _playerSystem.PlaySound("Menu_ChoosePlayer3");
+            _playerSystem.PlaySound("Player_Death");
                 return;
         }
         
