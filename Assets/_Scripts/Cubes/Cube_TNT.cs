@@ -16,17 +16,23 @@ public class Cube_TNT : CubeDestroyable {
     [SerializeField] private MeshRenderer rendererFire2;
     private CinemachineImpulseSource shakeSource;
 
-    private void Awake()
-    {
+    // Un cube peut respawn sur la tnt 
+    
+    
+    // On peut faire sauter la tnt*
+    // Largeur degat rayons
+    // Faire en sorte que les dégats qu'on inflige aux autre comptent pour nos propre damage a la fin (c'est pas le cas actuellement)
+   // Fix la zone d'explosion à la position de la TNT (et non pas son endroit de spawn)
+    
+    private void Awake() {
         rendererFire.sortingOrder = 200;
         rendererFire2.sortingOrder = 200;
         shakeSource = GetComponent<CinemachineImpulseSource>();
     }
 
-    public void Explode(Transform colParent) => StartCoroutine(OnExplosion(colParent));
+    public void Explode(Transform colParent,PlayerManager source) => StartCoroutine(OnExplosion(colParent,source));
     
-    private IEnumerator OnExplosion(Transform colParent)
-    {
+    private IEnumerator OnExplosion(Transform colParent,PlayerManager source) {
         startExplode = true;
         GameManager.Instance.AudioManager.Play("TNT_Trigger");
         yield return new WaitForSeconds(1f);
@@ -35,19 +41,19 @@ public class Cube_TNT : CubeDestroyable {
         foreach (Vector2 dir in pattern.pattern) {
             if (dir != Vector2.zero) {
                 Vector3 direction = new Vector3(dir.x,dir.y,colParent.position.z);
-                foreach (CubeDestroyable c in FindCubeInDirection(direction, FindObjectsOfType<CubeDestroyable>().ToList(), colParent.gameObject)) {
+                foreach (CubeDestroyable c in FindCubeInDirection(direction, FindObjectsOfType<CubeDestroyable>().ToList(), colParent.GetChild(0).gameObject)) {
                     StartCoroutine(c.Suck(c.transform.GetChild(0).gameObject, colParent));
 
                     levelGenerator.AddToRespawnList(c);
                     
                     if (c.gameObject != this.gameObject && c is Cube_TNT) 
-                        ((Cube_TNT)c).Explode(c.transform);
+                        ((Cube_TNT)c).Explode(c.transform,source);
                 }
 
-                RaycastHit2D hit = Physics2D.Raycast(colParent.position, direction, 1000, 1 << 3);
+                RaycastHit2D hit = Physics2D.BoxCast(colParent.position,new Vector2(levelGenerator.Scale,levelGenerator.Scale),90,dir, Mathf.Infinity,1 << 3);
 
                 if (hit.collider != null && hit.collider.TryGetComponent<PlayerManager>(out PlayerManager playerManager)) 
-                    playerManager.OnDamage(this,damageEat,Vector3.zero);
+                    playerManager.OnDamage(source, damageEat, Vector3.zero);
             }
         }
 

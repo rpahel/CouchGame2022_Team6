@@ -508,8 +508,6 @@ public class PlayerManager : MonoBehaviour
                 damageDealerIsAPlayer = false;
                 _playerSystem.PlaySound("Game_Trap");
                 break;
-            case Cube_TNT:
-                break;
             default:
                 Debug.Log("Dont know this damage dealer type");
                 break;

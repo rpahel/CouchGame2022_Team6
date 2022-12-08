@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8441697207057919441}
   - component: {fileID: 5098136833677738573}
   - component: {fileID: 6256004659840169258}
-  - component: {fileID: 4478330481651395019}
+  - component: {fileID: 8068061499442868207}
   m_Layer: 12
   m_Name: Cube
   m_TagString: CubeEdible
@@ -104,7 +104,7 @@ CircleCollider2D:
   m_Offset: {x: -0.006243297, y: -0.052079033}
   serializedVersion: 2
   m_Radius: 0.4017742
---- !u!50 &4478330481651395019
+--- !u!50 &8068061499442868207
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -116,7 +116,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 10000
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
