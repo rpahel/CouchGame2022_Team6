@@ -11,15 +11,21 @@ public class Cube_TNT : CubeDestroyable {
     [Range(0, 100)] 
     public int damageEat;
 
+    [SerializeField] private int timeBeforeExplosion;
+    [SerializeField] private float timeBeforeAnimDissapear;
+    [SerializeField] private SpriteRenderer spriteBomb;
+    
     [HideInInspector] public bool startExplode;
-    [SerializeField] private MeshRenderer rendererFire;
-    [SerializeField] private MeshRenderer rendererFire2;
+    [SerializeField] private List<MeshRenderer> listMeshRenderer = new List<MeshRenderer>();
+    [SerializeField] private List<MeshRenderer> listMeshRendererExplode = new List<MeshRenderer>();
     private CinemachineImpulseSource shakeSource;
 
     private void Awake()
     {
-        rendererFire.sortingOrder = 200;
-        rendererFire2.sortingOrder = 200;
+        foreach (MeshRenderer mesh in listMeshRenderer)
+        {
+            mesh.sortingOrder = 200;
+        }
         shakeSource = GetComponent<CinemachineImpulseSource>();
     }
 
@@ -28,10 +34,11 @@ public class Cube_TNT : CubeDestroyable {
     private IEnumerator OnExplosion(Transform colParent)
     {
         startExplode = true;
-        GameManager.Instance.AudioManager.Play("TNT_Trigger");
-        yield return new WaitForSeconds(1f);
+        StartCoroutine(IAnimTrigger());
+        yield return new WaitForSeconds(timeBeforeExplosion);
         shakeSource.GenerateImpulse(2f);
         GameManager.Instance.AudioManager.Play("TNT_Explode");
+        StartCoroutine(IAnimFlame());
         foreach (Vector2 dir in pattern.pattern) {
             if (dir != Vector2.zero) {
                 Vector3 direction = new Vector3(dir.x,dir.y,colParent.position.z);
@@ -72,9 +79,39 @@ public class Cube_TNT : CubeDestroyable {
 
         return cubesInDir;
     }
-    
 
-    
 
+    private IEnumerator IAnimFlame()
+    {
+        foreach (MeshRenderer mesh in listMeshRendererExplode)
+        {
+            mesh.sortingOrder = 200;
+            mesh.gameObject.SetActive(true);
+        }
+
+        yield return new WaitForSeconds(timeBeforeAnimDissapear);
+            
+        foreach (MeshRenderer mesh in listMeshRendererExplode)
+        {
+            mesh.gameObject.SetActive(false);
+        }
+    }
+    
+    private IEnumerator IAnimTrigger()
+    {
+        float time = timeBeforeExplosion;
+        GameManager.Instance.AudioManager.Play("TNT_Trigger");
+        spriteBomb.color = Color.red;
+        yield return new WaitForSeconds(time / 5);
+        spriteBomb.color = Color.white;
+        yield return new WaitForSeconds(time / 5);
+        spriteBomb.color = Color.red;
+        yield return new WaitForSeconds(time / 5);
+        spriteBomb.color = Color.white;
+        yield return new WaitForSeconds(time / 5);
+        spriteBomb.color = Color.red;
+        yield return new WaitForSeconds(time / 5);
+        spriteBomb.color = Color.white;
+    }
 
 }

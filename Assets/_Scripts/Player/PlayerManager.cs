@@ -527,6 +527,7 @@ public class PlayerManager : MonoBehaviour
         {
             _playerSystem.SetState(new Dead(_playerSystem));
             _playerSystem.PlaySound("Menu_ChoosePlayer3");
+            _playerSystem.PlaySound("Player_Kill");
                 return;
         }
         
