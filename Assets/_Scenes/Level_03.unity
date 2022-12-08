@@ -163,7 +163,7 @@ PrefabInstance:
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
       propertyPath: gameDuration
-      value: 10
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
