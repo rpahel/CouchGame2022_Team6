@@ -131,23 +131,28 @@ public class PlayerInputsHandler : MonoBehaviour
 
     private void OnShoot(CallbackContext input)
     {
-        if (_playerManager.fullness < _playerManager.NecessaryFood) return;
-
-        if (input.performed)
+        if (input.performed && !(_playerManager.fullness < _playerManager.NecessaryFood))
         {
             _playerSystem.OnHoldShoot();
         }
 
-        if (!input.canceled) return;
-        
-        switch (_playerSystem.PlayerState)
+        if (input.canceled)
         {
-            case Moving:
-                _playerSystem.PlayerManager.Shoot();
-                break;
-            case AimShoot:
-                _playerSystem.OnShoot();
-                break;
+            if (_playerManager.fullness < _playerManager.NecessaryFood)
+            {
+                _playerSystem.PlaySound("Menu_ChoosePlayer1");
+                return;
+            }
+
+            switch (_playerSystem.PlayerState)
+            {
+                case Moving:
+                    _playerSystem.PlayerManager.Shoot();
+                    break;
+                case AimShoot:
+                    _playerSystem.OnShoot();
+                    break;
+            }
         }
     }
 
