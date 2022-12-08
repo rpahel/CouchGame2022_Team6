@@ -94,14 +94,15 @@ public class ApplicationManager : MonoBehaviour
         }
     }
 
-    private IEnumerator LoadAsynchronously(int index)
+    public IEnumerator LoadAsynchronously(int index)
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(index);
         
         while (!operation.isDone)
         {
             float progress = Mathf.Clamp01(operation.progress / 0.9f);
-            loadingSlider.value = progress;
+            if(loadingSlider != null)
+                loadingSlider.value = progress;
             yield return null;
         }
         
