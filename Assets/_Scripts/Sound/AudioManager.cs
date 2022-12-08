@@ -5,7 +5,11 @@ public class AudioManager : MonoBehaviour
 {
         private static AudioManager Instance { get; set; }
         public Sound[] sounds;
-        private void Awake()
+        [Range(0, 2)]
+        public float RandomPitchMin = 0.75f;
+        [Range(0, 2)]
+        public float RandomPitchMax = 1.25f;
+    private void Awake()
         {
                 if (Instance != null)
                 {
@@ -39,8 +43,9 @@ public class AudioManager : MonoBehaviour
                         Debug.LogWarning("Sound :" + name + "not found!");
                         return;
                 }
-                
-                s.source.Play();
+
+            s.source.pitch = UnityEngine.Random.Range(RandomPitchMin, RandomPitchMax);
+            s.source.Play();
         }
         
         public void Stop(string name)
