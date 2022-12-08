@@ -1,6 +1,7 @@
 using CustomMaths;
 using System;
 using System.Collections;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,6 +31,7 @@ public class PlayerManager : MonoBehaviour
     public SpriteRenderer sprite;
     [SerializeField] private SpriteRenderer face;
     public SpriteRenderer Face => face;
+    [HideInInspector] public int playerIndex;
     private bool _isInvincible = false;
     public bool IsInvincible
     { 
@@ -230,6 +232,7 @@ public class PlayerManager : MonoBehaviour
         _invincibleCd = GameManager.Instance.invincibilityCooldown;
 
         UpdatePlayerScale();
+        UpdateScoring();
     }
 
     private void Update()
@@ -517,17 +520,15 @@ public class PlayerManager : MonoBehaviour
 
         fullness = Mathf.Clamp(fullness - damage, 0, 100);
 
+        if(damageDealerIsAPlayer)
+            UpdateStats(damager, damage);
+        
         if (fullness <= 0 && _playerSystem.PlayerState is not Dead)
         {
             _playerSystem.SetState(new Dead(_playerSystem));
-            if(damageDealerIsAPlayer)
-                UpdateStats(damager);
             return;
         }
         
-        if(damageDealerIsAPlayer)
-            UpdateStats(damager, damage);
-            
         UpdatePlayerScale();
 
         _playerSystem.SetKnockback(knockBackForce);
@@ -648,10 +649,10 @@ public class PlayerManager : MonoBehaviour
     public void UpdatePlayerScale()
     {
         transform.localScale = Vector3.one * Mathf.Lerp(_minSize, _maxSize, fullness * .01f);
-        UpdateTextUI();
+        //UpdateTextUI();
     }
     
-    private void UpdateTextUI()
+    /*private void UpdateTextUI()
     {
         if (textUI == null) return;
 
@@ -669,6 +670,15 @@ public class PlayerManager : MonoBehaviour
             default:
                 textUI.text = (text.ToString()).Substring(0, 2) + "%";
                 break;
+        }
+    }*/
+
+    public void UpdateScoring()
+    {
+        foreach (Stats stats in statsManager.ArrayStats)
+        {
+            if (stats._playerIndex == playerIndex)
+                textUI.text = stats._damageDeal.ToString(CultureInfo.InvariantCulture);
         }
     }
 
@@ -712,6 +722,8 @@ public class PlayerManager : MonoBehaviour
                 playerStat._damageDeal += damage;
             }
         }
+        
+        damageDealer.UpdateScoring();
     }
     private void UpdateStats(PlayerManager damageDealer)
     {
@@ -730,6 +742,8 @@ public class PlayerManager : MonoBehaviour
                 playerStat._death++;
             }
         }
+        
+        damageDealer.UpdateScoring();
     }
 
     private IEnumerator InvincibilityCoroutine()

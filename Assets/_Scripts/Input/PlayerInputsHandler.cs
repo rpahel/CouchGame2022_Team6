@@ -34,6 +34,7 @@ public class PlayerInputsHandler : MonoBehaviour
         _playerManager.GetComponent<FaceManager>().SetFaceNormal(pc.PlayerFaceSprite);
         _playerManager.imageUI.sprite = pc.PlayerIcon;
         _playerManager.color = pc.PlayerColor;
+        _playerManager.playerIndex = pc.PlayerIndex;
         _playerSystem.ListVfX_effect[0].SetGradient("gradient", pc.playerGradient);
         _playerSystem.ListVfX_effect[1].SetVector4("Color",pc.PlayerColor);
         _playerSystem.ListVfX_effect[2].SetGradient("gradient", pc.playerGradient);
