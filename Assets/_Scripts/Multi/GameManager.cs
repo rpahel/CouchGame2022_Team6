@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CameraManager cameraManager;
     [SerializeField] private GameObject[] _playersUI;
     [SerializeField] private GameObject _playerPrefab;
+    [Range(0, 60f)] public float invincibilityCooldown;
 
     public CameraManager CameraManager => cameraManager;
     private SpawnManager _spawnManager;
