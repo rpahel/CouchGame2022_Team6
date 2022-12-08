@@ -326,7 +326,7 @@ public class LevelGenerator : MonoBehaviour
     }
         #endregion
 
-        #region Animations
+    #region Animations
     //=================================================
     IEnumerator PlayAnimation()
     {
@@ -483,6 +483,8 @@ public class LevelGenerator : MonoBehaviour
         if (_cubeRespawnList.Count <= 0) yield break;
 
         CubeDestroyable cube = _cubeRespawnList[0];
+        
+        Debug.Log("cube to respawn " + cube);
         RemoveFromRespawnList(cube);
 
         if(!GameManager.Instance.CanSpawnCubeAt(cube.transform.position))
@@ -498,6 +500,23 @@ public class LevelGenerator : MonoBehaviour
         
         if (cube is Cube_TNT && !respawn)
             yield break;
+
+        List<Cube_TNT> allTNTS = FindObjectsOfType<Cube_TNT>().ToList();
+        List<GameObject> children = new List<GameObject>();
+        
+        foreach(Cube_TNT tnt in allTNTS)
+            children.Add(tnt.transform.GetChild(0).gameObject);
+
+        foreach (GameObject child in children) {
+            if (Vector3Int.FloorToInt(child.transform.position) == Vector3Int.FloorToInt(cube.transform.position)) {
+                Debug.Log("looog");
+                RemoveFromRespawnList(cube);
+                _canRespawnCube = false;
+                StartCoroutine(CubeRespawnCooldown());
+                _respawnCoroutine = null;
+                yield break;
+            }
+        }
 
         cube.GetBarfed(cube.transform.position);
         cube.GetComponentInChildren<SpriteRenderer>().color = cubeEdibleDefaultColor;

@@ -29,10 +29,9 @@ public class Cube_TNT : CubeDestroyable {
         shakeSource = GetComponent<CinemachineImpulseSource>();
     }
 
-    public void Explode(Transform colParent) => StartCoroutine(OnExplosion(colParent));
+    public void Explode(Transform colParent,PlayerManager source) => StartCoroutine(OnExplosion(colParent,source));
     
-    private IEnumerator OnExplosion(Transform colParent)
-    {
+    private IEnumerator OnExplosion(Transform colParent,PlayerManager source) {
         startExplode = true;
         StartCoroutine(IAnimTrigger());
         yield return new WaitForSeconds(timeBeforeExplosion);
@@ -42,19 +41,19 @@ public class Cube_TNT : CubeDestroyable {
         foreach (Vector2 dir in pattern.pattern) {
             if (dir != Vector2.zero) {
                 Vector3 direction = new Vector3(dir.x,dir.y,colParent.position.z);
-                foreach (CubeDestroyable c in FindCubeInDirection(direction, FindObjectsOfType<CubeDestroyable>().ToList(), colParent.gameObject)) {
+                foreach (CubeDestroyable c in FindCubeInDirection(direction, FindObjectsOfType<CubeDestroyable>().ToList(), colParent.GetChild(0).gameObject)) {
                     StartCoroutine(c.Suck(c.transform.GetChild(0).gameObject, colParent));
 
                     levelGenerator.AddToRespawnList(c);
                     
                     if (c.gameObject != this.gameObject && c is Cube_TNT) 
-                        ((Cube_TNT)c).Explode(c.transform);
+                        ((Cube_TNT)c).Explode(c.transform,source);
                 }
 
-                RaycastHit2D hit = Physics2D.Raycast(colParent.position, direction, 1000, 1 << 3);
+                RaycastHit2D hit = Physics2D.BoxCast(colParent.position,new Vector2(levelGenerator.Scale,levelGenerator.Scale),90,dir, Mathf.Infinity,1 << 3);
 
                 if (hit.collider != null && hit.collider.TryGetComponent<PlayerManager>(out PlayerManager playerManager)) 
-                    playerManager.OnDamage(this,damageEat,Vector3.zero);
+                    playerManager.OnDamage(source, damageEat, Vector3.zero);
             }
         }
 
