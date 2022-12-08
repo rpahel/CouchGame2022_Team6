@@ -36,7 +36,7 @@ public class CooldownManager : MonoBehaviour
             t += Time.fixedDeltaTime / playerSystem.PlayerManager.StopDuration;
             yield return new WaitForFixedUpdate();
         }
-
+        
         playerSystem.PlayerManager.brakingCoroutine = null;
     }
 

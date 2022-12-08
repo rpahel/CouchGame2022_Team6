@@ -23,6 +23,11 @@ public abstract class State
     {
         return;
     }
+
+    public virtual void CustomUpdate()
+    {
+        return;
+    }
     public virtual void OnMove()
     {
         return;

@@ -37,7 +37,13 @@ public class Dead : State
         playerSystem.PlayerManager.inputVectorDirection = Vector2.zero;
         playerSystem.PlayerManager.inputVectorMove = Vector2.zero;
         playerSystem.PlayerManager.UpdatePlayerScale();
+
+        Vector2 respawnSpot = GameManager.Instance.LevelGenerator.FindSuitableRespawnSpot();
+        if (respawnSpot != -Vector2.one)
+            playerSystem.transform.position = respawnSpot;
+
         playerSystem.SetState(new Moving(playerSystem));
         playerSystem.gameObject.layer = LayerMask.NameToLayer("Player");
+        playerSystem.PlayerManager.IsInvincible = true;
     }
 }

@@ -30,6 +30,12 @@ public class PlayerStateSystem : StateMachine
     public void Start()
     {
         SetState((new Moving(this)));
+        InvokeRepeating("CustomUpdate", 0f, 0.05f);
+    }
+
+    private void CustomUpdate()
+    {
+        State?.CustomUpdate();
     }
 
     public void SetKnockback(Vector2 knockBackForce)

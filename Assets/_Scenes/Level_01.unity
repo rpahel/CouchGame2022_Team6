@@ -208,6 +208,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
+      propertyPath: invincibilityCooldown
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
+        type: 3}
       propertyPath: _playersUI.Array.data[0]
       value: 
       objectReference: {fileID: 7942832776584221746}
@@ -1304,7 +1309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7bed8b178ffee44a860348c49002fe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 2800000, guid: d9a2ba92e27b8a24aa049ad4fcce5f7c, type: 3}
+  image: {fileID: 2800000, guid: beaff354584e156478a182c7020a41a6, type: 3}
   scale: 2.857143
   cubeEdible: {fileID: 2613636963887001808, guid: 74a185477bf05c94796ad895b5c85abe,
     type: 3}
@@ -1314,18 +1319,18 @@ MonoBehaviour:
     type: 3}
   cubeTNT: {fileID: 9104288708286051530, guid: 4da42d8564429d44189b34e58deaa9ee, type: 3}
   bedrockSprites:
-  - {fileID: 21300000, guid: 757fb5cecfcda79488d1ac6d580477fa, type: 3}
-  - {fileID: 21300000, guid: 757fb5cecfcda79488d1ac6d580477fa, type: 3}
-  cubeEdibleDefaultColor: {r: 1, g: 0.5779841, b: 0, a: 1}
+  - {fileID: 21300000, guid: 9597a1ca6519abe45b646af46d6cfe72, type: 3}
+  - {fileID: 21300000, guid: 9597a1ca6519abe45b646af46d6cfe72, type: 3}
+  cubeEdibleDefaultColor: {r: 1, g: 0.8389567, b: 0, a: 1}
   spawnAnim: 1
   smoothType: 27
   beforeStart: 1
   animation: 0.3
   betweenCubes: 0
   betweenLines: 0.05
-  _timeBeforeCubeRespawnStart: 10
-  _respawnCooldown: 0.4
-  _firstRespawnTime: 5
+  _timeBeforeCubeRespawnStart: 5
+  _respawnCooldown: 0.25
+  _firstRespawnTime: 2
   tntDelay: 10
   randomSpawn: 0
   maxTNTCount: 5
@@ -1831,7 +1836,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.58431375, g: 0, b: 0.77254903, a: 1}
+    m_SelectedColor: {r: 0.75686276, g: 0, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -1965,7 +1970,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0, g: 0, b: 0, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.58431375, g: 0, b: 0.77254903, a: 1}
+    m_SelectedColor: {r: 0.75686276, g: 0, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -2617,7 +2622,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.58431375, g: 0, b: 0.77254903, a: 1}
+    m_SelectedColor: {r: 0.75686276, g: 0, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -3131,7 +3136,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 0.7411765, b: 0.7411765, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.58431375, g: 0, b: 0.77254903, a: 1}
+    m_SelectedColor: {r: 0.75686276, g: 0, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -4335,7 +4340,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 0.740566, b: 0.740566, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.58431375, g: 0, b: 0.77254903, a: 1}
+    m_SelectedColor: {r: 0.75686276, g: 0, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
