@@ -16,6 +16,7 @@ public class Dead : State
 
     public override void FixedUpdate()
     {
+
         if (waitTime < timeToWait)
             waitTime += Time.fixedDeltaTime;
         else
@@ -40,6 +41,7 @@ public class Dead : State
         playerSystem.PlayerManager.UpdatePlayerScale();
 
         Vector2 respawnSpot = GameManager.Instance.LevelGenerator.FindSuitableRespawnSpot();
+        
         if (respawnSpot != -Vector2.one)
             playerSystem.transform.position = respawnSpot;
 

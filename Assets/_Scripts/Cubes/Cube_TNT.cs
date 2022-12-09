@@ -55,7 +55,6 @@ public class Cube_TNT : CubeDestroyable {
                     
                     foreach (PlayerManager playerManager in FindObjectsOfType<PlayerManager>()) {
                         if (playerManager.GetComponent<Collider2D>().bounds.Contains(checkPosition)) {
-                            Debug.Log("hit my player");
                             playerManager.OnDamage(source,damageEat,Vector3.zero);
                         }
                     }

@@ -552,7 +552,8 @@ public class PlayerManager : MonoBehaviour
         
         UpdatePlayerScale();
 
-        _playerSystem.SetKnockback(knockBackForce);
+        if(knockBackForce != Vector2.zero)
+            _playerSystem.SetKnockback(knockBackForce);
     }
     #endregion
 
