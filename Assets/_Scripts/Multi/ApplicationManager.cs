@@ -170,7 +170,6 @@ public class PlayerConfiguration
     public Color PlayerColor { get; set; }
     public Color PlayerHdrColor { get; set; }
     public Gradient playerGradient { get; set; }
-    
 }
 
 

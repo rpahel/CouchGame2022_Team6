@@ -16,7 +16,7 @@ public class StatsNameplate : MonoBehaviour
     private ApplicationManager manager;
     
     
-    public void SetStats(byte index, float damage, int kills, int deaths)
+    public void SetStats(byte index, byte indexSprite, float damage, int kills, int deaths)
     {
         var playerConfigs = ApplicationManager.Instance.GetPlayerConfigs().ToArray();
         manager = ApplicationManager.Instance;
@@ -25,23 +25,23 @@ public class StatsNameplate : MonoBehaviour
         {
             case 0:
                 textRank.text = "1";
-                imagePlayer.sprite = playerConfigs[0].PlayerSprite;
-                facePlayer.sprite = playerConfigs[0].PlayerFaceSprite;
+                imagePlayer.sprite = playerConfigs[indexSprite].PlayerSprite;
+                facePlayer.sprite = playerConfigs[indexSprite].PlayerFaceSprite;
                 break;
             case 1:
                 textRank.text = "2";
-                imagePlayer.sprite = playerConfigs[1].PlayerSprite;
-                facePlayer.sprite = playerConfigs[1].PlayerFaceSprite;
+                imagePlayer.sprite = playerConfigs[indexSprite].PlayerSprite;
+                facePlayer.sprite = playerConfigs[indexSprite].PlayerFaceSprite;
                 break;
             case 2:
                 textRank.text = "3";
-                imagePlayer.sprite = playerConfigs[2].PlayerSprite;
-                facePlayer.sprite = playerConfigs[2].PlayerFaceSprite;
+                imagePlayer.sprite = playerConfigs[indexSprite].PlayerSprite;
+                facePlayer.sprite = playerConfigs[indexSprite].PlayerFaceSprite;
                 break;
             case 3:
                 textRank.text = "4";
-                imagePlayer.sprite = playerConfigs[3].PlayerSprite;
-                facePlayer.sprite = playerConfigs[3].PlayerFaceSprite;
+                imagePlayer.sprite = playerConfigs[indexSprite].PlayerSprite;
+                facePlayer.sprite = playerConfigs[indexSprite].PlayerFaceSprite;
                 break;
         }
 

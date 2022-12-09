@@ -520,6 +520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 841c3f292530672448975549f468b8b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
   listVfX_effect:
   - {fileID: 5840469309029775217}
   - {fileID: 8878492824208527085}
@@ -541,6 +542,7 @@ MonoBehaviour:
   insideSprite: {fileID: 1940364374433954416}
   sprite: {fileID: 2761370740021712296}
   face: {fileID: 4694164677238054512}
+  playerIndex: 0
   _maxSize: 2.857
   _minSize: 1
   imageUI: {fileID: 0}
@@ -608,7 +610,7 @@ MonoBehaviour:
   wallJumpDuration: 0.2
   wallDetectionRadius: 0.15
   wallJumping: 0
-  wallJumpAngle: 70
+  wallJumpAngle: 100
   wallJumpForce: 40
   canWallJump: 0
   cantDoubleJump: 0
@@ -626,6 +628,11 @@ MonoBehaviour:
   canDash: 1
   inputDirectionDash: {x: 0, y: 0}
   specialStopsOnPlayerContact: 1
+  durationEffectJump: 1
+  multiplierXJump: 1.3
+  multiplierYJump: 0.7
+  damageScore: 20
+  killScore: 50
 --- !u!114 &-5276769057875731088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -669,6 +676,8 @@ MonoBehaviour:
   faceFull: {fileID: 21300000, guid: 93d252928ca34c447811fddbb963b94c, type: 3}
   faceJump: {fileID: 21300000, guid: bbd0fd2ec7ee94a458922253cb7fb4c8, type: 3}
   faceShoot: {fileID: 21300000, guid: 3e2bfbe57aa720149b753070df18aeec, type: 3}
+  faceDash: {fileID: 21300000, guid: d686c39622e21c541a310f8af4830017, type: 3}
+  faceDamage: {fileID: 21300000, guid: d7b5e62c675de9e4281ff2b9b1a226ae, type: 3}
 --- !u!1 &3940521104393292393
 GameObject:
   m_ObjectHideFlags: 0

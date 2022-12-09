@@ -4,6 +4,7 @@ public class AimSpecial : State
 {
     private Transform _transformPos;
     private PlayerManager _playerManager;
+    private int soundTracker = 0; // Very important do not delete
 
     public AimSpecial(PlayerStateSystem playerSystem) : base(playerSystem)
     {
@@ -14,16 +15,29 @@ public class AimSpecial : State
         _playerManager = playerSystem.PlayerManager;
         _playerManager.AimPivot.gameObject.SetActive(true);
         _playerManager.charge = 0;
-            
+        playerSystem.PlaySound("Player_Special_Charge1");
         _transformPos = playerSystem.transform;
         playerSystem.PlayEffect(1);
+        soundTracker = 0;
     }
 
     public override void Update()
     {
         _playerManager.charge = Mathf.Clamp01(_playerManager.charge + Time.deltaTime / _playerManager.TimeToMaxCharge);
+
+        if(_playerManager.charge > _playerManager.TimeToMaxCharge * .33f && soundTracker == 0)
+        {
+            playerSystem.PlaySound("Player_Special_Charge2");
+            soundTracker = 1;
+        }
+        else if(_playerManager.charge > _playerManager.TimeToMaxCharge * .66f && soundTracker == 1)
+        {
+            playerSystem.PlaySound("Player_Special_Charge3");
+            soundTracker = 2;
+        }
+
 #if UNITY_EDITOR
-        { 
+        {
             Debug.DrawRay(
                 start : (Vector2)_transformPos.position + _playerManager.PCollider.bounds.extents.y * Vector2.down,
                 dir : (_playerManager.MinDistance + _playerManager.charge * _playerManager.MaxDistance - _playerManager.MinDistance) * (_playerManager.inputVectorDirection != Vector2.zero ? _playerManager.inputVectorDirection : _playerManager.LookDirection),
@@ -46,18 +60,6 @@ public class AimSpecial : State
         }
 #endif
     }
-#if UNITY_EDITOR
-    private void OnDrawGizmos()
-    {
-        if(_playerManager.MaxDistance < _playerManager.MinDistance) _playerManager.maxDistance = _playerManager.MinDistance;
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(_transformPos.position, _playerManager.MinDistance);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(_transformPos.position, _playerManager.MaxDistance);
-    }
-#endif
-    
 
     public override void FixedUpdate()
     {
@@ -70,6 +72,19 @@ public class AimSpecial : State
         _playerManager.AimPivot.gameObject.SetActive(false);
         playerSystem.StopEffect(1);
         playerSystem.SetState(new Special(playerSystem));
+
+        if(_playerManager.charge < _playerManager.TimeToMaxCharge * .33f)
+        {
+            playerSystem.PlaySound("Player_Special_Short");
+        }
+        else if (_playerManager.charge >= _playerManager.TimeToMaxCharge * .33f && _playerManager.charge < _playerManager.TimeToMaxCharge * .66f)
+        {
+            playerSystem.PlaySound("Player_Special_Mid");
+        }
+        else if (_playerManager.charge >= _playerManager.TimeToMaxCharge * .66f)
+        {
+            playerSystem.PlaySound("Player_Special_Long");
+        }
     }
 }
 

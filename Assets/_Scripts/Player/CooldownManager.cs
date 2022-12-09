@@ -10,6 +10,7 @@ public class CooldownManager : MonoBehaviour
     private FaceManager faceManager;
     private TrailRenderer _trailRenderer;
     private Coroutine faceCoroutine;
+    
     private void Awake()
     {
         playerSystemManager = GetComponent<PlayerManager>();
@@ -61,18 +62,18 @@ public class CooldownManager : MonoBehaviour
         }
     }
 
-    public IEnumerator ActivateInputDelay(float duration)
-    {
-        //playerSystem.PlayerInputs.SetEnableInput(false);
-        yield return new WaitForSeconds(duration);
-        //playerSystem.PlayerInputs.SetEnableInput(true);
-        playerSystem.SetState(new Moving(playerSystem));
-    }
+    //public IEnumerator ActivateInputDelay(float duration)
+    //{
+    //    //playerSystem.PlayerInputs.SetEnableInput(false);
+    //    yield return new WaitForSeconds(duration);
+    //    //playerSystem.PlayerInputs.SetEnableInput(true);
+    //    playerSystem.SetState(new Moving(playerSystem));
+    //}
 
     public IEnumerator JumpCoroutine()
     {
         playerSystemManager.isJumping = true;
-        
+        playerSystemManager.SetupJumpEffect();
         playerSystem.PlaySound("Player_Jump");
         SetupCoroutine(faceManager.FaceJump);
         float t = 0;
@@ -107,6 +108,7 @@ public class CooldownManager : MonoBehaviour
     private IEnumerator DashCoroutine(float dashDuration)
     {
         playerSystemManager.canDash = false;
+        SetupCoroutine(faceManager.FaceDash);
         gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
         playerSystemManager.SpecialTrigger.SetActive(true);
         var originalGravityScale = playerSystemManager.Rb2D.gravityScale;

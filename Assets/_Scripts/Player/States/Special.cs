@@ -26,10 +26,15 @@ public class Special : State
 
     public override void OnCollisionEnter(Collision2D col)
     {
-        if(col.gameObject.layer == LayerMask.NameToLayer("Limite"))
+        if(col.gameObject.layer == LayerMask.NameToLayer("Limite") || col.gameObject.layer == LayerMask.NameToLayer("Trap"))
         {
             _dashing = false;
-            playerSystem.SetState(new Moving(playerSystem));
+            playerSystem.PlaySound("Player_Special_Bonk");
+
+            if (playerSystem.PlayerManager.fullness > 0)
+                playerSystem.SetState(new Moving(playerSystem));
+            else
+                playerSystem.PlayerManager.OnDamage(col.gameObject.GetComponentInParent<Cube>(), 100, Vector2.zero);
         }
     }
 }

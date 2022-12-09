@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -9,8 +8,8 @@ public class PlayerStateSystem : StateMachine
     public PlayerManager PlayerManager { get; private set; }
     public CooldownManager CooldownManager { get; private set; }
     public FaceManager FaceManager { get; private set; }
+    public PLAYER_STATE currentState;
     public State PlayerState => State;
-    
     private AudioManager audioManager;
 
     [FormerlySerializedAs("listVFXeffect")]
@@ -33,6 +32,11 @@ public class PlayerStateSystem : StateMachine
         InvokeRepeating("CustomUpdate", 0f, 0.05f);
     }
 
+    private void LateUpdate()
+    {
+        currentState = (PLAYER_STATE)System.Enum.Parse(typeof(PLAYER_STATE), this.State.GetType().ToString());
+    }
+
     private void CustomUpdate()
     {
         State?.CustomUpdate();
@@ -44,13 +48,13 @@ public class PlayerStateSystem : StateMachine
         State?.OnKnockback(knockBackForce);
     }
 
-    public void SetStun<T>(T damageDealer, int damage, Vector2 knockBackForce)
-    {
-        if (State is Special) return;
-
-        SetState((new Stun(this)));
-        State?.OnStun<T>(damageDealer, damage, knockBackForce);
-    }
+    //public void SetStun<T>(T damageDealer, int damage, Vector2 knockBackForce)
+    //{
+    //    if (State is Special) return;
+    //
+    //    SetState((new Stun(this)));
+    //    State?.OnStun<T>(damageDealer, damage, knockBackForce);
+    //}
 
     public void PlaySound(string name)
     {
@@ -138,3 +142,17 @@ public class PlayerStateSystem : StateMachine
         State?.OnTriggerEnter(col);
     }
 }
+
+#if UNITY_EDITOR
+public enum PLAYER_STATE
+{
+    AimShoot,
+    AimSpecial,
+    Dead,
+    Knockback,
+    Moving,
+    Special,
+    State,
+    Stun
+}
+#endif

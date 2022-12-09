@@ -487,7 +487,6 @@ public class LevelGenerator : MonoBehaviour
 
         CubeDestroyable cube = _cubeRespawnList[0];
         
-       // Debug.Log("cube to respawn " + cube);
         RemoveFromRespawnList(cube);
 
         if(!GameManager.Instance.CanSpawnCubeAt(cube.transform.position))
