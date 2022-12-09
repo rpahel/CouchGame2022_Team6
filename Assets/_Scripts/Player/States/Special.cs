@@ -29,6 +29,7 @@ public class Special : State
         if(col.gameObject.layer == LayerMask.NameToLayer("Limite"))
         {
             _dashing = false;
+            playerSystem.PlaySound("Player_Special_Bonk");
             playerSystem.SetState(new Moving(playerSystem));
         }
     }

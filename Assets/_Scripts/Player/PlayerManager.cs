@@ -540,7 +540,6 @@ public class PlayerManager : MonoBehaviour
         if (!canShoot)
         {
             Debug.Log($"Attendez le cooldown du tir");
-            _playerSystem.PlaySound("Menu_ChoosePlayer1");
             return;
         }
 
@@ -557,7 +556,6 @@ public class PlayerManager : MonoBehaviour
         if (!IsThereEnoughSpace(aimDirection))
         {
             Debug.Log("Not enough space to spawn a cube.");
-            _playerSystem.PlaySound("Menu_ChoosePlayer1");
             return;
         }
 
