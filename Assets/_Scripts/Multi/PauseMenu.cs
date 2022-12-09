@@ -23,6 +23,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Pause()
     {
+        audioManager.Stop("Game_Music");
         audioManager.Play("Game_Pause");
         audioManager.Play("Game_PauseLoop");
         Time.timeScale = 0;
@@ -34,6 +35,7 @@ public class PauseMenu : MonoBehaviour
     {
         audioManager.Play("Game_Resume");
         audioManager.Stop("Game_PauseLoop");
+        audioManager.Play("Game_Music");
         Time.timeScale = 1;
         parentGo.SetActive(false);
         
