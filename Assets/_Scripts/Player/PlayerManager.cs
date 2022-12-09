@@ -651,7 +651,7 @@ public class PlayerManager : MonoBehaviour
     #region Other
     public void UpdatePlayerScale()
     {
-        transform.localScale = Vector3.one * Mathf.Lerp(_minSize, _maxSize, fullness * .01f);
+      //  transform.localScale = Vector3.one * Mathf.Lerp(_minSize, _maxSize, fullness * .01f);
         //UpdateTextUI();
     }
     

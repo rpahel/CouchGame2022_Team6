@@ -3,8 +3,11 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using Color = UnityEngine.Color;
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -484,7 +487,7 @@ public class LevelGenerator : MonoBehaviour
 
         CubeDestroyable cube = _cubeRespawnList[0];
         
-        Debug.Log("cube to respawn " + cube);
+       // Debug.Log("cube to respawn " + cube);
         RemoveFromRespawnList(cube);
 
         if(!GameManager.Instance.CanSpawnCubeAt(cube.transform.position))
@@ -501,23 +504,15 @@ public class LevelGenerator : MonoBehaviour
         if (cube is Cube_TNT && !respawn)
             yield break;
 
-        List<Cube_TNT> allTNTS = FindObjectsOfType<Cube_TNT>().ToList();
-        List<GameObject> children = new List<GameObject>();
-        
-        foreach(Cube_TNT tnt in allTNTS)
-            children.Add(tnt.transform.GetChild(0).gameObject);
-
-        foreach (GameObject child in children) {
-            if (Vector3Int.FloorToInt(child.transform.position) == Vector3Int.FloorToInt(cube.transform.position)) {
-                Debug.Log("looog");
-                RemoveFromRespawnList(cube);
-                _canRespawnCube = false;
-                StartCoroutine(CubeRespawnCooldown());
-                _respawnCoroutine = null;
-                yield break;
-            }
+        Collider2D result = Physics2D.OverlapBox(cube.transform.position, new Vector2(Scale,Scale), 90,1 << 12);
+        if (result != null) {
+            RemoveFromRespawnList(result.gameObject.GetComponentInParent<CubeDestroyable>());
+            _canRespawnCube = false;
+            StartCoroutine(CubeRespawnCooldown());
+            _respawnCoroutine = null;
+            yield break;
         }
-
+        
         cube.GetBarfed(cube.transform.position);
         cube.GetComponentInChildren<SpriteRenderer>().color = cubeEdibleDefaultColor;
         _canRespawnCube = false;

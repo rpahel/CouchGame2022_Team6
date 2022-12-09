@@ -50,10 +50,16 @@ public class Cube_TNT : CubeDestroyable {
                         ((Cube_TNT)c).Explode(c.transform,source);
                 }
 
-                RaycastHit2D hit = Physics2D.BoxCast(colParent.position,new Vector2(levelGenerator.Scale,levelGenerator.Scale),90,dir, Mathf.Infinity,1 << 3);
-
-                if (hit.collider != null && hit.collider.TryGetComponent<PlayerManager>(out PlayerManager playerManager)) 
-                    playerManager.OnDamage(source, damageEat, Vector3.zero);
+                for (int i = 0; i < 200; i++) {
+                    Vector3 checkPosition = colParent.GetChild(0).position + direction * i;
+                    
+                    foreach (PlayerManager playerManager in FindObjectsOfType<PlayerManager>()) {
+                        if (playerManager.GetComponent<Collider2D>().bounds.Contains(checkPosition)) {
+                            Debug.Log("hit my player");
+                            playerManager.OnDamage(source,damageEat,Vector3.zero);
+                        }
+                    }
+                }
             }
         }
 
@@ -61,6 +67,7 @@ public class Cube_TNT : CubeDestroyable {
         levelGenerator.AddToRespawnList(colParent.gameObject.GetComponent<CubeDestroyable>());
     }
     
+
     private List<CubeDestroyable> FindCubeInDirection(Vector3 direction,List<CubeDestroyable> cubes,GameObject origin) {
         List<Vector3> allPositions = new List<Vector3>();
 
