@@ -20,7 +20,7 @@ public class Knockback : State
 
     public override void FixedUpdate()
     {
-        if (playerSystem.PlayerManager.GroundCheck() && playerSystem.PlayerManager.Rb2D.velocity.y == 0)
+        if (playerSystem.PlayerManager.GroundCheck() && playerSystem.PlayerManager.Rb2D.velocity.y == 0 && playerSystem.PlayerManager.fullness > 0)
             playerSystem.SetState((new Moving(playerSystem)));
     }
 }

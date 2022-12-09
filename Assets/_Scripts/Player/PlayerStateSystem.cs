@@ -48,13 +48,13 @@ public class PlayerStateSystem : StateMachine
         State?.OnKnockback(knockBackForce);
     }
 
-    public void SetStun<T>(T damageDealer, int damage, Vector2 knockBackForce)
-    {
-        if (State is Special) return;
-
-        SetState((new Stun(this)));
-        State?.OnStun<T>(damageDealer, damage, knockBackForce);
-    }
+    //public void SetStun<T>(T damageDealer, int damage, Vector2 knockBackForce)
+    //{
+    //    if (State is Special) return;
+    //
+    //    SetState((new Stun(this)));
+    //    State?.OnStun<T>(damageDealer, damage, knockBackForce);
+    //}
 
     public void PlaySound(string name)
     {
