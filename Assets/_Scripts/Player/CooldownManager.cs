@@ -107,6 +107,7 @@ public class CooldownManager : MonoBehaviour
 
     private IEnumerator DashCoroutine(float dashDuration)
     {
+        _trailRenderer.emitting = true;
         playerSystemManager.canDash = false;
         SetupCoroutine(faceManager.FaceDash);
         gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
@@ -137,6 +138,7 @@ public class CooldownManager : MonoBehaviour
 
     private IEnumerator UndoDash(float originalGravityScale)
     {
+        _trailRenderer.emitting = false;
         playerSystemManager.Rb2D.gravityScale = originalGravityScale;
         gameObject.layer = LayerMask.NameToLayer("Player");
         playerSystemManager.SpecialTrigger.SetActive(false);
