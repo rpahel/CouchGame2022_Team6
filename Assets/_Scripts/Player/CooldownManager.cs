@@ -10,6 +10,7 @@ public class CooldownManager : MonoBehaviour
     private FaceManager faceManager;
     private TrailRenderer _trailRenderer;
     private Coroutine faceCoroutine;
+    
     private void Awake()
     {
         playerSystemManager = GetComponent<PlayerManager>();
@@ -72,7 +73,7 @@ public class CooldownManager : MonoBehaviour
     public IEnumerator JumpCoroutine()
     {
         playerSystemManager.isJumping = true;
-        
+        playerSystemManager.SetupJumpEffect();
         playerSystem.PlaySound("Player_Jump");
         SetupCoroutine(faceManager.FaceJump);
         float t = 0;
@@ -107,6 +108,7 @@ public class CooldownManager : MonoBehaviour
     private IEnumerator DashCoroutine(float dashDuration)
     {
         playerSystemManager.canDash = false;
+        SetupCoroutine(faceManager.FaceDash);
         gameObject.layer = LayerMask.NameToLayer("PlayerDashing");
         playerSystemManager.SpecialTrigger.SetActive(true);
         var originalGravityScale = playerSystemManager.Rb2D.gravityScale;

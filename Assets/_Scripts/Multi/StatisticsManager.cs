@@ -49,13 +49,13 @@ public class StatisticsManager : MonoBehaviour
         SetupStatsMenu();
         
         var sortedArray = _arrayStats.OrderByDescending(x => x._damageDeal);
-
-        var playerConfigs = applicationManager.GetPlayerConfigs().ToArray();
+        var listStats = sortedArray.ToList();
+        
         byte index = 0;
         
         foreach (Stats playerStats in sortedArray)
         {
-            listStatsNameplate[index].SetStats(index, playerStats._damageDeal, playerStats._kill, playerStats._death);
+            listStatsNameplate[index].SetStats(index, listStats[index]._playerIndex, playerStats._damageDeal, playerStats._kill, playerStats._death);
             index++;
         }
     }
@@ -63,7 +63,6 @@ public class StatisticsManager : MonoBehaviour
     public void NextLevel()
     {
         int index = SceneManager.GetActiveScene().buildIndex;
-        //SceneManager.LoadScene(index + 1);
         applicationManager.StartCoroutine(applicationManager.LoadAsynchronously(index + 1));
     }
 

@@ -5,6 +5,8 @@ using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -204,6 +206,16 @@ public class PlayerManager : MonoBehaviour
     public float DashCooldown => dashCooldown;
     public float DashForce => dashForce;
     public GameObject SpecialTrigger => specialTrigger;
+
+    [Header("TEST STRESH AND SQUASH")]
+    private Vector3 normalSpriteScale;
+    public float durationEffectJump;
+    public float multiplierXJump;
+    public float multiplierYJump;
+
+    [Header("SCORING VALUES")] 
+    [SerializeField] private int damageScore;
+    [SerializeField] private int killScore;
     #endregion
 
     #region UNITY_FUNCTIONS
@@ -230,6 +242,7 @@ public class PlayerManager : MonoBehaviour
         _raycastRange = GameManager.Instance.LevelGenerator.Scale * 4;
         _rb2D.gravityScale = _gravityScale != 0 ? _gravityScale : _rb2D.gravityScale;
         _invincibleCd = GameManager.Instance.invincibilityCooldown;
+        normalSpriteScale = sprite.transform.localScale;
 
         UpdatePlayerScale();
         UpdateScoring();
@@ -492,6 +505,7 @@ public class PlayerManager : MonoBehaviour
         if (_playerSystem.PlayerState is Special || _isInvincible) return;
         
         _playerSystem.StopAllEffects();
+        _cooldownManager.SetupCoroutine(faceManager.FaceDamage);
         var damageDealerIsAPlayer = false;
         PlayerManager damager = null;
         
@@ -513,16 +527,18 @@ public class PlayerManager : MonoBehaviour
 
         fullness = Mathf.Clamp(fullness - damage, 0, 100);
 
-        if(damageDealerIsAPlayer)
-            UpdateStats(damager, damage);
-        
         if (fullness <= 0 && _playerSystem.PlayerState is not Dead)
         {
             _playerSystem.SetState(new Dead(_playerSystem));
             _playerSystem.PlaySound("Player_Kill");
             _playerSystem.PlaySound("Player_Death");
+            if(damageDealerIsAPlayer)
+                UpdateStats(damager);
             return;
         }
+        
+        if(damageDealerIsAPlayer)
+            UpdateStats(damager, damageScore);
         
         UpdatePlayerScale();
 
@@ -674,7 +690,7 @@ public class PlayerManager : MonoBehaviour
         foreach (Stats stats in statsManager.ArrayStats)
         {
             if (stats._playerIndex == playerIndex)
-                textUI.text = stats._damageDeal.ToString(CultureInfo.InvariantCulture);
+                textUI.text = stats._damageDeal.ToString(CultureInfo.CurrentCulture);
         }
     }
 
@@ -707,15 +723,13 @@ public class PlayerManager : MonoBehaviour
         face.sprite = sprite;
     }
     
-    private void UpdateStats(PlayerManager damageDealer, float damage)
+    private void UpdateStats(PlayerManager damageDealer, int score)
     {
-        var indexDamageDealer = GameManager.Instance.GetPlayerIndex(damageDealer.gameObject);
-        
         foreach (var playerStat in statsManager.ArrayStats)
         {
-            if (playerStat._playerIndex == indexDamageDealer)
+            if (playerStat._playerIndex == damageDealer.playerIndex)
             {
-                playerStat._damageDeal += damage;
+                playerStat._damageDeal += score;
             }
         }
         
@@ -723,17 +737,14 @@ public class PlayerManager : MonoBehaviour
     }
     private void UpdateStats(PlayerManager damageDealer)
     {
-
-        var indexDamageDealer = GameManager.Instance.GetPlayerIndex(damageDealer.gameObject);
-        var indexDamageReceiver = GameManager.Instance.GetPlayerIndex(this.gameObject);
-        
         foreach (var playerStat in statsManager.ArrayStats)
         {
-            if (playerStat._playerIndex == indexDamageDealer)
+            if (playerStat._playerIndex == damageDealer.playerIndex)
             {
+                playerStat._damageDeal += killScore;
                 playerStat._kill++;
             }
-            else if (playerStat._playerIndex == indexDamageReceiver)
+            else if (playerStat._playerIndex == playerIndex)
             {
                 playerStat._death++;
             }
@@ -755,6 +766,29 @@ public class PlayerManager : MonoBehaviour
         }
 
         _isInvincible = false;
+    }
+    
+    public void SetupJumpEffect()
+    {
+        StartCoroutine(StreshAndSquash(durationEffectJump, multiplierXJump, multiplierYJump));
+    }
+    
+    
+    private IEnumerator StreshAndSquashJump(float duration, float multiplierX, float multiplierY)
+    {
+        var dur2 = duration / 2;
+        var dur4 = duration / 4;
+        sprite.transform.DOScale(new Vector3(normalSpriteScale.x * multiplierX, normalSpriteScale.y * multiplierY, normalSpriteScale.z), dur4);
+        yield return new WaitForSeconds(dur4);
+        sprite.transform.DOScale(new Vector3(normalSpriteScale.x * multiplierY, normalSpriteScale.y * multiplierX, normalSpriteScale.z), dur4 * 3);
+    }
+    
+    private IEnumerator StreshAndSquash(float duration, float multiplierX, float multiplierY)
+    {
+        var dur = duration / 2;
+        sprite.transform.DOScale(new Vector3(normalSpriteScale.x * multiplierX, normalSpriteScale.y * multiplierY, normalSpriteScale.z), dur);
+        yield return new WaitForSeconds(dur);
+        sprite.transform.DOScale(normalSpriteScale, dur);
     }
 #endregion
 }

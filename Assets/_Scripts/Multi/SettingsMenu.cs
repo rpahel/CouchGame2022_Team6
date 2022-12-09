@@ -13,9 +13,11 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] private AudioMixer audioMixer;
     private Resolution[] resolutions;
     [SerializeField] private Button buttonPlay;
+    [SerializeField] private Button buttonSkip;
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private GameObject optionsMenu;
     [SerializeField] private GameObject mainMenu;
+    [SerializeField] private GameObject tutorielMenu;
     [SerializeField] private EventSystem eventSystem;
 
     private AudioManager audioManager;
@@ -86,6 +88,13 @@ public class SettingsMenu : MonoBehaviour
         optionsMenu.SetActive(false);
         mainMenu.SetActive(true);
         buttonPlay.Select();
+    }
+
+    public void ShowTutorielMenu()
+    {
+        mainMenu.SetActive(false);
+        tutorielMenu.SetActive(true);
+        buttonSkip.Select();
     }
     
     public void Play()
