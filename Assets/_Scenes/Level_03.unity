@@ -1319,9 +1319,9 @@ MonoBehaviour:
     type: 3}
   cubeTNT: {fileID: 9104288708286051530, guid: 4da42d8564429d44189b34e58deaa9ee, type: 3}
   bedrockSprites:
-  - {fileID: 21300000, guid: 9597a1ca6519abe45b646af46d6cfe72, type: 3}
-  - {fileID: 21300000, guid: 9597a1ca6519abe45b646af46d6cfe72, type: 3}
-  cubeEdibleDefaultColor: {r: 1, g: 0.8389567, b: 0, a: 1}
+  - {fileID: 21300000, guid: 1311b2a301a20b34989ff36adbb2677b, type: 3}
+  - {fileID: 21300000, guid: 1311b2a301a20b34989ff36adbb2677b, type: 3}
+  cubeEdibleDefaultColor: {r: 0.9433962, g: 0, b: 0.60154533, a: 1}
   spawnAnim: 1
   smoothType: 27
   beforeStart: 1

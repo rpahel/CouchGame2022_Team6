@@ -91,13 +91,14 @@ public class StatisticsManager : MonoBehaviour
     public void CheckLevels()
     {
         int index = SceneManager.GetActiveScene().buildIndex;
-        string[] scenes = EditorBuildSettings.scenes
-            .Select( scene => scene.path )
-            .ToArray();
+        //string[] scenes = EditorBuildSettings.scenes
+           // .Select( scene => scene.path )
+            //.ToArray();
 
-        var numbersOfScene = scenes.Length - 1;
+        //var numbersOfScene = scenes.Length - 1;
 
-        if (numbersOfScene > index)
+       // if (numbersOfScene > index)
+       if (6 > index)
         {
             canGoToNextLevel = true;
             nextLevelGoButton.Select();

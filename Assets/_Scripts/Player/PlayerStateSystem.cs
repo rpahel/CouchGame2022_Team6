@@ -8,7 +8,7 @@ public class PlayerStateSystem : StateMachine
     public PlayerManager PlayerManager { get; private set; }
     public CooldownManager CooldownManager { get; private set; }
     public FaceManager FaceManager { get; private set; }
-    public PLAYER_STATE currentState;
+    //public PLAYER_STATE currentState;
     public State PlayerState => State;
     private AudioManager audioManager;
 
@@ -34,7 +34,7 @@ public class PlayerStateSystem : StateMachine
 
     private void LateUpdate()
     {
-        currentState = (PLAYER_STATE)System.Enum.Parse(typeof(PLAYER_STATE), this.State.GetType().ToString());
+        //currentState = (PLAYER_STATE)System.Enum.Parse(typeof(PLAYER_STATE), this.State.GetType().ToString());
     }
 
     private void CustomUpdate()
