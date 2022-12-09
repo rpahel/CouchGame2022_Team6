@@ -541,6 +541,7 @@ MonoBehaviour:
   insideSprite: {fileID: 1940364374433954416}
   sprite: {fileID: 2761370740021712296}
   face: {fileID: 4694164677238054512}
+  playerIndex: 0
   _maxSize: 2.857
   _minSize: 1
   imageUI: {fileID: 0}
