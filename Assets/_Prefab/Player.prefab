@@ -520,6 +520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 841c3f292530672448975549f468b8b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
   listVfX_effect:
   - {fileID: 5840469309029775217}
   - {fileID: 8878492824208527085}
@@ -609,7 +610,7 @@ MonoBehaviour:
   wallJumpDuration: 0.2
   wallDetectionRadius: 0.15
   wallJumping: 0
-  wallJumpAngle: 70
+  wallJumpAngle: 100
   wallJumpForce: 40
   canWallJump: 0
   cantDoubleJump: 0

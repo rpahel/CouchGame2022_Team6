@@ -9,6 +9,7 @@ public class Dead : State
 
     public override void Start()
     {
+        waitTime = 0;
         timeToWait = GameManager.Instance.RespawnTime;
         Die();
     }
@@ -45,5 +46,6 @@ public class Dead : State
         playerSystem.SetState(new Moving(playerSystem));
         playerSystem.gameObject.layer = LayerMask.NameToLayer("Player");
         playerSystem.PlayerManager.IsInvincible = true;
+        waitTime = 0;
     }
 }

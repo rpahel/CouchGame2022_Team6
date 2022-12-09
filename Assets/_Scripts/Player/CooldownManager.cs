@@ -62,13 +62,13 @@ public class CooldownManager : MonoBehaviour
         }
     }
 
-    public IEnumerator ActivateInputDelay(float duration)
-    {
-        //playerSystem.PlayerInputs.SetEnableInput(false);
-        yield return new WaitForSeconds(duration);
-        //playerSystem.PlayerInputs.SetEnableInput(true);
-        playerSystem.SetState(new Moving(playerSystem));
-    }
+    //public IEnumerator ActivateInputDelay(float duration)
+    //{
+    //    //playerSystem.PlayerInputs.SetEnableInput(false);
+    //    yield return new WaitForSeconds(duration);
+    //    //playerSystem.PlayerInputs.SetEnableInput(true);
+    //    playerSystem.SetState(new Moving(playerSystem));
+    //}
 
     public IEnumerator JumpCoroutine()
     {

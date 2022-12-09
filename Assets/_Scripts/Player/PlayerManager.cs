@@ -445,7 +445,14 @@ public class PlayerManager : MonoBehaviour
 
     }
 
-   public void UpdateWallJump()
+
+ /*   private void OnGUI()
+    {
+        GUI.skin.label.fontSize = 30;
+        GUILayout.Label("Velocity = " + inputVectorDirection);
+
+    }*/
+    public void UpdateWallJump()
     {
         if (!wallJumping) return;
 
@@ -475,7 +482,10 @@ public class PlayerManager : MonoBehaviour
         
         isPlayerTouchingWall = (hit != null);
 
-        if (isPlayerTouchingWall && !GroundCheck() && !wallJumping && inputVectorDirection.x >= 0.90f || isPlayerTouchingWall && !GroundCheck() && !wallJumping && inputVectorDirection.x <= -0.90f )
+        if (isPlayerTouchingWall && !GroundCheck() && !wallJumping && inputVectorDirection.x >= 0.90f 
+            || isPlayerTouchingWall && !GroundCheck() && !wallJumping && inputVectorDirection.x <= -0.90f 
+            || isPlayerTouchingWall && !GroundCheck() && !wallJumping && inputVectorDirection.y >= 0.10f
+            || isPlayerTouchingWall && !GroundCheck() && !wallJumping && inputVectorDirection.y <= -0.10f)
         {
 
             dirPlayerToWall = Mathf.Sign(_rb2D.position.x - hit.transform.position.x);
