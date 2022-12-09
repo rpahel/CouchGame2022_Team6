@@ -1148,6 +1148,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
         type: 3}
+      propertyPath: listPlayersGfx.Array.data[0].arrow
+      value: 
+      objectReference: {fileID: 21300000, guid: 87ba2bd64ceee3842bed6691a2fc99c1,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[1].arrow
+      value: 
+      objectReference: {fileID: 21300000, guid: dc0191f498ad4cb459f294b30e1c3dc8,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[2].arrow
+      value: 
+      objectReference: {fileID: 21300000, guid: bc729d0b7e8094c4285796bf257770c8,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[3].arrow
+      value: 
+      objectReference: {fileID: 21300000, guid: 111e13d672d69064aba55d41cfacb1ba,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
       propertyPath: listColorRemaining.Array.data[1].index
       value: 1
       objectReference: {fileID: 0}

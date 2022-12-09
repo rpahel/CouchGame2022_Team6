@@ -33,6 +33,8 @@ public class PlayerManager : MonoBehaviour
     public SpriteRenderer sprite;
     [SerializeField] private SpriteRenderer face;
     public SpriteRenderer Face => face;
+    [SerializeField] private SpriteRenderer arrow;
+    public SpriteRenderer Arrow => arrow;
     [HideInInspector] public int playerIndex;
     private bool _isInvincible = false;
     public bool IsInvincible
