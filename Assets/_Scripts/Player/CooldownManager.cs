@@ -8,7 +8,7 @@ public class CooldownManager : MonoBehaviour
     private PlayerManager playerSystemManager;
     private PlayerStateSystem playerSystem;
     private FaceManager faceManager;
-    private TrailRenderer _trailRenderer;
+    private TrailRenderer _trailRenderer ;
     private Coroutine faceCoroutine;
     
     private void Awake()
@@ -17,6 +17,8 @@ public class CooldownManager : MonoBehaviour
         playerSystem = GetComponent<PlayerStateSystem>();
         faceManager = GetComponent<FaceManager>();
         _trailRenderer = GetComponent<TrailRenderer>();
+        _trailRenderer.emitting = false;
+
     }
 
     public IEnumerator CooldownShoot()
