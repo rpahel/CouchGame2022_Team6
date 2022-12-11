@@ -11,13 +11,15 @@ using Random = UnityEngine.Random;
 
 public class PlayerSetupMenuController : MonoBehaviour
 {
-    private int PlayerIndex;
+    private int playerIndex;
     private AudioManager audioManager;
 
     //[SerializeField] private LocalizedText text;
     
     [SerializeField] private GameObject readyPanel;
     [SerializeField] private GameObject menuPanel;
+    [SerializeField] private Image skinImageButtonLeft;
+    [SerializeField] private Image skinImageButtonRight;
     [SerializeField] private Button readyButton;
     [SerializeField] private Image playerImage;
     [SerializeField] private Image playerFace;
@@ -31,6 +33,8 @@ public class PlayerSetupMenuController : MonoBehaviour
     private float ignoreInputTime = 0.1f;
     private bool inputEnabled;
     private bool isOnReadyPanel;
+    private bool skinIsSelected;
+    private PlayerGfxUI playerGfx;
 
     private ColorPlayer colorChoose;
     private List<GameObject> listButtonColorGo = new List<GameObject>();
@@ -86,6 +90,22 @@ public class PlayerSetupMenuController : MonoBehaviour
         }
     }
 
+    public void SwapSkins()
+    {
+        if (skinIsSelected)
+        {
+            manager.SetPlayerSkin(playerIndex, playerGfx.player);
+            playerImage.sprite = playerGfx.player;
+            skinIsSelected = false;
+        }
+        else
+        {
+            manager.SetPlayerSkin(playerIndex, playerGfx.skin);
+            playerImage.sprite = playerGfx.skin;
+            skinIsSelected = true;
+        }
+    }
+
     public void RefreshColors()
     {
         foreach (GameObject go in listButtonColorGo)
@@ -99,7 +119,7 @@ public class PlayerSetupMenuController : MonoBehaviour
 
     public void SetPlayerIndex(int pi)
     {
-        PlayerIndex = pi;
+        playerIndex = pi;
         //text.hardText = (pi + 1).ToString();
         //titleText.text = "Player" + (pi + 1).ToString();
         ignoreInputTime = Time.time + ignoreInputTime;
@@ -118,7 +138,7 @@ public class PlayerSetupMenuController : MonoBehaviour
         if (!inputEnabled) { return;}
 
         colorChoose = colorPlayer;
-        var playerGfx = colorChoose.index switch
+        playerGfx = colorChoose.index switch
         {
             0 => manager.ListPlayersGfx[0],
             1 => manager.ListPlayersGfx[1],
@@ -128,8 +148,10 @@ public class PlayerSetupMenuController : MonoBehaviour
         };
 
         PlayRandomCharacterSound();
-        ApplicationManager.Instance.SetPlayerGfx(PlayerIndex, playerGfx);
+        ApplicationManager.Instance.SetPlayerGfx(playerIndex, playerGfx);
         playerImage.sprite = playerGfx.player;
+        skinImageButtonLeft.sprite = playerGfx.buttonSkin;
+        skinImageButtonRight.sprite = playerGfx.buttonSkin;
         playerFace.sprite = playerGfx.face;
         menuImage.sprite = playerGfx.menu;
         buttonReadyImage.sprite = playerGfx.button;
@@ -160,7 +182,7 @@ public class PlayerSetupMenuController : MonoBehaviour
     public void ReadyPlayer()
     {
         if (!inputEnabled) { return;}
-        ApplicationManager.Instance.ReadyPlayer(PlayerIndex);
+        manager.ReadyPlayer(playerIndex);
         readyButton.gameObject.SetActive(false);
         buttonBackImage.gameObject.SetActive(false);
     }
