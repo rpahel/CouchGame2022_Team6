@@ -15,6 +15,7 @@ public class StatisticsManager : MonoBehaviour
     [HideInInspector] public Stats[] _arrayStats;
     public Stats[] ArrayStats => _arrayStats;
 
+    [SerializeField] private int numberOfLevels;
     [SerializeField] private GameObject prefabStats;
     [SerializeField] private GameObject statsGoUI;
     [SerializeField] private Button nextLevelGoButton;
@@ -91,14 +92,8 @@ public class StatisticsManager : MonoBehaviour
     public void CheckLevels()
     {
         int index = SceneManager.GetActiveScene().buildIndex;
-        //string[] scenes = EditorBuildSettings.scenes
-           // .Select( scene => scene.path )
-            //.ToArray();
-
-        //var numbersOfScene = scenes.Length - 1;
-
-       // if (numbersOfScene > index)
-       if (5 > index)
+        
+       if (numberOfLevels > index)
         {
             canGoToNextLevel = true;
             nextLevelGoButton.Select();
