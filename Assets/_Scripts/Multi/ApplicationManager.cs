@@ -121,7 +121,7 @@ public class ApplicationManager : MonoBehaviour
         
         if (_playerConfigs.Any(p => p.IsReady != true) && _playerConfigs.Count >= minPlayers)
         {
-            indicativeText.text = "GERT READY TO START";
+            indicativeText.text = "GET READY TO START";
         }
     }
     

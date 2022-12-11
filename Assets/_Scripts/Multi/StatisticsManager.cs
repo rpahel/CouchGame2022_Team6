@@ -98,7 +98,7 @@ public class StatisticsManager : MonoBehaviour
         //var numbersOfScene = scenes.Length - 1;
 
        // if (numbersOfScene > index)
-       if (6 > index)
+       if (5 > index)
         {
             canGoToNextLevel = true;
             nextLevelGoButton.Select();
