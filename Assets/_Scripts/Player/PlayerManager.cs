@@ -1,12 +1,11 @@
 using CustomMaths;
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -267,7 +266,7 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!isJumping)
+        if (!isJumping && _playerSystem.PlayerState is not Special)
             _rb2D.gravityScale = _gravityScale;
 
         if (_isInvincible)

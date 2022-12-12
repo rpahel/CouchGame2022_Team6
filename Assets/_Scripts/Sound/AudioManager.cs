@@ -44,7 +44,7 @@ public class AudioManager : MonoBehaviour
                         return;
                 }
 
-            if(name != "Game_Music" && name != "Menu_Music")
+            if(name == "Game_Music" || name == "Menu_Music" || name == "Game_Pause")
                 s.source.pitch = UnityEngine.Random.Range(RandomPitchMin, RandomPitchMax);
             else
                 s.source.pitch = 1;
