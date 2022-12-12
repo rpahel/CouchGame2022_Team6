@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Cube_TNT : CubeDestroyable {
@@ -26,6 +27,7 @@ public class Cube_TNT : CubeDestroyable {
         {
             mesh.sortingOrder = 200;
         }
+        
         shakeSource = GetComponent<CinemachineImpulseSource>();
     }
 
@@ -41,23 +43,22 @@ public class Cube_TNT : CubeDestroyable {
         foreach (Vector2 dir in pattern.pattern) {
             if (dir != Vector2.zero) {
                 Vector3 direction = new Vector3(dir.x,dir.y,colParent.position.z);
-                foreach (CubeDestroyable c in FindCubeInDirection(direction, FindObjectsOfType<CubeDestroyable>().ToList(), colParent.GetChild(0).gameObject)) {
-                    StartCoroutine(c.Suck(c.transform.GetChild(0).gameObject, colParent));
+                foreach (CubeDestroyable c in FindCubeInDirection(direction, colParent.GetChild(0).gameObject)) {
 
                     levelGenerator.AddToRespawnList(c);
-                    
-                    if (c.gameObject != this.gameObject && c is Cube_TNT) 
-                        ((Cube_TNT)c).Explode(c.transform,source);
-                }
 
-                for (int i = 0; i < 200; i++) {
-                    Vector3 checkPosition = colParent.GetChild(0).position + direction * i;
-                    
-                    foreach (PlayerManager playerManager in FindObjectsOfType<PlayerManager>()) {
-                        if (playerManager.GetComponent<Collider2D>().bounds.Contains(checkPosition)) {
-                            playerManager.OnDamage(source,damageEat,Vector3.zero);
-                        }
+                    Collider2D[] results = Physics2D.OverlapBoxAll(c.transform.position, new Vector2(levelGenerator.Scale, levelGenerator.Scale), 90);
+
+                    foreach (Collider2D col in results) {
+                        if (col.gameObject.TryGetComponent<PlayerManager>(out PlayerManager playerManager))
+                            playerManager.OnDamage(source, damageEat, Vector3.zero);
                     }
+
+                    if (c.gameObject != this.gameObject && c is Cube_TNT)
+                        ((Cube_TNT)c).Explode(c.transform, source);
+                    else
+                        StartCoroutine(c.Suck(c.transform.GetChild(0).gameObject, colParent));
+                    
                 }
             }
         }
@@ -67,33 +68,32 @@ public class Cube_TNT : CubeDestroyable {
     }
     
 
-    private List<CubeDestroyable> FindCubeInDirection(Vector3 direction,List<CubeDestroyable> cubes,GameObject origin) {
-        List<Vector3> allPositions = new List<Vector3>();
-
-        for (int i = 0; i < 100; i++) 
-            allPositions.Add(origin.transform.position + direction * i);
-
+    private List<CubeDestroyable> FindCubeInDirection(Vector3 direction,GameObject origin) {
         List<CubeDestroyable> cubesInDir = new List<CubeDestroyable>();
+        RaycastHit2D[] hits = Physics2D.RaycastAll(origin.transform.position,direction);
         
-        foreach (Cube cube in cubes) {
-            foreach (Vector3 checkPos in allPositions) {
-                if(cube.GetComponentInChildren<Collider2D>() != null && cube.GetComponentInChildren<Collider2D>().bounds.Contains(checkPos) && cube is CubeDestroyable)
-                    cubesInDir.Add((CubeDestroyable)cube);
+        foreach (RaycastHit2D hit in hits) {
+            if (hit.collider != null &&
+                hit.collider.gameObject.transform.parent.TryGetComponent<CubeDestroyable>(out CubeDestroyable cubeDestroyable)) {
+                cubesInDir.Add(cubeDestroyable);
             }
         }
+
+        cubesInDir.Add(origin.GetComponentInParent<CubeDestroyable>());
 
         return cubesInDir;
     }
 
 
-    private IEnumerator IAnimFlame()
-    {
+    private IEnumerator IAnimFlame() {
         foreach (MeshRenderer mesh in listMeshRendererExplode)
         {
+           // Debug.Log("mesh " + mesh);
             mesh.sortingOrder = 200;
             mesh.gameObject.SetActive(true);
         }
 
+        Debug.Log("timeBeforeAnimDisappear "+ timeBeforeAnimDissapear);
         yield return new WaitForSeconds(timeBeforeAnimDissapear);
             
         foreach (MeshRenderer mesh in listMeshRendererExplode)
