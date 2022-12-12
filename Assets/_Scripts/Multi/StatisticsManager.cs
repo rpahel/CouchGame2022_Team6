@@ -8,6 +8,7 @@ using System.Net.Mail;
 using TMPro;
 using UnityEditor;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using Image = UnityEngine.UI.Image;
 
 public class StatisticsManager : MonoBehaviour
@@ -15,7 +16,7 @@ public class StatisticsManager : MonoBehaviour
     [HideInInspector] public Stats[] _arrayStats;
     public Stats[] ArrayStats => _arrayStats;
 
-    [SerializeField] private int numberOfLevels;
+    [SerializeField] private int numberOfScenes;
     [SerializeField] private GameObject prefabStats;
     [SerializeField] private GameObject statsGoUI;
     [SerializeField] private Button nextLevelGoButton;
@@ -93,7 +94,7 @@ public class StatisticsManager : MonoBehaviour
     {
         int index = SceneManager.GetActiveScene().buildIndex;
         
-       if (numberOfLevels > index)
+       if (numberOfScenes > index)
         {
             canGoToNextLevel = true;
             nextLevelGoButton.Select();

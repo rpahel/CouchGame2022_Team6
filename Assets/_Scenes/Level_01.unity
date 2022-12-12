@@ -319,6 +319,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3525204380141794214, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
+      propertyPath: numberOfScenes
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3525204380141794214, guid: 4384a1065cac4ca46b4d552908158bbe,
+        type: 3}
       propertyPath: nextLevelGoButton
       value: 
       objectReference: {fileID: 7942832776501488197}
