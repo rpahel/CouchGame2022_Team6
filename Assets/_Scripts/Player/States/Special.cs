@@ -20,6 +20,8 @@ public class Special : State
 
     public override void FixedUpdate()
     {
+        playerSystem.PlayerManager.Rb2D.gravityScale = 0;
+
         if(_dashing)
             _playerManager.Rb2D.AddForce(_playerManager.inputDirectionDash * _playerManager.DashForce, ForceMode2D.Impulse);
     }

@@ -5,6 +5,7 @@ public class Moving : State
     public Moving(PlayerStateSystem playerSystem) : base(playerSystem) { }
     
     private Vector2 lastVelocity = Vector2.zero;
+
     public override void Update()
     {
 #if UNITY_EDITOR

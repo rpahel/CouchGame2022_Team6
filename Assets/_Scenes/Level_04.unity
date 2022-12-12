@@ -163,7 +163,7 @@ PrefabInstance:
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
       propertyPath: gameDuration
-      value: 40
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
@@ -1284,7 +1284,6 @@ GameObject:
   m_Component:
   - component: {fileID: 611988393}
   - component: {fileID: 611988394}
-  - component: {fileID: 611988395}
   m_Layer: 0
   m_Name: LevelGenerator
   m_TagString: Untagged
@@ -1319,7 +1318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7bed8b178ffee44a860348c49002fe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 2800000, guid: 43e79f05f9c2781428b3af2217781a9d, type: 3}
+  image: {fileID: 2800000, guid: d50eb8bdb420295489bb14870fce2d71, type: 3}
   scale: 2.857143
   cubeEdible: {fileID: 2613636963887001808, guid: 74a185477bf05c94796ad895b5c85abe,
     type: 3}
@@ -1346,29 +1345,9 @@ MonoBehaviour:
   maxTNTCount: 5
   countLDTNT: 0
   respawn: 1
+  patternsPrefab: {fileID: 1550053693620330980, guid: 090aeb6f704b6044894bd458be9eed85,
+    type: 3}
   allEmptyPositions: []
---- !u!114 &611988395
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 611988391}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6225403ce518e6844806c98bd630b1b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pattern:
-  - {x: 0, y: 0}
-  - {x: 0, y: 1}
-  - {x: 0, y: 0}
-  - {x: -1, y: 0}
-  - {x: 0, y: 0}
-  - {x: 1, y: 0}
-  - {x: 0, y: 0}
-  - {x: 0, y: -1}
-  - {x: 0, y: 0}
 --- !u!1 &736529171
 GameObject:
   m_ObjectHideFlags: 0

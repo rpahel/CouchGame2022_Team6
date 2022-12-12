@@ -163,7 +163,7 @@ PrefabInstance:
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
       propertyPath: gameDuration
-      value: 40
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
@@ -1284,7 +1284,6 @@ GameObject:
   m_Component:
   - component: {fileID: 611988393}
   - component: {fileID: 611988394}
-  - component: {fileID: 611988395}
   m_Layer: 0
   m_Name: LevelGenerator
   m_TagString: Untagged
@@ -1338,7 +1337,7 @@ MonoBehaviour:
   animation: 0.3
   betweenCubes: 0
   betweenLines: 0.05
-  _timeBeforeCubeRespawnStart: 5
+  _timeBeforeCubeRespawnStart: 3
   _respawnCooldown: 0.1
   _firstRespawnTime: 2
   tntDelay: 10
@@ -1346,29 +1345,9 @@ MonoBehaviour:
   maxTNTCount: 5
   countLDTNT: 0
   respawn: 1
+  patternsPrefab: {fileID: 1550053693620330980, guid: 090aeb6f704b6044894bd458be9eed85,
+    type: 3}
   allEmptyPositions: []
---- !u!114 &611988395
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 611988391}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6225403ce518e6844806c98bd630b1b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pattern:
-  - {x: 0, y: 0}
-  - {x: 0, y: 1}
-  - {x: 0, y: 0}
-  - {x: -1, y: 0}
-  - {x: 0, y: 0}
-  - {x: 1, y: 0}
-  - {x: 0, y: 0}
-  - {x: 0, y: -1}
-  - {x: 0, y: 0}
 --- !u!1 &736529171
 GameObject:
   m_ObjectHideFlags: 0

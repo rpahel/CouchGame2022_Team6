@@ -70,6 +70,7 @@ public class LevelGenerator : MonoBehaviour
     private int tntCount;
     [SerializeField,Tooltip("Count or not the number of tnt when the level is loaded")]private bool countLDTNT;
     [SerializeField,Tooltip("Available or no the possibility of tnt to respawn after his destruction")] private bool respawn;
+    [SerializeField] private GameObject patternsPrefab;
     [HideInInspector] public List<Vector3> allEmptyPositions = new();
     private List<TNT> allPaterns;
     
@@ -95,7 +96,7 @@ public class LevelGenerator : MonoBehaviour
     private void Awake()
     {
         cubesArray = new Transform[image.width, image.height];
-        allPaterns = new List<TNT>();
+        allPaterns = patternsPrefab.GetComponents<TNT>().ToList();
     }
 
     private void Start()
