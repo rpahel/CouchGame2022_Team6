@@ -47,7 +47,7 @@ public class Cube_TNT : CubeDestroyable {
 
                     levelGenerator.AddToRespawnList(c);
 
-                    Collider2D[] results = Physics2D.OverlapBoxAll(c.transform.position, new Vector2(levelGenerator.Scale - 0.15f, levelGenerator.Scale - 0.15f), 90);
+                    Collider2D[] results = Physics2D.OverlapBoxAll(c.transform.position, new Vector2(levelGenerator.Scale, levelGenerator.Scale), 90);
 
                     foreach (Collider2D col in results) {
                         if (col.gameObject.TryGetComponent<PlayerManager>(out PlayerManager playerManager))
