@@ -1148,6 +1148,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
         type: 3}
+      propertyPath: listPlayersGfx.Array.data[0].skin
+      value: 
+      objectReference: {fileID: 21300000, guid: 363946df0e19472448fa4acdc79ace35,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[1].skin
+      value: 
+      objectReference: {fileID: 21300000, guid: b569362857ec0e749a7b20274e9f0329,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[2].skin
+      value: 
+      objectReference: {fileID: 21300000, guid: d219a907699fb6446bd8577303d4e474,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[3].skin
+      value: 
+      objectReference: {fileID: 21300000, guid: cb7cbaf9d5d1cd143927a803f2bb2504,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
       propertyPath: listPlayersGfx.Array.data[0].arrow
       value: 
       objectReference: {fileID: 21300000, guid: 87ba2bd64ceee3842bed6691a2fc99c1,
@@ -1192,6 +1216,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
         type: 3}
+      propertyPath: listPlayersGfx.Array.data[0].buttonSkin
+      value: 
+      objectReference: {fileID: 21300000, guid: 40e4378c346d9f54d8e3a406c16dcfaf,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
       propertyPath: listPlayersGfx.Array.data[0].hdrColor.b
       value: 0.44985378
       objectReference: {fileID: 0}
@@ -1205,6 +1235,12 @@ PrefabInstance:
       propertyPath: listPlayersGfx.Array.data[0].hdrColor.r
       value: 0.09840551
       objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[1].buttonSkin
+      value: 
+      objectReference: {fileID: 21300000, guid: 072875fd0b869ea46834e9e7f12a6c77,
+        type: 3}
     - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
         type: 3}
       propertyPath: listPlayersGfx.Array.data[1].hdrColor.b
@@ -1222,6 +1258,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
         type: 3}
+      propertyPath: listPlayersGfx.Array.data[2].buttonSkin
+      value: 
+      objectReference: {fileID: 21300000, guid: 804cbfaaf40e02740a86c9e527f5ce06,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
       propertyPath: listPlayersGfx.Array.data[2].hdrColor.b
       value: 0.09067734
       objectReference: {fileID: 0}
@@ -1235,6 +1277,12 @@ PrefabInstance:
       propertyPath: listPlayersGfx.Array.data[2].hdrColor.r
       value: 1.6074619
       objectReference: {fileID: 0}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[3].buttonSkin
+      value: 
+      objectReference: {fileID: 21300000, guid: 8e0c8f991353ce4418dfefd83e8f1117,
+        type: 3}
     - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
         type: 3}
       propertyPath: listPlayersGfx.Array.data[3].hdrColor.b

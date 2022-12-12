@@ -75,6 +75,11 @@ public class ApplicationManager : MonoBehaviour
         _playerConfigs[index].playerGradient = playerGfx.gradientColor;
         _playerConfigs[index].PlayerArrowSprite = playerGfx.arrow;
     }
+
+    public void SetPlayerSkin(int index, Sprite skin)
+    {
+        _playerConfigs[index].PlayerSprite = skin;
+    }
     public void ReadyPlayer(int index)
     {
         _playerConfigs[index].IsReady = true;
@@ -121,7 +126,7 @@ public class ApplicationManager : MonoBehaviour
         
         if (_playerConfigs.Any(p => p.IsReady != true) && _playerConfigs.Count >= minPlayers)
         {
-            indicativeText.text = "GERT READY TO START";
+            indicativeText.text = "GET READY TO START";
         }
     }
     
@@ -181,9 +186,11 @@ public class PlayerGfxUI
 {
     public Sprite player;
     public Sprite face;
+    public Sprite skin;
     public Sprite arrow;
     public Sprite menu;
     public Sprite button;
+    public Sprite buttonSkin;
     public Sprite icon;
     public Color color;
     [ColorUsage(true, true)]

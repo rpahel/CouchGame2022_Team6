@@ -163,7 +163,7 @@ PrefabInstance:
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
       propertyPath: gameDuration
-      value: 90
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
@@ -312,6 +312,11 @@ PrefabInstance:
       propertyPath: mainMenuButton
       value: 
       objectReference: {fileID: 7942832775611704675}
+    - target: {fileID: 3525204380141794214, guid: 4384a1065cac4ca46b4d552908158bbe,
+        type: 3}
+      propertyPath: numberOfLevels
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3525204380141794214, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
       propertyPath: nextLevelGoButton
@@ -1329,7 +1334,7 @@ MonoBehaviour:
   betweenCubes: 0
   betweenLines: 0.05
   _timeBeforeCubeRespawnStart: 5
-  _respawnCooldown: 0.25
+  _respawnCooldown: 0.1
   _firstRespawnTime: 2
   tntDelay: 10
   randomSpawn: 0
