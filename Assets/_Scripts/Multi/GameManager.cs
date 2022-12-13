@@ -110,13 +110,13 @@ public class GameManager : MonoBehaviour
         
         gameCooldownText.text = niceTime.ToString();
         
-        if((int)_currentGameCooldown == 2 && _alreadyPlayed3 == false)
+        if((int)_currentGameCooldown == 3 && _alreadyPlayed3 == false)
         {
             animatorUI.SetTrigger("Countdown");
             _alreadyPlayed3 = true;
         }
 
-        if((int)_currentGameCooldown == 9 && _alreadyPlayed10 == false)
+        if((int)_currentGameCooldown == 10 && _alreadyPlayed10 == false)
         {
             audioManager.Play("Clock_Warning");
             audioManager.Play("Clock_Last10");
