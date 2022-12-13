@@ -47,18 +47,21 @@ public class Cube_TNT : CubeDestroyable {
 
                     levelGenerator.AddToRespawnList(c);
 
-                    Collider2D[] results = Physics2D.OverlapBoxAll(c.transform.position, new Vector2(levelGenerator.Scale, levelGenerator.Scale), 90);
-
-                    foreach (Collider2D col in results) {
-                        if (col.gameObject.TryGetComponent<PlayerManager>(out PlayerManager playerManager))
-                            playerManager.OnDamage(source, damageEat, Vector3.zero);
-                    }
-
                     if (c.gameObject != this.gameObject && c is Cube_TNT)
                         ((Cube_TNT)c).Explode(c.transform, source);
                     else
                         StartCoroutine(c.Suck(c.transform.GetChild(0).gameObject, colParent));
                     
+                }
+                
+                for (int i = 0; i < 200; i++) {
+                    Vector3 checkPosition = colParent.GetChild(0).position + direction * i;
+                    
+                    foreach (PlayerManager playerManager in FindObjectsOfType<PlayerManager>()) {
+                        if (playerManager.GetComponent<Collider2D>().bounds.Contains(checkPosition)) {
+                            playerManager.OnDamage(source,damageEat,Vector3.zero);
+                        }
+                    }
                 }
             }
         }
