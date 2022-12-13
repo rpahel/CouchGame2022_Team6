@@ -47,12 +47,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameDuration: 0
+  respawnTime: 0
   skipCountdown: 0
+  gameTimeText: {fileID: 0}
   gameCooldownText: {fileID: 0}
   _levelGenerator: {fileID: 0}
   _cinemachine: {fileID: 0}
+  cameraManager: {fileID: 0}
   _playersUI: []
   _playerPrefab: {fileID: 0}
+  invincibilityCooldown: 0
   animatorUI: {fileID: 0}
   projectile: {fileID: 0}
   projectileNombre: 0
@@ -68,8 +72,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a28d138b0d1c4854eb8cafad84695111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldownRespawn: 0
-  cooldownInvincible: 0
 --- !u!114 &3525204380141794214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,9 +85,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _arrayStats: []
+  numberOfScenes: 0
+  prefabStats: {fileID: 0}
   statsGoUI: {fileID: 0}
-  listStatsUI: []
-  listImagePlayer: []
-  listTextDamage: []
-  listKillsDamage: []
-  listDeathDamage: []
+  nextLevelGoButton: {fileID: 0}
+  mainMenuButton: {fileID: 0}

@@ -261,7 +261,12 @@ public class PlayerManager : MonoBehaviour
             castDistance = (_coll.bounds.extents.y - _coll.bounds.extents.x) + .1f;
         else
             throw new Exception("PManager.PCollider is not a CapsuleCollider2D. Please update the code.");
+        
         castRadius = _coll.bounds.extents.x - .05f;
+        
+        
+        
+        Debug.Log("state " + _playerSystem.PlayerState + " _src " + transform.name);
     }
 
     private void FixedUpdate()
@@ -419,6 +424,8 @@ public class PlayerManager : MonoBehaviour
     }
     #endregion
 
+
+    
     #region WallJump
     public void WallJump()
     {
@@ -751,6 +758,9 @@ public class PlayerManager : MonoBehaviour
     {
         foreach (var playerStat in statsManager.ArrayStats)
         {
+            if (playerStat._source == null)
+                playerStat._source = damageDealer;
+            
             if (playerStat._playerIndex == damageDealer.playerIndex)
             {
                 playerStat._damageDeal += killScore;
