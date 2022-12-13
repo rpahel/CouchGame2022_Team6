@@ -163,7 +163,7 @@ PrefabInstance:
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
       propertyPath: gameDuration
-      value: 40
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
@@ -184,7 +184,7 @@ PrefabInstance:
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
       propertyPath: skipCountdown
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
@@ -315,6 +315,11 @@ PrefabInstance:
     - target: {fileID: 3525204380141794214, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
       propertyPath: numberOfLevels
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3525204380141794214, guid: 4384a1065cac4ca46b4d552908158bbe,
+        type: 3}
+      propertyPath: numberOfScenes
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3525204380141794214, guid: 4384a1065cac4ca46b4d552908158bbe,
@@ -1332,7 +1337,7 @@ MonoBehaviour:
   animation: 0.3
   betweenCubes: 0
   betweenLines: 0.05
-  _timeBeforeCubeRespawnStart: 5
+  _timeBeforeCubeRespawnStart: 3
   _respawnCooldown: 0.1
   _firstRespawnTime: 2
   tntDelay: 10
@@ -7609,7 +7614,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -8794,7 +8799,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -9870,7 +9875,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -10232,7 +10237,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
