@@ -50,6 +50,9 @@ public class GameManager : MonoBehaviour
     //============================ Game Animator UI
 
     [SerializeField] private Animator animatorUI;
+    private bool _alreadyPlayed3 = false;
+    private bool _alreadyPlayed10 = false;
+
 
     //============================ Projectile
     [Header("Projectile Data")]
@@ -89,6 +92,12 @@ public class GameManager : MonoBehaviour
         GenerateProjectilePool(projectileNombre);
     }
 
+    private void Start()
+    {
+        _alreadyPlayed3 = false;
+        _alreadyPlayed10 = false;
+    }
+
     private void Update()
     {
         if (_applicationManager?.GameState != GAME_STATE.PLAYING) return;
@@ -99,13 +108,29 @@ public class GameManager : MonoBehaviour
         string niceTime = string.Format("{0:0}:{1:00}", minutes, seconds);
         
         gameCooldownText.text = niceTime.ToString();
-            
+        
+        if((int)_currentGameCooldown == 2 && _alreadyPlayed3 == false)
+        {
+            animatorUI.SetTrigger("Countdown");
+            _alreadyPlayed3 = true;
+        }
+
+        if((int)_currentGameCooldown == 9 && _alreadyPlayed10 == false)
+        {
+            audioManager.Play("Clock_Warning");
+            audioManager.Play("Clock_Last10");
+            _alreadyPlayed10 = true;
+        }
+
         if (_currentGameCooldown <= 0f)
         {
             _applicationManager.SetGameState(GAME_STATE.END);
             audioManager.Stop("Game_Music");
+            audioManager.Stop("Clock_Last10");
             SetAllInputs(false);
             StatsManager.ShowStats();
+            _alreadyPlayed3 = false;
+            _alreadyPlayed10 = false;
         }
     }
 

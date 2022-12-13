@@ -24,7 +24,12 @@ public class BuildPlayerExample : MonoBehaviour
     {
         BuildPlayerOptions buildPlayerOptions = new()
         {
-            scenes = new[] { "Assets/_Scenes/Game.unity" },
+            scenes = new[] { "Assets/_Scenes/MainMenu.unity",
+                             "Assets/_Scenes/PlayerChooseMenu.unity",
+                             "Assets/_Scenes/Level_01.unity",
+                             "Assets/_Scenes/Level_02.unity",
+                             "Assets/_Scenes/Level_03.unity",
+                             "Assets/_Scenes/Level_04.unity"},
             locationPathName = $"Builds/Build_{System.DateTime.Now:yyyy.MM.dd_hh.mm.ss}/Team6_Glouton.exe",
             target = BuildTarget.StandaloneWindows64,
             options = BuildOptions.CleanBuildCache
