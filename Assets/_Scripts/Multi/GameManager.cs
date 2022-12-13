@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Animator animatorUI;
     private bool _alreadyPlayed3 = false;
     private bool _alreadyPlayed10 = false;
+    private bool gameEnded;
 
 
     //============================ Projectile
@@ -122,15 +123,10 @@ public class GameManager : MonoBehaviour
             _alreadyPlayed10 = true;
         }
 
-        if (_currentGameCooldown <= 0f)
+        if ((int)_currentGameCooldown == 0 && !gameEnded)
         {
-            _applicationManager.SetGameState(GAME_STATE.END);
-            audioManager.Stop("Game_Music");
-            audioManager.Stop("Clock_Last10");
-            SetAllInputs(false);
-            StatsManager.ShowStats();
-            _alreadyPlayed3 = false;
-            _alreadyPlayed10 = false;
+            gameEnded = true;
+            EndOfGame();
         }
     }
 
@@ -181,6 +177,17 @@ public class GameManager : MonoBehaviour
     public void RemovePlayer(GameObject playerGo)
     {
         _listPlayersGo.Remove(playerGo);
+    }
+
+    private void EndOfGame()
+    {
+        _applicationManager.SetGameState(GAME_STATE.END);
+        audioManager.Stop("Game_Music");
+        audioManager.Stop("Clock_Last10");
+        SetAllInputs(false);
+        StatsManager.ShowStats();
+        _alreadyPlayed3 = false;
+        _alreadyPlayed10 = false;
     }
 
     #region Projectile
