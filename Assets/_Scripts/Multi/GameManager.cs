@@ -7,6 +7,7 @@ using Data;
 using TMPro;
 using CustomMaths;
 using Unity.VisualScripting;
+using ColorUtility = UnityEngine.ColorUtility;
 
 public class GameManager : CoroutineSystem
 {
@@ -108,7 +109,6 @@ public class GameManager : CoroutineSystem
        // if (_applicationManager?.GameState != GAME_STATE.PLAYING ) return;
 
         _currentGameCooldown -= _applicationManager?.GameState == GAME_STATE.PLAYING ? Time.deltaTime : 0;
-        Debug.Log("gameState " + _applicationManager?.GameState);
         int minutes = Mathf.FloorToInt(_currentGameCooldown / 60F);
         int seconds = Mathf.FloorToInt(_currentGameCooldown - minutes * 60);
         string niceTime = string.Format("{0:0}:{1:00}", minutes, seconds);
@@ -119,18 +119,26 @@ public class GameManager : CoroutineSystem
             
             PlayerManager winner = Instance.StatsManager.FindWinner();
 
-            if (winner.GroundCheck()) 
+            if (winner.GroundCheck())
                 winner.Jump();
-            
-            
-            Debug.Log("color " + winner.GetComponentInChildren<SpriteRenderer>().material.color);
-            Debug.Log("color " + winner.GetComponentInChildren<SpriteRenderer>().color);
-            
-            
-            
-            
+
             EndOfGame();
+
+            int winnerIndex = 0;
+            var playerConfigs = ApplicationManager.Instance.GetPlayerConfigs().ToArray();
+            
+            foreach (var config in playerConfigs)
+            {
+                if (config.PlayerSprite == winner.GetComponentInChildren<SpriteRenderer>().sprite)
+                {
+                    Debug.Log("find index");
+                    winnerIndex = config.PlayerIndex;
+                }    
+            }
+            
             gameCooldownText.gameObject.SetActive(false);
+            victoryText.text = "UICTORY OF <color=" + GetColorForUI(playerConfigs[winnerIndex].PlayerColor) + "> " + ConvertColorToName(GetColorForUI(playerConfigs[winnerIndex].PlayerColor));
+            
             victoryText.gameObject.SetActive(true);
             backgroundVictory.SetActive(true);
 
@@ -328,4 +336,46 @@ public class GameManager : CoroutineSystem
     }
 
     #endregion Projectile
+
+    public string GetColorForUI(Color color)
+    {
+        string hexColor =  ColorUtility.ToHtmlStringRGB(color);
+
+        switch (hexColor) {
+            case "0FE207": //VERT
+                return "#A6FF00";
+            
+            case "0151FF": // BLUE
+                return "#3BCFFF";
+                break;
+            
+            case "FF7C08": // ORANGE
+                return "#F5A053";
+
+            case "FF0099": // ROSE
+                return "#FF64F7";
+            
+            default:
+                return "";
+        }
+    }
+
+    public string ConvertColorToName(string color) {
+        switch (color) {
+            case "#A6FF00":
+                return "GREEN";
+            
+            case "#3BCFFF":
+                return "BLUE";
+            
+            case "#F5A053":
+                return "ORANGE";
+            
+            case "#FF64F7":
+                return "PINK";
+            
+            default:
+                return "";
+        }
+    }
 }

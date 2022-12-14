@@ -49,18 +49,7 @@ public class StatisticsManager : MonoBehaviour
     [ContextMenu("ShowStats")]
     public void ShowStats()
     {
-        SetupStatsMenu();
-        
-        var sortedArray = _arrayStats.OrderByDescending(x => x._damageDeal);
-        var listStats = sortedArray.ToList();
-        
-        byte index = 0;
-        
-        foreach (Stats playerStats in sortedArray)
-        {
-            listStatsNameplate[index].SetStats(index, listStats[index]._playerIndex, playerStats._damageDeal, playerStats._kill, playerStats._death);
-            index++;
-        }
+        StartCoroutine(SetupStatsMenu());
     }
 
     public PlayerManager FindWinner() {
@@ -82,23 +71,40 @@ public class StatisticsManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
     
-    private void SetupStatsMenu()
-    {
-        var posY = 25;
-        
-        Debug.Log("size " + _arrayStats.Length);
-        
+    private IEnumerator SetupStatsMenu() {
+        Vector2 startPosition = new Vector2(-51,-22);
+
         for(var x = 0; x < _arrayStats.Length; x++)
         {
-            Debug.Log("enter");
             var stats = Instantiate(prefabStats, transform.position, Quaternion.identity);
             stats.transform.parent = statsGoUI.transform;
-            stats.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, posY);
-            posY -= 175;
+
+            startPosition.x = -51 + (465 * x);
+            stats.GetComponent<RectTransform>().anchoredPosition = startPosition;
             listStatsNameplate.Add(stats.GetComponent<StatsNameplate>());
+            
+            stats.SetActive(false);
+        }
+
+        statsGoUI.SetActive(true);
+
+        var sortedArray = _arrayStats.OrderByDescending(x => x._damageDeal);
+        var listStats = sortedArray.ToList();
+        
+        
+        for (int i = 0;i < listStats.Count;i++) {
+            var playerStats = listStats[i];
+            
+            listStatsNameplate[i].SetStats((byte)i, listStats[i]._playerIndex, playerStats._damageDeal, playerStats._kill, playerStats._death);
         }
         
-        statsGoUI.SetActive(true);
+        for (int i = listStatsNameplate.Count - 1;i >= 0;i--) {
+            listStatsNameplate[i].gameObject.SetActive(true);
+            
+            yield return new WaitForSeconds(3f);
+        }
+        
+        yield return null;
     }
 
     [ContextMenu("CheckLevels")]

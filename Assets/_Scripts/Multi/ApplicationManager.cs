@@ -74,6 +74,7 @@ public class ApplicationManager : MonoBehaviour
         _playerConfigs[index].PlayerHdrColor = playerGfx.hdrColor;
         _playerConfigs[index].playerGradient = playerGfx.gradientColor;
         _playerConfigs[index].PlayerArrowSprite = playerGfx.arrow;
+        _playerConfigs[index].MenuSprite = playerGfx.menu;
     }
 
     public void SetPlayerSkin(int index, Sprite skin)
@@ -181,6 +182,8 @@ public class PlayerConfiguration
     public Color PlayerColor { get; set; }
     public Color PlayerHdrColor { get; set; }
     public Gradient playerGradient { get; set; }
+    
+    public Sprite MenuSprite { get; set; }
 }
 
 
