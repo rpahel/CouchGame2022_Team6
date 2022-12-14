@@ -139,8 +139,10 @@ public class GameManager : CoroutineSystem
             SetAllInputs(false);
             
             RunDelayed(7f, () => {
-                StatsManager.ShowStats();
-                _applicationManager.SetGameState(GAME_STATE.END);
+                if (_applicationManager.GameState == GAME_STATE.WAIT_FOR_END) {
+                    StatsManager.ShowStats();
+                    _applicationManager.SetGameState(GAME_STATE.END);
+                }
             });
             
         }

@@ -85,8 +85,12 @@ public class StatisticsManager : MonoBehaviour
     private void SetupStatsMenu()
     {
         var posY = 25;
+        
+        Debug.Log("size " + _arrayStats.Length);
+        
         for(var x = 0; x < _arrayStats.Length; x++)
         {
+            Debug.Log("enter");
             var stats = Instantiate(prefabStats, transform.position, Quaternion.identity);
             stats.transform.parent = statsGoUI.transform;
             stats.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, posY);
