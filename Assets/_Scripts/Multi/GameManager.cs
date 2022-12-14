@@ -30,6 +30,7 @@ public class GameManager : CoroutineSystem
     [SerializeField] private TextMeshProUGUI gameCooldownText;
 
     [SerializeField] private TextMeshProUGUI victoryText;
+    [SerializeField] private GameObject backgroundVictory;
 
     //============================ Spawn/Respawn
     [Header("Spawn Data")]
@@ -107,6 +108,7 @@ public class GameManager : CoroutineSystem
        // if (_applicationManager?.GameState != GAME_STATE.PLAYING ) return;
 
         _currentGameCooldown -= _applicationManager?.GameState == GAME_STATE.PLAYING ? Time.deltaTime : 0;
+        Debug.Log("gameState " + _applicationManager?.GameState);
         int minutes = Mathf.FloorToInt(_currentGameCooldown / 60F);
         int seconds = Mathf.FloorToInt(_currentGameCooldown - minutes * 60);
         string niceTime = string.Format("{0:0}:{1:00}", minutes, seconds);
@@ -115,31 +117,32 @@ public class GameManager : CoroutineSystem
             
         if (_currentGameCooldown <= 0f && _applicationManager.GameState != GAME_STATE.END) {
             
-            // Faire en sorte que le joueur sautent en permanence 
-
             PlayerManager winner = Instance.StatsManager.FindWinner();
 
             if (winner.GroundCheck()) 
                 winner.Jump();
             
+            
+            Debug.Log("color " + winner.GetComponentInChildren<SpriteRenderer>().material.color);
+            Debug.Log("color " + winner.GetComponentInChildren<SpriteRenderer>().color);
+            
+            
+            
+            
+            EndOfGame();
             gameCooldownText.gameObject.SetActive(false);
             victoryText.gameObject.SetActive(true);
+            backgroundVictory.SetActive(true);
 
             _applicationManager.SetGameState(GAME_STATE.WAIT_FOR_END);
             audioManager.Stop("Game_Music");
             SetAllInputs(false);
             
-            /*foreach(GameObject player in _listPlayersGo)
-            {
-                if(player != winner.gameObject)
-                    player.SetActive(false);
-            }*/
-
-            RunDelayed(5f, () => {
+            RunDelayed(7f, () => {
                 StatsManager.ShowStats();
                 _applicationManager.SetGameState(GAME_STATE.END);
             });
-            //
+            
         }
 
         if((int)_currentGameCooldown == 10 && _alreadyPlayed10 == false)
@@ -152,7 +155,7 @@ public class GameManager : CoroutineSystem
         if ((int)_currentGameCooldown == 0 && !gameEnded)
         {
             gameEnded = true;
-            EndOfGame();
+            //EndOfGame();
         }
     }
 
@@ -207,11 +210,10 @@ public class GameManager : CoroutineSystem
 
     private void EndOfGame()
     {
-        _applicationManager.SetGameState(GAME_STATE.END);
+        
         audioManager.Stop("Game_Music");
         audioManager.Stop("Clock_Last10");
         SetAllInputs(false);
-        StatsManager.ShowStats();
         _alreadyPlayed3 = false;
         _alreadyPlayed10 = false;
     }
