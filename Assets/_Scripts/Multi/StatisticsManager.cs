@@ -42,6 +42,7 @@ public class StatisticsManager : MonoBehaviour
         for (byte x = 0; x < count; x++)
         {
             _arrayStats[x] = new Stats(x);
+            _arrayStats[x]._source = GameManager.Instance.ListPlayersGo[x].GetComponent<PlayerManager>();
         }
     }
 
@@ -60,6 +61,13 @@ public class StatisticsManager : MonoBehaviour
             listStatsNameplate[index].SetStats(index, listStats[index]._playerIndex, playerStats._damageDeal, playerStats._kill, playerStats._death);
             index++;
         }
+    }
+
+    public PlayerManager FindWinner() {
+        List<Stats> winners = _arrayStats.OrderByDescending(x => x._damageDeal).ToList();
+        
+        // Attention non fonctionnement si plusieurs winner
+        return winners[0]._source;
     }
 
     public void NextLevel()
@@ -119,6 +127,7 @@ public class StatisticsManager : MonoBehaviour
 [System.Serializable]
 public class Stats
 {
+    public PlayerManager _source;
     public byte _playerIndex;
     public float _damageDeal;
     //[SerializeField] private int _damageReceive;

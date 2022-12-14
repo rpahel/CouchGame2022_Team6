@@ -40,14 +40,19 @@ public class AudioManager : MonoBehaviour
                 
                 if (s == null)
                 {
-                        Debug.LogWarning("Sound :" + name + "not found!");
+                        Debug.LogWarning("Sound : " + name + " not found!");
                         return;
                 }
 
-            if(name == "Game_Music" || name == "Menu_Music" || name == "Game_Pause")
-                s.source.pitch = UnityEngine.Random.Range(RandomPitchMin, RandomPitchMax);
-            else
+            if (name == "Game_Music"
+             || name == "Menu_Music"
+             || name == "Game_Pause"
+             || name == "Clock_Last10"
+             || name == "Clock_Start"
+             || name == "Clock_Warning")
                 s.source.pitch = 1;
+            else
+                s.source.pitch = UnityEngine.Random.Range(RandomPitchMin, RandomPitchMax);
 
             s.source.Play();
         }

@@ -3,9 +3,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using Color = UnityEngine.Color;
 
@@ -351,6 +349,7 @@ public class LevelGenerator : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(beforeStart);
         levelState = LEVEL_STATE.LOADING;
+        GameManager.Instance.AudioManager.Play("Game_Map_Loading");
 
         switch (spawnAnim)
         {

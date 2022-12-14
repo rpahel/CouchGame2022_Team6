@@ -1,3 +1,4 @@
+using Data;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
 public class PlayerInputsHandler : MonoBehaviour
@@ -77,6 +78,9 @@ public class PlayerInputsHandler : MonoBehaviour
 
     private void OnPause(CallbackContext input)
     {
+        if (ApplicationManager.Instance.GameState != GAME_STATE.PLAYING && ApplicationManager.Instance.GameState != GAME_STATE.LOADING)
+            return; 
+        
         switch (input.started)
         {
             case true when !isGamePaused:

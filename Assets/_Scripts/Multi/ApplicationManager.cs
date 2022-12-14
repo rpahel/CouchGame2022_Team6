@@ -133,6 +133,10 @@ public class ApplicationManager : MonoBehaviour
     public void SetGameState(GAME_STATE state)
     {
         GameState = state;
+        if(state == GAME_STATE.PLAYING)
+        {
+            GameManager.Instance.AudioManager.Play("Clock_Start");
+        }
     }
     
     public void DeleteColor(string name)

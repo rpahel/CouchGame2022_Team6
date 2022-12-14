@@ -34,6 +34,7 @@ namespace Data
         MENU,
         LOADING,
         PLAYING,
+        WAIT_FOR_END,
         END
     }
     #endregion
