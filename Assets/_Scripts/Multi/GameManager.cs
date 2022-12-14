@@ -7,6 +7,7 @@ using Data;
 using TMPro;
 using CustomMaths;
 using Unity.VisualScripting;
+using ColorUtility = UnityEngine.ColorUtility;
 
 public class GameManager : CoroutineSystem
 {
@@ -30,6 +31,7 @@ public class GameManager : CoroutineSystem
     [SerializeField] private TextMeshProUGUI gameCooldownText;
 
     [SerializeField] private TextMeshProUGUI victoryText;
+    [SerializeField] private GameObject backgroundVictory;
 
     //============================ Spawn/Respawn
     [Header("Spawn Data")]
@@ -115,31 +117,42 @@ public class GameManager : CoroutineSystem
             
         if (_currentGameCooldown <= 0f && _applicationManager.GameState != GAME_STATE.END) {
             
-            // Faire en sorte que le joueur sautent en permanence 
-
             PlayerManager winner = Instance.StatsManager.FindWinner();
 
-            if (winner.GroundCheck()) 
+            if (winner.GroundCheck())
                 winner.Jump();
+
+            EndOfGame();
+
+            int winnerIndex = 0;
+            var playerConfigs = ApplicationManager.Instance.GetPlayerConfigs().ToArray();
+            
+            foreach (var config in playerConfigs)
+            {
+                if (config.PlayerSprite == winner.GetComponentInChildren<SpriteRenderer>().sprite)
+                {
+                    Debug.Log("find index");
+                    winnerIndex = config.PlayerIndex;
+                }    
+            }
             
             gameCooldownText.gameObject.SetActive(false);
+            victoryText.text = "UICTORY OF <color=" + GetColorForUI(playerConfigs[winnerIndex].PlayerColor) + "> " + ConvertColorToName(GetColorForUI(playerConfigs[winnerIndex].PlayerColor));
+            
             victoryText.gameObject.SetActive(true);
+            backgroundVictory.SetActive(true);
 
             _applicationManager.SetGameState(GAME_STATE.WAIT_FOR_END);
             audioManager.Stop("Game_Music");
             SetAllInputs(false);
             
-            /*foreach(GameObject player in _listPlayersGo)
-            {
-                if(player != winner.gameObject)
-                    player.SetActive(false);
-            }*/
-
-            RunDelayed(5f, () => {
-                StatsManager.ShowStats();
-                _applicationManager.SetGameState(GAME_STATE.END);
+            RunDelayed(7f, () => {
+                if (_applicationManager.GameState == GAME_STATE.WAIT_FOR_END) {
+                    StatsManager.ShowStats();
+                    _applicationManager.SetGameState(GAME_STATE.END);
+                }
             });
-            //
+            
         }
 
         if((int)_currentGameCooldown == 10 && _alreadyPlayed10 == false)
@@ -152,7 +165,7 @@ public class GameManager : CoroutineSystem
         if ((int)_currentGameCooldown == 0 && !gameEnded)
         {
             gameEnded = true;
-            EndOfGame();
+            //EndOfGame();
         }
     }
 
@@ -207,11 +220,10 @@ public class GameManager : CoroutineSystem
 
     private void EndOfGame()
     {
-        _applicationManager.SetGameState(GAME_STATE.END);
+        
         audioManager.Stop("Game_Music");
         audioManager.Stop("Clock_Last10");
         SetAllInputs(false);
-        StatsManager.ShowStats();
         _alreadyPlayed3 = false;
         _alreadyPlayed10 = false;
     }
@@ -324,4 +336,46 @@ public class GameManager : CoroutineSystem
     }
 
     #endregion Projectile
+
+    public string GetColorForUI(Color color)
+    {
+        string hexColor =  ColorUtility.ToHtmlStringRGB(color);
+
+        switch (hexColor) {
+            case "0FE207": //VERT
+                return "#A6FF00";
+            
+            case "0151FF": // BLUE
+                return "#3BCFFF";
+                break;
+            
+            case "FF7C08": // ORANGE
+                return "#F5A053";
+
+            case "FF0099": // ROSE
+                return "#FF64F7";
+            
+            default:
+                return "";
+        }
+    }
+
+    public string ConvertColorToName(string color) {
+        switch (color) {
+            case "#A6FF00":
+                return "GREEN";
+            
+            case "#3BCFFF":
+                return "BLUE";
+            
+            case "#F5A053":
+                return "ORANGE";
+            
+            case "#FF64F7":
+                return "PINK";
+            
+            default:
+                return "";
+        }
+    }
 }

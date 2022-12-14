@@ -1,3 +1,4 @@
+using Data;
 using UnityEngine;
 
 public class Cube_Trap : Cube
@@ -8,7 +9,7 @@ public class Cube_Trap : Cube
     
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!collision.gameObject.CompareTag("Player")) return;
+        if (!collision.gameObject.CompareTag("Player") || ApplicationManager.Instance.GameState != GAME_STATE.PLAYING) return;
 
         var playerSystemManager = collision.gameObject.GetComponent<PlayerManager>();
         var vec = collision.GetContact(0).normal;

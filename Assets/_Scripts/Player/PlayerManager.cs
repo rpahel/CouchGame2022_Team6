@@ -263,10 +263,6 @@ public class PlayerManager : MonoBehaviour
             throw new Exception("PManager.PCollider is not a CapsuleCollider2D. Please update the code.");
         
         castRadius = _coll.bounds.extents.x - .05f;
-        
-        
-        
-        Debug.Log("state " + _playerSystem.PlayerState + " _src " + transform.name);
     }
 
     private void FixedUpdate()
