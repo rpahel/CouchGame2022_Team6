@@ -168,7 +168,7 @@ PrefabInstance:
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
       propertyPath: gameDuration
-      value: 20
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 114055375776213089, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
@@ -315,7 +315,7 @@ PrefabInstance:
         type: 3}
       propertyPath: prefabStats
       value: 
-      objectReference: {fileID: 1770357474210611636, guid: 5986d36b2e570ba44abb7aa46a8df17b,
+      objectReference: {fileID: 3854509270706823229, guid: 036d9c97c2f2d754ab91b1ace9246c2d,
         type: 3}
     - target: {fileID: 3525204380141794214, guid: 4384a1065cac4ca46b4d552908158bbe,
         type: 3}
@@ -1117,7 +1117,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &485350296
 RectTransform:
   m_ObjectHideFlags: 0
