@@ -106,7 +106,7 @@ public class GameManager : CoroutineSystem
 
     private void Update()
     {
-       // if (_applicationManager?.GameState != GAME_STATE.PLAYING ) return;
+        if (_applicationManager?.GameState != GAME_STATE.PLAYING ) return;
 
         _currentGameCooldown -= _applicationManager?.GameState == GAME_STATE.PLAYING ? Time.deltaTime : 0;
         int minutes = Mathf.FloorToInt(_currentGameCooldown / 60F);
