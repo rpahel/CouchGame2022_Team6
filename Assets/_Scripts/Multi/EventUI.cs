@@ -9,4 +9,9 @@ public class EventUI : MonoBehaviour
         //Game state change
         GameManager.Instance.StartGame();
     }
+
+    public void PlaySound(string soundName)
+    {
+        AudioManager.Instance.Play(soundName);
+    }
 }

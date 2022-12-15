@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-        private static AudioManager Instance { get; set; }
+        public static AudioManager Instance { get; set; }
         public Sound[] sounds;
         [Range(0, 2)]
         public float RandomPitchMin = 0.75f;
@@ -49,7 +49,9 @@ public class AudioManager : MonoBehaviour
              || name == "Game_Pause"
              || name == "Clock_Last10"
              || name == "Clock_Start"
-             || name == "Clock_Warning")
+             || name == "Clock_Warning"
+             || name == "Clock_1&2"
+             || name == "Clock_3")
                 s.source.pitch = 1;
             else
                 s.source.pitch = UnityEngine.Random.Range(RandomPitchMin, RandomPitchMax);

@@ -1991,7 +1991,7 @@ PrefabInstance:
     - target: {fileID: 275270691426433617, guid: c115d3aac6e06f1438908f59d6af4792,
         type: 3}
       propertyPath: sounds.Array.size
-      value: 32
+      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 275270691426433617, guid: c115d3aac6e06f1438908f59d6af4792,
         type: 3}
@@ -2380,6 +2380,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 275270691426433617, guid: c115d3aac6e06f1438908f59d6af4792,
         type: 3}
+      propertyPath: sounds.Array.data[32].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 8edb050573a038646b4d83f6508758cd, type: 3}
+    - target: {fileID: 275270691426433617, guid: c115d3aac6e06f1438908f59d6af4792,
+        type: 3}
+      propertyPath: sounds.Array.data[32].name
+      value: Clock_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 275270691426433617, guid: c115d3aac6e06f1438908f59d6af4792,
+        type: 3}
+      propertyPath: sounds.Array.data[33].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: d52885c7444d6d340bd1a09026d9300a, type: 3}
+    - target: {fileID: 275270691426433617, guid: c115d3aac6e06f1438908f59d6af4792,
+        type: 3}
+      propertyPath: sounds.Array.data[33].name
+      value: Clock_1&2
+      objectReference: {fileID: 0}
+    - target: {fileID: 275270691426433617, guid: c115d3aac6e06f1438908f59d6af4792,
+        type: 3}
       propertyPath: sounds.Array.data[3].pitch
       value: 1
       objectReference: {fileID: 0}
@@ -2540,6 +2560,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 275270691426433617, guid: c115d3aac6e06f1438908f59d6af4792,
         type: 3}
+      propertyPath: sounds.Array.data[32].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 275270691426433617, guid: c115d3aac6e06f1438908f59d6af4792,
+        type: 3}
+      propertyPath: sounds.Array.data[33].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 275270691426433617, guid: c115d3aac6e06f1438908f59d6af4792,
+        type: 3}
       propertyPath: sounds.Array.data[3].volume
       value: 1
       objectReference: {fileID: 0}
@@ -2681,6 +2711,16 @@ PrefabInstance:
     - target: {fileID: 275270691426433617, guid: c115d3aac6e06f1438908f59d6af4792,
         type: 3}
       propertyPath: sounds.Array.data[31].volume
+      value: 0.408
+      objectReference: {fileID: 0}
+    - target: {fileID: 275270691426433617, guid: c115d3aac6e06f1438908f59d6af4792,
+        type: 3}
+      propertyPath: sounds.Array.data[32].volume
+      value: 0.408
+      objectReference: {fileID: 0}
+    - target: {fileID: 275270691426433617, guid: c115d3aac6e06f1438908f59d6af4792,
+        type: 3}
+      propertyPath: sounds.Array.data[33].volume
       value: 0.408
       objectReference: {fileID: 0}
     - target: {fileID: 275270691426433617, guid: c115d3aac6e06f1438908f59d6af4792,
@@ -2866,6 +2906,18 @@ PrefabInstance:
     - target: {fileID: 275270691426433617, guid: c115d3aac6e06f1438908f59d6af4792,
         type: 3}
       propertyPath: sounds.Array.data[31].audiogroup
+      value: 
+      objectReference: {fileID: -8387766111519321119, guid: 0d661933c9c24da4cb983696574bf95e,
+        type: 2}
+    - target: {fileID: 275270691426433617, guid: c115d3aac6e06f1438908f59d6af4792,
+        type: 3}
+      propertyPath: sounds.Array.data[32].audiogroup
+      value: 
+      objectReference: {fileID: -8387766111519321119, guid: 0d661933c9c24da4cb983696574bf95e,
+        type: 2}
+    - target: {fileID: 275270691426433617, guid: c115d3aac6e06f1438908f59d6af4792,
+        type: 3}
+      propertyPath: sounds.Array.data[33].audiogroup
       value: 
       objectReference: {fileID: -8387766111519321119, guid: 0d661933c9c24da4cb983696574bf95e,
         type: 2}
