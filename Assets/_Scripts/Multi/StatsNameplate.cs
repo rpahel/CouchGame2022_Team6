@@ -9,10 +9,10 @@ public class StatsNameplate : MonoBehaviour
 {
     
     [SerializeField] private Image menu;
-    [SerializeField] private TextMeshProUGUI textRank;
+    [SerializeField] public TextMeshProUGUI textRank;
     [SerializeField] private Image imagePlayer;
     [SerializeField] private Image facePlayer;
-    [SerializeField] private TextMeshProUGUI textDamage;
+    [SerializeField] public TextMeshProUGUI textDamage;
     [SerializeField] private TextMeshProUGUI textKills;
     [SerializeField] private TextMeshProUGUI textDeaths;
 

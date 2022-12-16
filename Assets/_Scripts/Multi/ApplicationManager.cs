@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Data;
 using TMPro;
+using Unity.VisualScripting;
 
 public class ApplicationManager : MonoBehaviour
 {
@@ -75,6 +76,7 @@ public class ApplicationManager : MonoBehaviour
         _playerConfigs[index].playerGradient = playerGfx.gradientColor;
         _playerConfigs[index].PlayerArrowSprite = playerGfx.arrow;
         _playerConfigs[index].MenuSprite = playerGfx.menu;
+        _playerConfigs[index].globalStats = new GlobalStats((byte)index);
     }
 
     public void SetPlayerSkin(int index, Sprite skin)
@@ -184,6 +186,8 @@ public class PlayerConfiguration
     public Gradient playerGradient { get; set; }
     
     public Sprite MenuSprite { get; set; }
+
+    public GlobalStats globalStats { get; set; }
 }
 
 

@@ -32,6 +32,7 @@ public class GameManager : CoroutineSystem
 
     [SerializeField] private TextMeshProUGUI victoryText;
     [SerializeField] private GameObject backgroundVictory;
+    public TextMeshProUGUI podiumText;
 
     //============================ Spawn/Respawn
     [Header("Spawn Data")]

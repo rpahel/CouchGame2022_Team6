@@ -3,6 +3,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Globalization;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -745,6 +746,9 @@ public class PlayerManager : MonoBehaviour
             if (playerStat._playerIndex == damageDealer.playerIndex)
             {
                 playerStat._damageDeal += score;
+                
+                PlayerConfiguration config = ApplicationManager.Instance.GetPlayerConfigs()[damageDealer.playerIndex];
+                config.globalStats.globalStats._damageDeal += score;
             }
         }
         
@@ -761,13 +765,18 @@ public class PlayerManager : MonoBehaviour
             {
                 playerStat._damageDeal += killScore;
                 playerStat._kill++;
+                
+                PlayerConfiguration config = ApplicationManager.Instance.GetPlayerConfigs()[damageDealer.playerIndex];
+                config.globalStats.globalStats._kill++;
             }
             else if (playerStat._playerIndex == playerIndex)
             {
                 playerStat._death++;
+                PlayerConfiguration config = ApplicationManager.Instance.GetPlayerConfigs()[playerIndex];
+                config.globalStats.globalStats._death++;
             }
         }
-        
+
         damageDealer.UpdateScoring();
     }
 
