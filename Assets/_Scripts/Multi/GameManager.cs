@@ -128,17 +128,13 @@ public class GameManager : CoroutineSystem
             int winnerIndex = 0;
             var playerConfigs = ApplicationManager.Instance.GetPlayerConfigs().ToArray();
             
-            foreach (var config in playerConfigs)
-            {
+            foreach (var config in playerConfigs) {
                 if (config.PlayerSprite == winner.GetComponentInChildren<SpriteRenderer>().sprite)
-                {
-                    Debug.Log("find index");
                     winnerIndex = config.PlayerIndex;
-                }    
             }
             
             gameCooldownText.gameObject.SetActive(false);
-            victoryText.text = "UICTORY OF <color=" + GetColorForUI(playerConfigs[winnerIndex].PlayerColor) + "> " + ConvertColorToName(GetColorForUI(playerConfigs[winnerIndex].PlayerColor));
+            victoryText.text = "UICTORY OF <color=" + GetColorForUI(playerConfigs[winnerIndex].PlayerColor) + "> P" + (winnerIndex + 1 );
             
             victoryText.gameObject.SetActive(true);
             backgroundVictory.SetActive(true);

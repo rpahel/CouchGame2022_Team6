@@ -75,6 +75,8 @@ public class ApplicationManager : MonoBehaviour
         _playerConfigs[index].PlayerHdrColor = playerGfx.hdrColor;
         _playerConfigs[index].playerGradient = playerGfx.gradientColor;
         _playerConfigs[index].PlayerArrowSprite = playerGfx.arrow;
+        _playerConfigs[index].PlayerArrowSpriteHUD = playerGfx.arrowHUD;
+        _playerConfigs[index].PlayerArrowSprite = playerGfx.arrow;
         _playerConfigs[index].MenuSprite = playerGfx.menu;
         _playerConfigs[index].globalStats = new GlobalStats((byte)index);
     }
@@ -179,6 +181,7 @@ public class PlayerConfiguration
     public Sprite PlayerSprite { get; set; }
     public Sprite PlayerFaceSprite { get; set; }
     public Sprite PlayerArrowSprite { get; set; }
+    public Sprite PlayerArrowSpriteHUD { get; set; }
     public Sprite PlayerIcon { get; set; }
     
     public Color PlayerColor { get; set; }
@@ -199,6 +202,7 @@ public class PlayerGfxUI
     public Sprite face;
     public Sprite skin;
     public Sprite arrow;
+    public Sprite arrowHUD;
     public Sprite menu;
     public Sprite button;
     public Sprite buttonSkin;
