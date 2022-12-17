@@ -58,7 +58,7 @@ public class Cube_TNT : CubeDestroyable {
                     Vector3 checkPosition = colParent.GetChild(0).position + direction * i;
                     
                     foreach (PlayerManager playerManager in FindObjectsOfType<PlayerManager>()) {
-                        if (playerManager != source && playerManager.GetComponent<Collider2D>().bounds.Contains(checkPosition)) {
+                        if ( playerManager.GetComponent<Collider2D>().bounds.Contains(checkPosition)) {
                             playerManager.OnDamage(source,damageEat,Vector3.zero);
                         }
                     }

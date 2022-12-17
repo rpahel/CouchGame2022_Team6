@@ -547,12 +547,13 @@ public class PlayerManager : MonoBehaviour
             _playerSystem.SetState(new Dead(_playerSystem));
             _playerSystem.PlaySound("Player_Kill");
             _playerSystem.PlaySound("Player_Death");
-            if(damageDealerIsAPlayer)
+            if (damageDealerIsAPlayer && damageDealer is PlayerManager && (damageDealer as PlayerManager) != this)
                 UpdateStats(damager);
+            
             return;
         }
         
-        if(damageDealerIsAPlayer)
+        if (damageDealerIsAPlayer && damageDealer is PlayerManager && (damageDealer as PlayerManager) != this)
             UpdateStats(damager, damageScore);
         
         UpdatePlayerScale();
