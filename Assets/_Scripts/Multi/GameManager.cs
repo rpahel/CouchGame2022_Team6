@@ -344,8 +344,7 @@ public class GameManager : CoroutineSystem
             
             case "0151FF": // BLUE
                 return "#3BCFFF";
-                break;
-            
+
             case "FF7C08": // ORANGE
                 return "#F5A053";
 

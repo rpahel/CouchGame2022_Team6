@@ -78,6 +78,7 @@ public class ApplicationManager : MonoBehaviour
         _playerConfigs[index].PlayerArrowSpriteHUD = playerGfx.arrowHUD;
         _playerConfigs[index].PlayerArrowSprite = playerGfx.arrow;
         _playerConfigs[index].MenuSprite = playerGfx.menu;
+        _playerConfigs[index].BackgroundKill = playerGfx.backgroundKill;
         _playerConfigs[index].globalStats = new GlobalStats((byte)index);
     }
 
@@ -189,6 +190,7 @@ public class PlayerConfiguration
     public Gradient playerGradient { get; set; }
     
     public Sprite MenuSprite { get; set; }
+    public Sprite BackgroundKill { get; set; }
 
     public GlobalStats globalStats { get; set; }
 }
@@ -204,6 +206,7 @@ public class PlayerGfxUI
     public Sprite arrow;
     public Sprite arrowHUD;
     public Sprite menu;
+    public Sprite backgroundKill;
     public Sprite button;
     public Sprite buttonSkin;
     public Sprite icon;

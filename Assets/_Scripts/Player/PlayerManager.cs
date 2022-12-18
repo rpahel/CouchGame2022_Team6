@@ -757,6 +757,8 @@ public class PlayerManager : MonoBehaviour
     }
     private void UpdateStats(PlayerManager damageDealer)
     {
+        PlayerConfiguration killer = null, death = null;
+        
         foreach (var playerStat in statsManager.ArrayStats)
         {
             if (playerStat._source == null)
@@ -766,17 +768,22 @@ public class PlayerManager : MonoBehaviour
             {
                 playerStat._damageDeal += killScore;
                 playerStat._kill++;
-                
+
                 PlayerConfiguration config = ApplicationManager.Instance.GetPlayerConfigs()[damageDealer.playerIndex];
                 config.globalStats.globalStats._kill++;
+                killer = ApplicationManager.Instance.GetPlayerConfigs().Where(config => config.PlayerIndex == playerStat._playerIndex).ToList()[0];
             }
             else if (playerStat._playerIndex == playerIndex)
             {
                 playerStat._death++;
                 PlayerConfiguration config = ApplicationManager.Instance.GetPlayerConfigs()[playerIndex];
                 config.globalStats.globalStats._death++;
+                death = ApplicationManager.Instance.GetPlayerConfigs().Where(config => config.PlayerIndex == playerStat._playerIndex).ToList()[0];
             }
         }
+
+        if (killer != null && death != null) 
+            DeathUI.Instance.CreateDeathUI(killer,death);
 
         damageDealer.UpdateScoring();
     }

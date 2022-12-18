@@ -1344,6 +1344,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
         type: 3}
+      propertyPath: listPlayersGfx.Array.data[0].backgroundKill
+      value: 
+      objectReference: {fileID: 21300000, guid: d7365d1b61e2b8648890f2927a93c5dc,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[1].backgroundKill
+      value: 
+      objectReference: {fileID: 21300000, guid: 37fcd51b69b534c4193351e081d0ea23,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[2].backgroundKill
+      value: 
+      objectReference: {fileID: 21300000, guid: 13d385533d6e1fa438bb3f8210a9ef05,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
+      propertyPath: listPlayersGfx.Array.data[3].backgroundKill
+      value: 
+      objectReference: {fileID: 21300000, guid: d5a970da8aceba34a8882f28c116a20c,
+        type: 3}
+    - target: {fileID: 8210660276910839728, guid: 3237304fc6509974884466c808e01146,
+        type: 3}
       propertyPath: listColorRemaining.Array.data[0].buttonPrefab
       value: 
       objectReference: {fileID: 7683444402273745810, guid: dbac25b10e7245b4184951a8acd26117,
