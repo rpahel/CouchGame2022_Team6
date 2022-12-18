@@ -34,8 +34,7 @@ public class AudioManager : MonoBehaviour
                 Play("Menu_Music");
         }
 
-        public void Play(string name)
-        {
+        public void Play(string name) {
                 var s = Array.Find(sounds, sound => sound.name == name);
                 
                 if (s == null)
@@ -44,19 +43,19 @@ public class AudioManager : MonoBehaviour
                         return;
                 }
 
-            if (name == "Game_Music"
-             || name == "Menu_Music"
-             || name == "Game_Pause"
-             || name == "Clock_Last10"
-             || name == "Clock_Start"
-             || name == "Clock_Warning"
-             || name == "Clock_1&2"
-             || name == "Clock_3")
-                s.source.pitch = 1;
-            else
-                s.source.pitch = UnityEngine.Random.Range(RandomPitchMin, RandomPitchMax);
-
-            s.source.Play();
+                if (name == "Game_Music" || name == "Menu_Music" || name == "Game_Pause" || name == "Clock_Last10" || name == "Clock_Start" || name == "Clock_Warning" || name == "Clock_1&2" || name == "Clock_3") {
+                        s.source.pitch = 1;
+                }
+                else if (s.name != "DoubleKill" && s.name != "TripleKill") {
+                        s.source.pitch = UnityEngine.Random.Range(RandomPitchMin, RandomPitchMax);
+                }
+                else if(s.name == "DoubleKill" || s.name == "TripleKill") {
+                        s.source.pitch = s.pitch;
+                        
+                        Debug.Log("pitch " + s.source.pitch + " target " + s.pitch);
+                }
+                
+                s.source.Play();
         }
         
         public void Stop(string name)

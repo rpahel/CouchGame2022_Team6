@@ -757,7 +757,8 @@ public class PlayerManager : MonoBehaviour
     }
     private void UpdateStats(PlayerManager damageDealer)
     {
-        PlayerConfiguration killer = null, death = null;
+        PlayerConfiguration killerConfig = null, deathConfig = null;
+        PlayerManager death = null;
         
         foreach (var playerStat in statsManager.ArrayStats)
         {
@@ -771,19 +772,23 @@ public class PlayerManager : MonoBehaviour
 
                 PlayerConfiguration config = ApplicationManager.Instance.GetPlayerConfigs()[damageDealer.playerIndex];
                 config.globalStats.globalStats._kill++;
-                killer = ApplicationManager.Instance.GetPlayerConfigs().Where(config => config.PlayerIndex == playerStat._playerIndex).ToList()[0];
+                killerConfig = ApplicationManager.Instance.GetPlayerConfigs().Where(config => config.PlayerIndex == playerStat._playerIndex).ToList()[0];
             }
             else if (playerStat._playerIndex == playerIndex)
             {
+                
                 playerStat._death++;
                 PlayerConfiguration config = ApplicationManager.Instance.GetPlayerConfigs()[playerIndex];
                 config.globalStats.globalStats._death++;
-                death = ApplicationManager.Instance.GetPlayerConfigs().Where(config => config.PlayerIndex == playerStat._playerIndex).ToList()[0];
+                deathConfig = ApplicationManager.Instance.GetPlayerConfigs().Where(config => config.PlayerIndex == playerStat._playerIndex).ToList()[0];
+                death = playerStat._source;
             }
         }
 
-        if (killer != null && death != null) 
-            DeathUI.Instance.CreateDeathUI(killer,death);
+        if (killerConfig != null && deathConfig != null) {
+            DeathUI.Instance.CreateDeathUI(killerConfig, deathConfig);
+            StartCoroutine(GameManager.Instance.OnKill(killerConfig,deathConfig,damageDealer,death));
+        }
 
         damageDealer.UpdateScoring();
     }

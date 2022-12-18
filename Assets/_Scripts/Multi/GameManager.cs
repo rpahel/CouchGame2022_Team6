@@ -6,6 +6,7 @@ using Cinemachine;
 using Data;
 using TMPro;
 using CustomMaths;
+using Photon.Realtime;
 using Unity.VisualScripting;
 using ColorUtility = UnityEngine.ColorUtility;
 
@@ -32,6 +33,7 @@ public class GameManager : CoroutineSystem
 
     [SerializeField] private TextMeshProUGUI victoryText;
     [SerializeField] private GameObject backgroundVictory;
+    [SerializeField] private TextMeshProUGUI spreeText;
     public TextMeshProUGUI podiumText;
 
     //============================ Spawn/Respawn
@@ -73,6 +75,14 @@ public class GameManager : CoroutineSystem
     private AudioManager audioManager;
     public AudioManager AudioManager => audioManager;
     
+    
+    //============================== Killing spree
+    [Header("Killing Spree")] 
+    [SerializeField,Tooltip("Time to cancel the killing spree")] private float cancelTimeSpree;
+    private PlayerManager lastKiller;
+    private float timerSpree;
+    private int killSpree;
+
     private void Awake()
     {
         if (Instance != null)
@@ -107,6 +117,11 @@ public class GameManager : CoroutineSystem
 
     private void Update()
     {
+        if (lastKiller != null && timerSpree <= cancelTimeSpree)
+        {
+            timerSpree += Time.deltaTime;
+        }
+        
         if (_applicationManager?.GameState != GAME_STATE.PLAYING ) return;
 
         _currentGameCooldown -= _applicationManager?.GameState == GAME_STATE.PLAYING ? Time.deltaTime : 0;
@@ -225,6 +240,47 @@ public class GameManager : CoroutineSystem
         _alreadyPlayed10 = false;
     }
 
+    public IEnumerator OnKill(PlayerConfiguration killerConfig,PlayerConfiguration deathConfig,PlayerManager killer,PlayerManager death)
+    {
+        if (lastKiller != null && lastKiller == killer) {
+            killSpree++;
+            
+            Debug.Log("number of kills in spree " + killSpree);
+
+            if (killSpree == 2) {
+                audioManager.Play("DoubleKill");
+                spreeText.text = "DOUBLE KILL";
+                spreeText.gameObject.SetActive(true);
+
+                RunDelayed(0.55f, () => {
+                    spreeText.gameObject.SetActive(false);
+                }); 
+            }
+
+            if (killSpree == 3) {
+                audioManager.Play("TripleKill");
+                spreeText.text = "TRIPLE KILL";
+                spreeText.gameObject.SetActive(true);
+
+                RunDelayed(0.55f, () => {
+                    spreeText.gameObject.SetActive(false);
+                });
+            }
+        }
+        else if (lastKiller != killer)
+            killSpree = 0;
+        
+        if(lastKiller == null)
+            killSpree++;
+        
+        lastKiller = killer;
+        yield return new WaitUntil(() => timerSpree >= cancelTimeSpree);
+
+        Debug.Log("end of spree");
+        lastKiller = null;
+        timerSpree = 0;
+    }
+
     #region Projectile
     private void GenerateProjectilePool(int number)
     {
@@ -334,6 +390,7 @@ public class GameManager : CoroutineSystem
 
     #endregion Projectile
 
+    #region Color
     public string GetColorForUI(Color color)
     {
         string hexColor =  ColorUtility.ToHtmlStringRGB(color);
@@ -355,23 +412,5 @@ public class GameManager : CoroutineSystem
                 return "";
         }
     }
-
-    public string ConvertColorToName(string color) {
-        switch (color) {
-            case "#A6FF00":
-                return "GREEN";
-            
-            case "#3BCFFF":
-                return "BLUE";
-            
-            case "#F5A053":
-                return "ORANGE";
-            
-            case "#FF64F7":
-                return "PINK";
-            
-            default:
-                return "";
-        }
-    }
+    #endregion Color
 }
